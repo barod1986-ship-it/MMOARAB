@@ -1,0 +1,442 @@
+# MOMARAB CORE WordPress Plugin
+# Copyright (C) 2025 MOMARAB Development Team
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: MOMARAB CORE 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/momarabdev/momarab-core/issues\n"
+"POT-Creation-Date: 2025-02-28 12:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"X-Generator: WordPress\n"
+"X-Domain: momarab-core\n"
+
+#: momarab-core.php:45
+msgid "MOMARAB CORE requires PHP version %s or higher. Please update PHP."
+msgstr ""
+
+#: momarab-core.php:58
+msgid "MOMARAB CORE requires WordPress version %s or higher. Please update WordPress."
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:25
+msgctxt "Post type general name"
+msgid "الألعاب"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:26
+msgctxt "Post type singular name"
+msgid "لعبة"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:27
+msgctxt "Admin Menu text"
+msgid "الألعاب"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:28
+msgctxt "Add New on Toolbar"
+msgid "لعبة"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:29
+msgid "إضافة جديدة"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:30
+msgid "إضافة لعبة جديدة"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:31
+msgid "لعبة جديدة"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:32
+msgid "تحرير اللعبة"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:33
+msgid "عرض اللعبة"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:34
+msgid "جميع الألعاب"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:35
+msgid "البحث في الألعاب"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:36
+msgid "اللعبة الأب:"
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:37
+msgid "لم يتم العثور على ألعاب."
+msgstr ""
+
+#: includes/content/class-mcp-cpt.php:38
+msgid "لم يتم العثور على ألعاب في المهملات."
+msgstr ""
+
+#: includes/content/meta/class-mcp-meta-registry.php:45
+msgid "المعلومات الأساسية"
+msgstr ""
+
+#: includes/content/meta/class-mcp-meta-registry.php:53
+msgid "المحرك"
+msgstr ""
+
+#: includes/content/meta/class-mcp-meta-registry.php:61
+msgid "الميزات"
+msgstr ""
+
+#: includes/content/meta/class-mcp-meta-registry.php:69
+msgid "الوسائط"
+msgstr ""
+
+#: includes/content/meta/class-mcp-meta-registry.php:77
+msgid "التقييمات"
+msgstr ""
+
+#: includes/content/meta/class-mcp-meta-registry.php:89
+msgid "الموقع الرسمي"
+msgstr ""
+
+#: includes/content/meta/class-mcp-meta-registry.php:95
+msgid "المطوّر"
+msgstr ""
+
+#: includes/content/meta/class-mcp-meta-registry.php:101
+msgid "الناشر"
+msgstr ""
+
+#: includes/content/meta/class-mcp-meta-registry.php:107
+msgid "تاريخ الإطلاق"
+msgstr ""
+
+#: includes/settings/class-mcp-settings.php:35
+msgid "MOMARAB CORE"
+msgstr ""
+
+#: includes/settings/class-mcp-settings.php:44
+msgid "الإعدادات"
+msgstr ""
+
+#: includes/settings/class-mcp-settings.php:58
+msgid "المصطلحات الأساسية"
+msgstr ""
+
+#: includes/settings/class-mcp-settings.php:64
+msgid "عرض الأخبار المرتبطة"
+msgstr ""
+
+#: includes/settings/class-mcp-settings.php:70
+msgid "إضافة/تحديث الوصف"
+msgstr ""
+
+#: includes/settings/class-mcp-settings.php:76
+msgid "تحديث الأوصاف فقط"
+msgstr ""
+
+#: includes/settings/class-mcp-settings.php:82
+msgid "تمكين الأخبار المرتبطة"
+msgstr ""
+
+#: includes/settings/class-mcp-settings.php:88
+msgid "عنوان قسم الأخبار"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:43
+msgid "MMORPG"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:44
+msgid "MMOFPS"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:45
+msgid "MOBA"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:46
+msgid "Survival"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:47
+msgid "Sandbox"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:48
+msgid "Action-RPG"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:57
+msgid "قريباً"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:58
+msgid "ألفا"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:59
+msgid "بيتا"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:60
+msgid "وصول مبكر"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:61
+msgid "مُصدر"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:70
+msgid "PvE"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:71
+msgid "PvP"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:72
+msgid "Co-op"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:73
+msgid "عالم مفتوح"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:74
+msgid "صناعة"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:75
+msgid "غارات"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:84
+msgid "PC"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:85
+msgid "PlayStation"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:86
+msgid "Xbox"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:87
+msgid "Nintendo Switch"
+msgstr ""
+
+#: includes/settings/class-mcp-terms-manager.php:88
+msgid "Mobile"
+msgstr ""
+
+#: includes/features/ajax/class-mcp-ajax-filter.php:37
+msgid "خطأ في التحقق من الأمان."
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-games.php:145
+msgid "لم يتم العثور على ألعاب."
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:46
+msgid "نوع اللعبة"
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:47
+msgid "حالة اللعبة"
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:51
+msgid "أسلوب اللعب"
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:52
+msgid "المنصة"
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:58
+msgid "ترتيب حسب"
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:60
+msgid "الأحدث"
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:61
+msgid "الأقدم"
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:62
+msgid "أبجدي (أ-ي)"
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:63
+msgid "أبجدي (ي-أ)"
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:64
+msgid "الأعلى تقييماً"
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:71
+msgid "تطبيق الفلترة"
+msgstr ""
+
+#: includes/features/shortcodes/class-mcp-shortcode-game-filter.php:75
+msgid "إعادة تعيين"
+msgstr ""
+
+#: includes/features/widgets/class-mcp-widget-popular.php:22
+msgid "الألعاب الشائعة"
+msgstr ""
+
+#: includes/features/widgets/class-mcp-widget-popular.php:24
+msgid "عرض الألعاب الأعلى تقييماً"
+msgstr ""
+
+#: includes/features/widgets/class-mcp-widget-recent.php:22
+msgid "الألعاب الحديثة"
+msgstr ""
+
+#: includes/features/widgets/class-mcp-widget-recent.php:24
+msgid "عرض أحدث الألعاب المضافة"
+msgstr ""
+
+#: includes/features/related/class-mcp-related-meta.php:37
+msgid "ربط باللعبة"
+msgstr ""
+
+#: includes/features/related/class-mcp-related-meta.php:50
+msgid "اختيار لعبة:"
+msgstr ""
+
+#: includes/features/related/class-mcp-related-meta.php:58
+msgid "ربط هذا المقال بلعبة معينة لعرضه في صفحة اللعبة."
+msgstr ""
+
+#: includes/features/related/class-mcp-related-render.php:39
+msgid "آخر خبر عن اللعبة"
+msgstr ""
+
+#: includes/features/rest/class-mcp-rest-games.php:58
+msgid "معرف اللعبة"
+msgstr ""
+
+#: includes/features/rest/class-mcp-rest-games.php:86
+msgid "خطأ في تنفيذ الاستعلام"
+msgstr ""
+
+#: includes/features/rest/class-mcp-rest-games.php:115
+msgid "اللعبة غير موجودة"
+msgstr ""
+
+#: includes/features/rest/class-mcp-rest-taxonomies.php:42
+msgid "تضمين المصطلحات الفارغة"
+msgstr ""
+
+#: includes/features/rest/class-mcp-rest-taxonomies.php:52
+msgid "اسم التصنيف"
+msgstr ""
+
+#: includes/features/rest/class-mcp-rest-taxonomies.php:88
+msgid "تصنيف غير صالح"
+msgstr ""
+
+#: includes/features/rest/class-mcp-rest-taxonomies.php:95
+msgid "خطأ في جلب المصطلحات"
+msgstr ""
+
+#: templates/archive-games.php:20
+msgid "جميع الألعاب"
+msgstr ""
+
+#: templates/archive-games.php:47
+msgid "&laquo; السابق"
+msgstr ""
+
+#: templates/archive-games.php:48
+msgid "التالي &raquo;"
+msgstr ""
+
+#: templates/archive-games.php:54
+msgid "لم يتم العثور على ألعاب"
+msgstr ""
+
+#: templates/archive-games.php:55
+msgid "لا توجد ألعاب تطابق معايير البحث الحالية."
+msgstr ""
+
+#: templates/parts/header-card.php:38
+msgid "المطوّر:"
+msgstr ""
+
+#: templates/parts/header-card.php:45
+msgid "الناشر:"
+msgstr ""
+
+#: templates/parts/header-card.php:52
+msgid "تاريخ الإطلاق:"
+msgstr ""
+
+#: templates/parts/header-card.php:58
+msgid "الموقع الرسمي"
+msgstr ""
+
+#: templates/parts/game-basics.php:34
+msgid "المحرك"
+msgstr ""
+
+#: templates/parts/game-basics.php:57
+msgid "الميزات الرئيسية"
+msgstr ""
+
+#: templates/parts/game-media.php:37
+msgid "الوسائط"
+msgstr ""
+
+#: templates/parts/game-media.php:41
+msgid "مقاطع الفيديو"
+msgstr ""
+
+#: templates/parts/game-media.php:47
+msgid "فيديو اللعبة"
+msgstr ""
+
+#: templates/parts/game-media.php:58
+msgid "معرض الصور"
+msgstr ""
+
+#: templates/parts/game-ratings.php:25
+msgid "القصة"
+msgstr ""
+
+#: templates/parts/game-ratings.php:26
+msgid "الجيمبلاي"
+msgstr ""
+
+#: templates/parts/game-ratings.php:27
+msgid "الرسومات"
+msgstr ""
+
+#: templates/parts/game-ratings.php:28
+msgid "الصوت"
+msgstr ""
+
+#: templates/parts/game-ratings.php:29
+msgid "التقييم النهائي"
+msgstr ""
+
+#: templates/parts/game-ratings.php:44
+msgid "التقييمات"
+msgstr ""
