@@ -1,0 +1,237 @@
+/* 
+ * MMOARAB Core - Admin Styles
+ * تنسيقات لوحة التحكم
+ */
+
+/* Admin Page Dashboard */
+.mcp-admin-page {
+    max-width: 1200px;
+}
+
+.mcp-welcome-panel {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 30px;
+    margin: 20px 0;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.mcp-welcome-panel h2 {
+    margin: 0 0 10px;
+    color: #1d2327;
+}
+
+.mcp-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.mcp-dashboard-box {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.mcp-dashboard-box h3 {
+    margin-top: 0;
+    color: #1d2327;
+}
+
+.mcp-dashboard-box ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.mcp-dashboard-box ul li {
+    margin-bottom: 8px;
+}
+
+#mcp-seed-terms-message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+#mcp-seed-terms-message.success {
+    background: #d5f4e6;
+    border: 1px solid #00a32a;
+    color: #00a32a;
+}
+
+#mcp-seed-terms-message.error {
+    background: #f9e2e2;
+    border: 1px solid #d63638;
+    color: #d63638;
+}
+
+/* Meta Boxes */
+.mcp-meta-field {
+    margin-bottom: 20px;
+}
+
+.mcp-meta-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1d2327;
+}
+
+.mcp-meta-field input[type="text"],
+.mcp-meta-field input[type="url"],
+.mcp-meta-field input[type="date"],
+.mcp-meta-field textarea {
+    width: 100%;
+    max-width: 600px;
+}
+
+.mcp-meta-field .description {
+    font-size: 12px;
+    color: #646970;
+    margin-top: 5px;
+}
+
+/* Gallery */
+#mcp-gallery-container {
+    padding: 10px 0;
+}
+
+#mcp-gallery-images {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.mcp-gallery-image {
+    position: relative;
+    cursor: move;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 1;
+}
+
+/* Fallback للمتصفحات القديمة */
+@supports not (aspect-ratio: 1) {
+    .mcp-gallery-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .mcp-gallery-image::before {
+        content: '';
+        display: block;
+        padding-top: 100%;
+    }
+}
+
+.mcp-gallery-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.mcp-gallery-image .mcp-remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #d63638;
+    color: #fff;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+}
+
+.mcp-gallery-image .mcp-remove-image:hover {
+    opacity: 1;
+}
+
+.mcp-gallery-image.ui-sortable-helper {
+    opacity: 0.7;
+}
+
+/* Ratings */
+.mcp-rating-field {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.mcp-rating-field:last-child {
+    border-bottom: none;
+}
+
+.mcp-rating-field label {
+    display: block;
+    margin-bottom: 5px;
+    color: #1d2327;
+}
+
+.mcp-rating-input {
+    margin-bottom: 8px;
+}
+
+.mcp-rating-field textarea {
+    resize: vertical;
+    font-size: 13px;
+}
+
+.mcp-rating-overall {
+    background: #f0f0f1;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.mcp-rating-overall label {
+    display: block;
+    margin-bottom: 8px;
+    color: #1d2327;
+}
+
+.mcp-rating-overall input {
+    background: #fff;
+    font-weight: 600;
+    color: #2271b1;
+}
+
+/* Related Posts Meta Box */
+.mcp-related-game-field {
+    padding: 10px 0;
+}
+
+.mcp-related-game-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.mcp-selected-game {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f0f0f1;
+    border-radius: 4px;
+}
+
+#mcp-clear-game {
+    color: #d63638;
+    margin-left: 10px;
+}
+
+#mcp-clear-game:hover {
+    color: #b32d2e;
+}

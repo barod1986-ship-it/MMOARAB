@@ -1,0 +1,724 @@
+/* 
+ * MMOARAB Core - Single Game Page Styles
+ * تنسيقات صفحة اللعبة الفردية
+ */
+
+/* CSS Variables للتخصيص السهل */
+:root {
+    --mcp-primary-color: #0073aa;
+    --mcp-primary-hover: #005a87;
+    --mcp-accent-color: #b30000;
+    --mcp-accent-hover: #990000;
+    --mcp-gold: #FFD700;
+    --mcp-bg-dark: #1E1E1E;
+    --mcp-bg-darker: #1a1a1a;
+    --mcp-border: #333;
+    --mcp-text-primary: #e0e0e0;
+    --mcp-text-secondary: #a0a0a0;
+    --mcp-text-muted: #777;
+}
+
+/* Container - إزالة max-width للسماح لـ ct-container بالتحكم */
+.mcp-single-game {
+    padding: 40px 0;
+    font-family: inherit;
+    color: inherit;
+}
+
+/* Header */
+.mcp-game-header {
+    margin-bottom: 0;
+}
+
+.mcp-game-thumbnail {
+    width: 100%;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+}
+
+.mcp-game-thumbnail img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Quick Info Bar */
+.mcp-quick-info-bar {
+    background: linear-gradient(135deg, var(--mcp-bg-darker) 0%, #2d2d2d 100%);
+    border: 1px solid var(--mcp-border);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    padding: 25px 35px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.mcp-quick-info-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.mcp-game-title {
+    font-size: 2.2em;
+    margin: 0;
+    color: var(--mcp-text-primary);
+    flex: 1;
+    min-width: 250px;
+}
+
+.mcp-quick-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mcp-rating-star-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.mcp-star-svg {
+    filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.6));
+    animation: starPulse 2s ease-in-out infinite;
+}
+
+@keyframes starPulse {
+    0%, 100% { 
+        transform: scale(1);
+        filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.6));
+    }
+    50% { 
+        transform: scale(1.05);
+        filter: drop-shadow(0 6px 12px rgba(255, 215, 0, 0.8));
+    }
+}
+
+.mcp-rating-text {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    line-height: 1;
+}
+
+.mcp-rating-value {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--mcp-gold);
+    text-shadow: 0 2px 6px rgba(255, 215, 0, 0.5);
+    line-height: 1;
+}
+
+.mcp-rating-max,
+.mcp-rating-out-of {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--mcp-gold);
+    text-shadow: 0 2px 6px rgba(255, 215, 0, 0.5);
+    opacity: 1;
+    line-height: 1;
+    margin-top: 0;
+}
+
+.mcp-quick-website {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--mcp-accent-color);
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(179, 0, 0, 0.4);
+}
+
+.mcp-quick-website:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(179, 0, 0, 0.6);
+    background: var(--mcp-accent-hover);
+    color: #fff;
+}
+
+.mcp-website-icon {
+    font-size: 1.3em;
+}
+
+/* Media Container */
+.mcp-media-container {
+    background: var(--mcp-bg-dark);
+    border: 1px solid var(--mcp-border);
+    border-radius: 12px;
+    padding: 40px;
+    margin-bottom: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.mcp-media-container .mcp-game-section:last-child {
+    margin-bottom: 0;
+}
+
+/* Game Information */
+.mcp-game-section {
+    margin-bottom: 50px;
+}
+
+.mcp-game-section h2 {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--theme-link-color, #0073aa);
+}
+
+.mcp-game-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.mcp-info-item {
+    background: var(--mcp-bg-dark);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--mcp-border);
+    border-left: 4px solid var(--theme-link-color, var(--mcp-primary-color));
+    color: var(--mcp-text-primary);
+    transition: all 0.3s ease;
+}
+
+.mcp-info-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.mcp-info-item-label {
+    font-size: 0.9em;
+    color: #a0a0a0;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mcp-info-item-label .emoji {
+    font-size: 1.5em;
+}
+
+.mcp-info-item-value {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+.mcp-info-item-value a {
+    color: var(--theme-link-color, #0073aa);
+    text-decoration: none;
+}
+
+.mcp-info-item-value a:hover {
+    text-decoration: underline;
+}
+
+/* Features */
+.mcp-game-features-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mcp-game-features-list li {
+    background: #1E1E1E;
+    padding: 20px 24px;
+    border: 1px solid #333;
+    border-radius: 12px;
+    position: relative;
+    color: #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.mcp-game-features-list li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* زاوية مميزة */
+.mcp-game-features-list li::before {
+    content: "✓";
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    border-radius: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(255, 215, 0, 0.4);
+}
+
+/* Ratings */
+.mcp-ratings-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.mcp-rating-item {
+    background: #1E1E1E;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    color: #e0e0e0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.mcp-rating-item:hover {
+    border-color: var(--theme-link-color, #0073aa);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.mcp-rating-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.mcp-rating-label {
+    font-weight: 600;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mcp-rating-value {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #FFD700;
+    text-shadow: 0 2px 4px rgba(255, 215, 0, 0.3);
+}
+
+.mcp-rating-bar {
+    width: 100%;
+    height: 8px;
+    background: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.mcp-rating-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0073aa 0%, #667eea 100%);
+    border-radius: 10px;
+    transition: width 0.6s ease;
+}
+
+.mcp-rating-notes {
+    font-size: 0.9em;
+    color: #a0a0a0;
+    line-height: 1.5;
+}
+
+.mcp-rating-icon {
+    font-size: 1.4em;
+    line-height: 1;
+}
+
+/* Overall Rating */
+.mcp-overall-rating {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0a4d68 100%);
+    padding: 25px 40px;
+    border-radius: 12px;
+    border: 2px solid rgba(0, 115, 170, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    box-shadow: 0 8px 30px rgba(0, 115, 170, 0.3);
+}
+
+.mcp-overall-label {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin: 0;
+}
+
+.mcp-overall-value {
+    font-size: 3em;
+    font-weight: 700;
+    color: #FFD700;
+    text-shadow: 0 4px 8px rgba(255, 215, 0, 0.4);
+    margin: 0;
+}
+
+.mcp-overall-value .mcp-rating-out-of {
+    font-size: 1em;
+    font-weight: 700;
+    opacity: 1;
+}
+
+.mcp-overall-stars {
+    font-size: 2em;
+    margin: 0;
+}
+
+.mcp-star {
+    color: #444;
+}
+
+.mcp-star.full {
+    color: #FFD700;
+}
+
+.mcp-star.half {
+    background: linear-gradient(90deg, var(--mcp-gold) 50%, #444 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Trailer */
+.mcp-game-trailer {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #000;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.mcp-game-trailer iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.mcp-trailer-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #FF0000, #CC0000);
+    color: #fff;
+    padding: 15px 35px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    box-shadow: 0 4px 20px rgba(255, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.mcp-trailer-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(255, 0, 0, 0.6);
+    color: #fff;
+}
+
+/* Gallery */
+.mcp-game-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.mcp-gallery-item {
+    position: relative;
+    cursor: pointer;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Modern browsers */
+@supports (aspect-ratio: 16/9) {
+    .mcp-gallery-item {
+        aspect-ratio: 16/9;
+    }
+}
+
+/* Fallback للمتصفحات القديمة */
+@supports not (aspect-ratio: 16/9) {
+    .mcp-gallery-item {
+        position: relative;
+        padding-top: 56.25%; /* 16:9 */
+    }
+    
+    .mcp-gallery-item img {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+.mcp-gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.mcp-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Lightbox */
+.mcp-lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.mcp-lightbox.active {
+    display: flex;
+}
+
+.mcp-lightbox-content {
+    max-width: 90%;
+    max-height: 90%;
+    position: relative;
+}
+
+.mcp-lightbox-image {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 8px;
+}
+
+.mcp-lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mcp-lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.mcp-lightbox-prev,
+.mcp-lightbox-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mcp-lightbox-prev {
+    left: 20px;
+}
+
+.mcp-lightbox-next {
+    right: 20px;
+}
+
+.mcp-lightbox-prev:hover,
+.mcp-lightbox-next:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Related Posts */
+.mcp-related-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.mcp-no-thumbnail {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    border-radius: 8px;
+}
+
+.mcp-related-post-card {
+    background: #1E1E1E;
+    border: 1px solid #333;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.mcp-related-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.mcp-related-post-thumbnail {
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Modern browsers */
+@supports (aspect-ratio: 16/9) {
+    .mcp-related-post-thumbnail {
+        aspect-ratio: 16/9;
+    }
+}
+
+/* Fallback للمتصفحات القديمة */
+@supports not (aspect-ratio: 16/9) {
+    .mcp-related-post-thumbnail {
+        position: relative;
+        padding-top: 56.25%; /* 16:9 */
+    }
+    
+    .mcp-related-post-thumbnail img {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+.mcp-related-post-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mcp-related-post-content {
+    padding: 20px;
+}
+
+.mcp-related-post-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.mcp-related-post-title a {
+    color: var(--theme-heading-3-color, #e0e0e0);
+    text-decoration: none;
+}
+
+.mcp-related-post-title a:hover {
+    color: var(--theme-link-color, #0073aa);
+}
+
+.mcp-related-post-date {
+    font-size: 0.9em;
+    color: #a0a0a0;
+    margin-bottom: 10px;
+}
+
+.mcp-related-post-excerpt {
+    font-size: 0.95em;
+    color: #b0b0b0;
+    line-height: 1.6;
+}
+
+/* Comments */
+.mcp-comments-section {
+    background: #1E1E1E;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+/* RTL Support للعربية */
+[dir="rtl"] .mcp-info-item {
+    border-left: none;
+    border-right: 4px solid var(--theme-link-color, var(--mcp-primary-color));
+}
+
+[dir="rtl"] .mcp-lightbox-prev {
+    left: auto;
+    right: 20px;
+}
+
+[dir="rtl"] .mcp-lightbox-next {
+    right: auto;
+    left: 20px;
+}
+
+[dir="rtl"] .mcp-game-features-list li::before {
+    left: auto;
+    right: -1px;
+    border-radius: 0 0 0 12px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .mcp-game-features-list,
+    .mcp-ratings-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .mcp-game-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .mcp-single-game {
+        padding: 20px 0;
+    }
+    
+    .mcp-quick-info-bar {
+        padding: 20px;
+    }
+    
+    .mcp-game-title {
+        font-size: 1.6em;
+    }
+    
+    .mcp-media-container {
+        padding: 25px 20px;
+    }
+    
+    .mcp-game-features-list,
+    .mcp-ratings-grid,
+    .mcp-related-posts-grid,
+    .mcp-game-gallery-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .mcp-game-info-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,382 @@
+/* 
+ * MMOARAB Core - Archive Page Styles
+ * تنسيقات صفحة الأرشيف
+ */
+
+/* CSS Variables */
+:root {
+    --mcp-primary-color: #0073aa;
+    --mcp-primary-hover: #005a87;
+    --mcp-danger: #f44336;
+    --mcp-danger-hover: #d32f2f;
+    --mcp-bg-dark: #1E1E1E;
+    --mcp-border: #333;
+    --mcp-text-primary: #e0e0e0;
+    --mcp-text-secondary: #a0a0a0;
+}
+
+/* Container: اترك القياس لحاوية Blocksy */
+.mcp-archive-games {
+    padding: 40px 0;
+}
+
+/* Archive Header */
+.mcp-archive-header {
+    background: #1E1E1E;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    text-align: center;
+    margin-bottom: 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.mcp-archive-header h1 {
+    font-size: 2.5em;
+    margin: 0 0 10px;
+    color: var(--theme-heading-1-color, #e0e0e0);
+}
+
+.mcp-archive-count {
+    font-size: 1.1em;
+    color: #b0b0b0;
+}
+
+/* Filters */
+.mcp-filters-container {
+    background: #1E1E1E;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    margin-bottom: 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.mcp-filters-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.mcp-filter-field {
+    flex: 1;
+    min-width: 150px;
+}
+
+.mcp-filter-field input,
+.mcp-filter-field select {
+    width: 100%;
+    height: 46px;
+    padding: 0 15px;
+    background: #252525;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #e0e0e0;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.mcp-filter-field input:focus,
+.mcp-filter-field select:focus {
+    outline: none;
+    border-color: var(--theme-link-color, #0073aa);
+    background: #2a2a2a;
+}
+
+.mcp-filter-field input::placeholder {
+    color: #777;
+}
+
+.mcp-filter-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.mcp-filter-submit,
+.mcp-filter-reset {
+    height: 46px;
+    padding: 0 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.mcp-filter-submit {
+    background: var(--theme-link-color, #0073aa);
+    color: #fff;
+}
+
+.mcp-filter-submit:hover {
+    background: var(--theme-link-hover-color, #005a87);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 115, 170, 0.3);
+}
+
+.mcp-filter-reset {
+    background: #f44336;
+    color: #fff;
+}
+
+.mcp-filter-reset:hover {
+    background: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+}
+
+/* Games Grid */
+.mcp-games-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.mcp-game-card {
+    background: #1E1E1E;
+    border: 1px solid #333;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.mcp-game-card-image {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: #252525;
+    aspect-ratio: 16/9;
+}
+
+.mcp-game-card-image a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.mcp-game-card-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    /* تحسينات الأداء */
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.mcp-game-rating-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(30, 30, 30, 0.95);
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.95em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.mcp-game-card-content {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.mcp-game-card-title {
+    font-size: 1.15em;
+    font-weight: 700;
+    margin: 0 0 15px;
+    line-height: 1.4;
+}
+
+.mcp-game-card-title a {
+    color: var(--theme-heading-3-color, #e0e0e0);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.mcp-game-card-title a:hover { color: var(--theme-link-color, #0073aa); }
+
+.mcp-game-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.mcp-game-tag {
+    display: inline-block;
+    background: #b30000;
+    color: #ffffff;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.mcp-game-tag:hover {
+    background: #990000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(179, 0, 0, 0.4);
+}
+
+/* No Results */
+.mcp-no-results {
+    text-align: center;
+    padding: 60px 20px;
+    background: #1E1E1E;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+.mcp-no-results h2 {
+    font-size: 1.8em;
+    color: #e0e0e0;
+    margin-bottom: 15px;
+}
+
+.mcp-no-results p {
+    font-size: 1.1em;
+    color: #a0a0a0;
+}
+
+/* Pagination (متوافق مع type="list" وبدونه) */
+.mcp-pagination,
+.mcp-archive-pagination,
+.mcp-archive-pagination ul.page-numbers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 50px;
+}
+
+/* إذا خرجت كقائمة UL من paginate_links */
+.mcp-archive-pagination ul.page-numbers{
+    list-style: none;
+    padding: 0;
+    margin: 50px 0 0;
+    direction: rtl; /* للواجهة العربية */
+}
+.mcp-archive-pagination ul.page-numbers li{ list-style: none; }
+
+/* العناصر */
+.mcp-pagination a,
+.mcp-pagination span,
+.mcp-archive-pagination .page-numbers,
+.mcp-archive-pagination ul.page-numbers a,
+.mcp-archive-pagination ul.page-numbers span{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 45px;
+    height: 45px;
+    padding: 0 15px;
+    background: #1E1E1E;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #e0e0e0;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* الحالة الحالية */
+.mcp-pagination .current,
+.mcp-archive-pagination .page-numbers.current,
+.mcp-archive-pagination ul.page-numbers .current{
+    background: var(--theme-link-color, #0073aa);
+    border-color: var(--theme-link-color, #0073aa);
+    color: #fff;
+}
+
+/* hover */
+.mcp-pagination a:hover,
+.mcp-archive-pagination .page-numbers:not(.current):hover,
+.mcp-archive-pagination ul.page-numbers a:hover{
+    background: var(--theme-link-color, #0073aa);
+    border-color: var(--theme-link-color, #0073aa);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* نقاط "…" */
+.mcp-archive-pagination .page-numbers.dots,
+.mcp-archive-pagination ul.page-numbers .dots{
+    background: transparent;
+    border: none;
+    min-width: auto;
+    padding: 0 6px;
+    pointer-events: none;
+}
+
+/* السابق/التالي RTL */
+[dir="rtl"] .mcp-archive-pagination .prev::before,
+[dir="rtl"] .mcp-pagination .prev::before{ content: "← "; }
+[dir="rtl"] .mcp-archive-pagination .next::after,
+[dir="rtl"] .mcp-pagination .next::after{ content: " →"; }
+
+/* RTL Support */
+[dir="rtl"] .mcp-game-rating-badge { right: auto; left: 12px; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .mcp-games-grid { grid-template-columns: repeat(3, 1fr); gap: 25px; }
+}
+
+@media (max-width: 768px) {
+    .mcp-archive-games {
+        padding: 20px 0;
+    }
+    
+    .mcp-archive-header {
+        padding: 30px 20px;
+    }
+    
+    .mcp-archive-header h1 {
+        font-size: 1.8em;
+    }
+    
+    .mcp-filters-container {
+        padding: 25px 20px;
+    }
+    
+    .mcp-games-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 20px; 
+    }
+    
+    .mcp-filters-form { flex-direction: column; }
+    .mcp-filter-field { width: 100%; }
+    .mcp-filter-buttons { width: 100%; flex-direction: column; }
+    .mcp-filter-submit, .mcp-filter-reset { width: 100%; }
+}
+
+@media (max-width: 480px) {
+    .mcp-games-grid {
+        grid-template-columns: 1fr;
+    }
+}
