@@ -1,0 +1,68 @@
+    # Create tracker workbook before package comparison.
+    xlsx_path = p(XLSX_REL)
+    make_xlsx(xlsx_path, checks)
+    with zipfile.ZipFile(xlsx_path) as zf:
+        if "[Content_Types].xml" not in zf.namelist():
+            raise AssertionError("Invalid XLSX")
+
+    # Full package comparison.
+    after = snapshot_repo()
+    all_paths = sorted(set(before) | set(after))
+    comparison_rows = [["المسار", "الحالة", "SHA256 قبل", "SHA256 بعد"]]
+    changed_existing, new_files, deleted_files = [], [], []
+    status_counts = {"معدل": 0, "دون تغيير": 0, "جديد": 0, "محذوف": 0}
+    for rel in all_paths:
+        b = before.get(rel, "")
+        a = after.get(rel, "")
+        if b and a:
+            status = "دون تغيير" if b == a else "معدل"
+            if status == "معدل":
+                changed_existing.append(rel)
+        elif a:
+            status = "جديد"
+            new_files.append(rel)
+        else:
+            status = "محذوف"
+            deleted_files.append(rel)
+        status_counts[status] += 1
+        comparison_rows.append([rel, status, b, a])
+
+    expected_changed = {MAIN_REL, TRACK_MD_REL, TRACK_CSV_REL, COMPLETED_CSV_REL, REMAINING_CSV_REL}
+    if set(changed_existing) != expected_changed:
+        raise AssertionError(f"Unexpected modified existing files: {set(changed_existing) ^ expected_changed}")
+    if deleted_files:
+        raise AssertionError(f"Unexpected deletions: {deleted_files}")
+
+    with (STAGE_DIR / "تقرير_المرحلة_261_مقارنة_الحزمة.csv").open("w", encoding="utf-8-sig", newline="") as f:
+        csv.writer(f, lineterminator="\n").writerows(comparison_rows)
+
+    result = {
+        "stage": 261,
+        "main_file": MAIN_REL,
+        "next_file": NEXT_FILE,
+        "main_changes": STAGE_CHANGES,
+        "related_changes": 0,
+        "stage_changes": STAGE_CHANGES,
+        "cumulative_changes": CUMULATIVE_CHANGES,
+        "npc_reviewed": NPC_REVIEWED,
+        "npc_total": NPC_TOTAL,
+        "remaining": REMAINING,
+        "quest_complete": 88,
+        "quest_total": 88,
+        "official_git_blob": OFFICIAL_BLOB,
+        "technical_tests": len(checks),
+        "technical_passed": len(checks),
+        "technical_failed": 0,
+        "changed_existing_files": len(changed_existing),
+        "changed_existing_paths": changed_existing,
+        "new_files": len(new_files),
+        "deleted_files": deleted_files,
+        "status_counts": status_counts,
+        "main_sha256": sha256(final_bytes),
+    }
+    write_utf8_lf(STAGE_DIR / "نتيجة_المرحلة_261.json", json.dumps(result, ensure_ascii=False, indent=2) + "\n")
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()
