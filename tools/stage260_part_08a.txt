@@ -1,6 +1,0 @@
-        raise AssertionError(f"Unexpected deleted files: {deleted_files}")
-
-    comparison_path = STAGE_DIR / "تقرير_المرحلة_260_مقارنة_الحزمة.csv"
-    with comparison_path.open("w", encoding="utf-8-sig", newline="") as f:
-        csv.writer(f, lineterminator="\n").writerows(compare_rows)
-

@@ -1,0 +1,35 @@
+{
+  "stage": 260,
+  "main_file": "rathena-master/npc/other/guildpvp.txt",
+  "next_file": "rathena-master/npc/other/gympass.txt",
+  "main_changes": 18,
+  "related_changes": 0,
+  "stage_changes": 18,
+  "cumulative_changes": 62435,
+  "npc_reviewed": 261,
+  "npc_total": 555,
+  "remaining": 266,
+  "quest_complete": 88,
+  "quest_total": 88,
+  "official_git_blob": "68f62bbb43d5b5580ce4c4beb47b8cf833830465",
+  "technical_tests": 58,
+  "technical_passed": 58,
+  "technical_failed": 0,
+  "changed_existing_files": 5,
+  "changed_existing_paths": [
+    "rathena-master/npc/other/guildpvp.txt",
+    "تقارير_المراجعة_الحوارية/00_الملفات_المتبقية.csv",
+    "تقارير_المراجعة_الحوارية/00_الملفات_المكتملة.csv",
+    "تقارير_المراجعة_الحوارية/00_متابعة_المراجعة_الحوارية.csv",
+    "تقارير_المراجعة_الحوارية/00_متابعة_المراجعة_الحوارية.md"
+  ],
+  "new_files": 11,
+  "deleted_files": [],
+  "status_counts": {
+    "معدل": 5,
+    "دون تغيير": 1943,
+    "جديد": 11,
+    "محذوف": 0
+  },
+  "main_sha256": "a27f27e05bcfa5f3ae012cc41f41153b19495ee0ef68e0576fb51eb20c4ae2a1"
+}

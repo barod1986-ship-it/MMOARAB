@@ -1,0 +1,59 @@
+﻿test,status,details
+وجود الملف الأساسي,PASS,rathena-master/npc/other/guildpvp.txt
+وجود المرجع الإنجليزي الداخلي,PASS,rathena-master/npc_EN/other/guildpvp.txt
+ترميز الملف الأساسي UTF-8,PASS,UTF-8
+عدم وجود BOM,PASS,UTF-8 دون BOM
+الحفاظ على LF دون CRLF,PASS,56 LF
+حفظ عدد الأسطر,PASS,56 سطرا
+مطابقة المرجع الرسمي ببصمة Git,PASS,68f62bbb43d5b5580ce4c4beb47b8cf833830465
+حفظ المرجع الرسمي في تقرير المرحلة,PASS,byte-identical
+حفظ النسخة الاحتياطية,PASS,byte-identical
+تطبيق 18 تعديلا نصيا,PASS,18
+حفظ خريطة NPC,PASS,pvp_y_room
+حفظ الاتجاه,PASS,4
+حفظ صورة NPC,PASS,105
+حفظ الاسم الداخلي,PASS,Guild Battle Guide
+حفظ الاسم الظاهر,PASS,مرشد معارك النقابات
+حفظ مصفوفة الفريق الأول,PASS,مطابق
+حفظ مصفوفة الفريق الثاني,PASS,مطابق
+حفظ مصفوفة المحور Y,PASS,مطابق
+حفظ خمسة اختيارات خرائط,PASS,5
+حفظ اختيار فريقين,PASS,2
+حفظ خيار نعم/لا,PASS,مطابق
+حفظ فرع الإلغاء,PASS,مطابق
+حفظ close,PASS,1
+حفظ close2,PASS,1
+حفظ warp,PASS,1
+حفظ end,PASS,1
+حفظ تعبير اسم خريطة النقل,PASS,مطابق
+حفظ تعبير إحداثي X,PASS,مطابق
+حفظ تعبير إحداثي Y,PASS,مطابق
+حفظ متغير اختيار الخريطة,PASS,.@i
+حفظ متغير اختيار الفريق,PASS,.@j
+حفظ عدد أوامر mes,PASS,22
+حفظ عدد أوامر next,PASS,3
+حفظ عدد select,PASS,3
+حفظ الأرقام البرمجية,PASS,مطابق
+حفظ الرموز الداخلية بعد ::,PASS,مطابق
+إزالة مخاطبة اللاعب المذكرة,PASS,محايد
+تحسين سؤال الاستعداد,PASS,مطابق
+تحسين رسالة النجاح,PASS,مطابق
+توحيد اسم المرشد في الملاحة,PASS,متوافق
+عدم تعديل ملف الملاحة,PASS,byte-identical
+تحديث عنوان ملف التتبع,PASS,260
+تحديث عدد المراحل,PASS,260
+تحديث الإجمالي التراكمي,PASS,"62,435"
+تحديث عداد NPC,PASS,261 من 555
+إضافة صف المرحلة 260,PASS,موجود
+إضافة قسم المرحلة 260,PASS,موجود
+إضافة المرحلة إلى CSV العام,PASS,موجود
+نقل guildpvp إلى المكتملة,PASS,rathena-master/npc/other/guildpvp.txt
+حذف guildpvp من المتبقية,PASS,rathena-master/npc/other/guildpvp.txt
+تعيين gympass كأول ملف متبق,PASS,rathena-master/npc/other/gympass.txt
+وجود ملف Excel للمرحلة 260,PASS,تقارير_المراجعة_الحوارية/ملف_تتبع_المراجعة_الحوارية_حتى_المرحلة_260.xlsx
+صلاحية ملف Excel كحزمة OOXML,PASS,ZIP/OOXML
+وجود تقرير التعديلات CSV,PASS,تقرير_المرحلة_260_التعديلات.csv
+مطابقة عدد صفوف التعديلات,PASS,18
+وجود ملخص المرحلة,PASS,موجود
+وجود تقارير المصادر,PASS,MD/CSV/JSON
+عدم حذف ملفات الحزمة,PASS,سيتحقق في مقارنة الحزمة
