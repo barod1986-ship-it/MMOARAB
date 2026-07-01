@@ -1,0 +1,48 @@
+name: Run stage 261
+
+on:
+  push:
+    branches:
+      - stage-261-gympass
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          show-progress: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Assemble
+        run: |
+          cat tools/stage261_part_*.txt > tools/apply_stage_261.py
+          python -m py_compile tools/apply_stage_261.py
+      - name: Apply
+        run: python tools/apply_stage_261.py
+      - name: Clean temporary files
+        run: |
+          rm -f tools/stage261_part_*.txt tools/apply_stage_261.py
+          rm -rf tools/__pycache__
+          rm -f .github/workflows/stage261.yml .github/workflows/stage261_push.yml
+          rmdir tools 2>/dev/null || true
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "المرحلة 261: مراجعة gympass وتحديث التتبع"
+          git push
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stage-261-complete-package
+          path: .
+          include-hidden-files: false
+          retention-days: 7
