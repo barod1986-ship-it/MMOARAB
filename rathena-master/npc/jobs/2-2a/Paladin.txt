@@ -1,0 +1,85 @@
+//===== rAthena Script ======================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== By: ==================================================
+//= Nana
+//= finished, optimized and tested by Lupus
+//===== Current Version: ===================================== 
+//= 1.3
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== Additional Comments: ================================= 
+//= 1.1 Made all into functions, additional checks, etc. [Lupus]
+//= 1.2 Made numbers into constants. [Vicious]
+//= 1.3 Now saves/restores all the quest skills [Lupus]
+//============================================================ 
+
+valkyrie,53,39,3	script	فارس مقدس#Valkyrie::Paladin#Valkyrie	752,{
+	if (ADVJOB == 0 || Upper != 1) {
+		set .@karma_d,rand(1,10);
+		if (.@karma_d > 4) {
+			mes "[فارس مقدس]";
+			mes "تهانينا.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		mes "[فارس مقدس]";
+		mes "لا تنس أن";
+		mes "الحرب المقدسة";
+		mes "تقترب سريعا.";
+		mes "علينا أن نستعد.";
+		mes "وليضئ نور العدالة";
+		mes "دربنا دائما.";
+		close;
+	}
+	else if (ADVJOB == Job_Paladin && Class == Job_Swordman_High && JobLevel > 39) {
+		mes "[فارس مقدس]";
+		mes "ستندلع الحرب المقدسة";
+		mes "قبل أن ندرك ذلك.";
+		mes "والآن، أكثر من أي وقت مضى،";
+		mes "نحتاج إلى رجال ونساء أشداء";
+		mes "يقاتلون دفاعا عن";
+		mes "الحق والخير.";
+		next;
+		mes "[فارس مقدس]";
+		mes "هل تقبل القتال";
+		mes "في صف الحق والارتقاء";
+		mes "إلى رتبة فارس مقدس؟";
+		next;
+		if (select("لا.:نعم.") == 1) {
+			mes "[فارس مقدس]";
+			mes "يمكنك العودة إلي";
+			mes "حين يكتمل استعدادك.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		if (SkillPoint) {
+			mes "[فارس مقدس]";
+			mes "ما زالت لديك نقاط مهارة غير مستخدمة.";
+			mes "يجب استخدامها جميعا قبل العودة إلي.";
+			close;
+		}
+		jobchange Job_Paladin;
+		set ADVJOB,0;
+		mes "[فارس مقدس]";
+		mes "تهانينا.";
+		mes "بصفتك فارسا مقدسا، آمل";
+		mes "أن تكون سندا للضعفاء،";
+		mes "وأن تقودنا إلى النصر";
+		mes "في الحرب القادمة";
+		mes "بين الخير والشر.";
+		close;
+	}
+	mes "[فارس مقدس]";
+	mes "أهلا بك";
+	mes "في فالهالا،";
+	mes "قاعة الشرف.";
+	next;
+	mes "[فارس مقدس]";
+	mes "أتمنى لك";
+	mes "الراحة والطمأنينة";
+	mes "طوال إقامتك هنا.";
+	mes "المجد للمحاربين.";
+	close;
+}

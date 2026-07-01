@@ -1,0 +1,175 @@
+//===== rAthena Script =======================================
+//= Reset NPC
+//===== By: ======================================================
+//= wrywndp (https://www.youtube.com/@wrywndp)
+//===== Description: =========================================
+//= Advanced Reset NPC script (Pre-Renewal).
+//===== Additional Comments: =====================================
+//= This script is made for Ragnarok Offline Pre-Renewal Pack
+//= https://www.youtube.com/watch?v=aN5OCJdj2qA
+//============================================================
+
+aegis,76,73,5	script	Reset Girl	10125,{
+
+	mes .npcName$;
+	mes "Hey, I can erase your memories.";
+	mes "Please select the service you want:";
+	next;
+
+	.@menu$ = "Reset ^FF3355Stats ^727272- ^1A66FFSkills^000000:";
+	if (Class == Job_Taekwon) .@menu$ += "Reset ^FF3355TaeKwon Mission^000000:";
+	if (Class == Job_Star_Gladiator) .@menu$ += "Reset ^FF3355Feeling ^727272& ^FF3355Hatred^000000:";
+	if (Class == Job_Super_Novice || Class == Job_Super_Baby) .@menu$ += "Reset ^FF3355Death Counter ^727272(^1A66FFSuper Novice^727272):";
+	.@menu$ += "^727272Cancel^000000";
+
+	.@selection = select(.@menu$);
+
+	if (.@selection == 1) {
+		mes .npcName$;
+		if (BaseLevel < 51) {
+			.@cost = 0;
+			.@comboFee = 0;
+			mes "My service is free of for Base Level ^FF335550^000000 and below.";
+		} else {
+			.@x = (BaseLevel == 99) ? 5 : min(4, max(0, (BaseLevel - 1) / 10 - 5));
+			.@cost = .baseFee[.@x];
+			.@comboFee = .@cost * 8 / 5;
+
+			mes "Reset ^FF3355Stats^000000: ^FF3355" + callfunc("F_InsertComma", .@cost) + " ^727272z^000000";
+			mes "Reset ^1A66FFSkills^000000: ^FF3355" + callfunc("F_InsertComma", .@cost) + " ^727272z^000000";
+			mes "Reset ^00A000Both^000000: ^FF3355" + callfunc("F_InsertComma", .@comboFee) + " ^727272z^000000";
+		}
+		mes "Please select the service you want:";
+		next;
+
+		.@type = select("Reset ^FF3355Stats^000000:Reset ^1A66FFSkills^000000:Reset ^00A000Both^000000:^727272Cancel^000000");
+
+		.@finalFee = (.@type == 3) ? .@comboFee : .@cost;
+
+		if (.@type == 4) {
+			mes .npcName$;
+			mes "Okay then.";
+			close;
+		}
+
+		if (Zeny < .@finalFee) {
+			mes .npcName$;
+			mes "I'm sorry, you don't have enough Zeny.";
+			close;
+		}
+
+		mes .npcName$;
+		if (.@type == 1 ) {
+			mes "Are you sure want to reset your stats?";
+			mes "Reset Stats: ^FF3355" + callfunc("F_InsertComma", .@finalFee) + "^000000 ^727272z^000000";
+		} else if (.@type == 2) {
+			mes "Are you sure want to reset your skills?";
+			mes "Reset Stats: ^FF3355" + callfunc("F_InsertComma", .@finalFee) + "^000000 ^727272z^000000";
+		} else if (.@type == 3) {
+			mes "Are you sure you want to reset your stats and skill?";
+			mes "Reset Stats & Skills: ^FF3355" + callfunc("F_InsertComma", .@finalFee) + "^000000 ^727272z^000000";
+		}
+		next;
+
+		if (select("Yes:^727272No^000000") == 2) {
+			mes .npcName$;
+			mes "Okay then.";
+			close;
+		}
+
+		Zeny -= .@finalFee;
+		if (.@type & 1) ResetStatus;
+		if (.@type & 2) {
+			sc_end_class;
+			ResetSkill;
+		}
+
+		mes .npcName$;
+		mes "There you go!";
+		close;
+	}
+
+	if (.@selection == 2 && (Class == Job_Taekwon || Class == Job_Star_Gladiator)) {
+		mes .npcName$;
+		if (Class == Job_Taekwon) {
+			mes "Reset TaeKwon Mission: ^FF3355" + callfunc("F_InsertComma", .tkFee) + "^000000 ^727272z^000000.";
+			mes "Are you sure you want to reset your TaeKwon misson?";
+		} else if (Class == Job_Star_Gladiator) {
+			mes "Reset Feeling and Hatred: ^FF3355" + callfunc("F_InsertComma", .tkFee) + "^000000 ^727272z^000000.";
+			mes "Are you sure you want to reset your Feeling and Hatred?";
+		}
+		next;
+
+		if (select("Proceed:Cancel") == 2) close;
+
+		mes .npcName$;
+
+		if (Zeny < .tkFee) {
+			mes "I'm sorry, you don't have enough Zeny.";
+			close;
+		}
+
+		Zeny -= .tkFee;
+
+		if (Class == Job_Taekwon) {
+			if (TK_MISSION_ID) {
+				TK_MISSION_ID = 0;
+				TK_MISSION_COUNT = 0;
+			} else {
+				mes "Sorry, you don't have an active TaeKwon mission.";
+				close;
+			}
+		} else {
+			if (PC_FEEL_MOON || PC_FEEL_SUN || PC_FEEL_STAR || PC_HATE_MOB_MOON || PC_HATE_MOB_SUN || PC_HATE_MOB_STAR) {
+				atcommand "@feelreset " + strcharinfo(0);
+				atcommand "@hatereset " + strcharinfo(0);
+			} else {
+				mes "Sorry, you don't have any active Feeling or Hatred.";
+				close;
+			}
+		}
+		mes "There you go!";
+		mes "You'll need to relog now.";
+		next;
+		atcommand "@kick " + strcharinfo(0);
+		close;
+	}
+
+	if (.@selection == 2 && (Class == Job_Super_Novice || Class == Job_Super_Baby)) {
+		mes .npcName$;
+		mes "Reset Death Counter: ^FF3355" + callfunc("F_InsertComma", .snFee) + "^000000 ^727272z^000000.";
+		mes "Are you sure you want to reset your death counter?";
+		next;
+		if (select("Yes:^727272No^000000") == 1) {
+			mes .npcName$;
+			if (!PC_DIE_COUNTER) {
+				mes "Sorry, you don't have any death record.";
+				close;
+			}
+			if (Zeny < .snFee) {
+				mes "I'm sorry, you don't have enough Zeny.";
+				close;
+			}
+			Zeny -= .snFee;
+			PC_DIE_COUNTER = 0;
+			mes "There you go!";
+			close;
+		}
+	}
+
+	mes .npcName$;
+	mes "Okay then.";
+	close;
+
+OnInit:
+	.npcName$ = "[Reset NPC]";
+	setarray .baseFee,
+				500000, // Level 51-60
+				1000000, // Level 61-70
+				2000000, // Level 71-80
+				3000000, // Level 81-90
+				4000000, // Level 91-98
+				5000000; // Level 99+
+	.tkFee	=	50000; // TaeKwon Reset
+	.snFee	=	10000; // Super Novice Death Record
+}

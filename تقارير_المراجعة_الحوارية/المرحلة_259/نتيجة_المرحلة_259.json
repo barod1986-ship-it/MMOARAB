@@ -1,0 +1,30 @@
+{
+  "stage": 259,
+  "main_file": "rathena-master/npc/other/gm_npcs.txt",
+  "next_file": "rathena-master/npc/other/guildpvp.txt",
+  "main_changes": 38,
+  "related_changes": 0,
+  "stage_changes": 38,
+  "cumulative_changes": 62417,
+  "npc_reviewed": 260,
+  "npc_total": 555,
+  "remaining": 267,
+  "quest_complete": 88,
+  "quest_total": 88,
+  "official_git_blob": "ece20f6aafc59e5437897f909afc3078650ac697",
+  "technical_tests": 53,
+  "technical_passed": 53,
+  "technical_failed": 0,
+  "changed_existing_files": 5,
+  "new_files_outside_stage_reports": [
+    "تقارير_المراجعة_الحوارية/ملف_تتبع_المراجعة_الحوارية_حتى_المرحلة_259.xlsx"
+  ],
+  "deleted_files": [],
+  "status_counts": {
+    "معدل": 5,
+    "دون تغيير": 5452,
+    "جديد": 1,
+    "محذوف": 0
+  },
+  "main_sha256": "252ffbb7c679cbb54950c11f11e4dfda9b1e9cf9baff8de1b03788486959330a"
+}

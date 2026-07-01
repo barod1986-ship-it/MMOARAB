@@ -1,0 +1,135 @@
+//===== rAthena Script ======================================= 
+//= Headgear Dyer (Cash)
+//===== By: ==================================================
+//= Xantara
+//= Maud_Dib
+//===== Current Version: =====================================
+//= 1.0
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Change headgear's color. Cost is a Mysterious Dyestuff
+//===== Additional Comments: =================================
+//= 1.0 First / Optimized Version
+//============================================================
+
+prt_in,253,168,4	script	ألورا::Alora	862,{
+
+// Mysterious Dyestuff
+	set .@dyeID, 6220;
+// Headgear Choices
+	setarray .@hgn$[1], "Mage Hat","Beanie","Drooping Cat","Deviruchi Hat","Wig","Ribbon","Magestic Goat";
+	setarray .@hgn_display$[1], "قبعة الساحر","قبعة صوف","قطة متدلية","قبعة ديفيروتشي","باروكة","شريط","قرون الماعز المهيبة";
+// Mage Hats - Normal, Yellow, Blue, Brown, Gray, Red
+	setarray .@hg_1[1], 5027, 5242, 5241, 5240, 5239, 5238;
+// Beanies - Normal, Pink, Blue, Brown
+	setarray .@hg_2[1], 5076, 5237, 5236, 5235;
+// Drooping Cats - Normal, Blue, Brown, Gray, Pink, Yellow
+	setarray .@hg_3[1], 5058, 5233, 5231, 5230, 5232, 5234;
+// Deviruchi Hats - Normal, Red, Gray, Brown
+	setarray .@hg_4[1], 5038, 5227, 5228, 5229;
+// Wigs - Happy, Shiny, Marvelous, Fantastic
+	setarray .@hg_5[1], 5273, 5274, 5275, 5276;
+// Ribbons - Normal, Black, Yellow, Green, Pink, Red, Orange, White
+	setarray .@hg_6[1], 2208, 5191, 5192, 5193, 5194, 5195, 5196, 5197;
+// Magestic Goats - Normal, Evolved
+	setarray .@hg_7[1], 2256, 5217;
+
+	mes "[ألورا]";
+	mes "مرحبا! أستطيع تغيير لون غطاء رأسك إن أحضرت لي صبغة غامضة.";
+	next;
+	mes "[ألورا]";
+	mes "هل لديك غطاء رأس تريد صبغه؟";
+	next;
+	for(set .@i,1; .@i < getarraysize(.@hgn$); set .@i,.@i+1) {
+		if(.@i == 1)    set .@menu$, .@hgn_display$[.@i];
+		else            set .@menu$, .@menu$ +":"+ .@hgn_display$[.@i];
+	}
+	set .@menu$, .@menu$ +":إلغاء";
+	set .@t, select(.@menu$);
+	if(.@t == getarraysize(.@hgn$)) {
+		mes "[ألورا]";
+		mes "أتمنى لك رحلة موفقة!";
+		mes "عد إلي متى رغبت في تجربة لون جديد لأحد أغطية الرأس التي وجدتها في مغامراتك.";
+		close;
+	}
+	mes "[ألورا]";
+	mes "حسنا، ما اللون الذي تريده؟";
+	next;
+	for(set .@i,1; .@i < getarraysize(getd(".@hg_"+.@t+"")); set .@i,.@i+1) {
+		if(.@i == 1 && .@t != 5)
+			set .@menu$, "اللون الأصلي";
+		else if(.@i == 1 && .@t == 5)
+			set .@menu$, "مرحة";
+		else {
+			sscanf(getitemname(getd(".@hg_"+.@t+"["+.@i+"]")),"%s "+ .@hgn$[.@t],.@colour$);
+			set .@colour_display$,.@colour$;
+			if (.@colour$ == "Yellow") set .@colour_display$,"أصفر";
+			else if (.@colour$ == "Blue") set .@colour_display$,"أزرق";
+			else if (.@colour$ == "Brown") set .@colour_display$,"بني";
+			else if (.@colour$ == "Gray") set .@colour_display$,"رمادي";
+			else if (.@colour$ == "Red") set .@colour_display$,"أحمر";
+			else if (.@colour$ == "Pink") set .@colour_display$,"وردي";
+			else if (.@colour$ == "Black") set .@colour_display$,"أسود";
+			else if (.@colour$ == "Green") set .@colour_display$,"أخضر";
+			else if (.@colour$ == "Orange") set .@colour_display$,"برتقالي";
+			else if (.@colour$ == "White") set .@colour_display$,"أبيض";
+			else if (.@colour$ == "Shiny") set .@colour_display$,"لامعة";
+			else if (.@colour$ == "Marvelous") set .@colour_display$,"رائعة";
+			else if (.@colour$ == "Fantastic") set .@colour_display$,"مدهشة";
+			else if (.@colour$ == "Evolved") set .@colour_display$,"متطورة";
+			set .@menu$, .@menu$ +":"+ .@colour_display$;
+		}
+	}
+	set .@menu$, .@menu$ +":إلغاء";
+	set .@c, select(.@menu$);
+	if(.@c == getarraysize(getd(".@hg_"+.@t+""))) {
+		mes "[ألورا]";
+		mes "حسنا، لا مشكلة.";
+		close;
+	}
+	set .@dyHG, getd(".@hg_"+.@t+"["+.@c+"]");
+	mes "[ألورا]";
+	mes "رائع! أنا متحمسة، أليس كذلك؟";
+	mes "وللتأكد فقط، اختر لون القطعة التي ستسلمني إياها من فئة "+ .@hgn_display$[.@t] +".";
+	next;
+	mes "[ألورا]";
+	mes "يرجى الانتباه: سأستخدم ^FF0000أول قطعة من فئة "+ .@hgn_display$[.@t] +" تطابق اختيارك داخل حقيبتك!^000000";
+	next;
+	mes "[ألورا]";
+	mes "ستزيل الصبغة الغامضة جميع مستويات التطوير والبطاقات، وستحصل على ^0000FF+0 "+ getitemname(.@dyHG) +" من دون أي بطاقات.^000000";
+	next;
+	mes "["+ strcharinfo(0) +"]";
+	mes "حسنا، شكرا على التحذير. سأعطيك...";
+	next;
+	set .@menu$, "لن أصبغه الآن";
+	for(set .@i,1; .@i < getarraysize(getd(".@hg_"+.@t+"")); set .@i,.@i+1) {
+		if(.@i == 1)    set .@menu$, .@menu$ +":"+ getitemname(getd(".@hg_"+.@t+"["+.@i+"]")) +" ";
+		else            set .@menu$, .@menu$ +":"+ getitemname(getd(".@hg_"+.@t+"["+.@i+"]"));
+	}
+	set .@mine, select(.@menu$) - 1;
+	if(!.@mine) {
+		mes "[ألورا]";
+		mes "من الأفضل أن تتأكد تماما قبل المتابعة. أتمنى لك رحلة آمنة.";
+		close;
+	}
+	set .@myHG, getd(".@hg_"+.@t+"["+.@mine+"]");
+	if(.@dyHG == .@myHG) {
+		mes "[ألورا]";
+		mes "لقد اخترت اللون نفسه، لذلك لا حاجة إلى الصبغ.";
+		close;
+	}
+	if(!countitem(.@dyeID) || !countitem(.@myHG)) {
+		mes "[ألورا]";
+		mes "يبدو أنك لا تحمل الصبغة الغامضة أو غطاء الرأس الذي اخترته.";
+		close;
+	}
+	mes "[ألورا]";
+	mes "رائع! يبدو جميلا، أليس كذلك؟";
+	mes "أتمنى أن تعود لصبغ المزيد من أغطية الرأس!";
+	delitem .@dyeID,1; // Dyestuff
+	delitem .@myHG,1;  // Your headgear
+	getitem .@dyHG,1;  // Dyed headgear
+	close;
+}

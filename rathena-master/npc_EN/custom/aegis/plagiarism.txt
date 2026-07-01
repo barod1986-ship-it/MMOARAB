@@ -1,0 +1,159 @@
+//===== rAthena Script =======================================
+//= Plagiarism NPC
+//===== By: ======================================================
+//= wrywndp (https://www.youtube.com/@wrywndp)
+//===== Description: =========================================
+//= Plagiarism NPC script for Rogue class (Pre-Renewal).
+//===== Additional Comments: =====================================
+//= This script is made for Ragnarok Offline Pre-Renewal Pack
+//= https://www.youtube.com/watch?v=aN5OCJdj2qA
+//============================================================
+
+aegis_guild,12,19,6	script	Master Rogue	810,{
+
+L_MainMenu:
+	mes .npcName$;
+	if (!getskilllv(225)) {
+		mes "You must have Plagiarism skill.";
+		close;
+	}
+	mes .feeMsg$;
+	mes .selectMsg$;
+	next;
+
+	.menu = select("- Swordman:- Mage:- Archer:- Merchant:- Thief:- Acolyte:- Expanded:- Other:^FF3355Remove Plagiarized Skill [FREE]^000000:^727272Close^000000");
+
+	if (.menu == 9) goto L_RemoveSkill;
+	if (.menu == 10) {
+		mes .npcName$;
+		mes "No? Very well. Don't waste my time.";
+		close;
+	}
+
+L_SubMenu:
+	mes .npcName$;
+	mes .feeMsg$;
+	mes .selectMsg$;
+	next;
+	if (.menu == 1) { // Swordman
+		.subMenu = select("- Swordman:- Knight:- Crusader:^727272Back^000000");
+		if (.subMenu == 4) goto L_MainMenu;
+		if (.subMenu == 1) callsub L_Plagiarism, "Bash:Magnum Break:^727272Back^000000", 5, 7;
+		if (.subMenu == 2) callsub L_Plagiarism, "Bowling Bash:^727272Back^000000", 62;
+		if (.subMenu == 3) callsub L_Plagiarism, "Shield Charge:Shield Boomerang:Holy Cross:Grand Cross:^727272Back^000000", 250, 251, 253, 254;
+	} 
+	else if (.menu == 2) { // Mage
+		.subMenu = select("- Mage:- Wizard:^727272Back^000000");
+		if (.subMenu == 3) goto L_MainMenu;
+		if (.subMenu == 1) callsub L_Plagiarism, "Napalm Beat:Soul Strike:Cold Bolt:Frost Diver:Fire Ball:Fire Wall:Fire Bolt:Lightning Bolt:Thunder Storm:^727272Back^000000", 11, 13, 14, 15, 17, 18, 19, 20, 21;
+		if (.subMenu == 2) callsub L_Plagiarism, "Fire Pillar:Sightrasher:Meteor Storm:Jupitel Thunder:Lord of Vermillion:Water Ball:Frost Nova:Storm Gust:Earth Spike:Heaven's Drive:^727272Back^000000", 80, 81, 83, 84, 85, 86, 88, 89, 90, 91;
+	} 
+	else if (.menu == 3) { // Archer
+		.subMenu = select("- Archer:- Hunter:^727272Back^000000");
+		if (.subMenu == 3) goto L_MainMenu;
+		if (.subMenu == 1) callsub L_Plagiarism, "Double Strafing:Arrow Shower:Charge Arrow:^727272Back^000000", 46, 47, 148;
+		if (.subMenu == 2) callsub L_Plagiarism, "Land Mine:Blast Mine:Claymore Trap:^727272Back^000000", 116, 122, 123;
+	} 
+	else if (.menu == 4) { // Merchant
+		.subMenu = select("- Merchant:- Alchemist:^727272Back^000000");
+		if (.subMenu == 3) goto L_MainMenu;
+		if (.subMenu == 1) callsub L_Plagiarism, "Mammonite:^727272Back^000000", 42;
+		if (.subMenu == 2) callsub L_Plagiarism, "Demonstration:Acid Terror:^727272Back^000000", 229, 230;
+	} 
+	else if (.menu == 5) { // Thief
+		.subMenu = select("- Assassin:^727272Back^000000");
+		if (.subMenu == 2) goto L_MainMenu;
+		if (.subMenu == 1) callsub L_Plagiarism, "Venom Splasher:Throw Venom Knife:^727272Back^000000", 141, 1004;
+	} 
+	else if (.menu == 6) { // Acolyte
+		.subMenu = select("- Acolyte:- Priest:- Monk:^727272Back^000000");
+		if (.subMenu == 4) goto L_MainMenu;
+		if (.subMenu == 1) callsub L_Plagiarism, "Ruwach:Heal:Holy Light:^727272Back^000000", 24, 28, 156;
+		if (.subMenu == 2) callsub L_Plagiarism, "Resurrection:Aspersio:B.menu Sacramenti:Sanctuary:Turn Undead:Magnus Exorcismus:^727272Back^000000", 54, 68, 69, 70, 77, 79;
+		if (.subMenu == 3) callsub L_Plagiarism, "Triple Attack:Investigate:Finger Offensive:Asura Strike:^727272Back^000000", 263, 266, 267, 271;
+	} 
+	else if (.menu == 7) { // Expanded
+		.subMenu = select("- Ninja:- TaeKwon:^727272Back^000000");
+		if (.subMenu == 3) goto L_MainMenu;
+		if (.subMenu == 1) callsub L_Plagiarism, "Flip Tatami:Haze Slasher:Shadow Slash:Flaming Petals:Blaze Shield:Exploding Dragon:Freezing Spear:Snow Flake Draft:Wind Blade:Lightning Jolt:First Wind:^727272Back^000000", 527, 528, 530, 534, 535, 536, 537, 539, 540, 541, 542;
+		if (.subMenu == 2) callsub L_Plagiarism, "Flying Kick:^727272Back^000000", 421;
+	} 
+	else if (.menu == 8) { // Other
+		.subMenu = select("- Special Skill:^727272Back^000000");
+		if (.subMenu == 2) goto L_MainMenu;
+		if (.subMenu == 1) callsub L_Plagiarism, "Throw Tomahawk:^727272Back^000000", 337;
+	}
+	goto L_SubMenu;
+
+L_Plagiarism:
+	.names$ = getarg(0);
+
+	while(1) {
+		mes .npcName$;
+		mes .feeMsg$;
+		mes .selectMsg$;
+		next;
+		.choice = select(.names$);
+		
+		deletearray .splitNames$[0], getarraysize(.splitNames$);
+		explode(.splitNames$, .names$, ":");
+		.totalOptions = getarraysize(.splitNames$);
+
+		if (.choice == .totalOptions) {
+			return; 
+		}
+
+		.skillId = getarg(.choice);
+		.sName$ = .splitNames$[.choice - 1];
+
+		mes .npcName$;
+		mes .feeMsg$;
+		mes "Are you sure want to learn ^0000FF" + .sName$ + "^000000?";
+		next;
+
+		if (select("Yes:^727272No (Back)^000000") == 2) {
+			continue;
+		}
+
+		mes .npcName$;
+		if (Zeny < .plagiarismFee) {
+			mes "I'm sorry, you don't have enough Zeny.";
+			next;
+			continue;
+		} else if (getskilllv(.skillId)) {
+			mes "Sorry, you already have ^0000FF" + .sName$ + "^000000 learned.";
+			next;
+			continue;
+		} else {
+			Zeny -= .plagiarismFee;
+			sc_end SC_PRESERVE;
+			plagiarizeskill .skillId, getskilllv(225);
+			specialeffect2 EF_STEAL;
+			mes "The skill ^0000FF" + .sName$ + "^000000 has been copied successfully.";
+			close;
+		}
+	}
+	return;
+
+L_RemoveSkill:
+	mes .npcName$;
+	mes "Are you sure want to remove plagiarized skill?";
+	next;
+	if (select("Yes:^727272No^000000") == 1) {
+		plagiarizeskillreset 1;
+		mes .npcName$;
+		mes "Done!";
+	} else {
+		mes .npcName$;
+		mes "No? Very well. Don't waste my time.";
+	}
+	close;
+
+OnInit:
+	.plagiarismFee = 100000;
+
+	.npcName$ = "[Master Rogue]";
+	.feeMsg$ = "Plagiarize Skill Fee: ^FF3355" + callfunc("F_InsertComma", .plagiarismFee) + "^000000 ^727272z^000000";
+	.selectMsg$ = "Please select the skill you want to copy:";
+	end;
+}

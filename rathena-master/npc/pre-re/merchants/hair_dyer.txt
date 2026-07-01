@@ -1,0 +1,157 @@
+//===== rAthena Script ======================================= 
+//= Hair Dyer
+//===== By: ================================================== 
+//= kobra_k88; L0ne_W0lf
+//===== Current Version: ===================================== 
+//= 1.5
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Hair Dyer with standard palletes
+//===== Additional Comments: ================================= 
+//= Fully working
+//= 1.1 Bugfix: fixed missing menu label LEnd->M_End [Lupus]
+//= 1.2 Rescripted to Aegis 10.3 standards. [L0ne_W0lf]
+//= 1.3 Fixed problem what "freezes" the NPC. (bugreport:509) [Samuray22]
+//= 1.4 Fixed getlook checking the wrong color. (bugreport:2392) [L0ne_W0lf]
+//= 1.5 Added Lighthalzen Hair Dying NPC. [L0ne_W0lf]
+//= 1.6 Moving NPC Jovovich to Pre-Renewal [JohnnyPlayy]
+//============================================================ 
+
+prt_in,243,168,4	script	يوفوفيتش::Jovovich	91,{
+	mes "[مصفف شعر يوفوفيتش]";
+	mes "مرحبا~!";
+	mes "كيف يمكنني مساعدتك؟";
+	next;
+	mes "[مصفف شعر يوفوفيتش]";
+	if (Sex == SEX_MALE) mes "أوه، لا! شعرك تالف. يبدو أنك قد تحتاج إلى علاج احترافي. تفضل بالجلوس هنا، من فضلك. تعال.";
+	else {
+		if (rand(20) > 11) {
+			mes "إيه؟! يا إلهي! أوه لا لا لا لا! شعرك تالف جدااا! ليس جيدا أن تترك شعرك هكذا.";
+			next;
+			mes "[مصفف شعر يوفوفيتش]";
+			mes "هل تسمح لي بمعالجة شعرك؟ أرجوك؟";
+		}
+		else mes "واو! سيصبح شعرك مثاليا بمجرد صبغه~ ما رأيك بتغيير لون شعرك؟";
+	}
+	next;
+	while(1) {
+		switch(select("صبغ الشعر:نصائح ومعلومات:إلغاء")) {
+		case 1:
+			mes "[مصفف شعر يوفوفيتش]";
+			mes "نعم نعم، اختيار جيد~";
+			mes "حسنا إذن، هذه فرصتك لتغيير مظهرك، فرصتك لتتألق بالجمال! اختر اللون الذي تريده.";
+			next;
+			while(1) {
+				if (.@choose_success == 1) {
+					mes "[مصفف شعر يوفوفيتش]";
+					mes "ما رأيك؟ هل أردت لونا مختلفا؟";
+					next;
+					if (select("نعم:لا") == 1) {
+						mes "[مصفف شعر يوفوفيتش]";
+						mes "حسنا! اختر اللون الذي تريده.";
+						next;
+					}
+					else  {
+						mes "[مصفف شعر يوفوفيتش]";
+						mes "همم، أشعر بخيبة أمل نوعا ما. كنت أريد أن أؤدي عملا أفضل. لكنني أعدك أنني سأفعلها بشكل أفضل في المرة القادمة. تعال مرة أخرى من فضلك~";
+						close;
+					}
+				}
+
+				while(1) {
+					switch(select("الأحمر، من فضلك.:الأصفر، من فضلك.:البنفسجي، من فضلك.:البرتقالي، من فضلك.:الأخضر، من فضلك.:الأزرق، من فضلك.:الأبيض، من فضلك.:الأسود، من فضلك.:في الواقع، يعجبني شعري كما هو.")) {
+					case 1: set .@headpalette,8; break;
+					case 2: set .@headpalette,1; break;
+					case 3: set .@headpalette,2; break;
+					case 4: set .@headpalette,3; break;
+					case 5: set .@headpalette,4; break;
+					case 6: set .@headpalette,5; break;
+					case 7: set .@headpalette,6; break;
+					case 8: set .@headpalette,7; break;
+					case 9:
+						if (.@choose_success != 0) {
+							mes "[مصفف شعر يوفوفيتش]";
+							mes "لا بد أنك تحب لون شعرك~";
+							close;
+						}
+						mes "[مصفف شعر يوفوفيتش]";
+						mes "إيهه~؟ لن تصبغ شعرك؟ هذا يحزنني قليلا...";
+						close;
+					}
+
+					if (.@headpalette == getlook(VAR_HEADPALETTE)) {
+						mes "[مصفف شعر يوفوفيتش]";
+						mes "إيه؟ لكن هذا هو لون شعرك الحالي بالفعل. يرجى اختيار لون مختلف.";
+						next;
+					}
+					else {
+						switch(.@headpalette) {
+						case 1: callsub S_NoDye,976,"الأصفر"; break;
+						case 2: callsub S_NoDye,978,"البنفسجي"; break;
+						case 3: callsub S_NoDye,980,"البرتقالي"; break;
+						case 4: callsub S_NoDye,979,"الأخضر"; break;
+						case 5: callsub S_NoDye,981,"الأزرق"; break;
+						case 6: callsub S_NoDye,982,"الأبيض"; break;
+						case 7: callsub S_NoDye,983,"الأسود"; break;
+						case 8: callsub S_NoDye,975,"الأحمر"; break;
+						}
+						if (Zeny < 1000) {
+							mes "[مصفف شعر يوفوفيتش]";
+							mes "الرسوم هي 1000 زيني. ألا تملك ما يكفي...؟";
+							close;
+						}
+
+						switch(.@headpalette) {
+						case 1: delitem 976,1; break; //Lemon_Dyestuffs
+						case 2: delitem 978,1; break; //Violet_Dyestuffs
+						case 3: delitem 980,1; break; //Orange_Dyestuffs
+						case 4: delitem 979,1; break; //Darkgreen_Dyestuffs
+						case 5: delitem 981,1; break; //Cobaltblue_Dyestuffs
+						case 6: delitem 982,1; break; //White_Dyestuffs
+						case 7: delitem 983,1; break; //Black_Dyestuffs
+						case 8: delitem 975,1; break; //Scarlet_Dyestuffs
+						}
+						set Zeny, Zeny-1000;
+						setlook VAR_HEADPALETTE,.@headpalette;
+						set .@choose_success,1;
+						break;
+					}
+
+				}
+
+			}
+
+		case 2:
+			mes "[مصفف شعر يوفوفيتش]";
+			mes "عندما تشعر بالإحباط، عندما يتم التخلي عنك، عندما تريد إثارة إعجاب شخص ما، أو حتى عندما تريد فقط أن تتميز...";
+			next;
+			mes "[مصفف شعر يوفوفيتش]";
+			mes "لذلك المكان والوقت المميزين، ألا تريد تسريحة شعر خاصة بك؟ طالما لديك الصبغات المناسبة، سأجعل شعرك يبدو رائعا.";
+			next;
+			mes "[مصفف شعر يوفوفيتش]";
+			mes "ولا تقلق كثيرا بشأن الرسوم. الحصول على الجمال يشبه الحصول على كل شيء. هيهي~";
+			next;
+			mes "[مصفف شعر يوفوفيتش]";
+			mes "* الرسوم والمعلومات *";
+			mes "- عنصر صبغة واحد بلون الشعر الذي تريده.";
+			mes "- رسوم 1000 زيني.";
+			close;
+
+		case 3:
+			mes "[مصفف شعر يوفوفيتش]";
+			mes "رجالا أو نساء...";
+			mes "للجميع الحق والواجب في أن يكونوا جميلين.";
+			close;
+		}
+
+	}
+
+S_NoDye:
+	if (countitem(getarg(0)) == 0) {
+		mes "[مصفف شعر يوفوفيتش]";
+		mes "إيه؟! لكنك تحتاج إلى العنصر '"+getitemname(getarg(0))+"' لصبغ شعرك باللون "+getarg(1)+"...";
+		close;
+	}
+	return;
+}

@@ -1,0 +1,135 @@
+//===== rAthena Script =======================================
+//= War of Emperium (Prontera) - Gondul
+//===== By: ==================================================
+//= L0ne_W0lf
+//===== Current Version: =====================================
+//= 1.4
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= NPCs that relate to Prontera Guild Castle 5
+//===== Additional Comments: =================================
+//= 1.0 First Version. No longer uses functions. [L0ne_W0lf]
+//= 1.1 Corrected flag-in spawn point. [L0ne_W0lf]
+//= 1.2 Corrected treasure room switch coordinates. [L0ne_W0lf]
+//= 1.3 Removed dialog from interior flags. [L0ne_W0lf]
+//= 1.4 Partially rewrote Script. [Masao]
+//============================================================
+
+// Guild Flags (Outside Castle)
+//============================================================
+-	script	غوندول#1::OutsideFlagsPR5	722,{
+
+	set .@GID, GetCastleData("prtg_cas05",1);
+
+	if (.@GID == 0) {
+		mes "[ مرسوم مملكة رون-ميدغارتس الإلهية ]";
+		mes " ";
+		mes "1. بناء على مرسوم مملكة رون-ميدغارتس الإلهية، ";
+		mes "نعلن أنه";
+		mes "ليس لهذه القلعة مالك رسمي.";
+		mes " ";
+		mes "2. من يستطيع ";
+		mes "تجاوز كل المحن";
+		mes "وتدمير الإمبريوم،";
+		mes "سيمنحه الملك";
+		mes "ملكية هذه القلعة.";
+		close;
+	}
+	if (getcharid(2) == .@GID) {
+		mes "[ صوت يتردد ]";
+		mes "أيها الشجعان...";
+		mes "هل ترغبون في العودة إلى قلعة نقابتكم؟";
+		next;
+		if(select("العودة إلى قلعة النقابة.:إلغاء.") == 1) {
+			close2;
+			if (getcharid(2) == GetCastleData("prtg_cas05",1)) {
+				warp "prtg_cas05",52,41;
+				end;
+			}
+			end;
+		}
+		close;
+	}
+	mes "[ مرسوم مملكة رون-ميدغارتس الإلهية ]";
+	mes " ";
+	mes "1. بناء على مرسوم مملكة رون-ميدغارتس الإلهية، ";
+	mes "نقر بأن هذه القلعة";
+	mes "ملك خاص لنقابة ^ff0000"+GetGuildName(.@GID)+"^000000.";
+	mes " ";
+	mes "2. سيد نقابة ^ff0000"+GetGuildName(.@GID)+"^000000 هو:";
+	mes "^ff0000"+GetGuildMaster(.@GID)+"^000000";
+	mes "إذا كان هناك من يعترض على هذا،";
+	mes "فليثبت قوته وشرفه بنصل فولاذي.";
+	close;
+
+OnRecvCastlePt05:
+	FlagEmblem GetCastleData("prtg_cas05",1);
+	end;
+}
+
+prt_gld,199,243,2	duplicate(OutsideFlagsPR5)	غوندول#1-2::Gondul#1-2	722
+prt_gld,199,236,2	duplicate(OutsideFlagsPR5)	غوندول#2::Gondul#2	722
+prt_gld,197,243,2	duplicate(OutsideFlagsPR5)	غوندول#3::Gondul#3	722
+prt_gld,197,236,2	duplicate(OutsideFlagsPR5)	غوندول#4::Gondul#4	722
+
+// Guild Flags (Inside Castle)
+//============================================================
+-	script	غوندول#5::InsideFlagsPR5	722,{
+	end;
+
+OnRecvCastlePt05:
+	FlagEmblem GetCastleData("prtg_cas05",1);
+	end;
+}
+
+prtg_cas05,19,247,4	duplicate(InsideFlagsPR5)	غوندول#5-2::Gondul#5-2	722
+prtg_cas05,19,243,4	duplicate(InsideFlagsPR5)	غوندول#6::Gondul#6	722
+prtg_cas05,26,247,4	duplicate(InsideFlagsPR5)	غوندول#7::Gondul#7	722
+prtg_cas05,26,243,4	duplicate(InsideFlagsPR5)	غوندول#8::Gondul#8	722
+prtg_cas05,249,289,4	duplicate(InsideFlagsPR5)	غوندول#9::Gondul#9	722
+prtg_cas05,256,289,4	duplicate(InsideFlagsPR5)	غوندول#10::Gondul#10	722
+prtg_cas05,253,271,4	duplicate(InsideFlagsPR5)	غوندول#11::Gondul#11	722
+prtg_cas05,273,257,4	duplicate(InsideFlagsPR5)	غوندول#12::Gondul#12	722
+
+// Guild Flag (Town)
+//============================================================
+prontera,165,194,5	duplicate(InsideFlagsPR5)	غوندول#13::Gondul#13	722
+
+// Kafra Employee
+//============================================================
+prtg_cas05,52,41,4	duplicate(guildkafra)	موظفة كافرا#prtg_cas05::Kafra Staff#prtg_cas05	117
+
+// Steward
+//============================================================
+prtg_cas05,36,37,4	duplicate(cm)	راينور#prtg_cas05::Raynor#prtg_cas05	55
+
+// Treasure Room Exit
+//============================================================
+prtg_cas05,281,176,0	script	#Lever_PR05	111,{
+	mes " ";
+	mes "توجد رافعة صغيرة. هل تريد سحبها؟";
+	next;
+	if(select("اسحبها.:اتركها.") == 1) {
+		close2;
+		warp "prtg_cas05",36,38;
+		end;
+	}
+	close;
+}
+
+// Guild Dungeon Switch
+//============================================================
+prtg_cas05,212,95,0	duplicate(gdlever)	#prtg_cas05	111
+
+// Guild Treasure Spawns
+//============================================================
+prtg_cas05,276,178,0	duplicate(Gld_Trea_Spawn)	كنز#prtg_cas05::Treasure#prtg_cas05	-1
+
+// AGIT Manager
+//============================================================
+prtg_cas05,266,266,0	duplicate(Gld_Agit_Manager)	أجيت#prtg_cas05::Agit#prtg_cas05	-1
+
+// Guardians
+//============================================================
+prtg_cas05,36,37,4	duplicate(Gld_Guard_Template)	حارس#prtg_cas05::Guardian#prtg_cas05	-1

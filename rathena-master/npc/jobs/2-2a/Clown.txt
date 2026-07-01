@@ -1,0 +1,83 @@
+//===== rAthena Script ======================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== By: ==================================================
+//= Nana
+//= finished, optimized and tested by Lupus
+//===== Current Version: ===================================== 
+//= 1.3
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== Additional Comments: ================================= 
+//= 1.1 Made all into functions, additional checks, etc. [Lupus]
+//= 1.2 Made numbers into constants. [Vicious]
+//= 1.3 Now saves/restores all the quest skills [Lupus]
+//= 1.3a Corrected a Little Typo error. [Samuray22]
+//=     Thanks to Myllena.
+//============================================================ 
+
+valkyrie,53,54,3	script	منشد#Valkyrie::Minstrel#Valkyrie	741,{
+	if (ADVJOB == 0 || Upper != 1) {
+		set .@karma_d,rand(1,10);
+		if (.@karma_d > 4) {
+			mes "[منشد]";
+			mes "تهانينا.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		mes "[منشد]";
+		mes "أتود أن";
+		mes "تشاركني أغنية؟";
+		mes "شا لا لا لا لا~";
+		close;
+	}
+	else if (ADVJOB == Job_Clown && Class == Job_Archer_High && JobLevel > 39) {
+		mes "[منشد]";
+		mes "يحتاج عالم البشر";
+		mes "الكئيب إلى مزيد";
+		mes "من الأغاني المبهجة.";
+		mes "فهل تحمل إليهم";
+		mes "هذه الألحان، وتقلب";
+		mes "موازين الحرب على الشر؟";
+		next;
+		mes "[منشد]";
+		mes "هل تقبل أن تفعل ذلك";
+		mes "من أجل ميدغارد...";
+		mes "بعد الارتقاء إلى رتبة منشد؟";
+		next;
+		if (select("لا.:نعم.") == 1) {
+			mes "[منشد]";
+			mes "عد إلي حين تكتمل";
+			mes "استعداداتك.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		if (SkillPoint) {
+			mes "[منشد]";
+			mes "ما زالت لديك نقاط مهارة غير مستخدمة.";
+			mes "استخدمها جميعا قبل العودة إلي.";
+			close;
+		}
+		jobchange Job_Clown;
+		set ADVJOB,0;
+		mes "[منشد]";
+		mes "تهانينا.";
+		mes "الآن وقد أصبحت منشدا،";
+		mes "ستبعث أغانيك الأمل";
+		mes "في نفوس حلفائك، وتزرع";
+		mes "اليأس في قلوب أعدائك.";
+		close;
+	}
+	mes "[منشد]";
+	mes "مرحبا بك";
+	mes "في فالهالا،";
+	mes "قاعة الشرف.";
+	next;
+	mes "[منشد]";
+	mes "أتمنى لك";
+	mes "الراحة والطمأنينة";
+	mes "طوال إقامتك هنا.";
+	mes "المجد للمحاربين.";
+	close;
+}

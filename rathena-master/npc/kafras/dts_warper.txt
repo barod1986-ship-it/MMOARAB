@@ -1,0 +1,1336 @@
+//===== rAthena Script ======================================= 
+//= Dungeon Teleport Service
+//===== By: ================================================== 
+//= Evera
+//===== Current Version: ===================================== 
+//= 2.9a
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Cool Event Corp NPCs vs. Kafra Dungeon Teleport Service and voting system.
+//= This is a special event on official servers where there's a
+//= big competition between Kafra Corp. and Cool Event Corp.
+//= To warp to selected levels of certain dungeons.
+//
+// Global Variables in use:
+//	Voting Time check:		$DTS_Time
+//	Cool Event Corp. Vote Numbers:	$DTS_JondaVotes
+//	Kafra Vote Numbers:		$DTS_KafraVotes
+//	Winner:				$DTS_Result
+//	Teleport Service Period Check:	$DTS_PeriodCheck
+//	Kafra Points:			$DTS_KafraWins
+//	Cool Event Corp. Points:	$DTS_JondaWins
+//	Setitem Check:			$DTS_VoteCount
+// For Detailed information on what each varibale does, see
+// the "Vote Globalvar Girl#yuno" NPC at the end of the file.
+// Character Variable in use: lhz_vote (how many times player has voted, keeps htem from re-voting.)
+//===== Additional Comments: ================================= 
+//= 1.0 Initial release [Evera]
+//= 1.1 SVN release, removed from major town (found true info after research),
+//=     put more arg(2) parameters, fixed a few bugs [Evera]
+//= 1.2 Mushed some variables together, optimized a bit [Evera]
+//= 1.3 Removed selfconfig [Evera]
+//= 1.4 Changed global variables to read from 3 global variables, updated names,
+//=      fixed array bug [Evera]
+//= 1.5 Mushed voting varialbes into 1 variable. [Evera]
+//= 1.6 Removed Duplicates [Silent]
+//= 1.7 Fixed bug of DTS_Admin not running by itself [Evera]
+//= 1.8 Changed requirement to lvl 60 [Evera]
+//= 1.9 Removed global eligibility option [Evera]
+//= 2.0 Fixed zeny bug [Evera]
+//= 2.1 Fixed headers with and updated with newer information [Evera]
+//= 2.2 Changed dtseligible 2 to MISC_QUEST|128, to clean up variable usage. [Evera]
+//=     Also added F_ClearGarbage function to the scripts. [Evera]
+//= 2.3 Changed dtseligible to be $dtsday when MISC_QUEST|128
+//=     Added $dtsday for vote session counter
+//=     Fixed bug that involved having both warpers enabled at the same time. [Evera]
+//=     New $dtsday system and bug fix[Evera]
+//= 2.3a fixed 2 bugs with comparision [Lupus]
+//= 2.3b corrected Glast warp coords [Lupus] 2.3c Bailand -> Bayalan
+//= 2.4 Corrected NPC names to fall within proper restrictions. [L0ne_W0lf]
+//= 2.5 Converted from Aegis file. (11.3) [L0ne_W0lf]
+//= 2.6 Moved Morocc NPCs to Morocc Ruins. [L0ne_W0lf]
+//= 2.7 Fixed a typo, a - to a +. Not sure how that happened. [L0ne_w0lf]
+//= 2.8 Corrected another typo this time in a variable.
+//= 2.9 Added GM management function. [Euphy]
+//= 2.9a Tweaked NPC sprite & cutin used. [Liam]
+//============================================================ 
+
+einbroch,246,70,0	script	Vote Timer#ein	-1,{
+OnInit:
+	if ($dts) {
+		set $dts,0;
+		set $dtsvote,0;
+		set $dtsday,0;
+	}
+	initnpctimer;
+	end;
+
+OnEnable:
+	initnpctimer;
+	end;
+
+OnTimer60000:
+	// A part that keeps the same status even after a server shut down
+	if ($DTS_Result == 1) {
+		if ($DTS_JondaWins == 0) {
+			donpcevent "Vote Timer2#ein::OnEnable";
+		}
+		else if ($DTS_JondaWins == 1) {
+			if ($DTS_KafraWins < 2) {
+				donpcevent "Vote Timer2#ein::OnEnable";
+			}
+			else {
+				donpcevent "Vote Timer3#ein::OnEnable";
+			}
+		}
+		else {
+			if ($DTS_KafraWins < 2) {
+				donpcevent "Vote Timer2#ein::OnEnable";
+			}
+			else {
+				donpcevent "Vote Timer3#ein::OnEnable";
+			}
+		}
+		stopnpctimer;
+	}
+	else if ($DTS_Result == 2) {
+		if ($DTS_JondaWins == 0) {
+			donpcevent "Vote Timer2#ein::OnEnable";
+		}
+		else if ($DTS_JondaWins == 1) {
+			if ($DTS_KafraWins < 2) {
+				donpcevent "Vote Timer2#ein::OnEnable";
+			}
+			else {
+				donpcevent "Vote Timer4#ein::OnEnable";
+			}
+		}
+		else {
+			if ($DTS_KafraWins < 2) {
+				donpcevent "Vote Timer2#ein::OnEnable";
+			}
+			else {
+				donpcevent "Vote Timer4#ein::OnEnable";
+			}
+		}
+		stopnpctimer;
+	}
+	else {
+		if ($DTS_Time == 1440) {
+			if (($DTS_JondaVotes >= 20) || ($DTS_KafraVotes >= 20)) {
+				if ($DTS_JondaVotes > $DTS_KafraVotes) {
+					if ($DTS_JondaWins == 0) {
+						if ($DTS_KafraWins < 2) {
+							set $DTS_KafraWins,$DTS_KafraWins+1;
+							set $DTS_Result,1;
+							set $DTS_Time,0;
+							donpcevent "Scrutiny Association#6::OnEnable";
+							donpcevent "Vote Timer2#ein::OnEnable";
+						}
+						else if ($DTS_KafraWins == 2) {
+							set $DTS_Result,1;
+							set $DTS_Time,0;
+							donpcevent "Scrutiny Association#6::OnEnable";
+							donpcevent "Vote Timer2#ein::OnEnable";
+						}
+					}
+					else if ($DTS_JondaWins == 1) {
+						if ($DTS_KafraWins < 2) {
+							set $DTS_KafraWins,$DTS_KafraWins+1;
+							set $DTS_Result,1;
+							set $DTS_Time,0;
+							donpcevent "Scrutiny Association#6::OnEnable";
+							donpcevent "Vote Timer2#ein::OnEnable";
+						}
+						else {
+							set $DTS_Time,0;
+							set $DTS_Result,1;
+							donpcevent "Scrutiny Association#6::OnEnable";
+							donpcevent "Vote Timer3#ein::OnEnable";
+						}
+					}
+					else {
+						if ($DTS_KafraWins < 2) {
+							set $DTS_KafraWins,$DTS_KafraWins+1;
+							set $DTS_Result,1;
+							set $DTS_Time,0;
+							donpcevent "Scrutiny Association#6::OnEnable";
+							donpcevent "Vote Timer2#ein::OnEnable";
+						}
+						else {
+							set $DTS_Result,1;
+							set $DTS_Time,0;
+							donpcevent "Scrutiny Association#6::OnEnable";
+							donpcevent "Vote Timer3#ein::OnEnable";
+						}
+					}
+				}
+				else {
+					if ($DTS_KafraWins == 0) {
+						if ($DTS_JondaWins < 2) {
+							set $DTS_JondaWins,$DTS_JondaWins+1;
+							set $DTS_Result,2;
+							set $DTS_Time,0;
+							donpcevent "Scrutiny Association#7::OnEnable";
+							donpcevent "Vote Timer2#ein::OnEnable";
+						}
+						else {
+							set $DTS_Result,2;
+							set $DTS_Time,0;
+							donpcevent "Scrutiny Association#7::OnEnable";
+							donpcevent "Vote Timer2#ein::OnEnable";
+						}
+					}
+					else if ($DTS_KafraWins == 1) {
+						if ($DTS_JondaWins < 2) {
+							set $DTS_JondaWins,$DTS_JondaWins+1;
+							set $DTS_Result,2;
+							set $DTS_Time,0;
+							donpcevent "Scrutiny Association#7::OnEnable";
+							donpcevent "Vote Timer2#ein::OnEnable";
+						}
+						else {
+							set $DTS_Result,2;
+							set $DTS_Time,0;
+							donpcevent "Scrutiny Association#7::OnEnable";
+							donpcevent "Vote Timer4#ein::OnEnable";
+						}
+					}
+					else {
+						if ($DTS_JondaWins < 2) {
+							set $DTS_JondaWins,$DTS_JondaWins+1;
+							set $DTS_Result,2;
+							set $DTS_Time,0;
+							donpcevent "Scrutiny Association#7::OnEnable";
+							donpcevent "Vote Timer2#ein::OnEnable";
+						}
+						else {
+							set $DTS_Result,2;
+							set $DTS_Time,0;
+							donpcevent "Scrutiny Association#7::OnEnable";
+							donpcevent "Vote Timer4#ein::OnEnable";
+						}
+					}
+				}
+			}
+			else {
+				set $DTS_Result,3;
+				set $DTS_Time,0;
+				donpcevent "Vote Timer#ein::OnEnable";
+			}
+		}
+		else {
+			set $DTS_Time,$DTS_Time+1;
+			donpcevent "Vote Timer#ein::OnEnable";
+		}
+	}
+	end;
+}
+
+einbroch,245,71,0	script	Vote Timer2#ein	-1,{
+OnEnable:
+	initnpctimer;
+	end;
+
+OnTimer60000:
+	stopnpctimer;
+	if ($DTS_PeriodCheck == 8640) {
+		set $DTS_PeriodCheck,0;
+		set $DTS_Result,0;
+		set $DTS_KafraVotes,0;
+		set $DTS_JondaVotes,0;
+		set $DTS_VoteCount,$DTS_VoteCount+1;
+		donpcevent "Vote Timer#ein::OnEnable";
+	}
+	else {
+		set $DTS_PeriodCheck,$DTS_PeriodCheck+1;
+		donpcevent "Vote Timer2#ein::OnEnable";
+	}
+	end;
+}
+
+einbroch,246,71,0	script	Vote Timer3#ein	-1,{
+OnEnable:
+	initnpctimer;
+	end;
+
+OnTimer60000:
+	stopnpctimer;
+	if ($DTS_PeriodCheck == 8640) {
+		set $DTS_PeriodCheck,0; //Global Variable
+		set $DTS_Result,0; //Global Variable
+		set $DTS_KafraVotes,0; //Global Variable
+		set $DTS_JondaVotes,0; //Global Variable
+		set $DTS_JondaWins,$DTS_JondaWins-1;
+		set $DTS_VoteCount,$DTS_VoteCount+1;
+		donpcevent "Vote Timer#ein::OnEnable";
+	}
+	else {
+		set $DTS_PeriodCheck,$DTS_PeriodCheck+1; //Global Variable
+		donpcevent "Vote Timer3#ein::OnEnable";
+	}
+	end;
+}
+
+einbroch,247,71,0	script	Vote Timer4#ein	-1,{
+OnEnable:
+	initnpctimer;
+	end;
+
+OnTimer60000:
+	stopnpctimer;
+	if ($DTS_PeriodCheck == 8640) {
+		set $DTS_PeriodCheck,0; //Global Variable
+		set $DTS_Result,0; //Global Variable
+		set $DTS_KafraVotes,0; //Global Variable
+		set $DTS_JondaVotes,0; //Global Variable
+		set $DTS_KafraWins,$DTS_KafraWins-1;
+		set $DTS_VoteCount,$DTS_VoteCount+1;
+		donpcevent "Vote Timer#ein::OnEnable";
+	}
+	else {
+		set $DTS_PeriodCheck,$DTS_PeriodCheck+1; //Global Variable
+		donpcevent "Vote Timer4#ein::OnEnable";
+	}
+	end;
+}
+
+// Voting Poll NPCs Kafras and Cool Corp.
+// Cool Event Staff should actually be Cool Event Voting Staff
+// names had to be shortened to keep them unique.
+function	script	F_VoteKafra	{
+	callfunc "F_ClearGarbage";				//Clear outdated, unused variables
+	switch(getarg(0)){
+	case 1: cutin "kafra_01",2; break;
+	case 2: cutin "kafra_02",2; break;
+	case 3: cutin "kafra_03",2; break;
+	case 4: cutin "kafra_04",2; break;
+	case 5: cutin "kafra_05",2; break;
+	case 6: cutin "kafra_06",2; break;
+	case 7: cutin "kafra_07",2; break;
+	case 8: cutin "kafra_08",2; break;
+	case 9: cutin "kafra_09",2; break;
+	}
+	mes "[موظفة تصويت كافرا]";
+	mes "أهلا بك.";
+	mes "كما تعلم، نجري";
+	mes "انتخابات لتحديد";
+	mes "الشركة التي ستتولى";
+	mes "تقديم خدمة النقل";
+	mes "إلى الدهاليز. كيف أساعدك؟";
+	next;
+	switch(select("سبب إجراء الانتخابات:الإدلاء بصوت:استخدام خدمة النقل:إلغاء")) {
+	case 1:
+		mes "[موظفة تصويت كافرا]";
+		mes "تخطط شركة كول إيفنت";
+		mes "وشركة كافرا لتقديم";
+		mes "خدمة نقل مباشرة";
+		mes "إلى عدد من الدهاليز.";
+		next;
+		mes "[موظفة تصويت كافرا]";
+		mes "لكن بسبب قيود";
+		mes "تقنية، لا تستطيع سوى شركة";
+		mes "واحدة تقديم هذه";
+		mes "الخدمة في كل";
+		mes "فترة، لذلك اتفقت الشركتان على إجراء انتخابات خاصة.";
+		next;
+		mes "[موظفة تصويت كافرا]";
+		mes "لكل شركة سياساتها";
+		mes "وضماناتها الخاصة";
+		mes "بخدمة النقل إلى الدهاليز،";
+		mes "وسيختار العملاء في الانتخابات ما يناسبهم.";
+		next;
+		mes "[موظفة تصويت كافرا]";
+		mes "ستقدم خدمة النقل";
+		mes "إلى الدهاليز حاليا";
+		mes "خلال فترات تجريبية متعاقبة، كي يتمكن العملاء";
+		mes "من تجربة مزايا الشركتين قبل اتخاذ القرار النهائي.";
+		next;
+		mes "[موظفة تصويت كافرا]";
+		mes "إن استوفيت شروط التصويت،";
+		mes "فنرجو المشاركة في كل انتخابات";
+		mes "لاختيار الشركة التي ستقدم";
+		mes "خدمة النقل إلى الدهاليز";
+		mes "في الفترة التجريبية التالية. شكرا لدعمك~";
+		break;
+	case 2:
+		//if (lhz_boss < 17) {
+		//	mes "[موظفة تصويت كافرا]";
+		//	mes "عذرا، لكنك لا";
+		//	mes "تستوفي حاليا شروط";
+		//	mes "التصويت. لمعرفة";
+		//	mes "شروط الأهلية، يرجى زيارة";
+		//	mes "المقر الرئيسي لكافرا في ألديباران.";
+		//	mes "شكرا لك، ونتمنى لك يوما سعيدا.";
+		//	close2;
+		//	cutin "",255;
+		//	end;
+		//}
+		//else {
+			if ($DTS_Result == 0) {
+				if (lhz_vote <= $DTS_VoteCount) {
+					mes "[موظفة تصويت كافرا]";
+					mes "تعتزم شركة كافرا تقديم";
+					mes "خدمة النقل إلى";
+					mes "الدهاليز خلال الفترة";
+					mes "القادمة، إلى الوجهات التالية...";
+					next;
+					mes " ";
+					mes " ";
+					if ($DTS_KafraWins == 0) {
+						mes "^FF0000غرفة مراقبة الألعاب^000000";
+					}
+					else if ($DTS_KafraWins == 1) {
+						mes "^FF0000غرفة مراقبة الألعاب^000000";
+						mes "^FF0000برج الساعة - القبو الثالث^000000";
+					}
+					else {
+						mes "^FF0000غرفة مراقبة الألعاب^000000";
+						mes "^FF0000برج الساعة - القبو الثالث / طريق نوغ - الطابق الثاني^000000";
+					}
+					next;
+					mes "[موظفة تصويت كافرا]";
+					mes "إن كانت هذه";
+					mes "الوجهة تهمك،";
+					mes "فنرجو التصويت";
+					mes "لنا. هل تود منح";
+					mes "صوتك لشركة كافرا؟";
+					next;
+					switch(select("لا:نعم")) {
+					case 1:
+						mes "[موظفة تصويت كافرا]";
+						mes "أتفهم قرارك. إن";
+						mes "غيرت رأيك لاحقا،";
+						mes "فيمكنك العودة";
+						mes "في أي وقت. شكرا لك،";
+						mes "ونتمنى لك يوما سعيدا.";
+						break;
+					case 2:
+						set lhz_vote,$DTS_VoteCount+1;
+						set $DTS_KafraVotes,$DTS_KafraVotes+1;
+						mes "[موظفة تصويت كافرا]";
+						mes "شكرا على صوتك!";
+						mes "سنواصل بذل أقصى جهدنا";
+						mes "لتقديم خدمة بأعلى";
+						mes "مستوى لعملائنا.";
+						mes "نتمنى لك يوما سعيدا، وخدمة كافرا دائما إلى جانبك~";
+						break;
+					}
+				}
+				else {
+					mes "[موظفة تصويت كافرا]";
+					mes "عذرا، لقد ";
+					mes "شاركت بالفعل في";
+					mes "هذه الانتخابات. عند بدء";
+					mes "الانتخابات التالية،";
+					mes "سيكون بإمكانك التصويت مجددا.";
+					mes "شكرا لدعمك~";
+				}
+			}
+			else if ($DTS_Result == 3) {
+				if (lhz_vote <= $DTS_VoteCount) {
+					mes "[موظفة تصويت كافرا]";
+					mes "بعد فرز أصوات";
+					mes "الانتخابات السابقة،";
+					mes "تبين أن شرط";
+					mes "الحد الأدنى للمشاركة";
+					mes "لم يتحقق.";
+					next;
+					mes "[موظفة تصويت كافرا]";
+					mes "لذلك ستجرى انتخابات أخرى";
+					mes "لتحديد الشركة التي ستتولى";
+					mes "خدمة النقل إلى الدهاليز.";
+					mes "وإذا فازت شركة كافرا،";
+					mes "فسننقلك إلى";
+					mes "الوجهات التالية...";
+					next;
+					mes " ";
+					mes " ";
+					if ($DTS_KafraWins == 0) {
+						mes "^FF0000غرفة مراقبة الألعاب^000000";
+					}
+					else if ($DTS_KafraWins == 1) {
+						mes "^FF0000غرفة مراقبة الألعاب^000000";
+						mes "^FF0000برج الساعة - القبو الثالث^000000";
+					}
+					else {
+						mes "^FF0000غرفة مراقبة الألعاب^000000";
+						mes "^FF0000برج الساعة - القبو الثالث / طريق نوغ - الطابق الثاني^000000";
+					}
+					next;
+					mes "[موظفة تصويت كافرا]";
+					mes "إن كانت";
+					mes "هذه الوجهات تهمك،";
+					mes "فنرجو التصويت";
+					mes "لنا. هل تود منح";
+					mes "صوتك لشركة كافرا؟";
+					next;
+					switch(select("لا:نعم")) {
+					case 1:
+						mes "[موظفة تصويت كافرا]";
+						mes "أتفهم قرارك. إن";
+						mes "غيرت رأيك لاحقا،";
+						mes "فيمكنك العودة";
+						mes "في أي وقت. شكرا لك،";
+						mes "ونتمنى لك يوما سعيدا.";
+						break;
+					case 2:
+						set lhz_vote,$DTS_VoteCount+1;
+						set $DTS_KafraVotes,$DTS_KafraVotes+1;
+						mes "[موظفة تصويت كافرا]";
+						mes "شكرا على صوتك!";
+						mes "سنواصل بذل أقصى جهدنا";
+						mes "لتقديم خدمة بأعلى";
+						mes "مستوى لعملائنا.";
+						mes "نتمنى لك يوما سعيدا، وخدمة كافرا دائما إلى جانبك~";
+						break;
+					}
+				}
+				else {
+					mes "[موظفة تصويت كافرا]";
+					mes "بعد فرز أصوات";
+					mes "الانتخابات السابقة،";
+					mes "تبين أن شرط";
+					mes "الحد الأدنى للمشاركة";
+					mes "لم يتحقق.";
+					next;
+					mes "[موظفة تصويت كافرا]";
+					mes "لذلك ستجرى انتخابات أخرى";
+					mes "لتحديد الشركة التي ستتولى";
+					mes "خدمة النقل إلى الدهاليز.";
+					mes "لكن بما أنك أدليت بصوتك،";
+					mes "فلا يمكنك التصويت مجددا في هذه الانتخابات.";
+					next;
+					mes "[موظفة تصويت كافرا]";
+					mes "نقدر مشاركتك";
+					mes "في هذه الانتخابات،";
+					mes "ونشجعك على التصويت";
+					mes "مجددا في الانتخابات التالية.";
+					mes "شكرا لك، ونتمنى لك يوما سعيدا~";
+				}
+			}
+			else {
+				mes "[موظفة تصويت كافرا]";
+				mes "عذرا، لا توجد";
+				mes "انتخابات جارية";
+				mes "حاليا. عند فتح";
+				mes "صناديق الاقتراع، نرجو";
+				mes "مشاركتك والإدلاء بصوتك.";
+				mes "شكرا لدعمك~";
+			}
+		//}
+		break;
+	case 3:
+		if ($DTS_Result == 2) {
+			mes "[موظفة تصويت كافرا]";
+			mes "شكرا لاختيار";
+			mes "خدمة النقل إلى الدهاليز.";
+			mes "يرجى العلم أن";
+			mes "تذاكر نقل كافرا المجانية";
+			mes "ونقاط الاحتياط الخاصة لا";
+			mes "تستخدمان مع هذه الخدمة.";
+			next;
+			if ($DTS_KafraWins == 0) {
+				switch(select("غرفة مراقبة الألعاب - 4,000 زيني:إلغاء")) {
+				case 1:
+					if (Zeny >= 4000) {
+						cutin "",255;
+						set Zeny, Zeny-4000;
+						warp "xmas_dun02",130,123;
+						end;
+					}
+					else {
+						mes "[موظفة تصويت كافرا]";
+						mes "عذرا، لا تملك";
+						mes "ما يكفي من الزيني لدفع";
+						mes "رسوم النقل البالغة 4,000 زيني";
+						mes "إلى غرفة مراقبة الألعاب. يرجى";
+						mes "التحقق من رصيدك.";
+					}
+					break;
+				case 2:
+					mes "[موظفة تصويت كافرا]";
+					mes "تسعى شركة كافرا دائما";
+					mes "إلى تقديم أفضل الخدمات وتلبية احتياجات رحلاتك بأعلى المعايير.";
+					break;
+				}
+			}
+			else if ($DTS_KafraWins == 1) {
+				switch(select("غرفة مراقبة الألعاب - 4,000 زيني:برج الساعة - القبو الثالث - 4,000 زيني:إلغاء")) {
+				case 1:
+					if (Zeny >= 4000) {
+						set Zeny, Zeny-4000;
+						cutin "kafra_09",255;
+						warp "xmas_dun02",130,123;
+						end;
+					}
+					else {
+						mes "[موظفة تصويت كافرا]";
+						mes "عذرا، لا تملك";
+						mes "ما يكفي من الزيني لدفع";
+						mes "رسوم النقل البالغة 4,000 زيني";
+						mes "إلى غرفة مراقبة الألعاب. يرجى";
+						mes "التحقق من رصيدك.";
+					}
+					break;
+				case 2:
+					if (Zeny >= 4000) {
+						set Zeny, Zeny-4000;
+						cutin "kafra_09",255;
+						warp "alde_dun03",265,22;
+						end;
+					}
+					else {
+						mes "[موظفة تصويت كافرا]";
+						mes "عذرا، لا تملك";
+						mes "ما يكفي من الزيني لدفع";
+						mes "رسوم النقل البالغة 4,000 زيني";
+						mes "إلى برج الساعة. يرجى";
+						mes "التحقق من رصيدك.";
+					}
+					break;
+				case 3:
+					mes "[موظفة تصويت كافرا]";
+					mes "تسعى شركة كافرا دائما";
+					mes "إلى تقديم أفضل الخدمات وتلبية احتياجات رحلاتك بأعلى المعايير.";
+					break;
+				}
+			}
+			else {
+				switch(select("غرفة مراقبة الألعاب - 4,000 زيني:برج الساعة - القبو الثالث - 4,000 زيني:طريق نوغ - الطابق الثاني - 4,000 زيني:إلغاء")) {
+				case 1:
+					if (Zeny >= 4000) {
+						set Zeny, Zeny-4000;
+						cutin "kafra_09",255;
+						warp "xmas_dun02",130,123;
+						end;
+					}
+					else {
+						mes "[موظفة تصويت كافرا]";
+						mes "عذرا، لا تملك";
+						mes "ما يكفي من الزيني لدفع";
+						mes "رسوم النقل البالغة 4,000 زيني";
+						mes "إلى غرفة مراقبة الألعاب. يرجى";
+						mes "التحقق من رصيدك.";
+					}
+					break;
+				case 2:
+					if (Zeny >= 4000) {
+						set Zeny, Zeny-4000;
+						cutin "kafra_09",255;
+						warp "alde_dun03",265,22;
+						end;
+					}
+					else {
+						mes "[موظفة تصويت كافرا]";
+						mes "عذرا، لا تملك";
+						mes "ما يكفي من الزيني لدفع";
+						mes "رسوم النقل البالغة 4,000 زيني";
+						mes "إلى برج الساعة. يرجى";
+						mes "التحقق من رصيدك.";
+					}
+					break;
+				case 3:
+					if (Zeny >= 4000) {
+						set Zeny, Zeny-4000;
+						cutin "kafra_09",255;
+						warp "mag_dun02",47,40;
+						end;
+					}
+					else {
+						mes "[موظفة تصويت كافرا]";
+						mes "عذرا، لا تملك";
+						mes "ما يكفي من الزيني لدفع";
+						mes "رسوم النقل البالغة 4,000 زيني";
+						mes "إلى طريق نوغ. يرجى";
+						mes "التحقق من رصيدك.";
+					}
+					break;
+				case 4:
+					mes "[موظفة تصويت كافرا]";
+					mes "تسعى شركة كافرا دائما";
+					mes "إلى تقديم أفضل الخدمات وتلبية احتياجات رحلاتك بأعلى المعايير.";
+					break;
+				}
+			}
+		}
+		else if ($DTS_Result == 1) {
+			mes "[موظفة تصويت كافرا]";
+			mes "عذرا، بسبب";
+			mes "نتائج الانتخابات";
+			mes "الأخيرة، تتولى شركة";
+			mes "كول إيفنت حاليا";
+			mes "خدمة النقل إلى الدهاليز. نعتذر عن الإزعاج.";
+		}
+		else {
+			mes "[موظفة تصويت كافرا]";
+			mes "عذرا،";
+			mes "خدمة النقل إلى الدهاليز";
+			mes "غير متاحة خلال";
+			mes "فترة التصويت. وبعد انتهاء";
+			mes "الانتخابات، ستتاح";
+			mes "الخدمة مجددا.";
+		}
+		break;
+	case 4:
+		mes "[موظفة تصويت كافرا]";
+		mes "تسعى شركة كافرا دائما";
+		mes "إلى تقديم أفضل الخدمات وتلبية احتياجات رحلاتك بأعلى المعايير.";
+		break;
+	}
+	close2;
+	cutin "",255;
+	end;
+}
+
+yuno,162,191,4	script	موظفة تصويت كافرا#yuno::Kafra Voting Staff#yuno	861,{
+	callfunc "F_VoteKafra",9;
+}
+prontera,164,125,4	script	موظفة تصويت كافرا#prt::Kafra Voting Staff#prt	116,{
+	callfunc "F_VoteKafra",2;
+}
+moc_ruins,104,133,4	script	موظفة تصويت كافرا#moc::Kafra Voting Staff#moc	116,{
+	callfunc "F_VoteKafra",2;
+}
+geffen,122,37,4	script	موظفة تصويت كافرا#gef::Kafra Voting Staff#gef	116,{
+	callfunc "F_VoteKafra",2;
+}
+payon,158,182,4	script	موظفة تصويت كافرا#pay::Kafra Voting Staff#pay	116,{
+	callfunc "F_VoteKafra",2;
+}
+alberta,119,70,4	script	موظفة تصويت كافرا#alb::Kafra Voting Staff#alb	116,{
+	callfunc "F_VoteKafra",2;
+}
+aldebaran,145,102,4	script	موظفة تصويت كافرا#alde::Kafra Voting Staff#alde	116,{
+	callfunc "F_VoteKafra",2;
+}
+lighthalzen,163,60,4	script	موظفة تصويت كافرا#lght::Kafra Voting Staff#lght	861,{
+	callfunc "F_VoteKafra",9;
+}
+
+-	script	موظف تصويت شركة كول إيفنت::VotingStaffCCE	874,{
+	callfunc "F_ClearGarbage";				//Clear outdated, unused variables
+	cutin "zonda_01",2;
+	mes "[موظف تصويت شركة كول إيفنت]";
+	mes "مرحبا! لا تنس أن";
+	mes "تسمع صوتك، واحرص";
+	mes "على المشاركة في الانتخابات";
+	mes "بين شركة كول إيفنت";
+	mes "وشركة كافرا لاختيار مزود خدمة النقل إلى الدهاليز!";
+	next;
+	switch(select("سبب إجراء الانتخابات:الإدلاء بصوت:استخدام خدمة النقل:إلغاء")) {
+	case 1:
+		mes "[موظف تصويت شركة كول إيفنت]";
+		mes "تخطط شركة كول إيفنت";
+		mes "لتقديم خدمة جديدة";
+		mes "للنقل إلى الدهاليز";
+		mes "لعملائها، وهي خدمة";
+		mes "لم تكن شركة كافرا";
+		mes "تقدمها من قبل. لكن...";
+		next;
+		mes "[موظف تصويت شركة كول إيفنت]";
+		mes "تبين أن شركة كافرا،";
+		mes "التي تحتكر بالفعل";
+		mes "سوق النقل العام،";
+		mes "تخطط هي الأخرى";
+		mes "لتقديم خدمة مماثلة.";
+		next;
+		mes "[موظف تصويت شركة كول إيفنت]";
+		mes "وبسبب قيود";
+		mes "تقنية، لا تستطيع سوى شركة";
+		mes "واحدة أن تكون مزود";
+		mes "خدمة النقل إلى الدهاليز، لذا سنترك للعملاء";
+		mes "الاختيار من خلال الانتخابات.";
+		next;
+		mes "[موظف تصويت شركة كول إيفنت]";
+		mes "ستجرى عدة انتخابات";
+		mes "كي يتمكن عملاؤنا";
+		mes "من تجربة الخدمات الخاصة بكل شركة.";
+		mes "لكن لا بد من استيفاء شروط الأهلية للتصويت.";
+		next;
+		mes "[موظف تصويت شركة كول إيفنت]";
+		mes "لمعرفة شروط";
+		mes "الأهلية، يرجى زيارة";
+		mes "مقرنا الرئيسي في";
+		mes "مدينة لايت هالزن، في";
+		mes "جمهورية شفارتزفالد.";
+		mes "شكرا لوقتك.";
+		break;
+	case 2:
+		//if (lhz_boss < 17) {
+		//	mes "[موظف تصويت شركة كول إيفنت]";
+		//	mes "عذرا، لا تستوفي";
+		//	mes "شروط التصويت حاليا.";
+		//	mes "يرجى زيارة مقرنا الرئيسي";
+		//	mes "في لايت هالزن لمعرفة";
+		//	mes "كيفية الحصول على حق التصويت. شكرا لوقتك.";
+		//	close2;
+		//	cutin "zonda_01",255;
+		//	end;
+		//}
+		//else {
+			if ($DTS_Result == 0) {
+				if (lhz_vote <= $DTS_VoteCount) {
+					mes "[موظف تصويت شركة كول إيفنت]";
+					mes "إذا اختيرت شركة كول إيفنت";
+					mes "لتقديم خدمة النقل";
+					mes "إلى الدهاليز،";
+					mes "فسننقل المغامرين إلى";
+					mes "الوجهات التالية...";
+					next;
+					mes " ";
+					mes " ";
+					if ($DTS_JondaWins == 0) {
+						mes "^FF0000النفق تحت البحر - القبو الثالث^000000";
+					}
+					else if ($DTS_JondaWins == 1) {
+						mes "^FF0000النفق تحت البحر - القبو الثالث^000000";
+						mes "^FF0000برج الساعة - الطابق الثالث^000000";
+					}
+					else {
+						mes "^FF0000النفق تحت البحر - القبو الثالث^000000";
+						mes "^FF0000برج الساعة - الطابق الثالث^000000";
+						mes "^FF0000غلاست هايم^000000";
+					}
+					next;
+					mes "[موظف تصويت شركة كول إيفنت]";
+					mes "إن كانت";
+					mes "هذه الوجهات تهمك،";
+					mes "فالتصويت لنا";
+					mes "هو الخيار الأنسب لك.";
+					mes "هل تود منح صوتك";
+					mes "لشركة كول إيفنت؟";
+					next;
+					switch(select("لا:نعم")) {
+					case 1:
+						mes "[موظف تصويت شركة كول إيفنت]";
+						mes "حسنا، إن";
+						mes "غيرت رأيك لاحقا،";
+						mes "فيمكنك العودة";
+						mes "والتصويت لشركة";
+						mes "كول إيفنت. نتمنى لك يوما سعيدا~";
+						break;
+					case 2:
+						set lhz_vote,$DTS_VoteCount+1;
+						set $DTS_JondaVotes,$DTS_JondaVotes+1;
+						mes "[موظف تصويت شركة كول إيفنت]";
+						mes "شكرا على صوتك!";
+						mes "بفضل مشاركة العملاء";
+						mes "نستطيع مواصلة النجاح";
+						mes "وتقديم مستوى الخدمة";
+						mes "الذي تتوقعه من شركة كول إيفنت.";
+						mes "شكرا لك، ونتمنى لك يوما سعيدا~";
+						break;
+					}
+				}
+				else {
+					mes "[موظف تصويت شركة كول إيفنت]";
+					mes "عذرا، لقد";
+					mes "أدليت بصوتك بالفعل";
+					mes "في هذه الانتخابات.";
+					mes "ونرجو ألا يمنعك ذلك";
+					mes "من التصويت لشركة كول إيفنت";
+					mes "في الانتخابات التالية~";
+				}
+			}
+			else if ($DTS_Result == 3) {
+				if (lhz_vote <= $DTS_VoteCount) {
+					mes "[موظف تصويت شركة كول إيفنت]";
+					mes "للأسف، لم يبلغ";
+					mes "إقبال الناخبين الحد المطلوب";
+					mes "في الانتخابات السابقة، لذا نجري";
+					mes "انتخابات أخرى لتحديد";
+					mes "الشركة التي ستقدم";
+					mes "خدمة النقل إلى الدهاليز.";
+					next;
+					mes "[موظف تصويت شركة كول إيفنت]";
+					mes "إذا اختيرت شركة كول إيفنت";
+					mes "لتقديم خدمة النقل";
+					mes "إلى الدهاليز،";
+					mes "فسننقل المغامرين إلى";
+					mes "الوجهات التالية...";
+					next;
+					mes " ";
+					mes " ";
+					if ($DTS_JondaWins == 0) {
+						mes "^FF0000النفق تحت البحر - القبو الثالث^000000";
+					}
+					else if ($DTS_JondaWins == 1) {
+						mes "^FF0000النفق تحت البحر - القبو الثالث^000000";
+						mes "^FF0000برج الساعة - الطابق الثالث^000000";
+					}
+					else {
+						mes "^FF0000النفق تحت البحر - القبو الثالث^000000";
+						mes "^FF0000برج الساعة - الطابق الثالث^000000";
+						mes "^FF0000غلاست هايم^000000";
+					}
+					next;
+					mes "[موظف تصويت شركة كول إيفنت]";
+					mes "إن كانت";
+					mes "هذه الوجهات تهمك،";
+					mes "فالتصويت لنا";
+					mes "هو الخيار الأنسب لك.";
+					mes "هل تود منح صوتك";
+					mes "لشركة كول إيفنت؟";
+					next;
+					switch(select("لا:نعم")) {
+					case 1:
+						mes "[موظف تصويت شركة كول إيفنت]";
+						mes "حسنا، إن";
+						mes "غيرت رأيك لاحقا،";
+						mes "فيمكنك العودة";
+						mes "والتصويت لشركة";
+						mes "كول إيفنت. نتمنى لك يوما سعيدا~";
+						break;
+					case 2:
+						set lhz_vote,$DTS_VoteCount+1;
+						set $DTS_JondaVotes,$DTS_JondaVotes+1;
+						mes "[موظف تصويت شركة كول إيفنت]";
+						mes "شكرا على صوتك!";
+						mes "بفضل مشاركة العملاء";
+						mes "نستطيع مواصلة النجاح";
+						mes "وتقديم مستوى الخدمة";
+						mes "الذي تتوقعه من شركة كول إيفنت.";
+						mes "شكرا لك، ونتمنى لك يوما سعيدا~";
+						break;
+					}
+				}
+				else {
+					mes "[موظف تصويت شركة كول إيفنت]";
+					mes "للأسف، لم يبلغ";
+					mes "إقبال الناخبين الحد المطلوب";
+					mes "في الانتخابات السابقة، لذا نجري";
+					mes "انتخابات أخرى لتحديد";
+					mes "الشركة التي ستقدم";
+					mes "خدمة النقل إلى الدهاليز.";
+					next;
+					mes "[موظف تصويت شركة كول إيفنت]";
+					mes "نقدر أنك";
+					mes "شاركت بالفعل";
+					mes "في جولة الانتخابات الجديدة";
+					mes "وأدليت بصوتك.";
+					mes "شكرا لدعمك~";
+				}
+			}
+			else {
+				mes "[موظف تصويت شركة كول إيفنت]";
+				mes "عذرا، لا تجرى";
+				mes "انتخابات حاليا. يرجى العودة والإدلاء";
+				mes "بصوتك في الانتخابات التالية لاختيار الشركة التي ستقدم";
+				mes "خدمة النقل إلى الدهاليز.";
+			}
+		//}
+		break;
+	case 3:
+		if ($DTS_Result == 1) {
+			mes "[موظف تصويت شركة كول إيفنت]";
+			mes "يرجى العلم أننا";
+			mes "لا نقبل تذاكر النقل المجانية";
+			mes "ولا نمنح نقاط الاحتياط الخاصة";
+			mes "مقابل هذه الخدمة. يرجى الآن";
+			mes "اختيار الوجهة.";
+			next;
+			if ($DTS_JondaWins == 0) {
+				switch(select("النفق تحت البحر - القبو الثالث - 4,000 زيني:إلغاء")) {
+				case 1:
+					if (Zeny >= 4000) {
+						set Zeny, Zeny-4000;
+						cutin "zonda_01",255;
+						warp "iz_dun02",234,206;
+						end;
+					}
+					else {
+						mes "[موظف تصويت شركة كول إيفنت]";
+						mes "عذرا، لا";
+						mes "تملك ما يكفي من الزيني";
+						mes "للانتقال إلى هذه الوجهة.";
+						mes "تبلغ رسوم النقل 4,000 زيني.";
+					}
+					break;
+				case 2:
+					mes "[موظف تصويت شركة كول إيفنت]";
+					mes "ثق دائما بأن";
+					mes "شركة كول إيفنت ستبذل";
+					mes "كل ما في وسعها";
+					mes "لضمان رضا";
+					mes "جميع عملائها";
+					mes "على اختلافهم. شكرا لك~";
+					break;
+				}
+			}
+			else if ($DTS_JondaWins == 1) {
+				switch(select("النفق تحت البحر - القبو الثالث - 4,000 زيني:برج الساعة - الطابق الثالث - 4,000 زيني:إلغاء")) {
+				case 1:
+					if (Zeny >= 4000) {
+						set Zeny, Zeny-4000;
+						cutin "zonda_01",255;
+						warp "iz_dun02",234,206;
+						end;
+					}
+					else {
+						mes "[موظف تصويت شركة كول إيفنت]";
+						mes "عذرا، لا";
+						mes "تملك ما يكفي من الزيني";
+						mes "للانتقال إلى هذه الوجهة.";
+						mes "تبلغ رسوم النقل 4,000 زيني.";
+					}
+					break;
+				case 2:
+					if (Zeny >= 4000) {
+						set Zeny, Zeny-4000;
+						cutin "zonda_01",255;
+						warp "c_tower3",64,143;
+						end;
+					}
+					else {
+						mes "[موظف تصويت شركة كول إيفنت]";
+						mes "عذرا، لا";
+						mes "تملك ما يكفي من الزيني";
+						mes "للانتقال إلى هذه الوجهة.";
+						mes "تبلغ رسوم النقل 4,000 زيني.";
+					}
+					break;
+				case 3:
+					mes "[موظف تصويت شركة كول إيفنت]";
+					mes "ثق دائما بأن";
+					mes "شركة كول إيفنت ستبذل";
+					mes "كل ما في وسعها";
+					mes "لضمان رضا";
+					mes "جميع عملائها";
+					mes "على اختلافهم. شكرا لك~";
+					break;
+				}
+			}
+			else {
+				mes "[موظف تصويت شركة كول إيفنت]";
+				mes "يرجى العلم أننا";
+				mes "لا نقبل تذاكر النقل المجانية";
+				mes "ولا نمنح نقاط الاحتياط الخاصة";
+				mes "مقابل هذه الخدمة. يرجى الآن";
+				mes "اختيار الوجهة.";
+				next;
+				switch(select("النفق تحت البحر - القبو الثالث - 4,000 زيني:برج الساعة - الطابق الثالث - 4,000 زيني:غلاست هايم - 4,000 زيني:إلغاء")) {
+				case 1:
+					if (Zeny >= 4000) {
+						set Zeny, Zeny-4000;
+						cutin "zonda_01",255;
+						warp "iz_dun02",234,206;
+						end;
+					}
+					else {
+						mes "[موظف تصويت شركة كول إيفنت]";
+						mes "عذرا، لا";
+						mes "تملك ما يكفي من الزيني";
+						mes "للانتقال إلى هذه الوجهة.";
+						mes "تبلغ رسوم النقل 4,000 زيني.";
+					}
+					break;
+				case 2:
+					if (Zeny >= 4000) {
+						set Zeny, Zeny-4000;
+						cutin "zonda_01",255;
+						warp "c_tower3",64,143;
+						end;
+					}
+					else {
+						mes "[موظف تصويت شركة كول إيفنت]";
+						mes "عذرا، لا";
+						mes "تملك ما يكفي من الزيني";
+						mes "للانتقال إلى هذه الوجهة.";
+						mes "تبلغ رسوم النقل 4,000 زيني.";
+					}
+					break;
+				case 3:
+					if (Zeny >= 4000) {
+						set Zeny, Zeny-4000;
+						cutin "zonda_01",255;
+						warp "glast_01",368,303;
+						end;
+					}
+					else {
+						mes "[موظف تصويت شركة كول إيفنت]";
+						mes "عذرا، لا";
+						mes "تملك ما يكفي من الزيني";
+						mes "للانتقال إلى هذه الوجهة.";
+						mes "تبلغ رسوم النقل 4,000 زيني.";
+					}
+					break;
+				case 4:
+					mes "[موظف تصويت شركة كول إيفنت]";
+					mes "ثق دائما بأن";
+					mes "شركة كول إيفنت ستبذل";
+					mes "كل ما في وسعها";
+					mes "لضمان رضا";
+					mes "جميع عملائها";
+					mes "على اختلافهم. شكرا لك~";
+					break;
+				}
+			}
+		}
+		else if ($DTS_Result == 2) {
+			mes "[موظف تصويت شركة كول إيفنت]";
+			mes "عذرا، شركة كول إيفنت";
+			mes "لا تقدم حاليا";
+			mes "خدمة النقل إلى الدهاليز";
+			mes "بسبب نتائج الانتخابات";
+			mes "الأخيرة. نرجو التصويت لنا";
+			mes "في المرة القادمة. نتمنى لك يوما سعيدا~";
+		}
+		else {
+			mes "[موظف تصويت شركة كول إيفنت]";
+			mes "عذرا،";
+			mes "خدمة النقل إلى الدهاليز";
+			mes "غير متاحة أثناء الانتخابات،";
+			mes "وستتاح مجددا بعد إعلان النتائج.";
+			mes "شكرا لك، ونتمنى لك يوما سعيدا.";
+		}
+		break;
+	case 4:
+		mes "[موظف تصويت شركة كول إيفنت]";
+		mes "تسعى شركة كول إيفنت دائما";
+		mes "إلى ضمان ألا يقتصر الأمر";
+		mes "على رضا عملائها،";
+		mes "بل أن تتجاوز خدماتها";
+		mes "أعلى توقعاتهم.";
+		mes "شكرا لك، ونتمنى لك يوما سعيدا.";
+		break;
+	}
+	close2;
+	cutin "zonda_01",255;
+	end;
+}
+
+yuno,153,191,6	duplicate(VotingStaffCCE)	موظف تصويت شركة كول إيفنت#yuno::Cool Event Staff#yuno	874
+prontera,147,125,6	duplicate(VotingStaffCCE)	موظف تصويت شركة كول إيفنت#prt::Cool Event Staff#prt	874
+moc_ruins,97,133,6	duplicate(VotingStaffCCE)	موظف تصويت شركة كول إيفنت#moc::Cool Event Staff#moc	874
+geffen,117,37,6	duplicate(VotingStaffCCE)	موظف تصويت شركة كول إيفنت#gef::Cool Event Staff#gef	874
+payon,153,182,6	duplicate(VotingStaffCCE)	موظف تصويت شركة كول إيفنت#pay::Cool Event Staff#pay	874
+alberta,114,70,6	duplicate(VotingStaffCCE)	موظف تصويت شركة كول إيفنت#alb::Cool Event Staff#alb	874
+aldebaran,138,102,6	duplicate(VotingStaffCCE)	موظف تصويت شركة كول إيفنت#alde::Cool Event Staff#alde	874
+lighthalzen,154,60,6	duplicate(VotingStaffCCE)	موظف تصويت شركة كول إيفنت#lhz::Cool Event Staff#lhz	874
+
+yuno,103,225,0	script	Scrutiny Association#5	-1,{
+OnInit:
+	initnpctimer;
+	end;
+
+OnEnable:
+	initnpctimer;
+	end;
+
+OnTimer7200000:
+	stopnpctimer;
+	if (($DTS_Result == 0) || ($DTS_Result == 3)) {
+		announce "تجرى حاليا انتخابات مزود خدمة النقل إلى الدهاليز في جميع المدن الرئيسية. نقدر مشاركتكم.",bc_all,"0x70dbdb";
+	}
+	donpcevent "Scrutiny Association#5::OnEnable";
+	end;
+}
+
+einbroch,248,71,0	script	Scrutiny Association#6	-1,{
+OnEnable:
+	initnpctimer;
+	end;
+
+OnTimer1000:
+	announce "اكتمل استلام أصوات انتخابات مزود خدمة النقل إلى الدهاليز وفرزها.",bc_all,"0x70dbdb";
+	end;
+
+OnTimer5000:
+	announce "ظهرت النتائج...",bc_all,"0x70dbdb";
+	end;
+
+OnTimer10000:
+	announce "ستتولى شركة كول إيفنت هذه المرة تقديم خدمة النقل إلى الدهاليز.",bc_all,"0x70dbdb";
+	end;
+
+OnTimer15000:
+	announce "شكرا جزيلا لكل من صوت وأظهر دعمه.",bc_all,"0x70dbdb";
+	stopnpctimer;
+	end;
+}
+
+einbroch,249,71,0	script	Scrutiny Association#7	-1,{
+OnEnable:
+	initnpctimer;
+	end;
+
+OnTimer1000:
+	announce "اكتمل استلام أصوات انتخابات مزود خدمة النقل إلى الدهاليز وفرزها.",bc_all,"0x70dbdb";
+	end;
+
+OnTimer5000:
+	announce "ظهرت النتائج...",bc_all,"0x70dbdb";
+	end;
+
+OnTimer10000:
+	announce "ستتولى شركة كافرا هذه المرة تقديم خدمة النقل إلى الدهاليز.",bc_all,"0x70dbdb";
+	end;
+
+OnTimer15000:
+	announce "شكرا جزيلا لكل من صوت وأظهر دعمه.",bc_all,"0x70dbdb";
+	stopnpctimer;
+	end;
+}
+
+/*
+// GM only NPC used for modifying values related to the DTS system.
+// Disabled in official script.
+sec_in02,17,160,4	script	خادمة كريستي#yuno::Vote Globalvar Girl#yuno	864,{
+	callfunc "F_GM_NPC";
+	mes "[خادمة كريستي]";
+	mes "سيدتي كريستي!";
+	next;
+	if (callfunc("F_GM_NPC",1854,0) == 1) {
+		mes "[خادمة كريستي]";
+		mes "أنا خادمة السيدة كريستي.";
+		next;
+		switch(select("فحص المتغيرات العامة:تصفير عداد التصويت:تغيير متغير عام")) {
+		case 1:
+			mes "قيم المتغيرات العامة الحالية:";
+			next;
+			mes "[خادمة كريستي]";
+			mes "المتغير 1 - مؤقت التصويت: "+$DTS_Time+"";
+			mes "المتغير 2 - أصوات شركة كول إيفنت: "+$DTS_JondaVotes+"";
+			mes "المتغير 3 - أصوات شركة كافرا: "+$DTS_KafraVotes+"";
+			mes "المتغير 4 - الفائز: "+$DTS_Result+"";
+			mes "المتغير 5 - مؤقت فترة خدمة النقل: "+$DTS_PeriodCheck+"";
+			mes "المتغير 6 - نقاط فوز كافرا: "+$DTS_KafraWins+"";
+			mes "المتغير 7 - نقاط فوز شركة كول إيفنت: "+$DTS_JondaWins+"";
+			mes "المتغير 8 - عداد جولات التصويت: "+$DTS_VoteCount+"";
+			next;
+			mes "[خادمة كريستي]";
+			mes "قيمة عداد تصويت الشخصية الحالية: "+lhz_vote+".";
+			close;
+		case 2:
+			set lhz_vote,0;
+			close;
+		case 3:
+			mes "[خادمة كريستي]";
+			mes "أي متغير عام تريد تعديل قيمته؟";
+			next;
+			switch(select("1 - مؤقت التصويت:2 - أصوات شركة كول إيفنت:3 - أصوات كافرا:4 - الفائز:5 - فترة خدمة النقل:6 - نقاط فوز كافرا:7 - نقاط فوز كول إيفنت:8 - عداد جولات التصويت")) {
+			case 1:
+				mes "[خادمة كريستي]";
+				mes "أدخل رقما من 0 إلى 1000.";
+				next;
+				input .@input;
+				if ((.@input < 0) || (.@input > 1000)) {
+					mes "[خادمة كريستي]";
+					mes "القيمة غير صحيحة.";
+					close;
+				}
+				set $DTS_Time,.@input;
+				mes "[خادمة كريستي]";
+				mes "تم تعديل القيمة.";
+				close;
+			case 2:
+				mes "[خادمة كريستي]";
+				mes "أدخل رقما من 0 إلى 1000.";
+				next;
+				input .@input;
+				if ((.@input < 0) || (.@input > 1000)) {
+					mes "[خادمة كريستي]";
+					mes "القيمة غير صحيحة.";
+					close;
+				}
+				set $DTS_JondaVotes,.@input;
+				mes "[خادمة كريستي]";
+				mes "تم تعديل القيمة.";
+				close;
+			case 3:
+				mes "[خادمة كريستي]";
+				mes "أدخل رقما من 0 إلى 1000.";
+				next;
+				input .@input;
+				if ((.@input < 0) || (.@input > 1000)) {
+					mes "[خادمة كريستي]";
+					mes "القيمة غير صحيحة.";
+					close;
+				}
+				set $DTS_KafraVotes,.@input;
+				mes "[خادمة كريستي]";
+				mes "تم تعديل القيمة.";
+				close;
+			case 4:
+				mes "[خادمة كريستي]";
+				mes "أدخل رقما من 0 إلى 3.";
+				next;
+				input .@input;
+				if ((.@input < 0) || (.@input > 3)) {
+					mes "[خادمة كريستي]";
+					mes "القيمة غير صحيحة.";
+					close;
+				}
+				set $DTS_Result,.@input;
+				mes "[خادمة كريستي]";
+				mes "تم تعديل القيمة.";
+				close;
+			case 5:
+				mes "[خادمة كريستي]";
+				mes "أدخل رقما من 0 إلى 1000.";
+				next;
+				input .@input;
+				if ((.@input < 0) || (.@input > 1000)) {
+					mes "[خادمة كريستي]";
+					mes "القيمة غير صحيحة.";
+					close;
+				}
+				set $DTS_PeriodCheck,.@input;
+				mes "[خادمة كريستي]";
+				mes "تم تعديل القيمة.";
+				close;
+			case 6:
+				mes "[خادمة كريستي]";
+				mes "أدخل رقما من 0 إلى 2.";
+				next;
+				input .@input;
+				if ((.@input < 0) || (.@input > 2)) {
+					mes "[خادمة كريستي]";
+					mes "القيمة غير صحيحة.";
+					close;
+				}
+				set $DTS_KafraWins,.@input;
+				mes "[خادمة كريستي]";
+				mes "تم تعديل القيمة.";
+				close;
+			case 7:
+				mes "[خادمة كريستي]";
+				mes "أدخل رقما من 0 إلى 2.";
+				next;
+				input .@input;
+				if ((.@input < 0) || (.@input > 2)) {
+					mes "[خادمة كريستي]";
+					mes "القيمة غير صحيحة.";
+					close;
+				}
+				set $DTS_JondaWins,.@input;
+				mes "[خادمة كريستي]";
+				mes "تم تعديل القيمة.";
+				close;
+			case 8:
+				mes "[خادمة كريستي]";
+				mes "أدخل رقما من 0 إلى 10000.";
+				next;
+				input .@input;
+				if ((.@input < 0) || (.@input > 10000)) {
+					mes "[خادمة كريستي]";
+					mes "القيمة غير صحيحة.";
+					close;
+				}
+				set $DTS_VoteCount,.@input;
+				mes "[خادمة كريستي]";
+				mes "تم تعديل القيمة.";
+				close;
+			}
+		}
+	}
+	else {
+		mes "[خادمة كريستي]";
+		mes "سيدتي كريستي...";
+		close;
+	}
+}
+*/

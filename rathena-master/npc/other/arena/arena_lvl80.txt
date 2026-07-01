@@ -1,0 +1,970 @@
+//===== rAthena Script =======================================
+//= Izlude Arena Level 80
+//===== By: ==================================================
+//= SinSloth
+//===== Current Version: =====================================
+//= 1.3
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= Izlude Battle Arena Level 80
+//===== Additional Comments: =================================
+//= 1.0 First version.
+//= 1.1 Replaced effect numerics with constants. [Samuray22]
+//= 1.2 Label standardization. [Euphy]
+//= 1.3 Script updates, and removed a level restriction. [Euphy]
+//============================================================
+
+arena_room,147,42,1	script	غرفة انتظار المستوى 80::Lv80 Waiting Room	124,{
+	end;
+
+OnInit:
+	waitingroom "التحدي الفردي - المستوى 80 إلى " + MAX_LEVEL,50,"Lv80 Waiting Room::OnStartArena",1,1000,80;
+	enablewaitingroomevent;
+	end;
+
+OnStartArena:
+	warpwaitingpc "force_4-1",99,12;
+	donpcevent "arena#80::OnStart";
+	disablewaitingroomevent;
+	end;
+
+OnStart:
+	enablewaitingroomevent;
+	end;
+}
+
+force_4-1,99,20,4	script	أوكتوس#arena::Octus#arena	124,{
+	end;
+
+OnStart:
+	initnpctimer;
+	set $arena_min80st,gettime(DT_MINUTE);
+	set $arena_sec80st,gettime(DT_SECOND);
+	end;
+
+OnTimer3000:
+	mapannounce "force_4-1","أهلا بك! أنا أوكتوس، دليل معركة قوة الزمن للمستوى 80!",0;
+	end;
+
+OnTimer4000:
+	mapannounce "force_4-1","الاختيار الصحيح يوفر الكثير من الوقت!",0;
+	end;
+
+OnTimer8000:
+	mapannounce "force_4-1","أمامك 7 دقائق لإكمال مسار المعركة. البداية من أقصى يسار الغرفة، ثم متابعة المراحل باتجاه عقارب الساعة.",0;
+	end;
+
+OnTimer60000:
+	if (getmapusers("force_4-1") == 0) {
+		donpcevent "Octus#arena::OnFailClearStage";
+	}
+	mapannounce "force_4-1","الوقت المتبقي: 7 دقائق.",0;
+	end;
+
+OnTimer120000:
+	if (getmapusers("force_4-1") == 0) {
+		donpcevent "Octus#arena::OnFailClearStage";
+	}
+	mapannounce "force_4-1","الوقت المتبقي: 6 دقائق.",0;
+	end;
+
+OnTimer180000:
+	if (getmapusers("force_4-1") == 0) {
+		donpcevent "Octus#arena::OnFailClearStage";
+	}
+	mapannounce "force_4-1","الوقت المتبقي: 5 دقائق.",0;
+	end;
+
+OnTimer240000:
+	if (getmapusers("force_4-1") == 0) {
+		donpcevent "Octus#arena::OnFailClearStage";
+	}
+	mapannounce "force_4-1","الوقت المتبقي: 4 دقائق.",0;
+	end;
+
+OnTimer300000:
+	if (getmapusers("force_4-1") == 0) {
+		donpcevent "Octus#arena::OnFailClearStage";
+	}
+	mapannounce "force_4-1","الوقت المتبقي: 3 دقائق.",0;
+	end;
+
+OnTimer360000:
+	if (getmapusers("force_4-1") == 0) {
+		donpcevent "Octus#arena::OnFailClearStage";
+	}
+	mapannounce "force_4-1","الوقت المتبقي: دقيقتان.",0;
+	end;
+
+OnTimer420000:
+	if (getmapusers("force_4-1") == 0) {
+		donpcevent "Octus#arena::OnFailClearStage";
+	}
+	mapannounce "force_4-1","الوقت المتبقي: دقيقة واحدة.",0;
+	end;
+
+OnTimer480000:
+	mapannounce "force_4-1","انتهت المهلة. آمل أن يكون التحدي ممتعا!",0;
+	end;
+
+OnTimer485000:
+OnTimer486000:
+OnTimer487000:
+OnTimer488000:
+OnTimer489000:
+OnTimer490000:
+OnTimer491000:
+OnTimer492000:
+OnTimer493000:
+OnTimer494000:
+	mapwarp "force_4-1","prt_are_in",178,190,0,0;
+	end;
+
+OnTimer495000:
+	mapwarp "force_4-1","prt_are_in",178,190,0,0;
+	donpcevent "Octus#arena::OnFailClearStage";
+	end;
+
+OnTimerOff:
+	stopnpctimer;
+	end;
+
+OnFailClearStage:
+	donpcevent "cast#80::OnTimeOver1";
+	mapwarp "force_4-1","prt_are_in",178,190,0,0;
+	donpcevent "Octus#arena::OnTimerOff";
+	donpcevent "arena#80::OnReset_All";
+	donpcevent "alloff#80::OnEnable";
+	donpcevent "Lv80 Waiting Room::OnStart";
+	end;
+
+On01_Start:
+	mapannounce "force_4-1","لإنهاء المرحلة، يجب القضاء على جميع وحوش كابوس!",0;
+	end;
+
+On01_End:
+	mapannounce "force_4-1","فتح باب الغرفة الشمالية!",0;
+	end;
+
+On02_Start:
+	mapannounce "force_4-1","لإنهاء المرحلة، يجب القضاء على جميع الوحوش!",0;
+	end;
+
+On02_End:
+	mapannounce "force_4-1","فتح باب الغرفة الشمالية!",0;
+	end;
+
+On03_Start:
+	mapannounce "force_4-1","لإنهاء المرحلة، يجب القضاء على جميع وحوش مهاجم!",0;
+	end;
+
+On03_End:
+	mapannounce "force_4-1","اكتملت المرحلة! فتح باب الغرفة الشرقية!",0;
+	end;
+
+On04_Start:
+	mapannounce "force_4-1","لإنهاء المرحلة، يجب القضاء على جميع وحوش ذو تسعة ذيول!",0;
+	end;
+
+On04_End:
+	mapannounce "force_4-1","فتح باب الغرفة الشرقية!",0;
+	end;
+
+On05_Start:
+	mapannounce "force_4-1","لإنهاء المرحلة، يجب القضاء على جميع وحوش بيتيت المتحركة!",0;
+	end;
+
+On05_End:
+	mapannounce "force_4-1","اكتملت المرحلة! فتح باب الغرفة الجنوبية!",0;
+	end;
+
+On06_Start:
+	mapannounce "force_4-1","لإنهاء المرحلة، يجب القضاء على جميع الوحوش في هذه الغرفة!",0;
+	end;
+
+On06_End:
+	mapannounce "force_4-1","فتح باب الغرفة الجنوبية!",0;
+	end;
+
+On07_Start:
+	mapannounce "force_4-1","لإنهاء المرحلة، يجب القضاء على جميع وحوش فقمة مع تفادي رجال البحر!",0;
+	end;
+
+On07_End:
+	mapannounce "force_4-1","اكتملت المرحلة! فتح باب الغرفة الغربية!",0;
+	end;
+
+On08_Start:
+	mapannounce "force_4-1","الوجهة التالية: المخرج الشمالي!",0;
+	end;
+
+On09_Start:
+	mapannounce "force_4-1","لإنهاء المرحلة، يجب هزيمة مومياء قديمة!",0;
+	end;
+
+On09_End:
+	mapannounce "force_4-1","هزم الزعيم! فتح باب الشمال. شكرا!",0;
+	end;
+}
+
+-	script	arena#80	-1,{
+OnReset_01:
+	donpcevent "force_01ex#80::OnReset";
+	donpcevent "force_02start#80::OnEnable";
+	enablenpc "force_01_02#80";
+	end;
+
+OnReset_02:
+	donpcevent "force_02mob#80::OnReset";
+	donpcevent "force_03start#80::OnEnable";
+	enablenpc "force_02_03#80";
+	end;
+
+OnReset_03:
+	enablenpc "force_03_04#80";
+	donpcevent "force_04start#80::OnEnable";
+	donpcevent "force_03ex#80::OnReset";
+	end;
+
+OnReset_04:
+	enablenpc "force_04_05#80";
+	donpcevent "force_05start#80::OnEnable";
+	donpcevent "force_04ex#80::OnReset";
+	end;
+
+OnReset_05:
+	enablenpc "force_05_06#80";
+	donpcevent "force_06start#80::OnEnable";
+	donpcevent "force_05ex#80::OnReset";
+	end;
+
+OnReset_06:
+	enablenpc "force_06_07#80";
+	donpcevent "force_07start#80::OnEnable";
+	//donpcevent "force_06ex#80::OnReset";
+	end;
+
+OnReset_07:
+	enablenpc "force_07_08#80";
+	donpcevent "force_07ex#80::OnReset";
+	donpcevent "force_08start#80::OnEnable";
+	end;
+
+OnReset_08:
+	donpcevent "force_09start#80::OnEnable";
+	enablenpc "force_08_09#80";
+	end;
+
+OnReset_09:
+	enablenpc "force_exit#80";
+	end;
+
+OnStart:
+	disablenpc "force_01_02#80";
+	disablenpc "force_02_03#80";
+	disablenpc "force_03_04#80";
+	disablenpc "force_04_05#80";
+	disablenpc "force_05_06#80";
+	disablenpc "force_06_07#80";
+	disablenpc "force_07_08#80";
+	disablenpc "force_08_09#80";
+	disablenpc "force_exit#80";
+	donpcevent "Octus#arena::OnTimerOff";
+	//donpcevent "force_09mob#80::OnTimerOff";
+	donpcevent "force_01mob#80::OnReset";
+	donpcevent "force_02mob#80::OnReset";
+	donpcevent "force_03mob#80::OnReset";
+	donpcevent "force_04mob#80::OnReset";
+	donpcevent "force_05mob#80::OnReset";
+	donpcevent "force_06mob#80::OnReset";
+	donpcevent "force_07mob#80::OnReset";
+	//donpcevent "force_08mob#80::OnReset";
+	donpcevent "force_09mob#80::OnReset";
+	donpcevent "force_01ex#80::OnReset";
+	donpcevent "force_03ex#80::OnReset";
+	donpcevent "force_04ex#80::OnReset";
+	donpcevent "force_05ex#80::OnReset";
+	donpcevent "force_07ex#80::OnReset";
+	//donpcevent "force_08ex#80::OnReset";
+	donpcevent "force_09ex#80::OnReset";
+	enablenpc "force_08_01#80";
+	donpcevent "force_01start#80::OnEnable";
+	donpcevent "Octus#arena::OnStart";
+	end;
+
+OnReset_All:
+	donpcevent "force_01mob#80::OnReset";
+	donpcevent "force_02mob#80::OnReset";
+	donpcevent "force_03mob#80::OnReset";
+	donpcevent "force_04mob#80::OnReset";
+	donpcevent "force_05mob#80::OnReset";
+	donpcevent "force_06mob#80::OnReset";
+	donpcevent "force_07mob#80::OnReset";
+	donpcevent "force_09mob#80::OnReset";
+	donpcevent "force_01ex#80::OnReset";
+	donpcevent "force_03ex#80::OnReset";
+	donpcevent "force_04ex#80::OnReset";
+	donpcevent "force_05ex#80::OnReset";
+	donpcevent "force_07ex#80::OnReset";
+	//donpcevent "force_08ex#80::OnReset";
+	donpcevent "force_09ex#80::OnReset";
+	end;
+}
+
+force_4-1,62,26,1	script	force_08_01#80	45,1,1,{
+OnTouch_:
+	donpcevent "Octus#arena::On01_Start";
+	warp "force_4-1",40,26;
+	end;
+}
+
+force_4-1,25,44,1	script	force_01_02#80	45,1,1,{
+OnTouch_:
+	donpcevent "Octus#arena::On02_Start";
+	warp "force_4-1",25,69;
+	end;
+}
+
+force_4-1,25,134,1	script	force_02_03#80	45,1,1,{
+OnTouch_:
+	donpcevent "Octus#arena::On03_Start";
+	warp "force_4-1",25,159;
+	end;
+}
+
+force_4-1,44,174,1	script	force_03_04#80	45,1,1,{
+OnTouch_:
+	donpcevent "Octus#arena::On04_Start";
+	warp "force_4-1",69,174;
+	end;
+
+}
+
+force_4-1,134,174,1	script	force_04_05#80	45,1,1,{
+OnTouch_:
+	donpcevent "Octus#arena::On05_Start";
+	warp "force_4-1",159,174;
+	end;
+}
+
+force_4-1,174,155,1	script	force_05_06#80	45,1,1,{
+OnTouch_:
+	donpcevent "Octus#arena::On06_Start";
+	warp "force_4-1",174,130;
+	end;
+}
+
+force_4-1,174,65,1	script	force_06_07#80	45,1,1,{
+OnTouch_:
+	donpcevent "Octus#arena::On07_Start";
+	warp "force_4-1",174,40;
+	end;
+}
+
+force_4-1,155,26,1	script	force_07_08#80	45,1,1,{
+OnTouch_:
+	donpcevent "Octus#arena::On08_Start";
+	warp "force_4-1",132,26;
+	enablenpc "force_08_09#80";
+	end;
+}
+
+force_4-1,99,54,1	script	force_08_09#80	45,1,1,{
+OnTouch_:
+	donpcevent "Octus#arena::On09_Start";
+	warp "force_4-1",99,82;
+	end;
+}
+
+force_4-1,99,124,1	script	force_exit#80	45,1,1,{
+OnTouch_:
+	donpcevent "Octus#arena::OnTimerOff";
+	donpcevent "#arn_timer_80::OnEnable";
+	mapwarp "force_4-1","prt_are_in",73,192,0,0;
+	end;
+}
+
+-	script	force_01start#80	-1,{
+OnEnable:
+	donpcevent "force_01mob#80::OnEnable";
+	end;
+}
+
+-	script	force_01ex#80	-1,{
+OnReset:
+	killmonster "force_4-1","force_01ex#80::OnMyMobDead";
+	end;
+
+OnSummonMob1:
+	monster "force_4-1",11,25,"ذبابة الصياد",1422,1,"force_01ex#80::OnMyMobDead";
+	monster "force_4-1",22,22,"ذبابة الصياد",1422,1,"force_01ex#80::OnMyMobDead";
+	monster "force_4-1",25,25,"ذبابة الصياد",1422,1,"force_01ex#80::OnMyMobDead";
+	monster "force_4-1",35,13,"ذبابة الصياد",1422,1,"force_01ex#80::OnMyMobDead";
+	monster "force_4-1",18,33,"ذبابة الصياد",1422,1,"force_01ex#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_01mob#80	-1,{
+OnEnable:
+	monster "force_4-1",35,13,"كابوس",1427,1,"force_01mob#80::OnMyMobDead";
+	monster "force_4-1",25,36,"كابوس",1427,1,"force_01mob#80::OnMyMobDead";
+	monster "force_4-1",22,23,"كابوس",1427,1,"force_01mob#80::OnMyMobDead";
+	monster "force_4-1",25,17,"كابوس",1427,1,"force_01mob#80::OnMyMobDead";
+	monster "force_4-1",25,15,"كابوس",1427,1,"force_01mob#80::OnMyMobDead";
+	donpcevent "force_01ex#80::OnSummonMob1";
+	end;
+
+OnReset:
+	killmonster "force_4-1","force_01mob#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_4-1","force_01mob#80::OnMyMobDead") < 1) {
+		donpcevent "Octus#arena::On01_End";
+		donpcevent "arena#80::OnReset_01";
+	}
+	end;
+}
+
+-	script	force_02start#80	-1,{
+OnEnable:
+	donpcevent "force_02mob#80::OnEnable";
+	end;
+}
+
+-	script	force_02mob#80	-1,{
+OnReset:
+	killmonster "force_4-1","force_02mob#80::OnMyMobDead";
+	end;
+
+OnEnable:
+	monster "force_4-1",24,80,"ماريونيت",1459,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",23,110,"ماريونيت",1459,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",26,90,"ماريونيت",1459,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",28,75,"زومبي",1394,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",24,90,"زومبي",1394,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",28,85,"زومبي",1394,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",24,82,"ديفيروتشي",1433,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",28,86,"سجين هيكل",1479,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",27,73,"سجين هيكل",1479,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",26,118,"سجين هيكل",1479,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",25,127,"سجين هيكل",1479,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",28,128,"زومبي",1394,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",27,100,"زومبي",1394,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",29,90,"زومبي",1394,1,"force_02mob#80::OnMyMobDead";
+	monster "force_4-1",28,128,"رامي رايدريك",1453,1,"force_02mob#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_4-1","force_02mob#80::OnMyMobDead") < 1) {
+		donpcevent "Octus#arena::On02_End";
+		donpcevent "arena#80::OnReset_02";
+	}
+	end;
+}
+
+-	script	force_03start#80	-1,{
+OnEnable:
+	donpcevent "force_03mob#80::OnEnable";
+	end;
+}
+
+-	script	force_03ex#80	-1,{
+OnReset:
+	killmonster "force_4-1","force_03ex#80::OnMyMobDead";
+	end;
+
+OnSummonMob_03:
+	monster "force_4-1",26,173,"مدير الساعة",1527,1,"force_03ex#80::OnMyMobDead";
+	monster "force_4-1",21,173,"ماريونيت",1459,1,"force_03ex#80::OnMyMobDead";
+	monster "force_4-1",31,173,"مدير الساعة",1527,1,"force_03ex#80::OnMyMobDead";
+	monster "force_4-1",26,178,"ماريونيت",1459,1,"force_03ex#80::OnMyMobDead";
+	monster "force_4-1",21,178,"ماريونيت",1459,1,"force_03ex#80::OnMyMobDead";
+	monster "force_4-1",31,178,"ماريونيت",1459,1,"force_03ex#80::OnMyMobDead";
+	monster "force_4-1",26,186,"سايد وايندر",1424,1,"force_03ex#80::OnMyMobDead";
+	monster "force_4-1",26,161,"سايد وايندر",1424,1,"force_03ex#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_03mob#80	-1,{
+OnEnable:
+	donpcevent "force_03ex#80::OnSummonMob_03";
+	monster "force_4-1",23,174,"مهاجم",1364,1,"force_03mob#80::OnMyMobDead";
+	monster "force_4-1",18,173,"مهاجم",1364,1,"force_03mob#80::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_4-1","force_03mob#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	donpcevent "force_03ex#80::OnSummonMob_03";
+	if (mobcount("force_4-1","force_03mob#80::OnMyMobDead") < 1) {
+		donpcevent "Octus#arena::On03_End";
+		donpcevent "arena#80::OnReset_03";
+	}
+	end;
+}
+
+-	script	force_04start#80	-1,{
+OnEnable:
+	donpcevent "force_04mob#80::OnEnable";
+	end;
+}
+
+-	script	force_04ex#80	-1,{
+OnReset:
+	killmonster "force_4-1","force_04ex#80::OnMyMobDead";
+	end;
+
+OnSummonMob_04:
+	monster "force_4-1",99,174,"هيكل رامي",1420,1,"force_04ex#80::OnMyMobDead";
+	monster "force_4-1",101,174,"هيكل رامي",1420,1,"force_04ex#80::OnMyMobDead";
+	monster "force_4-1",103,174,"هيكل رامي",1420,1,"force_04ex#80::OnMyMobDead";
+	monster "force_4-1",105,174,"هيكل رامي",1420,1,"force_04ex#80::OnMyMobDead";
+	monster "force_4-1",107,174,"هيكل رامي",1420,1,"force_04ex#80::OnMyMobDead";
+	monster "force_4-1",109,177,"باسانا",1464,1,"force_04ex#80::OnMyMobDead";
+	monster "force_4-1",99,170,"مينوروس",1461,1,"force_04ex#80::OnMyMobDead";
+	monster "force_4-1",111,170,"مينوروس",1461,1,"force_04ex#80::OnMyMobDead";
+	monster "force_4-1",110,170,"غولم الحمم",1549,1,"force_04ex#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+
+}
+
+-	script	force_04mob#80	-1,{
+OnEnable:
+	donpcevent "force_04ex#80::OnSummonMob_04";
+	monster "force_4-1",80,172,"ذو تسعة ذيول",1471,1,"force_04mob#80::OnMyMobDead";
+	monster "force_4-1",105,172,"ذو تسعة ذيول",1471,1,"force_04mob#80::OnMyMobDead";
+	monster "force_4-1",90,172,"ذو تسعة ذيول",1471,1,"force_04mob#80::OnMyMobDead";
+	monster "force_4-1",117,172,"ذو تسعة ذيول",1471,1,"force_04mob#80::OnMyMobDead";
+	end;
+OnReset:
+	killmonster "force_4-1","force_04mob#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_4-1","force_04mob#80::OnMyMobDead") < 1) {
+		donpcevent "Octus#arena::On04_End";
+		donpcevent "arena#80::OnReset_04";
+	}
+	end;
+}
+
+-	script	force_05start#80	-1,{
+OnEnable:
+	donpcevent "force_05mob#80::OnEnable";
+	end;
+}
+
+-	script	force_05ex#80	-1,{
+OnReset:
+	killmonster "force_4-1","force_05ex#80::OnMyMobDead";
+	end;
+
+OnSummonMob_05:
+	monster "force_4-1",168,190,"بيتيت",1466,1,"force_05ex#80::OnMyMobDead";
+	monster "force_4-1",173,166,"بيتيت",1466,1,"force_05ex#80::OnMyMobDead";
+	monster "force_4-1",171,176,"بيتيت",1466,1,"force_05ex#80::OnMyMobDead";
+	monster "force_4-1",188,167,"بيتيت",1466,1,"force_05ex#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_05mob#80	-1,{
+OnEnable:
+	monster "force_4-1",164,174,"بيتيت",1465,1,"force_05mob#80::OnMyMobDead";
+	monster "force_4-1",169,159,"بيتيت",1465,1,"force_05mob#80::OnMyMobDead";
+	monster "force_4-1",174,183,"بيتيت",1465,1,"force_05mob#80::OnMyMobDead";
+	monster "force_4-1",177,170,"بيتيت",1465,1,"force_05mob#80::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_4-1","force_05mob#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_4-1","force_05mob#80::OnMyMobDead") < 1) {
+		donpcevent "Octus#arena::On05_End";
+		donpcevent "arena#80::OnReset_05";
+	}
+	else donpcevent "force_05ex#80::OnSummonMob_05";
+	end;
+
+}
+
+-	script	force_06start#80	-1,{
+OnEnable:
+	donpcevent "force_06mob#80::OnEnable";
+	end;
+}
+
+-	script	force_06ex#80	-1,{
+OnEnable:
+	donpcevent "Octus#arena::On06_start";
+	end;
+}
+
+-	script	force_06mob#80	-1,{
+OnEnable:
+	monster "force_4-1",173,118,"بافوميت صغير",1431,1,"force_06mob#80::OnMyMobDead";
+	monster "force_4-1",173,90,"بافوميت صغير",1431,1,"force_06mob#80::OnMyMobDead";
+	monster "force_4-1",177,72,"بافوميت صغير",1431,1,"force_06mob#80::OnMyMobDead";
+	monster "force_4-1",171,108,"ديفيروتشي",1433,1,"force_06mob#80::OnMyMobDead";
+	monster "force_4-1",171,85,"ديفيروتشي",1433,1,"force_06mob#80::OnMyMobDead";
+	monster "force_4-1",171,79,"أليس",1521,1,"force_06mob#80::OnMyMobDead";
+	monster "force_4-1",175,118,"أليس",1521,1,"force_06mob#80::OnMyMobDead";
+	monster "force_4-1",175,99,"أليس",1521,1,"force_06mob#80::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_4-1","force_06mob#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_4-1","force_06mob#80::OnMyMobDead") < 1) {
+		donpcevent "Octus#arena::On06_End";
+		donpcevent "arena#80::OnReset_06";
+	}
+	end;
+}
+
+-	script	force_07start#80	-1,{
+OnEnable:
+	donpcevent "force_07mob#80::OnEnable";
+	end;
+}
+
+-	script	force_07ex#80	-1,{
+OnReset:
+	killmonster "force_4-1","force_07ex#80::OnMyMobDead";
+	end;
+
+OnSummonMob_07:
+	monster "force_4-1",160,34,"رجل البحر",1451,1,"force_07ex#80::OnMyMobDead";
+	monster "force_4-1",163,27,"رجل البحر",1451,1,"force_07ex#80::OnMyMobDead";
+	monster "force_4-1",163,23,"رجل البحر",1451,1,"force_07ex#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_07mob#80	-1,{
+OnEnable:
+	donpcevent "force_07ex#80::OnSummonMob_07";
+	monster "force_4-1",165,27,"فقمة",1533,1,"force_07mob#80::OnMyMobDead";
+	monster "force_4-1",184,23,"فقمة",1533,1,"force_07mob#80::OnMyMobDead";
+	monster "force_4-1",174,19,"فقمة",1533,1,"force_07mob#80::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_4-1","force_07mob#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_4-1","force_07mob#80::OnMyMobDead") < 1) {
+		donpcevent "Octus#arena::On07_End";
+		donpcevent "arena#80::OnReset_07";
+	}
+	end;
+}
+
+-	script	force_08start#80	-1,{
+OnEnable:
+	donpcevent "force_08ex#80::OnEnable";
+	end;
+}
+
+-	script	force_08ex#80	-1,{
+OnEnable:
+	donpcevent "arena#80::OnReset_08";
+	end;
+}
+
+-	script	force_09start#80	-1,{
+OnEnable:
+	donpcevent "force_09mob#80::OnEnable";
+	end;
+}
+
+-	script	force_09ex#80	-1,{
+OnReset:
+	killmonster "force_4-1","force_09ex#80::OnMyMobDead";
+	end;
+
+OnSummonMob_09:
+	monster "force_4-1",91,99,"أرغوس",1430,1,"force_09ex#80::OnMyMobDead";
+	monster "force_4-1",95,105,"أرغوس",1430,1,"force_09ex#80::OnMyMobDead";
+	monster "force_4-1",122,99,"أرغوس",1430,1,"force_09ex#80::OnMyMobDead";
+	monster "force_4-1",88,107,"أرغوس",1430,1,"force_09ex#80::OnMyMobDead";
+	monster "force_4-1",85,104,"أرغوس",1430,1,"force_09ex#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_09mob#80	-1,{
+OnEnable:
+	monster "force_4-1",99,99,"مومياء قديمة",1522,1,"force_09mob#80::OnMyMobDead";
+	donpcevent "force_09ex#80::OnSummonMob_09";
+	end;
+
+OnReset:
+	killmonster "force_4-1","force_09mob#80::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_4-1","force_09mob#80::OnMyMobDead") < 1) {
+		donpcevent "Octus#arena::On09_End";
+		donpcevent "arena#80::OnReset_09";
+		donpcevent "arena#80::OnReset_All";
+		set $arena_min80end,gettime(DT_MINUTE);
+		set $arena_sec80end,gettime(DT_SECOND);
+	}
+	end;
+}
+
+prt_are_in,181,188,3	script	موظف الحلبة#80-1::Staff#80-1	67,{
+	mes "[موظف الحلبة]";
+	mes "أداء جيد.";
+	mes "حتى دون إكمال معركة قوة الزمن، ستحصل على عدد قليل من نقاط الحلبة.";
+	next;
+	if (arena_point == 30000) {
+		mes "[موظف الحلبة]";
+		mes "لحظة!";
+		mes "بلغ رصيد نقاط الحلبة الحد الأقصى.";
+		mes "يجب إنفاق بعض نقاط الحلبة أولا، وستضاف مكافأة المحاولة التالية عند العودة.";
+		next;
+	}
+	else set arena_point, arena_point + 1;
+	mes "[موظف الحلبة]";
+	mes "سأرشدك إلى الخارج. آمل أن يكون التحدي ممتعا.";
+	close2;
+	specialeffect2 EF_EXIT;
+	warp "arena_room",100,75;
+	end;
+}
+
+prt_are_in,77,187,3	script	موظف الحلبة#80-2::Staff#80-2	67,{
+	if($arena_min80end < $arena_min80st) {
+		if($arena_sec80end < $arena_sec80st) {
+			set @record_min80,60 - $arena_min80st + $arena_min80end -1;
+			set @record_sec80,60 - $arena_sec80st + $arena_sec80end;
+		} else {
+			set @record_min80,60 - $arena_min80st + $arena_min80end;
+			set @record_sec80,$arena_sec80end - $arena_sec80st;
+		}
+	} else {
+		if($arena_sec80end < $arena_sec80st) {
+			set @record_min80,$arena_min80end - $arena_min80st -1;
+			set @record_sec80,60 - $arena_sec80st + $arena_sec80end;
+		} else {
+			set @record_min80,$arena_min80end - $arena_min80st;
+			set @record_sec80,$arena_sec80end - $arena_sec80st;
+		}
+	}
+	set @gap80,(60 * $top_80min + $top_80sec) - (60 * @record_min80 + @record_sec80);
+	mes "[موظف الحلبة]";
+	mes "رائع! اكتمل التحدي بنجاح.";
+	mes "اسم الشخصية: ^3131FF" + strcharinfo(0) +"^000000، صحيح؟";
+	mes "بلغ إجمالي زمن ^3131FF"+ strcharinfo(0) +"^000000 في اجتياز المعركة:";
+	next;
+	mes "[موظف الحلبة]";
+	mes ""+@record_min80+" دقيقة و"+@record_sec80+" ثانية.";
+	mes "تهانينا!";
+	next;
+	mes "[موظف الحلبة]";
+	mes "أسرع زمن في معركة قوة الزمن للمستوى 80 مسجل باسم ^3131FF"+$arena_80topn$+"^000000.";
+	next;
+	mes "[موظف الحلبة]";
+	mes "الزمن القياسي المسجل باسم ^3131FF"+$arena_80topn$+"^000000: ^3131FF"+$top_80min+"^000000 دقيقة و^3131FF"+$top_80sec+"^000000 ثانية.";
+	next;
+	if (@gap80 < 0) {
+		mes "[موظف الحلبة]";
+		mes "لم يسجل هذا الزمن رقما قياسيا جديدا. حظا أوفر في المحاولة التالية!";
+		next;
+		if (arena_point > 29980) {
+			mes "[موظف الحلبة]";
+			mes "سأضيف مكافأة نقاط الحلبة... لحظة!";
+			mes "بلغ رصيد نقاط الحلبة الحد الأقصى، ولا يمكن إضافة المزيد قبل إنفاق بعض النقاط.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "يمكن مراجعة رصيد نقاط الحلبة في غرفة انتظار الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "آمل أن يكون التحدي ممتعا. سأعيدك إلى مدخل الحلبة.";
+			mes "شكرا!";
+			close2;
+		} else {
+			set arena_point, arena_point + 20;
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "يمكن مراجعة رصيد نقاط الحلبة لدى ^3131FFفينديغوس^000000 عند مدخل الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "سأعيدك إلى مدخل الحلبة.";
+			mes "إلى اللقاء!";
+			close2;
+		}
+		specialeffect2 EF_EXIT;
+ 		donpcevent "cast#80::OnNomal1";
+		warp "arena_room",100,75;
+		donpcevent "#arn_timer_80::OnStop";
+		donpcevent "alloff#80::OnEnable";
+		donpcevent "Lv80 Waiting Room::OnStart";
+		end;
+	} else {
+		emotion ET_HUK;
+		mes "[موظف الحلبة]";
+		mes "رائع! تم تسجيل رقم قياسي جديد!";
+		mes "إنجاز ممتاز!";
+		next;
+		mes "[موظف الحلبة]";
+		mes "سجل الرقم القياسي الجديد باسم ^3131FF"+strcharinfo(0)+"^000000 في ^FF0000معركة قوة الزمن للمستوى 80^000000.";
+		set $top_80min, @record_min80;
+		set $top_80sec, @record_sec80;
+		set $arena_80topn$,strcharinfo(0);
+		donpcevent "Vendigos::OnLineRec_80";
+		next;
+		if (arena_point > 29980) {
+			mes "[موظف الحلبة]";
+			mes "سأضيف مكافأة نقاط الحلبة... لحظة!";
+			mes "بلغ رصيد نقاط الحلبة الحد الأقصى، ولا يمكن إضافة المزيد قبل إنفاق بعض النقاط.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "يمكن مراجعة رصيد نقاط الحلبة في غرفة انتظار الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "آمل أن يكون التحدي ممتعا. سأعيدك إلى مدخل الحلبة.";
+			mes "شكرا!";
+			close2;
+		} else {
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "وبسبب الرقم القياسي الجديد، ستضاف مكافأة نقاط إضافية هذه المرة.";
+			next;
+			set arena_point, arena_point + 50;
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "يمكن مراجعة رصيد نقاط الحلبة لدى ^3131FFفينديغوس^000000 عند مدخل الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "سأعيدك إلى مدخل الحلبة.";
+			mes "إلى اللقاء!";
+			close2;
+		}
+		specialeffect2 EF_HIT5;
+ 		donpcevent "cast#80::OnNomal2";
+		warp "arena_room",100,75;
+		donpcevent "#arn_timer_80::OnStop";
+		donpcevent "alloff#80::OnEnable";
+		donpcevent "Lv80 Waiting Room::OnStart";
+		end;
+	}
+}
+
+-	script	#arn_timer_80	-1,{
+OnEnable:
+	initnpctimer;
+	end;
+
+OnTimer2000:
+	mapannounce "prt_are_in","تنبيه بشأن المهلة الزمنية لحلبة المستوى 80.",0,0xFFCE00;
+	end;
+
+OnTimer3000:
+	mapannounce "prt_are_in","ستتفعل بوابة الخروج خلال دقيقة لضمان انسيابية الحلبة.",0,0xFFCE00;
+	end;
+
+OnTimer4000:
+	mapannounce "prt_are_in","يرجى إكمال المعركة بأسرع ما يمكن لتجنب انتهاء المهلة. شكرا لتعاونك.",0,0xFFCE00;
+	end;
+
+OnTimer60000:
+ 	donpcevent "cast#80::OnTimeOver2";
+	donpcevent "arn_warp_80::OnOut";
+	donpcevent "#arn_timer_80::OnStop";
+	donpcevent "alloff#80::OnEnable";
+	donpcevent "Lv80 Waiting Room::OnStart";
+	end;
+
+OnStop:
+	stopnpctimer;
+	end;
+}
+
+-	script	arn_warp_80	-1,{
+OnOut:
+	areawarp "prt_are_in",66,195,81,178,"arena_room",100,75;
+	end;
+}
+
+-	script	cast#80	-1,{
+OnTimeOver1:
+	mapannounce "force_4-1","ستعاد تهيئة الحلبة بسبب خطأ حدث أثناء المعركة.",0,0xFFCE00;
+	end;
+OnTimeOver2:
+	mapannounce "force_4-1","ستعاد تهيئة الحلبة بسبب خطأ حدث في غرفة الانتظار.",0,0xFFCE00;
+	end;
+OnNomal1:
+	mapannounce "force_4-1","أعيدت تهيئة الحلبة.",0,0xFFCE00;
+	end;
+OnNomal2:
+	mapannounce "force_4-1","أعيدت تهيئة الحلبة.",0,0xFFCE00;
+	end;
+}
+
+-	script	alloff#80	-1,{
+OnEnable:
+	mapwarp "force_4-1","prt_are_in",126,190,0,0;
+	donpcevent "force_01mob#80::OnReset";
+	donpcevent "force_02mob#80::OnReset";
+	donpcevent "force_03mob#80::OnReset";
+	donpcevent "force_04mob#80::OnReset";
+	donpcevent "force_05mob#80::OnReset";
+	donpcevent "force_06mob#80::OnReset";
+	donpcevent "force_07mob#80::OnReset";
+	//donpcevent "force_08mob#80::OnReset";
+	donpcevent "force_09mob#80::OnReset";
+	donpcevent "force_01ex#80::OnReset";
+	donpcevent "force_03ex#80::OnReset";
+	donpcevent "force_04ex#80::OnReset";
+	donpcevent "force_05ex#80::OnReset";
+	donpcevent "force_07ex#80::OnReset";
+	//donpcevent "force_08ex#80::OnReset";
+	donpcevent "force_09ex#80::OnReset";
+	donpcevent "Octus#arena::OnTimerOff";
+	disablenpc "Octus#arena";
+	disablenpc "force_01_02#80";
+	disablenpc "force_02_03#80";
+	disablenpc "force_03_04#80";
+	disablenpc "force_04_05#80";
+	disablenpc "force_05_06#80";
+	disablenpc "force_06_07#80";
+	disablenpc "force_07_08#80";
+	disablenpc "force_08_09#80";
+	disablenpc "force_exit#80";
+	disablenpc "arena#80";
+	donpcevent "#arn_timer_80::OnStop";
+	enablenpc "Octus#arena";
+	enablenpc "arena#80";
+	end;
+
+OnInit:
+	if(!$top_80min && !$top_80sec) set $top_80min,8;
+	end;
+}

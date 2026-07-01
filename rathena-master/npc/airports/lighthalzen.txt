@@ -1,0 +1,85 @@
+//===== rAthena Script ======================================= 
+//= Lighthalzen Airport Staff
+//===== By: ================================================== 
+//= L0ne_W0lf, Muad_Dib
+//===== Current Version: =====================================
+//= 1.0
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Lighthalzen Airport Staff
+//===== Additional Comments: ================================= 
+//= 1.0 First version.
+//============================================================ 
+
+lhz_airport,143,43,5	script	موظف المطار#lhz_air1a::lhz_airport1	90,{
+	mes "[موظف المطار]";
+	mes "مرحبا بك في";
+	mes "مطار لايت هالزن،";
+	mes "حيث نوفر رحلات بلا توقف";
+	mes "إلى إينبروخ ويونو وهويغل.";
+	next;
+	if (select("ركوب المنطاد:إلغاء") == 1) {
+		mes "[موظف المطار]";
+		mes "تبلغ رسوم ركوب المنطاد";
+		mes "1,200 زيني، لكن يمكنك";
+		mes "الإعفاء منها باستخدام";
+		mes "تذكرة مجانية للمنطاد.";
+		next;
+		if (select("نعم:لا") == 1) {
+			if (countitem(7311) > 0) {
+				delitem 7311,1; //Free_Flying_Ship_Ticket
+				warp "lhz_airport",148,51;
+				end;
+			}
+			if (Zeny >= 1200) {
+				set Zeny, Zeny - 1200;
+				warp "lhz_airport",148,51;
+				end;
+			}
+			mes "[موظف المطار]";
+			mes "عذرا، لا تملك";
+			mes "تذكرة مجانية للمنطاد ولا";
+			mes "ما يكفي لدفع رسوم 1,200 زيني.";
+			close;
+		}
+	}
+	mes "[موظف المطار]";
+	mes "شكرا لك،";
+	mes "نرجو أن تزورنا مجددا.";
+	mes "وطاب يومك~";
+	close;
+}
+
+lhz_airport,158,43,5	duplicate(lhz_airport1)	موظف المطار#lhz_air1b::Airship Staff#lhz_air1b	90
+lhz_airport,126,43,5	duplicate(lhz_airport1)	موظف المطار#lhz_air1c::Airship Staff#lhz_air1c	90
+
+lhz_airport,143,49,3	script	موظف الوصول#lhz_air2a::lhz_airport2	90,{
+	mes "[موظف الوصول]";
+	mes "مرحبا بك في مطار لايت هالزن.";
+	mes "إن كنت قد وصلت من رحلتك،";
+	mes "فسأرشدك إلى المحطة الرئيسية. وإلا،";
+	mes "فاركب المنطاد المغادر إلى وجهتك.";
+	next;
+	if (select("الخروج إلى المحطة الرئيسية:إلغاء") == 1) {
+		mes "[موظف الوصول]";
+		mes "عند دخول المحطة الرئيسية،";
+		mes "ستحتاج إلى دفع الرسوم مجددا لركوب المنطاد.";
+		mes "لا تغادر إلا إذا كانت لايت هالزن وجهتك.";
+		mes "هل تريد التوجه إلى المحطة الرئيسية؟";
+		next;
+		if (select("نعم:لا") == 1) {
+			warp "lhz_airport",142,40;
+			end;
+		}
+	}
+	mes "[موظف الوصول]";
+	mes "حسنا، شكرا لك";
+	mes "على استخدام خدماتنا،";
+	mes "ونتمنى لك";
+	mes "رحلة ممتعة~";
+	close;
+}
+
+lhz_airport,126,51,3	duplicate(lhz_airport2)	موظف الوصول#lhz_air2b::Arrival Staff#lhz_air2b	90
+lhz_airport,158,50,3	duplicate(lhz_airport2)	موظف الوصول#lhz_air2c::Arrival Staff#lhz_air2c	90

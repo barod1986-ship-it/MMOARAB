@@ -1,0 +1,151 @@
+//===== rAthena Script ======================================= 
+//= Gym Pass Cash Item NPC
+//===== By: ================================================== 
+//= Kisuka
+//===== Current Version: ===================================== 
+//= 1.3
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Exchange Gym Passes to learn "Enlarge Weight Limit"
+//= iRO NPC situated in Payon beside Kafra Shop.
+//===== Additional Comments: ================================= 
+//= 1.0 First version [L0ne_W0lf]
+//= 1.1 Fixed the NPC saying you "00" [L0ne_W0lf]
+//= 1.2 Replaced effect numerics with constants. [Samuray22]
+//= 1.3 Updated script, and fixed potential errors. [L0ne_W0lf]
+//============================================================ 
+
+payon,173,141,4	script	كابوس مفتول العضلات#GymPass::Ripped Cabus#GymPass	899,{
+	mes "[المفتول]";
+	mes "مرحبا بك. الناس لم يعودوا";
+	mes "نشطين بدنيا كما كانوا";
+	mes "في السابق. حتى لو كنت تقاتل";
+	mes "لكسب عيشك، فقد يكون جسدك";
+	mes "ضعيفا ومترهلا في بعض";
+	mes "المناطق. أتفهم ما أعنيه؟";
+	next;
+	mes "[المفتول]";
+	mes "تدرب معي، وأنا أضمن";
+	mes "لك أنك ستتمكن من رفع";
+	mes "وحمل المزيد من أغراضك.";
+	mes "فقط أعطني ^FF0000بطاقة النادي الرياضي^000000";
+	mes "في كل مرة، وسنكون جاهزين";
+	mes "للانطلاق.";
+	next;
+	mes "[المفتول]";
+	mes "لكن لا تتحمس كثيرا:";
+	mes "مهما كان مقدار التدريب";
+	mes "الذي سأخضعك له، يمكنك";
+	mes "أن تبالغ في الأمر. هل سمعت";
+	mes "من قبل عن شخص صار مفتول العضلات";
+	mes "أكثر من اللازم؟";
+	mes "هذا لأنهم ماتوا. فهمت؟";
+	next;
+	mes "[المفتول]";
+	mes "أقول إن من الآمن لك";
+	mes "أن تتدرب معي بجدية";
+	mes "وتزيد قدرة حمل العناصر";
+	mes "لديك ^FF000010 مرات^000000.";
+	mes "إذن... هل أنت مستعد للتعرق؟";
+	next;
+	switch(select("نعم:لا:أم، تأثير تماريني زال.")) {
+	case 1:
+		if (gympassmemory < 10) {
+			set .@add_carry,gympassmemory + 1;
+			set .@remain_carry,10 - .@add_carry;
+			if (countitem(7776) > 0) {
+				mes "[المفتول]";
+				mes "رائع جدا، أرى أنك";
+				mes "أحضرت بطاقة النادي الرياضي.";
+				mes "حسنا، افعل ما أفعله فقط،";
+				mes "وحاول أن تشعر بحرارة التمرين.";
+				mes "مستعد؟ لنبدأ.";
+				next;
+				specialeffect2 EF_EARTHSPIKE;
+				next;
+				specialeffect2 EF_DEVIL;
+				next;
+				specialeffect2 EF_COIN;
+				next;
+				specialeffect2 EF_SIGHTRASHER;
+				next;
+				mes "[المفتول]";
+				mes "ها قد انتهينا، يجب أن تتمكن";
+				mes "من حمل المزيد من الأغراض معك.";
+				mes "لنر، يمكننا زيادة";
+				mes "قدرة حمل العناصر لديك";
+				mes "^FF00000" + .@remain_carry + "^000000 مرات أخرى إذا واصلنا";
+				mes "التدرب معا بهذه الطريقة.";
+				delitem 7776,1; //Max_Weight_Up_Scroll
+				set gympassmemory,.@add_carry;
+				skill "ALL_INCCARRY",.@add_carry,SKILL_PERM_GRANT;
+				close;
+			}
+			else {
+				mes "[المفتول]";
+				mes "يا صاح، ماذا قلت لك؟";
+				mes "عليك أن تحضر لي";
+				mes "^FF0000بطاقة النادي الرياضي^000000 إذا أردت";
+				mes "أن تتمرن، وتقوي عضلات";
+				mes "حمل العناصر لديك.";
+				close;
+			}
+		}
+		else {
+			mes "[المفتول]";
+			mes "يا صاح، لا أظن أننا نستطيع";
+			mes "تقوية عضلات حمل العناصر";
+			mes "لديك أكثر من ذلك.";
+			mes "سيكون الأمر خطيرا جدا على";
+			mes "جسدك لو حاولنا حتى! هيا،";
+			mes "لقد أخبرتك عن الحدود.";
+			close;
+		}
+	case 2:
+		mes "[المفتول]";
+		mes "آه، هذا مؤسف.";
+		mes "حسنا، عد إذا";
+		mes "غيرت رأيك. أخبر";
+		mes "أصدقاءك عني:";
+		mes "إن كانوا مترهلين، فسأساعدهم";
+		mes "على استعادة لياقتهم.";
+		close;
+	case 3:
+		if (gympassmemory > 0) {
+			mes "[المفتول]";
+			mes "ماذا حدث؟";
+			mes "هل تركت عضلات حمل العناصر";
+			mes "لديك تضعف وتضمر؟ من حسن";
+			mes "حظك أن هناك شيئا يسمى";
+			mes "ذاكرة العضلات. لن يستغرق";
+			mes "بناؤها من جديد وقتا طويلا...";
+			next;
+			specialeffect2 EF_EARTHSPIKE;
+			next;
+			specialeffect2 EF_DEVIL;
+			next;
+			specialeffect2 EF_COIN;
+			next;
+			specialeffect2 EF_SIGHTRASHER;
+			next;
+			mes "[المفتول]";
+			mes "ما رأيك بهذا؟";
+			mes "لقد عادت عضلات";
+			mes "حمل العناصر لديك،";
+			mes "هكذا بكل بساطة! حاول ألا";
+			mes "تضعف مرة أخرى، حسنا؟";
+			skill "ALL_INCCARRY",gympassmemory,SKILL_PERM_GRANT;
+			close;
+		}
+		else {
+			mes "[المفتول]";
+			mes "اممم...";
+			mes "نحن لم نتدرب";
+			mes "معا من قبل.";
+			mes "أنا متأكد من ذلك.";
+			close;
+		}
+	}
+}

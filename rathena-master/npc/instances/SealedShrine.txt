@@ -1,0 +1,1491 @@
+//===== rAthena Script ======================================= 
+//= Sealed Shrine
+//===== By: ================================================== 
+//= L0ne_W0lf
+//===== Current Version: ===================================== 
+//= 2.3
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Seal away the Great Demon Baphomet.
+//===== Additional Comments: ================================= 
+//= 1.0 First version. [L0ne_W0lf]
+//= 1.1 Added setquest for instance cooldown. [L0ne_W0lf]
+//= 1.2 Fixed Torch#12 not being disabled. (bugreport:4044) [L0ne_w0lf]
+//= 1.3 Fixed cutins not being removed. (bugreport:4117) [L0ne_w0lf]
+//= 1.4 Fixed some typos. [Gepard]
+//= 1.5 Fixed not being able to enter dungeon for the first two hours.
+//= 1.6 Players should be able to re-take the quest after 12 hours now.
+//=     Changed quest 3046 to 3040. This is the correct quest id.
+//=     Removed checking quest 3045, unofficial check.
+//= 1.7 Fixed a checkquest condition never setting quest. [L0ne_W0lf]
+//= 1.8 Added 'instance_check_party' command to the script for proper checking if
+//=     the invoking party meets the requirements to join the Memorial Dungeon.
+//= 1.9 Fixed broken else/if chaining. [Joseph]
+//= 2.0 Some optimization. [Euphy]
+//= 2.1 Fixed quest being removed before the 12 hours cool down. [Joseph]
+//= 2.2 Removed extra setquest (quest id:3040).	[Joseph]
+//= 2.3 Instance system rewrite. [Euphy]
+//============================================================ 
+
+// Sealed Catacomb Entrance
+//============================================================
+monk_test,309,146,3	script	الراهب باتريك#edq::Friar Patrick#edq	412,{
+	cutin "ins_cata_pri_n",2;
+	mes "[الراهب باتريك]";
+	mes "لن يدوم السلام في هذا العالم إلى الأبد... فأيدي الشر تمتد إليه من جديد...";
+	next;
+	mes "[الراهب باتريك]";
+	mes "ما الذي أتى بك إلى هذا المكان؟";
+	next;
+	if (countitem(6004) > 0) {
+		set .@doll,1;
+		set .@selection,select("ما هذا المكان؟:أريد الدخول.:عن دمية بافوميت الملعونة.:إلغاء.");
+	}
+	else {
+		set .@selection,select("ما هذا المكان؟:أريد الدخول.:إلغاء.");
+	}
+	switch(.@selection) {
+	case 1:
+		mes "[الراهب باتريك]";
+		mes "هاه... ألا تعرف؟ هذا هو دير القديس كابيتولينا، حيث يتدرب الإخوة الراغبون في الرهبنة ويصلون.";
+		next;
+		mes "[الراهب باتريك]";
+		mes "أما هذا المكان... فكيف أصفه؟ أجل، إنه قبر الشيطان... قبره...";
+		next;
+		mes "[الراهب باتريك]";
+		mes "هنا يرقد الشيطان العظيم الذي دمر هذا العالم ذات يوم.";
+		next;
+		switch(select("أخبرني بالمزيد.:كفى حديثا.")) {
+		case 1:
+			cutin "ins_cata_pri_n",2;
+			mes "[الراهب باتريك]";
+			mes "بافوميت... ذلك هو اسم الشيطان... وأظن أنك سمعت به من قبل.";
+			next;
+			mes "[الراهب باتريك]";
+			mes "تدرب في هذا الدير كثير من المحاربين الشجعان والإخوة...";
+			next;
+			mes "[الراهب باتريك]";
+			mes "تحت شاهدة القبر التي أمامك... يرقد بافوميت مختوما.";
+			next;
+			mes "[الراهب باتريك]";
+			mes "لكن... بينما نتحدث، يحشد شيطان موروك سحره الهائل للتأثير في كل أشكال الحياة على هذه القارة.";
+			next;
+			mes "[الراهب باتريك]";
+			mes "أما بافوميت... فقد استيقظ أيضا، ويستعد للعودة إلى هذا العالم مستغلا قوة شيطان موروك لإضعاف الختم...";
+			next;
+			mes "[الراهب باتريك]";
+			mes "والآن... أبحث عن شخص شجاع بما يكفي ليختم بافوميت من جديد في ضريحه... كما فعلنا قبل سنوات طويلة...";
+			next;
+			mes "[الراهب باتريك]";
+			mes "يعرف كل من يقاتل في سبيل الخير، في أعماقه، أن الشر يهدد باجتياح هذا العالم...";
+			next;
+			mes "[الراهب باتريك]";
+			mes "واصل التدريب واستخدم مهاراتك لحماية العالم من الشر الذي يلوح في الأفق...";
+			break;
+		case 2:
+			cutin "ins_cata_pri_n",2;
+			mes "[الراهب باتريك]";
+			mes "يعرف كل من يقاتل في سبيل الخير، في أعماقه، أن الشر يهدد باجتياح هذا العالم...";
+			next;
+			mes "[الراهب باتريك]";
+			mes "واصل التدريب واستخدم مهاراتك لحماية العالم من الشر الذي يلوح في الأفق...";
+			break;
+		}
+		break;
+	case 2:
+		if (BaseLevel >= 75) {
+
+			set .@party_id,getcharid(1);
+
+			mes "[الراهب باتريك]";
+			mes "أتعني أنك مستعد لدخول الضريح وختم بافوميت من جديد؟";
+			next;
+
+			// 12 hour cooldown
+			set .@ins_bapho_check,checkquest(3040,PLAYTIME);
+			// Two hour play limit
+			//set .@ins_bapho_check2,checkquest(3045,PLAYTIME);
+
+			if (.@ins_bapho_check == -1) {
+				if (is_party_leader(.@party_id) == true && instance_check_party(.@party_id,2,75)) {
+					mes "[الراهب باتريك]";
+					mes "اسم المجموعة: "+getpartyname(.@party_id)+"...";
+					mes "قائد المجموعة: "+strcharinfo(0)+"...";
+					if (instance_create("Sealed Catacomb") < 0) {
+						mes "همم... يبدو أن هناك مشكلة... سأتحقق من الأمر حالا. أرجو الانتظار.";
+					}
+					else {
+						mes "حسنا... سأهيئ ختم الضريح لتتمكن أنت ومجموعتك من الدخول.";
+						next;
+						mes "[الراهب باتريك]";
+						mes "ستظهر علامة عند انفتاح الختم. انتظر حتى تراها...";
+						next;
+						mes "[الراهب باتريك]";
+						mes "عندما ترى العلامة، ضع يديك على شاهدة القبر... وعندها يمكنك الانتقال إلى الداخل.";
+						next;
+						mes "[الراهب باتريك]";
+						mes "هناك أمر يجب أن تتذكره... سيصاب كل من يدخل هذا الضريح بلعنة بافوميت، ولن يستطيع دخوله أو مغادرته ما دامت اللعنة عليه.";
+						next;
+						mes "[الراهب باتريك]";
+						mes "وهناك أمر آخر... بسبب تأثير الختم في هذه المنطقة الملعونة، تحظر بعض المهارات التي توفر حماية بقوة خارجية.";
+						next;
+						mes "[الراهب باتريك]";
+						mes "ومن أمثلتها مهارتا ^0000FFجدار الأمان وأسومبتيو^000000... لذا استعد جيدا قبل دخول الضريح.";
+					}
+				}
+				else {
+					mes "[الراهب باتريك]";
+					mes "همم... أقدر شجاعتك، لكنني لا أستطيع السماح لأي شخص بالدخول أولا سوى قائد المجموعة.";
+					next;
+					mes "[الراهب باتريك]";
+					mes "حالما يؤذن لقائد المجموعة، يستطيع بقية أعضائها الدخول. هذه قاعدة الدير، فأرجو أن تتفهم.";
+				}
+			}
+			else if (.@ins_bapho_check == 0 || .@ins_bapho_check == 1) {
+				mes "[الراهب باتريك]";
+				mes "يبدو أنك دخلت هذا الضريح مؤخرا... لا يمكنك الدخول مجددا لأن لعنة بافوميت ما زالت باقية. لا تختفي لعنة بافوميت إلا بعد مرور مدة معينة.";
+			}
+			else if (.@ins_bapho_check == 2) {
+				mes "[الراهب باتريك]";
+				mes "همم... يبدو أن لعنة بافوميت قد ضعفت. يمكنني إزالتها الآن.";
+				next;
+				mes "[الراهب باتريك]";
+				mes "هااااااب... هوكس بوكس وينغارديوم أبراكادابرا!!!!!";
+				next;
+				erasequest 3040;
+				if (checkquest(3041)>=0) erasequest 3041;
+				if (checkquest(3045)>=0) erasequest 3045;
+				mes "[الراهب باتريك]";
+				mes "هوو... انتهى الأمر. الآن بعد أن أزلت لعنة بافوميت، يمكنك الدخول مجددا.";
+			}
+		}
+		else {
+			mes "[الراهب باتريك]";
+			mes "همم... عليك أن تتدرب أكثر قبل دخول هذا المكان الخطير... يجب أن تبلغ المستوى 75 على الأقل.";
+			next;
+			mes "[الراهب باتريك]";
+			mes "تدرب أكثر ثم عد إلي.";
+		}
+		break;
+	case 3:
+		if (.@doll == 1) {
+			mes "[الراهب باتريك]";
+			mes "هذه هي... الدمية الشريرة التي تحملها... دعني أراها.";
+			next;
+			mes "[الراهب باتريك]";
+			mes "... ... ...";
+			next;
+			mes "[الراهب باتريك]";
+			mes "هذا صحيح... أستطيع أن أشعر بشر بافوميت بداخلها... إذن، ماذا ستفعل بهذه الدمية؟";
+			next;
+			mes "[الراهب باتريك]";
+			mes "ستبقى مجرد دمية خطيرة عديمة النفع إن لم تفعل بها شيئا... سأدلك على شخص يستطيع مساعدتك... أتريد مقابلته؟";
+			next;
+			mes "[الراهب باتريك]";
+			mes "اذهب إلى ^0000FFراست بلاك هاند^000000 قرب المبنى الرئيسي للدير... فهو يعرف كيف يحول هذه الدمية إلى شيء نافع.";
+			setquest 3042;
+			break;
+		}
+	case 4:
+		mes "[الراهب باتريك]";
+		mes "يعرف كل من يقاتل في سبيل الخير، في أعماقه، أن الشر يهدد باجتياح هذا العالم...";
+		next;
+		mes "[الراهب باتريك]";
+		mes "واصل التدريب واستخدم مهاراتك لحماية العالم من الشر الذي يلوح في الأفق...";
+		break;
+	}
+	close2;
+	cutin "",255;
+	end;
+}
+
+monk_test,306,151,3	script	قبر بافوميت#edq::Grave of Baphomet#edq	111,{
+	if (countitem(6002)) delitem 6002,countitem(6002); //Token_Of_Apostle
+	mes "على شاهدة القبر هذه نقش لشيطان شرير ذي قرون كبيرة. إنها تثير شعورا مشؤوما.";
+	next;
+	if(select("المس شاهدة القبر.:تراجع.") == 2)
+		close;
+
+	// 12 hour cooldown
+	set .@ins_bapho_check,checkquest(3040,PLAYTIME);
+	// Two hour play limit
+	//set .@ins_bapho_check2,checkquest(3045,PLAYTIME);
+
+	if (.@ins_bapho_check == -1) {
+		switch(instance_enter("Sealed Catacomb")) {
+		case IE_OTHER:
+		case IE_NOINSTANCE:
+			mes "ملمسه بارد. لا يستجيب.";
+			close;
+		case IE_NOMEMBER:
+			mes "[الراهب باتريك]";
+			mes "لدخول هذا المكان الخطير، لا يمكنك الذهاب وحدك. عد مرة أخرى بعد أن تنضم إلى مجموعة.";
+			close;
+		case IE_OK:
+			mapannounce "monk_test","دخل [" + strcharinfo(0) + "]، عضو مجموعة [" + getpartyname(.@party_id) + "]، إلى الضريح المختوم.",bc_map,"0x00ff99";
+			setquest 3040;
+			//warp "1@cata",100,224;
+			close;
+		}
+	} else if (.@ins_bapho_check == 0 || .@ins_bapho_check == 1) {
+		mes "[الراهب باتريك]";
+		mes "يبدو أنك دخلت هذا الضريح مؤخرا... لا يمكنك الدخول مجددا لأن لعنة بافوميت ما زالت باقية.";
+		mes "تختفي لعنة بافوميت بعد مضي مدة معينة على دخولك.";
+		close;
+	} else if (.@ins_bapho_check == 2) {
+		mes "[الراهب باتريك]";
+		mes "همم... يبدو أن لعنة بافوميت قد ضعفت. سأزيل آثارها عنك.";
+		next;
+		mes "[الراهب باتريك]";
+		mes "هااااااب... وينغارديوم ليفيوسا إكسبكتو باترونوم !!!!!";
+		specialeffect2 EF_HOLYHIT;
+		erasequest 3040;
+		if (checkquest(3041)>=0) erasequest 3041;
+		if (checkquest(3045)>=0) erasequest 3045;
+		next;
+		mes "[الراهب باتريك]";
+		mes "هوو... انتهى الأمر. لقد أزلت لعنة بافوميت عنك، ويمكنك الدخول مجددا.";
+		close;
+	}
+}
+
+prt_monk,261,91,3	script	راست بلاك هاند#edq::Rust Blackhand#edq	826,{
+	set .@new_maje,checkquest(3043);
+	mes "[راست بلاك هاند]";
+	mes "من أنت؟ وماذا تريد مني؟";
+	next;
+	mes "[راست بلاك هاند]";
+	mes "لست راهبا، فما الذي تريده؟";
+	next;
+	if (.@new_maje == 0 || .@new_maje == 1) {
+		mes "[راست بلاك هاند]";
+		mes "هل أحضرت كل المكونات؟";
+		next;
+		if ((countitem(6004) > 0) && (countitem(2256) > 0) && (countitem(7799) > 29) && (countitem(7798) > 49) && (Zeny > 990000)) {
+			mes "[راست بلاك هاند]";
+			mes "كه كه كه... أحضرت المكونات كلها. ضعها هنا وانتظر قليلا.";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "همم... مضى زمن طويل منذ رأيت تلك القرون المشؤومة... كه كه كه... لنبدأ...";
+			next;
+			mes "...";
+			next;
+			mes "... ...";
+			next;
+			mes "... ... ...";
+			next;
+			delitem 6004,1; //Bapho_Doll
+			delitem 2256,1; //Magestic_Goat
+			delitem 7799,30; //Dark_Crystal
+			delitem 7798,50; //Dark_Debris
+			set Zeny, Zeny-990000;
+			completequest 3043;
+			getitem 5374,1; //L_Magestic_Goat
+			mes "[راست بلاك هاند]";
+			mes "تم الأمر. لا شك أنك متحمس. أنا أتفهم ذلك...";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "لا أقبل الشكاوى أو طلبات الصيانة، فاستعملها بعناية. علي أن أذهب...";
+			close;
+		}
+		else {
+			mes "[راست بلاك هاند]";
+			mes "هوو... لم تفهم ما قلته. لا أستطيع صنع شيء بهذه المكونات الناقصة.";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "سأذكر لك المكونات مرة أخرى، فاجمعها كاملة.";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "^0000FFدمية بافوميت الملعونة، وقرون الماعز المهيبة، و30 كريستال الظلام، و50 شظية الظلام^000000، والأهم ^0000FF990,000^000000 زيني أجرة للتصنيع.";
+			close;
+		}
+	}
+	else if ((.@new_maje == -1) && (countitem(6004) > 0)) {
+		switch(select("عن دمية بافوميت الملعونة:توقف عن الكلام.")) {
+		case 1:
+			mes "[راست بلاك هاند]";
+			mes "ماذا؟... هممم... حصلت على الدمية؟ أنت أمهر مما يوحي به مظهرك...";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "دعني أرى... لا بد أن باتريك أرسلك إلي للتعامل مع الدمية، أليس كذلك؟";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "جيد... سأساعدك على تحويل هذه الدمية الشريرة إلى شيء نافع. ماذا؟ أتسأل عما أستطيع فعله؟";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "أستطيع أن أصنع لك خوذة من قرون الشيطان الشرير بافوميت، تحمل شيئا من قوته الهائلة.";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "تسمى هذه الخوذة ^4d4dffقرون الماعز المهيبة العملاقة^000000. وستدرك أن قرون الماعز المهيبة العادية لا تقارن بها.";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "دمية بافوميت الملعونة هي أهم المكونات... سأصنع الخوذة لك إن أردت. فما قرارك؟";
+			next;
+			switch(select("أريد واحدة!:لا أحتاج إليها.")) {
+			case 1:
+				mes "[راست بلاك هاند]";
+				mes "كه كه كه... الحكيم يغتنم الفرصة حين تسنح. سأذكر لك المكونات، فلا تنس شيئا منها.";
+				next;
+				mes "[راست بلاك هاند]";
+				mes "^0000FFدمية بافوميت الملعونة، وقرون الماعز المهيبة، و30 كريستال الظلام، و50 شظية الظلام^000000، والأهم ^0000FF990,000^000000 زيني أجرة للتصنيع.";
+				next;
+				mes "[راست بلاك هاند]";
+				mes "يمكنك الحصول على قرون الماعز المهيبة من بافوميت الأضعف في غابة المتاهة، أما كريستال الظلام وشظية الظلام فتحصل عليهما من تجسدات موروك.";
+				next;
+				mes "[راست بلاك هاند]";
+				mes "أنا واثق بأنك تستطيع جمعها، فقد تمكنت من ختم بافوميت الحقيقي. أليس كذلك؟ كه كه كه...";
+				next;
+				mes "[راست بلاك هاند]";
+				mes "لن تدرك قيمة هذه الخوذة حتى تحصل عليها. إن فهمت، فاذهب واجمع المكونات.";
+				if (isbegin_quest(3042))
+					changequest 3042,3043;
+				else
+					setquest 3043;
+				close;
+			case 2:
+				mes "[راست بلاك هاند]";
+				mes "هاه... كما تشاء. أتريد حقا إضاعة هذه الفرصة؟";
+				next;
+				mes "[راست بلاك هاند]";
+				mes "تس، تس... لا يهمني إن ظلت الدمية الشريرة تهدد حياتك!";
+				close;
+			}
+		case 2:
+			mes "[راست بلاك هاند]";
+			mes "يا له من شخص ممل... هاه...";
+			close;
+		}
+	}
+	else if ((.@new_maje == -1) && (countitem(6004) == 0)) {
+		mes "[راست بلاك هاند]";
+		mes "إن لم يكن لديك عمل معي، فارحل! كما ترى، أنا أصنع المعدات للإخوة في الدير، لا للمغامرين أمثالك. هل تفهم؟";
+		close;
+	}
+	else if ((.@new_maje == 2) && (countitem(6004) > 0)) {
+		switch(select("عن دمية بافوميت الملعونة:توقف عن الكلام.")) {
+		case 1:
+			mes "[راست بلاك هاند]";
+			mes "ماذا؟... أنت مجددا؟ ما الذي تريده هذه المرة؟";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "ماذا؟ حصلت على دمية أخرى من ذلك الشيطان الشرير؟ همم... أنت أفضل بكثير مما ظننت...";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "حسنا... سأساعدك مرة أخرى.";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "إن أردت تحويل الدمية إلى ^4d4dffقرون الماعز المهيبة العملاقة^000000 مجددا، أستطيع صنع خوذة أخرى لك.";
+			next;
+			mes "[راست بلاك هاند]";
+			mes "سأذكر لك المكونات مجددا. فهل تريد صنع خوذة أخرى؟";
+			next;
+			switch(select("نعم، أريد واحدة.:لا، لست مهتما.")) {
+			case 1:
+				mes "[راست بلاك هاند]";
+				mes "كه كه كه... الحكيم يغتنم الفرصة حين تسنح. سأذكر لك المكونات، فلا تنس شيئا منها.";
+				next;
+				mes "[راست بلاك هاند]";
+				mes "^0000FFدمية بافوميت الملعونة، وقرون الماعز المهيبة، و30 كريستال الظلام، و50 شظية الظلام^000000، والأهم ^0000FF990,000^000000 زيني أجرة للتصنيع.";
+				next;
+				mes "[راست بلاك هاند]";
+				mes "يمكنك الحصول على قرون الماعز المهيبة من بافوميت الأضعف في غابة المتاهة، أما كريستال الظلام وشظية الظلام فتحصل عليهما من تجسدات موروك.";
+				next;
+				mes "[راست بلاك هاند]";
+				mes "أنا واثق بأنك تستطيع جمعها، فقد تمكنت من ختم بافوميت الحقيقي. أليس كذلك؟ كه كه كه...";
+				next;
+				mes "[راست بلاك هاند]";
+				mes "لن تدرك قيمة هذه الخوذة حتى تحصل عليها. إن فهمت، فاذهب واجمع المكونات.";
+				//recall_completequest 3043
+				if (isbegin_quest(3042))
+					changequest 3042,3043;
+				else {
+					erasequest 3043;
+					setquest 3043;
+				}
+				close;
+			case 2:
+				mes "[راست بلاك هاند]";
+				mes "هاه... كما تشاء. أتريد حقا إضاعة هذه الفرصة؟";
+				next;
+				mes "[راست بلاك هاند]";
+				mes "تس، تس... لا يهمني إن ظلت الدمية الشريرة تهدد حياتك!";
+				close;
+			}
+		case 2:
+			mes "[راست بلاك هاند]";
+			mes "يا له من شخص ممل... هاه...";
+			close;
+		}
+	}
+	else if ((.@new_maje == 2) && (countitem(6004) == 0)) {
+		mes "[راست بلاك هاند]";
+		mes "لماذا تتسكع هنا؟ إن لم تكن تريد ^4d4dffقرون الماعز المهيبة العملاقة^000000، فارحل.";
+		close;
+	}
+}
+
+// Sealed Shrine Interior
+//============================================================
+1@cata,1,2,0	script	ins_baphomet_lotto	-1,{
+OnInstanceInit:
+	// Pick one "true" Gravestone and 12 "false" Gravestones.
+	set .@true, rand(1,13);
+	for(set .@i,1; .@i<=13; set .@i,.@i+1) {
+		disablenpc instance_npcname("Gravestone#1F_"+.@i+((.@i == .@true)?"T":"F"));
+	}
+	disablenpc instance_npcname("ins_baphomet_lotto");
+	end;
+}
+
+1@cata,3,2,0	script	ins_baphomet_lotto2	-1,{
+OnEnable:
+	for(set .@i,1; .@i<=12; set .@i,.@i+1)
+		enablenpc instance_npcname("Bobbing Torch#"+.@i);
+	end;
+}
+
+1@cata,4,2,0	script	ins_baphomet_lotto3	-1,{
+OnEnable:
+	set .@label$, instance_npcname("ins_baphomet_lotto3")+"::OnMyMobDead";
+	set .@map$, instance_mapname("1@cata");
+	monster .@map$,0,0,"رسول بافوميت",1869,1,.@label$;
+	monster .@map$,0,0,"شبح ميت",1291,1,.@label$;
+	monster .@map$,0,0,"رسول بافوميت",1869,1,.@label$;
+	monster .@map$,0,0,"شبح ميت",1291,1,.@label$;
+	monster .@map$,0,0,"رسول بافوميت",1869,1,.@label$;
+	monster .@map$,0,0,"شبح ميت",1291,1,.@label$;
+	monster .@map$,0,0,"رسول بافوميت",1869,1,.@label$;
+	monster .@map$,0,0,"رسول بافوميت",1132,1,.@label$;
+	monster .@map$,0,0,"درويد شرير",1117,1,.@label$;
+	monster .@map$,0,0,"رسول بافوميت",1132,1,.@label$;
+	monster .@map$,0,0,"درويد شرير",1117,1,.@label$;
+	monster .@map$,0,0,"رسول بافوميت",1132,1,.@label$;
+	monster .@map$,0,0,"شبح ميت",1291,1,.@label$;
+	monster .@map$,0,0,"درويد شرير",1117,1,.@label$;
+	monster .@map$,0,0,"رسول بافوميت",1869,1,.@label$;
+	end;
+
+OnDisable:
+	killmonster instance_mapname("1@cata"),instance_npcname("ins_baphomet_lotto3")+"::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	set .@map$, instance_mapname("1@cata");
+	if (mobcount(.@map$,instance_npcname("ins_baphomet_lotto3")+"::OnMyMobDead") < 1) {
+		mapannounce .@map$, "قضي على جميع رسل بافوميت!",bc_map,"0x00ff99";
+	}
+	getitem 6002,1; //Token_Of_Apostle
+	end;
+}
+
+// Soul of hero near the north grave
+//============================================================
+1@cata,141,221,0	script	شاهد قبر#::Gravestone#	844,3,3,{
+	set .@party_id,getcharid(1);
+	if ('ins_baphomet == 0) {
+		mes "ترتجف شاهدة القبر...";
+		next;
+		mes "عندما ألمس شاهدة القبر، أسمع صوتا.";
+		next;
+		specialeffect2 EF_CONE;
+		mes "[صوت شاهدة القبر]";
+		mes "طال انتظاري لمغامر شجاع مثلك يعود إلى هذا المكان...";
+		next;
+		while(1) {
+			switch(select("من أنت؟:هل كنت تنتظرني؟:إلغاء.")) {
+			case 1:
+				mes "[صوت شاهدة القبر]";
+				mes "كنت، مثلك، أحد المحاربين الذين تصدوا لبافوميت. والآن مت، ولم يبق مني سوى روحي...";
+				next;
+				mes "[صوت شاهدة القبر]";
+				mes "كما تعلم... لا نملك الكثير من الوقت. لا يمكنكم إيقاف بافوميت وحدكم. لقد ازدادت قوة الشيطان عبر السنين.";
+				next;
+				mes "[صوت شاهدة القبر]";
+				mes "في الماضي، تمكنت أنا ورفاقي من ختم بافوميت عند مذبح الطابق السفلي الثاني، ثم أغلقنا المدخل.";
+				next;
+				mes "[صوت شاهدة القبر]";
+				mes "أودعت جوهر روحي في قلادتي كي أبقى في هذا العالم، ومنذ ذلك الحين صرت حارس هذا القبر.";
+				next;
+				break;
+			case 2:
+				mes "[صوت شاهدة القبر]";
+				mes "قوة بافوميت على وشك تحطيم الأختام التي صنعناها. إن لم تعيدوا تفعيلها... فلن تكون عودته سوى مسألة وقت.";
+				next;
+				mes "[صوت شاهدة القبر]";
+				mes "لكي أفتح المدخل، يجب أن تتجسد روحي. وبعد أن أتجسد، سأفتح الطريق وأعيد تفعيل الأختام التي ضعفت.";
+				next;
+				mes "[صوت شاهدة القبر]";
+				mes "كي تتجسد روحي، عليك العثور على قلادتي. ستجد جسدي قرب أحد القبور هنا.";
+				next;
+				mes "[صوت شاهدة القبر]";
+				mes "إذا أحضر ^0000FFقائد مجموعتك^000000 القلادة إلي، فسأتمكن من التجسد. لذا أسرع.";
+				set 'ins_baphomet,1;
+				close;
+			case 3:
+				mes "أشعر بأن الصوت يخفت تدريجيا.";
+				close;
+			}
+		}
+	}
+	else if ('ins_baphomet == 1) {
+		mes "[صوت شاهدة القبر]";
+		mes "لكي أفتح المدخل، يجب أن تتجسد روحي. وبعد أن أتجسد، سأفتح الطريق وأعيد تفعيل الأختام التي ضعفت.";
+		next;
+		mes "[صوت شاهدة القبر]";
+		mes "كي تتجسد روحي، عليك العثور على قلادتي. ستجد جسدي قرب أحد القبور هنا.";
+		next;
+		mes "[صوت شاهدة القبر]";
+		mes "إذا أحضر ^0000FFقائد مجموعتك^000000 القلادة إلي، فسأتمكن من التجسد. لذا أسرع.";
+		close;
+	}
+	else if (('ins_baphomet == 2) && is_party_leader(.@party_id) == true) {
+		mes "[صوت شاهدة القبر]";
+		mes "هل وجدت القلادة؟";
+		next;
+		if (countitem(6003) > 0) {
+			specialeffect EF_MAPPILLAR;
+			mes "[صوت شاهدة القبر]";
+			mes "نعم... هذه هي... قلادتي...";
+			next;
+			delitem 6003,1; //Soul_Pendant
+			enablenpc instance_npcname("Ancient Hero's Soul#1F");
+			disablenpc instance_npcname("Gravestone#");
+			mes "[صوت شاهدة القبر]";
+			mes "الآن أستطيع التجسد. سأنتظرك أمام مذبح النار في وسط هذا المكان. لنلتق هناك.";
+			next;
+			mapannounce instance_mapname("1@cata"), "روح البطل القديم: سأنتظرك أمام مذبح النار في وسط المكان.",bc_map,"0xFFFF00";
+			mes "أشعر بأن الصوت يخفت تدريجيا.";
+			close;
+		}
+		else {
+			mes "[صوت شاهدة القبر]";
+			mes "أما زلت هنا؟ أحضر قلادتي في أسرع وقت.";
+			next;
+			mes "[صوت شاهدة القبر]";
+			mes "يمكنك أن تجد جسدي قرب قبر هنا. اذهب وخذ قلادتي من هناك.";
+			close;
+		}
+	}
+	else {
+		mes "[صوت شاهدة القبر]";
+		mes "أريد التحدث إلى ^0000FFممثل مجموعتكم^000000. أما الآخرون فلينتظروا هنا.";
+		close;
+	}
+	end;
+
+OnTouch:
+	if ('ins_baphomet == 0) {
+		mes "'كررر... كررر...'";
+		next;
+		mes "أشعر بشيء غريب عند القبر. كأن شخصا يناديني بصمت...";
+		close;
+	}
+	end;
+
+OnInstanceInit: // Temporary fix for @reloadscript.
+	set 'ins_baphomet,0;
+	end;
+}
+
+1@cata,176,119,4	script	روح البطل القديم#1F::Ancient Hero's Soul#1F	411,{
+	set .@party_id,getcharid(1);
+	cutin "ins_cata_champ_n",2;
+	if ('ins_baphomet == 2) {
+		mes "[روح البطل القديم]";
+		mes "بفضل مساعدتك، تمكنت روحي من التجسد. وددت لو تحدثنا أكثر، لكن وقتنا ضيق...";
+		next;
+		mes "[روح البطل القديم]";
+		mes "لن تستطيع روحي الاحتفاظ بهذه الهيئة لأكثر من ساعة. وللوصول إلى المذبح الرئيسي تحت الأرض، عليك مساعدتي في إتمام طقوس فتح الأختام.";
+		next;
+		mes "[روح البطل القديم]";
+		mes "والآن سأخبرك بما يجب أن تفعله. أولا، اجمع ^0000FFجوهر النار^000000 من المشاعل الموجودة على القبور...";
+		next;
+		mes "[روح البطل القديم]";
+		mes "ثانيا، يجب أن يحمل كل من سيدخل باطن الضريح رمزا يسمى ^0000FFرمز الرسول^000000.";
+		next;
+		while(1) {
+			cutin "ins_cata_champ_n",2;
+			switch(select("ما جوهر النار؟:ما رمز الرسول؟:ماذا علي أن أفعل؟:أنا جاهز.")) {
+			case 1:
+				set .@ins_baphomet_1f_1,.@ins_baphomet_1f_1+1;
+				mes "[روح البطل القديم]";
+				mes "ترى المشاعل منتشرة هنا وهناك. إنها تحمل جوهر قوة ثور، إله الرعد، وقد ورثناها عن أسلافنا لصد ظلام بافوميت...";
+				next;
+				mes "[روح البطل القديم]";
+				mes "لفتح البوابة المختومة المؤدية إلى باطن الضريح، يجب أن أتطهر بـ^0000FFجوهر النار^000000 الحامل لقوة ثور. اجمع ^0000FF10 وحدات من جوهر النار^000000 من المشاعل.";
+				next;
+				mes "[روح البطل القديم]";
+				mes "تذكر أمرا مهما... لا يستطيع جمع ^0000FFجوهر النار^000000 سوى وارث الإيمان.";
+				next;
+				mes "[روح البطل القديم]";
+				mes "سأمنح قائد المجموعة علامة وارث الإيمان، فهو وحده من يستطيع جمع ^0000FFجوهر النار^000000.";
+				next;
+				break;
+			case 2:
+				set .@ins_baphomet_1f_2,.@ins_baphomet_1f_2+1;
+				mes "[روح البطل القديم]";
+				mes "في ذلك الوقت، كان من المستحيل علينا التخلص من الشيطان بافوميت وحدنا. بعد أن ضحى أبطال كثيرون بحياتهم، بالكاد استطعنا ختمه تحت هذا الدير.";
+				next;
+				mes "[روح البطل القديم]";
+				mes "لكن بافوميت لم يستسلم أبدا. ظل يقوي قدرته باستمرار. وبعثت قوته حياة جديدة داخل هذا الضريح.";
+				next;
+				mes "[روح البطل القديم]";
+				mes "تملك بعض هذه الوحوش قوى سحرية، ويطلق عليها بافوميت اسم رسله.";
+				next;
+				mes "[روح البطل القديم]";
+				mes "يستنسخ الرسل أنفسهم ليملؤوا الضريح بطاقتهم الشريرة. وهم الوحوش التي تجوب هذه السراديب.";
+				next;
+				mes "[روح البطل القديم]";
+				mes "اقض على الرسل. ولن تميز الرسول الحقيقي من نسخه إلا بـ^0000FFرمز الرسول^000000 الذي يحمله...";
+				next;
+				mes "[روح البطل القديم]";
+				mes "إذا حمل كل عضو في المجموعة ^0000FFرمز الرسول^000000، فلن يتمكن بافوميت من استشعار دخولكم إلى المذبح الرئيسي تحت الأرض.";
+				next;
+				mes "[روح البطل القديم]";
+				mes "إذا أدرك بافوميت وجودكم عند مروركم عبر البوابة المختومة، فقد يطلق قوته السحرية الهائلة. عندها سيدمر هذا الدير.";
+				next;
+				mes "[روح البطل القديم]";
+				mes "اقض على الرسل وانتزع منهم ^0000FFرمز الرسول^000000.";
+				next;
+				break;
+			case 3:
+				set .@ins_baphomet_1f_3,.@ins_baphomet_1f_3+1;
+				if (is_party_leader(.@party_id) == true) {
+					mes "[روح البطل القديم]";
+					mes "يبدو أنك قائد هذه المجموعة. عليك جمع ^0000FF10 وحدات من جوهر النار^000000 من المشاعل.";
+					next;
+					mes "[روح البطل القديم]";
+					mes "الآن سأنقش عليك علامة تثبت أنك وارث الإيمان. واعلم أن أحدا من مجموعتك سواك لا يستطيع جمع جوهر النار.";
+					next;
+					specialeffect2 EF_HOLYHIT;
+					mes "[روح البطل القديم]";
+					mes "وعليك أيضا حمل ^0000FFرمز الرسول^000000، فاعثر على واحد لنفسك.";
+					next;
+					mes "[روح البطل القديم]";
+					mes "عندما تكونون جميعا جاهزين للذهاب، أخبرني. سأفتح البوابة المختومة عندما تكونون مستعدين.";
+					next;
+				}
+				else {
+					mes "[روح البطل القديم]";
+					mes "تأكد من أن قائد مجموعتك قد استمع إلى شرحي لما يجب أن تفعله أنت ورفاقك.";
+					next;
+					mes "[روح البطل القديم]";
+					mes "اقض على رسل بافوميت وابحث عن ^0000FFرموز الرسل^000000 التي يحملونها.";
+					next;
+					mes "[روح البطل القديم]";
+					mes "قد يكون من الأفضل قتلهم جميعا لأنه لا توجد طريقة لتمييزهم عن نسخهم.";
+					next;
+					mes "[روح البطل القديم]";
+					mes "هل أنت جاهز؟";
+					mes "تأكد من أنك استمعت إلى كل ما لدي قبل أن تقول إنك جاهز.";
+					next;
+				}
+				break;
+			case 4:
+				if ((.@ins_baphomet_1f_1 > 0) && (.@ins_baphomet_1f_2 > 0) && (.@ins_baphomet_1f_3 > 0)) {
+					cutin "ins_cata_champ_n",2;
+					mes "[روح البطل القديم]";
+					mes "هل أنت جاهز للذهاب؟ إذن سأفتح هذه البوابة المختومة الآن.";
+					next;
+					set .@exitloop,1;
+				}
+				else {
+					cutin "ins_cata_champ_a",2;
+					mes "[روح البطل القديم]";
+					mes "قد يكون الأمر صعبا، لكنني أتمنى لك الحظ في مواجهة أخطار هذه السراديب.";
+					next;
+					mes "[روح البطل القديم]";
+					mes "تذكر: عليك جمع ^0000FF10 وحدات من جوهر النار^000000 من المشاعل، و^0000FFرمز رسول^000000 من رسل بافوميت.";
+					next;
+				}
+				break;
+			}
+			if (.@exitloop) break;
+		}
+		if (is_party_leader(.@party_id) == true) {
+			mes "[روح البطل القديم]";
+			mes "أذكركم بأن روحي لن تحتفظ بهذه الهيئة لأكثر من ساعة، فعلى الجميع إتمام مهمتهم قبل انقضائها!";
+			set 'ins_baphomet,3;
+			donpcevent instance_npcname("ins_baphomet_1f_timer")+"::OnEnable";
+			donpcevent instance_npcname("ins_baphomet_lotto2")+"::OnEnable";
+			donpcevent instance_npcname("ins_baphomet_lotto3")+"::OnEnable";
+		}
+		else {
+			mes "[روح البطل القديم]";
+			mes "أذكرك بأن روحي لن تحتفظ بهذه الهيئة لأكثر من ساعة، فعلى الجميع إتمام مهمتهم قبل انقضائها.";
+			//set 'ins_baphomet,3;
+		}
+		close2;
+		cutin "",255;
+		end;
+	}
+	else if (('ins_baphomet == 3) && is_party_leader(.@party_id) == true) {
+		cutin "ins_cata_champ_n",2;
+		mes "[روح البطل القديم]";
+		mes "هل جمعت ^0000FF10 وحدات من جوهر النار^000000 وحصلت على ^0000FFرمز رسول^000000؟";
+		next;
+		if ((countitem(6001) > 9) && (countitem(6002) > 0)) {
+			delitem 6001,countitem(6001); //Essence_Of_Fire
+			set 'ins_baphomet,4;
+			mes "[روح البطل القديم]";
+			mes "حسنا، أنجزت مهمتك. تفقد حال رفاقك وأخبرني عندما يفرغ الجميع من مهامهم.";
+		}
+		else {
+			mes "[روح البطل القديم]";
+			mes "ألست جاهزا بعد؟ عليك جمع ^0000FF10 وحدات من جوهر النار^000000 والحصول على ^0000FFرمز رسول^000000.";
+		}
+		close2;
+		cutin "",255;
+		end;
+	}
+	else if ('ins_baphomet == 3) {
+		cutin "ins_cata_champ_n",2;
+		mes "[روح البطل القديم]";
+		mes "هل لديك ^0000FFرمز الرسول^000000؟";
+		next;
+		if (countitem(6002) > 0) {
+			set 'ins_baphomet,4;
+			mes "[روح البطل القديم]";
+			mes "حسنا، أنجزت مهمتك. أخبر ممثل مجموعتك أن يتفقد رفاقك ويعود إلي عندما يفرغ الجميع من مهامهم.";
+		}
+		else {
+			mes "[روح البطل القديم]";
+			mes "ألست جاهزا بعد؟ عليك الحصول على ^0000FFرمز رسول^000000.";
+		}
+		close2;
+		cutin "",255;
+		end;
+	}
+	else if (('ins_baphomet == 4) && is_party_leader(.@party_id) == true) {
+		cutin "ins_cata_champ_n",2;
+		mes "[روح البطل القديم]";
+		mes "هل أنت جاهز؟ لقد فتحت البوابة المختومة. ولعبورها، يجب أن تحمل ^0000FFرمز الرسول^000000.";
+		next;
+		set 'ins_baphomet,5;
+		specialeffect EF_TELEPORTATION;
+		enablenpc instance_npcname("ins_bapho_to_2f");
+		donpcevent instance_npcname("ins_baphomet_1f_timer")+"::OnDisable";
+		mes "[روح البطل القديم]";
+		mes "يمكنكم الآن التوجه إلى المذبح الرئيسي في الركن الجنوبي الشرقي من هذا الطابق.";
+		next;
+		mes "[روح البطل القديم]";
+		mes "معركتكم الحقيقية ستبدأ... سأتبعكم قريبا وأجد طريقة لمساعدتكم.";
+		next;
+		mes "[روح البطل القديم]";
+		mes "تقدموا أيها المحاربون.";
+		cutin "",255;
+		mapannounce instance_mapname("1@cata"), "روح البطل القديم: يمكنكم الآن التوجه إلى بوابة المذبح الرئيسي في الجنوب الشرقي.",bc_map,"0xFFFF00";
+		close;
+	}
+	else if ('ins_baphomet == 4) {
+		cutin "ins_cata_champ_n",2;
+		mes "[روح البطل القديم]";
+		mes "هل أنت جاهز؟ لقد فتحت البوابة المختومة. ولعبورها، يجب أن تحمل ^0000FFرمز الرسول^000000.";
+		next;
+		mes "[روح البطل القديم]";
+		mes "سأفتح البوابة المختومة حالما يخبرني ممثل مجموعتكم أنكم جاهزون.";
+		cutin "",255;
+		close;
+	}
+	else if ('ins_baphomet == 5) {
+		cutin "ins_cata_champ_n",2;
+		mes "[روح البطل القديم]";
+		mes "ماذا تفعل؟ مدخل المذبح الرئيسي مفتوح الآن، اذهب وقاتل! المدخل قرب الجهة اليمنى السفلية من هذا الطابق.";
+		cutin "",255;
+		close;
+	}
+	else {
+		cutin "ins_cata_champ_n",2;
+		mes "[روح البطل القديم]";
+		mes "ليس لدي ما أقوله لك...";
+		cutin "",255;
+		close;
+	}
+
+OnInstanceInit:
+	disablenpc instance_npcname("Ancient Hero's Soul#1F");
+	end;
+}
+
+// To 2F Warp
+//============================================================
+1@cata,281,12,0	script	الانتقال إلى الطابق الثاني::ins_bapho_to_2f	45,1,1,{
+OnTouch:
+	if (countitem(6002) > 0) {
+		delitem 6002,countitem(6002); //Token_Of_Apostle
+		set 'ins_baphomet,5;
+		warp instance_mapname("2@cata"),80,144;
+		end;
+	}
+	else {
+		mes "[روح البطل القديم]";
+		mes "أين رمز الرسول الخاص بك؟ أخبرتك أنك تحتاج إليه لعبور هذه البوابة.";
+		close;
+	}
+
+OnInstanceInit:
+	disablenpc instance_npcname("ins_bapho_to_2f");
+	end;
+}
+
+// Gravestones
+//============================================================
+-	script	شاهد قبر#SS1::Gravestone#SS1	-1,{
+	if ('ins_baphomet == 1) {
+		getitem 6003,1; //Soul_Pendant
+		set 'ins_baphomet,2;
+		mes "يلمع جسم صغير تحت قبر مائل.";
+		next;
+		mes "[" + strcharinfo(0) + "]";
+		mes "أظن أن هذه هي القلادة...";
+		close;
+	}
+	else {
+		mes "لا ينبعث من شاهدة القبر هذه سوى إحساس بالكآبة.";
+		close;
+	}
+}
+1@cata,86,214,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_1T::Gravestone#1F_1T	844
+1@cata,200,209,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_2T::Gravestone#1F_2T	844
+1@cata,230,195,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_3T::Gravestone#1F_3T	844
+1@cata,118,182,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_4T::Gravestone#1F_4T	844
+1@cata,193,182,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_5T::Gravestone#1F_5T	844
+1@cata,253,156,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_6T::Gravestone#1F_6T	844
+1@cata,88,154,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_7T::Gravestone#1F_7T	844
+1@cata,127,116,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_8T::Gravestone#1F_8T	844
+1@cata,90,98,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_9T::Gravestone#1F_9T	844
+1@cata,188,84,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_10T::Gravestone#1F_10T	844
+1@cata,244,42,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_11T::Gravestone#1F_11T	844
+1@cata,127,32,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_12T::Gravestone#1F_12T	844
+1@cata,267,30,0	duplicate(Gravestone#SS1)	شاهد قبر#1F_13T::Gravestone#1F_13T	844
+
+-	script	شاهد قبر#SS2::Gravestone#SS2	-1,{
+	mes "لا ينبعث من شاهدة القبر هذه سوى إحساس بالكآبة.";
+	close;
+}
+1@cata,86,214,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_1F::Gravestone#1F_1F	844
+1@cata,200,209,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_2F::Gravestone#1F_2F	844
+1@cata,230,195,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_3F::Gravestone#1F_3F	844
+1@cata,118,182,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_4F::Gravestone#1F_4F	844
+1@cata,193,182,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_5F::Gravestone#1F_5F	844
+1@cata,253,156,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_6F::Gravestone#1F_6F	844
+1@cata,88,154,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_7F::Gravestone#1F_7F	844
+1@cata,127,116,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_8F::Gravestone#1F_8F	844
+1@cata,90,98,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_9F::Gravestone#1F_9F	844
+1@cata,188,84,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_10F::Gravestone#1F_10F	844
+1@cata,244,42,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_11F::Gravestone#1F_11F	844
+1@cata,127,32,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_12F::Gravestone#1F_12F	844
+1@cata,267,30,0	duplicate(Gravestone#SS2)	شاهد قبر#1F_13F::Gravestone#1F_13F	844
+
+// Bobbing Torches
+//============================================================
+-	script	شعلة متمايلة#SS::Bobbing Torch#SS	-1,{
+	if (is_party_leader() == true) {
+		if (('ins_baphomet == 3) && (countitem(6001) < 11)) {
+			mes "تتمايل أمامي شعلة ضخمة تبدو قادرة على إحراق كل شيء.";
+			next;
+			mes "يدفعني وهج النار وحرارتها إلى التراجع... لكنني أتشجع وأمد يدي نحو الشعلة.";
+			next;
+			specialeffect2 EF_HOLYHIT;
+			getitem 6001,1; //Essence_Of_Fire
+			mes "تضيء علامة وارث الإيمان، وتسقط من الشعلة بلورة صغيرة في يدي.";
+			disablenpc();
+			close;
+		}
+		else if (('ins_baphomet == 3) && (countitem(6001) > 10)) {
+			mes "لقد جمعت بالفعل 10 وحدات من جوهر النار، فلا حاجة إلى المزيد.";
+			close;
+		}
+		else {
+			mes "لم تعد بحاجة إلى جمع جوهر النار.";
+			close;
+		}
+	}
+	else {
+		mes "تتمايل أمامي شعلة ضخمة تبدو قادرة على إحراق كل شيء...";
+		next;
+		mes "[صوت مجهول]";
+		mes "لست وارث الإيمان. فلا تدنس جوهر النار بيدين لا توقران حرمته.";
+		specialeffect2 EF_FIRESPLASHHIT;
+		percentheal -50,0;
+		close;
+	}
+
+OnInstanceInit:
+	disablenpc();
+	end;
+}
+1@cata,267,210,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#1::Bobbing Torch#1	844
+1@cata,85,182,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#2::Bobbing Torch#2	844
+1@cata,267,154,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#3::Bobbing Torch#3	844
+1@cata,157,139,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#4::Bobbing Torch#4	844
+1@cata,193,138,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#5::Bobbing Torch#5	844
+1@cata,193,102,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#6::Bobbing Torch#6	844
+1@cata,157,102,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#7::Bobbing Torch#7	844
+1@cata,113,112,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#8::Bobbing Torch#8	844
+1@cata,253,56,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#9::Bobbing Torch#9	844
+1@cata,239,56,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#10::Bobbing Torch#10	844
+1@cata,71,42,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#11::Bobbing Torch#11	844
+1@cata,155,14,0	duplicate(Bobbing Torch#SS)	شعلة متمايلة#12::Bobbing Torch#12	844
+
+1@cata,1,1,0	script	ins_baphomet_1f_timer	-1,{
+OnInstanceInit:
+	disablenpc instance_npcname("ins_baphomet_1f_timer");
+	end;
+
+OnEnable:
+	enablenpc instance_npcname("ins_baphomet_1f_timer");
+	initnpctimer;
+	end;
+
+OnDisable:
+	disablenpc instance_npcname("ins_baphomet_1f_timer");
+	stopnpctimer;
+	end;
+
+OnTimer1800000:
+	mapannounce instance_mapname("1@cata"), "روح البطل القديم : ليس لدينا وقت كاف! أسرعوا!",bc_map,"0xFFFF00";
+	end;
+
+OnTimer2400000:
+	mapannounce instance_mapname("1@cata"), "روح البطل القديم : جسدي يختفي... أسرعوا!",bc_map,"0xFFFF00";
+	end;
+
+OnTimer3000000:
+	mapannounce instance_mapname("1@cata"), "روح البطل القديم : انتهى كل شيء... لا توجد طريقة أخرى سوى انتظار الفرصة التالية...",bc_map,"0xFFFF00";
+	end;
+
+OnTimer3050000:
+	mapannounce instance_mapname("1@cata"), "روح البطل القديم : لقد فشلنا... لكن... ما زالت لدينا فرصة. آمل أن تدربوا أنفسكم حتى يحين الوقت.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer3100000:
+	mapannounce instance_mapname("1@cata"), "لقد فشلت في فتح ختم المذبح الرئيسي.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer3500000:
+	instance_warpall "monk_test",310,150, instance_id();
+	stopnpctimer;
+	end;
+}
+
+2@cata,80,144,0	script	ins_2f_enter	-1,3,3,{
+OnTouch_:
+	donpcevent instance_npcname("ins_2f_enter_broad")+"::OnEnable";
+	disablenpc instance_npcname("ins_2f_enter");
+	end;
+}
+
+2@cata,1,1,0	script	ins_2f_enter_broad	-1,{
+OnInstanceInit:
+OnDisable:
+	disablenpc instance_npcname("ins_2f_enter_broad");
+	end;
+
+OnEnable:
+	enablenpc instance_npcname("ins_2f_enter_broad");
+	initnpctimer;
+	end;
+
+OnTimer10000:
+	mapannounce instance_mapname("2@cata"), "بافوميت : البشر... يتدخلون من جديد...",bc_map,"0xdb7093";
+	end;
+
+OnTimer13000:
+	mapannounce instance_mapname("2@cata"), "رسول بافوميت: إنهم بشر! لقد اقتحم البشر حرمنا!",bc_map,"0xFFFF00";
+	end;
+
+OnTimer16000:
+	mapannounce instance_mapname("2@cata"), "رسول بافوميت: اقتلوا البشر! لا تدعوهم يوقفون عودة سيدنا!",bc_map,"0xFFFF00";
+	end;
+
+OnTimer18000:
+	mapannounce instance_mapname("2@cata"), "رسول بافوميت: أسرعوا وحرروا أختام المذابح! لقد أوشكت عودة سيدنا!",bc_map,"0xFFFF00";
+	stopnpctimer;
+	disablenpc instance_npcname("ins_2f_enter_broad");
+	end;
+}
+
+2@cata,50,67,0	script	slave_left	-1,5,5,{
+OnTouch_:
+	set .@map$, instance_mapname("2@cata");
+	mapannounce .@map$, "رسول بافوميت: اقتلوا البشر! لا تدعوهم يعرقلون عودة سيدنا!",bc_map,"0xFFFF00";
+	monster .@map$,55,67,"رسول بافوميت",1869,1;
+	monster .@map$,51,67,"شبح ميت",1291,1;
+	monster .@map$,58,67,"رسول بافوميت",1292,1;
+	monster .@map$,53,67,"شبح ميت",1291,1;
+	monster .@map$,54,67,"رسول بافوميت",1869,1;
+	monster .@map$,55,67,"شبح ميت",1291,1;
+	monster .@map$,56,67,"درويد شرير",1117,1;
+	monster .@map$,58,66,"رسول بافوميت",1869,1;
+	monster .@map$,56,66,"درويد شرير",1117,1;
+	monster .@map$,60,66,"رسول بافوميت",1132,1;
+	monster .@map$,59,66,"درويد شرير",1117,1;
+	monster .@map$,54,66,"رسول بافوميت",1132,1;
+	monster .@map$,55,66,"رسول بافوميت",1292,1;
+	monster .@map$,56,66,"رسول بافوميت",1132,1;
+	monster .@map$,50,65,"رسول بافوميت",1867,1;
+	monster .@map$,61,65,"رسول بافوميت",1292,1;
+	disablenpc instance_npcname("slave_left");
+	end;
+}
+
+2@cata,109,67,0	script	slave_right	-1,5,5,{
+OnTouch_:
+	set .@map$, instance_mapname("2@cata");
+	mapannounce .@map$, "رسول بافوميت: اقتلوا البشر! لا تدعوهم يعرقلون عودة سيدنا!",bc_map,"0xFFFF00";
+	monster .@map$,105,67,"رسول بافوميت",1869,1;
+	monster .@map$,104,67,"شبح ميت",1291,1;
+	monster .@map$,107,67,"رسول بافوميت",1869,1;
+	monster .@map$,106,67,"شبح ميت",1291,1;
+	monster .@map$,102,67,"رسول بافوميت",1869,1;
+	monster .@map$,103,67,"شبح ميت",1291,1;
+	monster .@map$,103,67,"درويد شرير",1117,1;
+	monster .@map$,109,66,"درويد شرير",1117,1;
+	monster .@map$,108,66,"رسول بافوميت",1132,1;
+	monster .@map$,101,66,"درويد شرير",1117,1;
+	monster .@map$,106,66,"رسول بافوميت",1292,1;
+	monster .@map$,102,66,"رسول بافوميت",1132,1;
+	monster .@map$,104,66,"رسول بافوميت",1292,1;
+	monster .@map$,103,66,"رسول بافوميت",1132,1;
+	monster .@map$,109,65,"رسول بافوميت",1867,1;
+	monster .@map$,108,65,"رسول بافوميت",1292,1;
+	disablenpc instance_npcname("slave_right");
+	end;
+}
+
+2@cata,79,39,0	script	slave_down	-1,5,5,{
+OnTouch_:
+	set .@map$, instance_mapname("2@cata");
+	mapannounce .@map$, "رسول بافوميت: اقتلوا البشر! لا تدعوهم يعرقلون عودة سيدنا!",bc_map,"0xFFFF00";
+	monster .@map$,78,41,"رسول بافوميت",1869,1;
+	monster .@map$,79,42,"شبح ميت",1291,1;
+	monster .@map$,78,46,"رسول بافوميت",1869,1;
+	monster .@map$,81,41,"شبح ميت",1291,1;
+	monster .@map$,81,42,"رسول بافوميت",1869,1;
+	monster .@map$,79,43,"شبح ميت",1291,1;
+	monster .@map$,77,40,"درويد شرير",1117,1;
+	monster .@map$,79,41,"رسول بافوميت",1132,1;
+	monster .@map$,79,42,"درويد شرير",1117,1;
+	monster .@map$,79,43,"رسول بافوميت",1132,1;
+	monster .@map$,79,48,"درويد شرير",1117,1;
+	monster .@map$,78,49,"رسول بافوميت",1132,1;
+	monster .@map$,78,41,"رسول بافوميت",1292,1;
+	monster .@map$,74,42,"رسول بافوميت",1292,1;
+	monster .@map$,72,48,"رسول بافوميت",1867,1;
+	monster .@map$,72,38,"رسول بافوميت",1292,1;
+	disablenpc instance_npcname("slave_down");
+	end;
+}
+
+// Magical Seals
+//============================================================
+-	script	ختم سحري#SS::Magical Seal#SS	-1,{
+	set .@seal_check,checkquest(3041,PLAYTIME);
+	if (.@seal_check == 0 || .@seal_check == 1) {
+		specialeffect2 EF_SILENCEATTACK;
+		percentheal -50,0;
+		sc_start SC_Stone,30000,0;
+		mes "لم تتعاف نقاط SP لديك بعد. لقد استنزفتها عند المذبح، لكن قوة الختم عادت فيما يبدو.";
+		close;
+	}
+	if (.@seal_check == 2) erasequest 3041;
+	specialeffect EF_LEXDIVINA;
+	disablenpc();
+	set .@map$, instance_mapname("2@cata");
+	if (strnpcinfo(2) == "0") areamobuseskill .@map$,79,81,10,1929,"NPC_INVINCIBLEOFF",1,0,0,ET_HELP,0;
+	else if (strnpcinfo(2) == "2") areamobuseskill .@map$,123,109,10,1929,"NPC_INVINCIBLEOFF",1,0,0,ET_HELP,0;
+	else if (strnpcinfo(2) == "4") areamobuseskill .@map$,123,22,10,1929,"NPC_INVINCIBLEOFF",1,0,0,ET_HELP,0;
+	else if (strnpcinfo(2) == "8") areamobuseskill .@map$,35,21,10,1929,"NPC_INVINCIBLEOFF",1,0,0,ET_HELP,0;
+	else if (strnpcinfo(2) == "10") areamobuseskill .@map$,35,109,10,1929,"NPC_INVINCIBLEOFF",1,0,0,ET_HELP,0;
+	percentheal -50,0;
+	sc_start SC_Stone,20000,0;
+	setquest 3041;
+	mapannounce .@map$, "تفعل الختم بعد إمداد المذبح بالقوة السحرية.",bc_map,"0x87ceeb";
+	mes "أشعر بأن المذبح استعاد قوته بعد تزويده بالطاقة السحرية.";
+	next;
+	mes "لكن لن تتمكن من استخدام سحرك لمدة 3 دقائق، لأنك استنزفت نقاط SP عند المذبح.";
+	close;
+
+OnInstanceInit:
+	disablenpc();
+	end;
+}
+2@cata,79,81,0	duplicate(Magical Seal#SS)	ختم سحري#0::Magical Seal#0	844
+2@cata,123,109,0	duplicate(Magical Seal#SS)	ختم سحري#2::Magical Seal#2	844
+2@cata,123,22,0	duplicate(Magical Seal#SS)	ختم سحري#4::Magical Seal#4	844
+2@cata,35,21,0	duplicate(Magical Seal#SS)	ختم سحري#8::Magical Seal#8	844
+2@cata,35,109,0	duplicate(Magical Seal#SS)	ختم سحري#10::Magical Seal#10	844
+
+2@cata,79,65,0	script	المذبح الرئيسي#ss::The Main Altar#ss	844,{
+	if (('ins_baphomet == 5) && is_party_leader() == true) {
+		mes "تقبع قوة شريرة، رهيبة إلى حد لا يوصف، تحت المذبح العظيم وهي تشع بلون بنفسجي.";
+		next;
+		mes "تومض رموز رونية سحرية معقدة بسرعة، محاولة كبح القوة المرعبة في الداخل.";
+		next;
+		mes "يرتج قاع المذبح الرئيسي بعنف.";
+		next;
+		specialeffect EF_METEORSTORM;
+		specialeffect EF_METEORSTORM;
+		mes "[" + strcharinfo(0) + "]";
+		mes "احذروا! هناك شيء... شيء قادم.";
+		set 'ins_baphomet,6;
+		donpcevent instance_npcname("ins_2f_hero_broad")+"::OnEnable";
+		disablenpc instance_npcname("The Main Altar#ss");
+		close;
+	}
+	else {
+		mes "تقبع قوة شريرة، رهيبة إلى حد لا يوصف، تحت المذبح العظيم وهي تشع بلون بنفسجي.";
+		next;
+		mes "تومض رموز رونية سحرية معقدة بسرعة، محاولة كبح القوة المرعبة في الداخل.";
+		close;
+	}
+	end;
+}
+
+2@cata,80,63,4	script	روح البطل القديم#2F::Ancient Hero's Soul#2F	411,{
+	cutin "ins_cata_champ_s",2;
+	if (checkquest(3041)>=0) erasequest 3041;
+	mes "[روح البطل القديم]";
+	mes "أحسنتم صنعا يا أحفادي... لقد أنجزتم المهمة التي عجزت أنا وإخوتي عن إكمالها منذ زمن طويل.";
+	next;
+	mes "[روح البطل القديم]";
+	mes "أشكركم من أعماقي.";
+	mes "يمكن لأرواحنا أخيرا أن ترقد بسلام...";
+	next;
+	mes "[روح البطل القديم]";
+	mes "الصراع من أجل السلام في هذا العالم لن ينتهي أبدا. لكن... دوري هنا انتهى أخيرا لأن هناك أبطالا شجعانا مثلكم.";
+	next;
+	switch(select("دعني أغادر الضريح.:سأبقى هنا.")) {
+	case 1:
+		mes "[روح البطل القديم]";
+		mes "حسنا. سأخرجك أنت ومجموعتك من هنا بأمان.";
+		next;
+		mes "[روح البطل القديم]";
+		mes "عندما تغادر، فأبلغ باتريك تحياتي.";
+		cutin "",255;
+		set 'ins_baphomet,0;
+		warp "monk_test",310,150;
+		close;
+	case 2:
+		mes "[روح البطل القديم]";
+		mes "أما زال لديك ما تفعله هنا؟ حالما تنتهي، سأخرجك بأمان...";
+		cutin "",255;
+		close;
+	}
+
+OnInstanceInit:
+	disablenpc instance_npcname("Ancient Hero's Soul#2F");
+	end;
+}
+
+2@cata,1,2,0	script	ins_2f_hero_broad	-1,{
+OnEnable:
+	enablenpc instance_npcname("ins_2f_hero_broad");
+	initnpctimer;
+	end;
+
+OnDisable:
+	disablenpc instance_npcname("ins_2f_hero_broad");
+	end;
+
+OnTimer3000:
+	mapannounce instance_mapname("2@cata"), "روح البطل القديم : يا إلهي! ختم المذبح الرئيسي يضعف!",bc_map,"0xFFFF00";
+	end;
+
+OnTimer6000:
+	mapannounce instance_mapname("2@cata"), "روح البطل القديم : يا أحفادي... استمعوا جيدا إلى ما سأقوله.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer9000:
+	mapannounce instance_mapname("2@cata"), "روح البطل القديم: تقع المذابح المتحكمة بقوة المذبح الرئيسي في أركان الغرفة الأربعة: الشمالي الشرقي والجنوبي الشرقي والجنوبي الغربي والشمالي الغربي.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer12000:
+	mapannounce instance_mapname("2@cata"), "روح البطل القديم : اعثروا على هذه المذابح وفعلوا أختامها قبل أن يعود بافوميت.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer15000:
+	mapannounce instance_mapname("2@cata"), "بافوميت: لقد فات الأوان أيها الضعفاء... الآن ستذوقون يأس الموت!",bc_map,"0xdb7093";
+	end;
+
+OnTimer17000:
+	mapannounce instance_mapname("2@cata"), "بافوميت: لا أحد يستطيع إيذائي هنا. ستكونون أول قرابيني.",bc_map,"0xdb7093";
+	donpcevent instance_npcname("control_baphomet")+"::OnEnable";
+	donpcevent instance_npcname("ins_2f_hero_broad2")+"::OnEnable";
+	stopnpctimer;
+	disablenpc instance_npcname("ins_2f_hero_broad");
+	end;
+}
+
+2@cata,3,3,0	script	control_baphomet	-1,{
+OnInstanceInit:
+OnDisable:
+	disablenpc instance_npcname("control_baphomet");
+	end;
+
+OnEnable:
+	enablenpc instance_npcname("control_baphomet");
+	donpcevent instance_npcname("2f_callmon_pattern_c")+"::OnEnable";
+	monster instance_mapname("2@cata"),79,64,"بافوميت#",1929,1,instance_npcname("control_baphomet")+"::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	set .@map$, instance_mapname("2@cata");
+	if (mobcount(.@map$,instance_npcname("control_baphomet")+"::OnMyMobDead") < 1) {
+		set 'ins_baphomet,7;
+		if (isbegin_quest(3041))
+			erasequest 3041;
+		mapannounce .@map$, "بافوميت: لا! مستحيل! كيف يجرؤ هؤلاء الضعفاء على هزيمتي؟!... لا!!...",bc_map,"0xdb7093";
+		enablenpc instance_npcname("Ancient Hero's Soul#2F");
+		disablenpc instance_npcname("slave_down");
+		disablenpc instance_npcname("slave_left");
+		disablenpc instance_npcname("slave_right");
+		donpcevent instance_npcname("ins_2f_hero_broad")+"::OnDisable";
+		donpcevent instance_npcname("ins_2f_hero_broad2")+"::OnDisable";
+		donpcevent instance_npcname("ins_2f_hero_pattern_c")+"::OnDisable";
+		donpcevent instance_npcname("2f_callmon_pattern_c")+"::OnDisable";
+		donpcevent instance_npcname("2f_callmon_pattern")+"::OnDisable";
+		donpcevent instance_npcname("ins_2f_hero_pattern")+"::OnDisable";
+		donpcevent instance_npcname("ins_2f_enter_broad")+"::OnDisable";
+		donpcevent instance_npcname("control_baphomet")+"::OnDisable";
+		disablenpc instance_npcname("control_baphomet");
+	}
+	end;
+}
+
+2@cata,2,2,0	script	ins_2f_hero_broad2	-1,{
+OnInstanceInit:
+OnDisable:
+	disablenpc instance_npcname("ins_2f_hero_broad2");
+	end;
+
+OnEnable:
+	enablenpc instance_npcname("ins_2f_hero_broad2");
+	initnpctimer;
+	end;
+
+OnTimer8000:
+	mapannounce instance_mapname("2@cata"), "روح البطل القديم : لا تيأسوا، ما زال من الممكن هزيمة بافوميت!",bc_map,"0xFFFF00";
+	end;
+
+OnTimer11000:
+	mapannounce instance_mapname("2@cata"), "روح البطل القديم : اذهبوا إلى المذابح وفعلوا أختامها.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer13000:
+	mapannounce instance_mapname("2@cata"), "روح البطل القديم: عندما تستعيد الأختام قوتها، سيصبح بافوميت ضعيفا أمام هجماتكم.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer16000:
+	mapannounce instance_mapname("2@cata"), "روح البطل القديم: استدرجوا بافوميت إلى المذابح التي فكت أختامها، وإلا ضاعت جهودكم سدى.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer19000:
+	mapannounce instance_mapname("2@cata"), "روح البطل القديم : لدينا ساعة واحدة فقط لإيقاف بافوميت. إذا نفد الوقت، ستصبح قوة الأختام بلا فائدة.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer22000:
+	mapannounce instance_mapname("2@cata"), "بافوميت : هذا بلا جدوى. اصنعوا المزيد من الأختام. سأحطمها كلها. لن ينجو أي منكم!",bc_map,"0xdb7093";
+	end;
+
+OnTimer26000:
+	mapannounce instance_mapname("2@cata"), "روح البطل القديم: طاقة الختم المركزي تنفد. اذهبوا إليه وأمدوه بالقوة السحرية.",bc_map,"0xFFFF00";
+	enablenpc instance_npcname("Magical Seal#0");
+	disablenpc instance_npcname("Magical Seal#2");
+	disablenpc instance_npcname("Magical Seal#4");
+	disablenpc instance_npcname("Magical Seal#8");
+	disablenpc instance_npcname("Magical Seal#10");
+	donpcevent instance_npcname("ins_2f_hero_pattern_c")+"::OnEnable";
+	stopnpctimer;
+	disablenpc instance_npcname("ins_2f_hero_broad2");
+	end;
+}
+
+2@cata,4,1,0	script	2f_callmon_pattern_c	-1,{
+OnInstanceInit:
+	disablenpc instance_npcname("2f_callmon_pattern_c");
+	end;
+
+OnEnable:
+	enablenpc instance_npcname("2f_callmon_pattern_c");
+	initnpctimer;
+	donpcevent instance_npcname("2f_callmon_pattern_c")+"::Ongo";
+	end;
+
+OnDisable:
+	stopnpctimer;
+	disablenpc instance_npcname("2f_callmon_pattern_c");
+	end;
+
+Ongo:
+	donpcevent instance_npcname("2f_callmon_pattern")+"::OnEnable";
+	end;
+
+OnTimer3600000:
+	donpcevent instance_npcname("2f_callmon_pattern_c")+"::OnDisable";
+	end;
+}
+
+2@cata,4,2,0	script	2f_callmon_pattern	-1,{
+OnInstanceInit:
+	disablenpc instance_npcname("2f_callmon_pattern");
+	end;
+
+OnEnable:
+	enablenpc instance_npcname("2f_callmon_pattern");
+	stopnpctimer;
+	initnpctimer;
+	end;
+
+OnDisable:
+	disablenpc instance_npcname("2f_callmon_pattern");
+	stopnpctimer;
+	end;
+
+OnTimer300000:
+	enablenpc instance_npcname("slave_down");
+	enablenpc instance_npcname("slave_left");
+	enablenpc instance_npcname("slave_right");
+	donpcevent instance_npcname("2f_callmon_pattern_c")+"::Ongo";
+	end;
+}
+
+2@cata,3,1,0	script	ins_2f_hero_pattern_c	-1,{
+OnInstanceInit:
+	disablenpc instance_npcname("ins_2f_hero_pattern_c");
+	end;
+
+OnEnable:
+	enablenpc instance_npcname("ins_2f_hero_pattern_c");
+	initnpctimer;
+	donpcevent instance_npcname("ins_2f_hero_pattern_c")+"::Ongo";
+	end;
+
+Ongo:
+	donpcevent instance_npcname("ins_2f_hero_pattern")+"::OnEnable";
+	end;
+
+OnDisable:
+	stopnpctimer;
+	disablenpc instance_npcname("Magical Seal#0");
+	disablenpc instance_npcname("Magical Seal#2");
+	disablenpc instance_npcname("Magical Seal#4");
+	disablenpc instance_npcname("Magical Seal#8");
+	disablenpc instance_npcname("Magical Seal#10");
+	donpcevent instance_npcname("ins_2f_hero_pattern")+"::OnDisable";
+	disablenpc instance_npcname("ins_2f_hero_pattern_c");
+	end;
+
+OnTimer3600000:
+	mapannounce instance_mapname("2@cata"), "بافوميت : كررر... الآن لن تستطيعوا إيقافي بالأختام. كل ما يمكنكم فعله هو انتظار الموت!",bc_map,"0xdb7093";
+	end;
+
+OnTimer3605000:
+	mapannounce instance_mapname("2@cata"), "روح البطل القديم : لم نعد نستطيع إيقاف بافوميت بالقوة السحرية للأختام. الآن كل شيء يعتمد على الله...",bc_map,"0xFFFF00";
+	donpcevent instance_npcname("ins_2f_hero_pattern_c")+"::OnDisable";
+	end;
+}
+
+2@cata,3,2,0	script	ins_2f_hero_pattern	-1,{
+OnInstanceInit:
+	disablenpc instance_npcname("ins_2f_hero_pattern");
+	end;
+
+OnEnable:
+	enablenpc instance_npcname("ins_2f_hero_pattern");
+	initnpctimer;
+	end;
+
+OnDisable:
+	disablenpc instance_npcname("ins_2f_hero_pattern");
+	stopnpctimer;
+	end;
+
+OnTimer70000:
+	switch(rand(1,5)) {
+	case 1:
+		mapannounce instance_mapname("2@cata"), "روح البطل القديم: قوة ختم المذبح الرئيسي تنفد. عززوا الختم!",bc_map,"0xFFFF00";
+		enablenpc instance_npcname("Magical Seal#0");
+		disablenpc instance_npcname("Magical Seal#2");
+		disablenpc instance_npcname("Magical Seal#4");
+		disablenpc instance_npcname("Magical Seal#8");
+		disablenpc instance_npcname("Magical Seal#10");
+		break;
+	case 2:
+		mapannounce instance_mapname("2@cata"), "روح البطل القديم: طاقة الختم عند موضع الساعة 2 تنفد. اذهبوا إليه وأمدوه بالقوة السحرية.",bc_map,"0xFFFF00";
+		disablenpc instance_npcname("Magical Seal#0");
+		enablenpc instance_npcname("Magical Seal#2");
+		disablenpc instance_npcname("Magical Seal#4");
+		disablenpc instance_npcname("Magical Seal#8");
+		disablenpc instance_npcname("Magical Seal#10");
+		break;
+	case 3:
+		mapannounce instance_mapname("2@cata"), "روح البطل القديم: طاقة الختم عند موضع الساعة 4 تنفد. اذهبوا إليه وأمدوه بالقوة السحرية.",bc_map,"0xFFFF00";
+		disablenpc instance_npcname("Magical Seal#0");
+		disablenpc instance_npcname("Magical Seal#2");
+		enablenpc instance_npcname("Magical Seal#4");
+		disablenpc instance_npcname("Magical Seal#8");
+		disablenpc instance_npcname("Magical Seal#10");
+		break;
+	case 4:
+		mapannounce instance_mapname("2@cata"), "روح البطل القديم: طاقة الختم عند موضع الساعة 8 تنفد. اذهبوا إليه وأمدوه بالقوة السحرية.",bc_map,"0xFFFF00";
+		disablenpc instance_npcname("Magical Seal#0");
+		disablenpc instance_npcname("Magical Seal#2");
+		disablenpc instance_npcname("Magical Seal#4");
+		enablenpc instance_npcname("Magical Seal#8");
+		disablenpc instance_npcname("Magical Seal#10");
+		break;
+	case 5:
+		mapannounce instance_mapname("2@cata"), "روح البطل القديم: طاقة الختم عند موضع الساعة 10 تنفد. اذهبوا إليه وأمدوه بالقوة السحرية.",bc_map,"0xFFFF00";
+		disablenpc instance_npcname("Magical Seal#0");
+		disablenpc instance_npcname("Magical Seal#2");
+		disablenpc instance_npcname("Magical Seal#4");
+		disablenpc instance_npcname("Magical Seal#8");
+		enablenpc instance_npcname("Magical Seal#10");
+	}
+	stopnpctimer;
+	donpcevent instance_npcname("ins_2f_hero_pattern_c")+"::Ongo";
+	end;
+}
+
+
+1@cata,1,1,0	script	ins_1f_spawn_mobs	-1,{
+OnInstanceInit:
+	set .@map$, instance_mapname("1@cata");
+	monster .@map$,0,0,"سيد الزومبي",1298,10;
+	monster .@map$,0,0,"شبح ميت",1291,10;
+	//monster .@map$,0,0,"ميميك قديم",1699,10;
+	monster .@map$,0,0,"جمجمة ملتهبة",1869,10;
+	monster .@map$,0,0,"جنرال عظمي",1290,10;
+	monster .@map$,0,0,"سيد الزومبي",1298,10;
+	monster .@map$,0,0,"جنرال عظمي",1290,10;
+	monster .@map$,0,0,"جمجمة ملتهبة",1869,10;
+	monster .@map$,0,0,"شبح ميت",1291,10;
+	monster .@map$,0,0,"شبح ميت",1291,10;
+	monster .@map$,0,0,"خاليتزبورغ",1132,10;
+	monster .@map$,0,0,"خاليتزبورغ",1132,10;
+	monster .@map$,0,0,"جمجمة ملتهبة",1869,10;
+	monster .@map$,0,0,"جمجمة ملتهبة",1869,10;
+	monster .@map$,0,0,"ميميك قديم",1699,10;
+	monster .@map$,0,0,"سيد الزومبي",1298,10;
+	monster .@map$,0,0,"ميميك قديم",1699,10;
+	monster .@map$,0,0,"سيد الزومبي",1298,10;
+	monster .@map$,0,0,"شبح ميت",1291,10;
+	monster .@map$,0,0,"جنرال عظمي",1290,10;
+	monster .@map$,0,0,"جنرال عظمي",1290,10;
+	monster .@map$,0,0,"شبح الرياح",1263,10;
+	monster .@map$,0,0,"شبح الرياح",1263,10;
+	monster .@map$,0,0,"شبح الرياح",1263,10;
+	monster .@map$,0,0,"لود",1509,10;
+	monster .@map$,0,0,"لود",1509,10;
+	monster .@map$,0,0,"درويد شرير",1117,10;
+	monster .@map$,0,0,"درويد شرير",1117,10;
+	monster .@map$,0,0,"درويد شرير",1117,10;
+	monster .@map$,0,0,"بانشي",1867,10;
+	monster .@map$,0,0,"وهم مظلم",1302,1;
+	disablenpc instance_npcname("ins_1f_spawn_mobs");
+	end;
+}

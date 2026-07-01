@@ -1,0 +1,354 @@
+//===== rAthena Script =======================================
+//= Luoyang City NPCs
+//===== By: ==================================================
+//= Vidar (1.0)
+//= Mass Zero (1.1)
+//= Dino9021, roughly translated by Celest (1.2)
+//= Mass Zero (1.3)
+//= MasterOfMuppets (2.0)
+//= rAthena Dev Team
+//===== Current Version: =====================================
+//= 3.0
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Luoyang Town Script
+//===== Additional Comments: =================================
+//= 2.9 Rescripted to Aegis 10.3 Standards. [L0ne_W0lf]
+//= 3.0 Moved Alberta NPC to pre-re/re paths. [Euphy]
+//============================================================
+
+// Luoyang Transportation
+//============================================================
+-	script	::Girl_louyang	-1,{
+	mes "[فتاة]";
+	mes "لا لا لا لا~";
+	mes "يا له من يوم رائع~";
+	mes "أشعر برغبة في الذهاب";
+	mes "إلى مكان ما في نزهة~";
+	mes "لا لا لا لا~";
+	next;
+	switch(select("السؤال عن لويانغ.:السفر إلى لويانغ.:إلغاء.")) {
+	case 1:
+		mes "[فتاة]";
+		mes "أوه، هل أنت";
+		mes "مهتم بزيارة لويانغ؟";
+		mes "إنها وجهة رائعة";
+		mes "للمسافرين.";
+		next;
+		mes "[فتاة]";
+		mes "لويانغ مدينة عريقة،";
+		mes "تزخر بحكايات السحر القديم والمحاربين. ويقال أيضا إن وحوشا شريرة كثيرة تجوب";
+		mes "أنحاءها.";
+		next;
+		mes "[فتاة]";
+		mes "تجد فيها أدوية تشفي مختلف العلل، وظواهر غامضة،";
+		mes "ومقاتلين بارعين، كل ذلك في مكان واحد!";
+		next;
+		mes "[فتاة]";
+		mes "كنت أتدرب على الفنون القتالية كل صباح عندما كنت أعيش في لويانغ. قد لا يبدو ذلك علي، لكنني قوية جدا!";
+		next;
+		mes "[فتاة]";
+		mes "إن رغبت في زيارة";
+		mes "لويانغ، فأخبرني.";
+		mes "أعطني أجرة الرحلة";
+		mes "وسننطلق معا~";
+		close;
+	case 2:
+		mes "[فتاة]";
+		mes "سآخذك إلى";
+		mes "لويانغ حالا.";
+		mes "تبلغ أجرة الرحلة";
+		mes "10,000 زيني.";
+		next;
+		mes "[فتاة]";
+		mes "هل أنت مستعد للانطلاق؟";
+		next;
+		if (select("نعم، لننطلق!:ليس الآن.") == 1) {
+			if (Zeny > 9999) {
+				mes "[فتاة]";
+				mes "حسنا~";
+				mes "استعد!";
+				mes "رحلة ممتعة!";
+				close2;
+				set Zeny, Zeny-10000;
+				warp "lou_fild01",190,101;
+				end;
+			}
+			mes "[فتاة]";
+			mes "...";
+			mes "يبدو أنك لا";
+			mes "تملك 10,000 زيني...";
+			mes "اجمع المبلغ أولا ثم عد إلي!";
+			close;
+		}
+		mes "[فتاة]";
+		mes "أوه...";
+		mes "هذا مؤسف حقا...";
+		mes "كنت أتمنى أن ترافقني.";
+		mes "على أي حال، أتمنى لك يوما سعيدا!";
+		close;
+	case 3:
+		mes "[فتاة]";
+		mes "أوه...";
+		mes "أتمنى لك يوما سعيدا!";
+		close;
+	}
+}
+
+lou_fild01,190,100,7	script	فتاة#1lou::Girl#1lou	815,{
+	mes "[فتاة]";
+	mes "هل ترغب";
+	mes "في العودة";
+	mes "إلى ألبرتا؟";
+	next;
+	if (select("العودة إلى ألبرتا.:البقاء في لويانغ.") == 1) {
+		mes "[فتاة]";
+		mes "أتمنى";
+		mes "أن أراك مجددا!";
+		mes "إلى اللقاء!";
+		close2;
+		if (checkre(0))
+			warp "alberta",245,87;
+		else
+			warp "alberta",235,45;
+		end;
+	}
+	mes "[فتاة]";
+	mes "إن أعجبتك هذه";
+	mes "المنطقة، فلم لا";
+	mes "تبقى وتستمتع";
+	mes "بطعامها ومناظرها؟";
+	next;
+	if (Sex == SEX_MALE) {
+		mes "[فتاة]";
+		mes "وعندما أقول المناظر...";
+		mes "أعني الفتيات!";
+		mes "هيهي~";
+	}
+	else {
+		mes "[فتاة]";
+		mes "والشبان هنا";
+		mes "وسيمون أيضا~";
+	}
+	close;
+}
+
+// Generic Luoyang NPCs
+//============================================================
+louyang,297,167,2	script	امرأة قوية#lou::Muscular Woman#lou	815,{
+	if (Sex == SEX_FEMALE) {
+		mes "[زي تشينغ لي]";
+		mes "جميع أعضاء قصر العذارى نساء، بمن فيهن سيدتنا وأنا.";
+		next;
+		mes "[زي تشينغ لي]";
+		mes "نواجه مؤخرا صعوبة في استقطاب عضوات جديدات، فجئت لأبحث عن امرأة ترغب في الانضمام إلينا.";
+		emotion ET_THINK;
+		close;
+	}
+	mes "[زي تشينغ لي]";
+	mes "...";
+	next;
+	mes "[زي تشينغ لي]";
+	mes "...";
+	mes "......";
+	next;
+	mes "[زي تشينغ لي]";
+	mes "من فضلك اتركني";
+	mes "وشأني؛ فأنا مشغولة.";
+	close;
+}
+
+louyang,274,136,4	script	مقاتل قوي#lou::Powerful-looking guy#lou	819,{
+	mes "[أكيرا]";
+	mes "أتدرب على أسلوب مخلب التنين. ولا يكفي أن أعتمد على قوة قبضتي؛ بل علي أيضا أن أصقل روحي.";
+	next;
+	mes "[أكيرا]";
+	mes "تتطلب جميع الفنون القتالية";
+	mes "تدريبا روحيا، لأن";
+	mes "العقل هو من يوجه الجسد.";
+	mes "ومتى صقلت روحك، استطعت";
+	mes "تسخير كل جزء من جسدك!";
+	next;
+	mes "[أكيرا]";
+	mes "إن كنت تفكر";
+	mes "في تعلم الفنون القتالية، فعليك اكتساب المعرفة قبل الشروع في";
+	mes "التدريب البدني.";
+	next;
+	mes "[أكيرا]";
+	mes "ادرس الفنون القتالية";
+	mes "وتأمل حقائق الحياة. لا يمكنك إتقان العقل والجسد قبل أن تبلغ صفاء الذهن.";
+	close;
+}
+
+louyang,276,136,4	script	معلم القبضة#lou::Fist master#lou	819,{
+	mes "[زيانغ شياو جي]";
+	mes "أخيرا...";
+	mes "لقد أتقنت";
+	mes "أسلوب مخلب التنين!";
+	next;
+	mes "[زيانغ شياو جي]";
+	mes "يتألف الأسلوب من ثماني خطوات أساسية، لكنني درست تاريخه وتأملت، منصبا تركيزي على تهذيب روحي،";
+	mes "طوال ثلاث سنوات كاملة.";
+	next;
+	mes "[زيانغ شياو جي]";
+	mes "بعد ذلك فقط بدأ معلمي تدريبي البدني على الخطوات الثماني لمخلب التنين. لقد كرست ثلاثين عاما من حياتي لهذا الفن.";
+	next;
+	mes "[زيانغ شياو جي]";
+	mes "أشعر بفخر كبير لأنني";
+	mes "أتقنت هذا الفن قبل الموعد الذي توقعته بعشر سنوات. والآن علي دراسة الأسلوب وتنقيحه، بإصلاح نقاط ضعفه وتعزيز نقاط قوته.";
+	next;
+	mes "[زيانغ شياو جي]";
+	mes "أظن أن ذلك سيستغرق نحو عشر سنوات أخرى، لكن هذا لا يثبط عزيمتي.";
+	next;
+	mes "[زيانغ شياو جي]";
+	mes "لا يجوز لمن يتعلم فنا قتاليا أن يستعجل ويحاول إتقانه في وقت قصير. فهذا مستحيل، وليس ذلك جوهر الفن أصلا...";
+	close;
+}
+
+louyang,276,133,0	script	متدرب#1lou::LouTrainee	819,{
+	mes "[متدرب]";
+	mes "يييياب~!";
+	mes "تااااااه~~!!";
+	mes "هووو~.";
+	close;
+}
+
+louyang,276,131,0	script	متدرب#2lou::Trainee#2lou	819,{
+	mes "[متدرب]";
+	mes "تاه تاه تاه!";
+	mes "تااااااه~~!!";
+	mes "شوووووووو~";
+	close;
+}
+
+louyang,276,129,0	script	متدرب#3lou::Trainee#3lou	819,{
+	mes "[متدرب]";
+	mes "سي!";
+	mes "آياه!!";
+	close;
+}
+
+louyang,274,133,0	script	متدرب#4lou::Trainee#4lou	819,{
+	mes "[متدرب]";
+	mes "درغ!";
+	mes "درغ!";
+	mes "شوا--!";
+	close;
+}
+
+louyang,274,131,0	script	متدرب#5lou::Trainee#5lou	819,{
+	mes "[متدرب]";
+	mes "ياه ياه ياه!";
+	mes "تااااااه~~!!";
+	mes "واتاااااااه!";
+	close;
+}
+
+louyang,274,129,0	script	متدرب#6lou::Trainee#6lou	819,{
+	mes "[متدرب]";
+	mes "يييياب~!";
+	mes "تااااااه~~!!";
+	mes "هووو~";
+	close;
+}
+
+louyang,278,133,0	duplicate(LouTrainee)	متدرب#7lou::Trainee#7lou	819
+louyang,278,131,0	duplicate(LouTrainee)	متدرب#8lou::Trainee#8lou	819
+louyang,278,129,0	duplicate(LouTrainee)	متدرب#9lou::Trainee#9lou	819
+louyang,272,133,0	duplicate(LouTrainee)	متدرب#10lou::Trainee#10lou	819
+louyang,272,131,0	duplicate(LouTrainee)	متدرب#11lou::Trainee#11lou	819
+louyang,272,129,0	duplicate(LouTrainee)	متدرب#12lou::Trainee#12lou	819
+
+// Luoyang Viewing Tower
+//============================================================
+lou_in01,25,23,5	script	سيدة ودودة#lo::Friendly Looking Lady#lo	817,{
+	mes "[هونغ مياو]";
+	mes "مرحبا بك.";
+	next;
+	mes "[هونغ مياو]";
+	mes "هذا المصعد يؤدي";
+	mes "إلى برج الإطلالة. ونوفر خدمة انتقال آمنة وسريعة لقاء رسم مناسب. هل ترغب في استخدامها؟";
+	next;
+	switch(select("معرفة المزيد.:استخدام المصعد.:ليس الآن.")) {
+	case 1:
+		mes "[هونغ مياو]";
+		mes "بني برج الإطلالة بعد أن تلقى مكتب سياحة لويانغ اقتراحات كثيرة، ليتسنى للزوار الاستمتاع بمناظر المدينة.";
+		next;
+		mes "[هونغ مياو]";
+		mes "بسبب طبيعة لويانغ";
+		mes "الجغرافية، يصعب رؤية مناظرها الخلابة من مستوى الأرض.";
+		next;
+		mes "[هونغ مياو]";
+		mes "يمكنك الصعود إلى البرج بهذا المصعد. وتبلغ رسوم الانتقال السريع والآمن 500 زيني للشخص.";
+		close;
+	case 2:
+		if (Zeny < 500) {
+			mes "[هونغ مياو]";
+			mes "عذرا، لا تملك 500 زيني. آمل أن تعود لاحقا للاستمتاع ببرج الإطلالة. أتمنى لك يوما سعيدا.";
+			close;
+		}
+		mes "[هونغ مياو]";
+		mes "شكرا لاستخدامك خدمتنا.";
+		mes "نسعى دائما إلى تقديم أفضل خدمة ممكنة.";
+		mes "نرجو أن تزورنا مجددا.";
+		next;
+		set Zeny, Zeny-500;
+		warp "lou_in01",17,19;
+		end;
+	case 3:
+		mes "[هونغ مياو]";
+		mes "نرجو أن تعود";
+		mes "في وقت لاحق.";
+		mes "نتمنى لك يوما سعيدا.";
+		close;
+	}
+}
+
+louyang,84,254,0	script	مخرج#lou::Exit#lou	111,{
+	mes "^3355FFتوجد هنا وسيلة";
+	mes "للنزول من البرج.";
+	mes "هل تريد استخدامها؟^000000";
+	next;
+	if (select("نعم.:لا.") == 1) {
+		if (rand(1,100) == 34) {
+			percentheal -99,0;
+			warp "louyang",86,269;
+			mapannounce "louyang",""+strnpcinfo(0)+" : يا إلهي، إنني أسقططططططططططط~~!!!!",bc_map;
+		}
+		else {
+			warp "lou_in01",10,18;
+		}
+		end;
+	}
+	close;
+}
+
+//============================================================
+// Old changelog
+//============================================================
+//= Originally made for Vidar
+//= 1.2 Added official warp NPC's
+//= 1.3 Fixed gramatical errors. (Like wtf's with the weird
+//=     texts celest? xD)
+//= 2.0 Completely rewrote the current scripts based on iRO.
+//=     Added the 'Shouting Quest' and the 'Medicine Quest'
+//= 2.1 Optimized, made quest vars unique [Lupus]
+//= 2.1a minor fix, 2.1b Fixed Typos [Nexon]
+//= 2.2 Fixed exploits [Lupus]
+//= 2.2a Updated the color codes a little and fixed the shouting quest
+//=     to broadcast green text.
+//= 2.2b A small fix to the shout quest npc in louyang field not warping you
+//=     back up to the tower if you died or teleported out of there. [MasterOfMuppets]
+//= 2.3 A small fix, the code is so messy I can't believe I scripted it >.< [MasterOfMuppets]
+//= 2.4 Implemented a few more npcs, thanks to Prometheus for them. [MasterOfMuppets]
+//= 2.5 Implemented the Poison King quest, beware of potential bugs. [MasterOfMuppets]
+//= 2.6 Removed Duplicates [Silent]
+//= 2.6a Updated a few names with new item_db.txt names [Evera]
+//= 2.7 Split quests to quests/quests_louyang.txt [Evera]
+//= 2.7a Minor optimizations before Luoyang quests [Lupus]
+//= 2.7b Moved guides to the Guides folder. 2.7 more typos [Lupus]
+//= 2.8 Moved some quest-related NPCs to proper file. [SinSloth]
+//= 2.9 Rescripted to Aegis 10.3 Standards. [L0ne_W0lf]
+//============================================================

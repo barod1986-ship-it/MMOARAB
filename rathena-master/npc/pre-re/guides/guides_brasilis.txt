@@ -1,0 +1,77 @@
+//===== rAthena Script =======================================
+//= Brasilis Guide
+//===== Description: =========================================
+//= [Official Conversion based on bRO & jRO servers]
+//= Guide for the city of Brasilis.
+//
+// Note:
+// - Brasilis was introduced in Pre-Renewal only for bRO and
+//   jRO official servers with differences in monster stats,
+//   spawns and quests.
+//   It was added in Renewal for every other official server.
+//   Since we follow kRO this is disabled by default.
+//   You can enable it on npc/pre-re/scripts_athena.conf
+//===== Changelog: ===========================================
+//= 1.0 First Version [Daegaladh]
+//============================================================
+
+brasilis,219,97,3	script	دليل برازيليس::Brasilis Guide	478,{
+	mes "[دليل برازيليس]";
+	mes "مرحبا بك في ^8B4513برازيليس^000000، بلد شغوف كالشمس.";
+	mes "إذا كانت لديك أي أسئلة، يرجى سؤالي.";
+	next;
+	switch(select("السؤال عن المواقع:إزالة العلامات من الخريطة المصغرة:إلغاء")) {
+	case 1:
+		mes "[دليل برازيليس]";
+		mes "إلى أين يمكنني إرشادك؟";
+		next;
+		switch(select("[ الفندق ]:[ تلفريك الغابة ]:[ متحف الفن ]:[ السوق ]:[ نصب فيراس ]")) {
+		case 1:
+			mes "[دليل برازيليس]";
+			mes "يقع فندق برازيليس في الأعلى مباشرة، ^FF3355+^000000.";
+			mes "هل هناك أي شيء آخر يمكنني فعله من أجلك؟";
+			viewpoint 1,274,151,2,0xFF3355;
+			close;
+		case 2:
+			mes "[دليل برازيليس]";
+			mes "هل تريد عبور الغابة الوعرة؟ يمكنك ركوب ";
+			mes "تلفريك الغابة هنا ^CE6300+^000000.";
+			mes "هل هناك أي شيء آخر يمكنني فعله من أجلك؟";
+			viewpoint 1,308,335,3,0xCE6300;
+			close;
+		case 3:
+			mes "[دليل برازيليس]";
+			mes "فخر برازيليس، متحف الفن العالمي المستوى، يقع عند ^A5BAAD+^000000.";
+			mes "هل هناك أي شيء آخر يمكنني فعله من أجلك؟";
+			viewpoint 1,137,167,4,0x00FF00;
+			close;
+		case 4:
+			mes "[دليل برازيليس]";
+			mes "يمكنك شراء عناصر الصيد من السوق هنا ^55FF33+^000000.";
+			mes "هل هناك أي شيء آخر يمكنني فعله من أجلك؟";
+			viewpoint 1,254,248,5,0x55FF33;
+			close;
+		case 5:
+			mes "[دليل برازيليس]";
+			mes "يقف نصب فيراس، المعلم الشهير في برازيليس، عند ^3355FF+^000000.";
+			mes "هل هناك أي شيء آخر يمكنني فعله من أجلك؟";
+			viewpoint 1,195,235,6,0x3355FF;
+			close;
+		}
+		end;
+	case 2:
+		mes "[دليل برازيليس]";
+		mes "سأزيل كل العلامات من خريطتك المصغرة.";
+		mes "هل هناك أي شيء آخر يمكنني فعله من أجلك؟";
+		viewpoint 0,274,151,2,0x00FF00;
+		viewpoint 0,308,335,3,0x00FF00;
+		viewpoint 0,137,167,4,0x00FF00;
+		viewpoint 0,254,248,5,0x00FF00;
+		viewpoint 0,195,235,6,0x00FF00;
+		close;
+	case 3:
+		mes "[دليل برازيليس]";
+		mes "التجول بمفردك هو دائما أفضل طريقة للاستكشاف. على أي حال، اعتن بنفسك.";
+		close;
+	}
+}

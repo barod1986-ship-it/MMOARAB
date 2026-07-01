@@ -1,0 +1,991 @@
+//===== rAthena Script =======================================
+//= Izlude Arena Level 70
+//===== By: ==================================================
+//= SinSloth
+//===== Current Version: =====================================
+//= 1.3
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= Izlude Battle Arena Level 70
+//===== Additional Comments: =================================
+//= 1.0 First version.
+//= 1.1 Replaced effect numerics with constants. [Samuray22]
+//= 1.2 Label standardization. [Euphy]
+//= 1.3 Script updates. [Euphy]
+//============================================================
+
+arena_room,52,42,7	script	غرفة انتظار المستوى 70::Lv70 Waiting Room	124,{
+	end;
+
+OnInit:
+	waitingroom "التحدي الفردي - المستوى 70 إلى 89",50,"Lv70 Waiting Room::OnStartArena",1,1000,70,89;
+	enablewaitingroomevent;
+	end;
+
+OnStartArena:
+	warpwaitingpc "force_3-1",99,12;
+	donpcevent "arena#70::OnStart";
+	disablewaitingroomevent;
+	end;
+
+OnStart:
+	enablewaitingroomevent;
+	end;
+}
+
+force_3-1,99,20,4	script	كاديلاك#arena::Cadillac#arena	124,{
+	end;
+
+OnStart:
+	initnpctimer;
+	set $arena_min70st,gettime(DT_MINUTE);
+	set $arena_sec70st,gettime(DT_SECOND);
+	end;
+
+OnTimer3000:
+	mapannounce "force_3-1","أهلا بك! أنا كاديلاك، دليل معركة قوة الزمن للمستوى 70!",0;
+	end;
+
+OnTimer4000:
+	mapannounce "force_3-1","الاختيار الصحيح يوفر الكثير من الوقت!",0;
+	end;
+
+OnTimer7000:
+	mapannounce "force_3-1","أمامك 7 دقائق لإكمال مسار المعركة. البداية من أقصى يسار الغرفة، ثم متابعة المراحل باتجاه عقارب الساعة.",0;
+	end;
+
+OnTimer60000:
+	if (getmapusers("force_3-1") == 0) {
+		donpcevent "Cadillac#arena::OnFailClearStage";
+	}
+	mapannounce "force_3-1","الوقت المتبقي: 6 دقائق.",0;
+	end;
+
+OnTimer120000:
+	if (getmapusers("force_3-1") == 0) {
+		donpcevent "Cadillac#arena::OnFailClearStage";
+	}
+	mapannounce "force_3-1","الوقت المتبقي: 5 دقائق.",0;
+	end;
+
+OnTimer180000:
+	if (getmapusers("force_3-1") == 0) {
+		donpcevent "Cadillac#arena::OnFailClearStage";
+	}
+	mapannounce "force_3-1","الوقت المتبقي: 4 دقائق.",0;
+	end;
+
+OnTimer240000:
+	if (getmapusers("force_3-1") == 0) {
+		donpcevent "Cadillac#arena::OnFailClearStage";
+	}
+	mapannounce "force_3-1","الوقت المتبقي: 3 دقائق.",0;
+	end;
+
+OnTimer300000:
+	if (getmapusers("force_3-1") == 0) {
+		donpcevent "Cadillac#arena::OnFailClearStage";
+	}
+	mapannounce "force_3-1","الوقت المتبقي: دقيقتان.",0;
+	end;
+
+OnTimer360000:
+	if (getmapusers("force_3-1") == 0) {
+		donpcevent "Cadillac#arena::OnFailClearStage";
+	}
+	mapannounce "force_3-1","الوقت المتبقي: دقيقة واحدة.",0;
+	end;
+
+OnTimer420000:
+	mapannounce "force_3-1","انتهت المهلة. آمل أن يكون التحدي ممتعا!",0;
+	end;
+
+OnTimer425000:
+OnTimer426000:
+OnTimer427000:
+OnTimer428000:
+OnTimer429000:
+OnTimer430000:
+OnTimer431000:
+OnTimer432000:
+OnTimer433000:
+OnTimer434000:
+	mapwarp "force_3-1","prt_are_in",126,87,0,0;
+	end;
+
+OnTimer435000:
+	mapwarp "force_3-1","prt_are_in",126,87,0,0;
+	donpcevent "Cadillac#arena::OnFailClearStage";
+	end;
+
+OnTimerOff:
+	stopnpctimer;
+	end;
+
+OnFailClearStage:
+	donpcevent "cast#70::OnTimeOver1";
+	mapwarp "force_3-1","prt_are_in",126,87,0,0;
+	donpcevent "Cadillac#arena::OnTimerOff";
+	donpcevent "arena#70::OnReset_All";
+	donpcevent "alloff#70::OnEnable";
+	donpcevent "Lv70 Waiting Room::OnStart";
+	end;
+
+On01_Start:
+	mapannounce "force_3-1","لإنهاء المرحلة، يجب القضاء على جميع وحوش كوبولد!",0;
+	end;
+
+On01_End:
+	mapannounce "force_3-1","فتح باب الغرفة الشمالية!",0;
+	end;
+
+On02_Start:
+	mapannounce "force_3-1","لإنهاء المرحلة، يجب القضاء على جميع وحوش هورونغ ثم التوجه إلى المخرج!",0;
+	end;
+
+On02_End:
+	mapannounce "force_3-1","فتح باب الغرفة الشمالية!",0;
+	end;
+
+On03_Start:
+	mapannounce "force_3-1","لإنهاء المرحلة، يجب القضاء على جميع الوحوش باستثناء أشجار الخوخ المسحورة!",0;
+	end;
+
+On03_End:
+	mapannounce "force_3-1","اكتملت المرحلة! فتح باب الغرفة الشرقية!",0;
+	end;
+
+On04_Start:
+	mapannounce "force_3-1","لإنهاء المرحلة، يجب القضاء على جميع ديدان الساق مع تفادي باثوري!",0;
+	end;
+
+On04_End:
+	mapannounce "force_3-1","فتح باب الغرفة الشرقية!",0;
+	end;
+
+On05_Start:
+	mapannounce "force_3-1","لإنهاء المرحلة، يجب القضاء على جميع وحوش أرغيوب!",0;
+	end;
+
+On05_End:
+	mapannounce "force_3-1","اكتملت المرحلة! فتح باب الغرفة الجنوبية!",0;
+	end;
+
+On06_Start:
+	mapannounce "force_3-1","لإنهاء المرحلة، يجب القضاء على جميع وحوش غوبلن المطرقة!",0;
+	end;
+
+On06_End:
+	mapannounce "force_3-1","فتح باب الغرفة الجنوبية!",0;
+	end;
+
+On07_Start:
+	mapannounce "force_3-1","لإنهاء المرحلة، يجب القضاء على أليس الموجودة في الوسط!",0;
+	end;
+
+On07_End:
+	mapannounce "force_3-1","اكتملت المرحلة! فتح باب الغرفة الغربية!",0;
+	end;
+
+On08_Start:
+	mapannounce "force_3-1","الوجهة التالية: المخرج الشمالي!",0;
+	end;
+
+On09_Start:
+	mapannounce "force_3-1","لإنهاء المرحلة، يجب هزيمة قائد كوبولد والقضاء على جميع وحوش كوبولد!",0;
+	end;
+
+On09_End:
+	mapannounce "force_3-1","هزم الزعيم! فتح باب الشمال. شكرا!",0;
+	end;
+}
+
+-	script	arena#70	-1,{
+OnReset_01:
+	//donpcevent "force_01ex#70::OnReset";
+	donpcevent "force_02start#70::OnEnable";
+	enablenpc "force_01_02#70";
+	end;
+
+OnReset_02:
+	donpcevent "force_02ex#70::OnReset";
+	donpcevent "force_03start#70::OnEnable";
+	enablenpc "force_02_03#70";
+	end;
+
+OnReset_03:
+	enablenpc "force_03_04#70";
+	donpcevent "force_04start#70::OnEnable";
+	donpcevent "force_03ex#70::OnReset";
+	end;
+
+OnReset_04:
+	enablenpc "force_04_05#70";
+	donpcevent "force_05start#70::OnEnable";
+	donpcevent "force_04ex#70::OnReset";
+	end;
+
+OnReset_05:
+	enablenpc "force_05_06#70";
+	donpcevent "force_06start#70::OnEnable";
+	donpcevent "force_05ex#70::OnReset";
+	end;
+
+OnReset_06:
+	enablenpc "force_06_07#70";
+	donpcevent "force_07start#70::OnEnable";
+	donpcevent "force_06ex#70::OnReset";
+	end;
+
+OnReset_07:
+	enablenpc "force_07_08#70";
+	donpcevent "force_07ex#70::OnReset";
+	donpcevent "force_08start#70::OnEnable";
+	end;
+
+OnReset_08:
+	donpcevent "force_09start#70::OnEnable";
+	enablenpc "force_08_09#70";
+	end;
+
+OnReset_09:
+	enablenpc "force_exit#70";
+	end;
+
+OnStart:
+	disablenpc "force_01_02#70";
+	disablenpc "force_02_03#70";
+	disablenpc "force_03_04#70";
+	disablenpc "force_04_05#70";
+	disablenpc "force_05_06#70";
+	disablenpc "force_06_07#70";
+	disablenpc "force_07_08#70";
+	disablenpc "force_08_09#70";
+	disablenpc "force_exit#70";
+	donpcevent "Cadillac#arena::OnTimerOff";
+	//donpcevent "force_09mob#70::OnTimerOff";
+	donpcevent "force_01mob#70::OnReset";
+	donpcevent "force_02mob#70::OnReset";
+	donpcevent "force_03mob#70::OnReset";
+	donpcevent "force_04mob#70::OnReset";
+	donpcevent "force_05mob#70::OnReset";
+	donpcevent "force_06mob#70::OnReset";
+	donpcevent "force_07mob#70::OnReset";
+	//donpcevent "force_08mob#70::OnReset";
+	donpcevent "force_09mob#70::OnReset";
+	//donpcevent "force_01ex#70::OnReset";
+	donpcevent "force_02ex#70::OnReset";
+	donpcevent "force_03ex#70::OnReset";
+	donpcevent "force_04ex#70::OnReset";
+	donpcevent "force_05ex#70::OnReset";
+	donpcevent "force_06ex#70::OnReset";
+	donpcevent "force_07ex#70::OnReset";
+	//donpcevent "force_08ex#70::OnReset";
+	donpcevent "force_09ex#70::OnReset";
+	enablenpc "force_08_01#70";
+	donpcevent "force_01start#70::OnEnable";
+	donpcevent "Cadillac#arena::OnStart";
+	end;
+
+OnReset_All:
+	donpcevent "force_01mob#70::OnReset";
+	donpcevent "force_02mob#70::OnReset";
+	donpcevent "force_03mob#70::OnReset";
+	donpcevent "force_04mob#70::OnReset";
+	donpcevent "force_05mob#70::OnReset";
+	donpcevent "force_06mob#70::OnReset";
+	donpcevent "force_07mob#70::OnReset";
+	donpcevent "force_09mob#70::OnReset";
+	//donpcevent "force_01ex#70::OnReset";
+	donpcevent "force_02ex#70::OnReset";
+	donpcevent "force_03ex#70::OnReset";
+	donpcevent "force_04ex#70::OnReset";
+	donpcevent "force_05ex#70::OnReset";
+	donpcevent "force_06ex#70::OnReset";
+	donpcevent "force_07ex#70::OnReset";
+	//donpcevent "force_08ex#70::OnReset";
+	donpcevent "force_09ex#70::OnReset";
+	end;
+}
+
+force_3-1,62,26,1	script	force_08_01#70	45,1,1,{
+OnTouch_:
+	donpcevent "Cadillac#arena::On01_Start";
+	warp "force_3-1",40,26;
+	end;
+}
+
+force_3-1,25,44,1	script	force_01_02#70	45,1,1,{
+OnTouch_:
+	donpcevent "Cadillac#arena::On02_Start";
+	warp "force_3-1",25,69;
+	end;
+}
+
+force_3-1,25,134,1	script	force_02_03#70	45,1,1,{
+OnTouch_:
+	donpcevent "Cadillac#arena::On03_Start";
+	warp "force_3-1",25,159;
+	end;
+}
+
+force_3-1,44,174,1	script	force_03_04#70	45,1,1,{
+OnTouch_:
+	donpcevent "Cadillac#arena::On04_Start";
+	warp "force_3-1",69,174;
+	end;
+}
+
+force_3-1,134,174,1	script	force_04_05#70	45,1,1,{
+OnTouch_:
+	donpcevent "Cadillac#arena::On05_Start";
+	warp "force_3-1",159,174;
+	end;
+}
+
+force_3-1,174,155,1	script	force_05_06#70	45,1,1,{
+OnTouch_:
+	donpcevent "Cadillac#arena::On06_Start";
+	warp "force_3-1",174,130;
+	end;
+}
+
+force_3-1,174,65,1	script	force_06_07#70	45,1,1,{
+OnTouch_:
+	donpcevent "Cadillac#arena::On07_Start";
+	warp "force_3-1",174,40;
+	end;
+}
+
+force_3-1,155,26,1	script	force_07_08#70	45,1,1,{
+OnTouch_:
+	donpcevent "Cadillac#arena::On08_Start";
+	warp "force_3-1",132,26;
+	enablenpc "force_08_09#70";
+	end;
+}
+
+force_3-1,99,54,1	script	force_08_09#70	45,1,1,{
+OnTouch_:
+	donpcevent "Cadillac#arena::On09_Start";
+	warp "force_3-1",99,82;
+	end;
+}
+
+force_3-1,99,124,1	script	force_exit#70	45,1,1,{
+OnTouch_:
+	donpcevent "Cadillac#arena::OnTimerOff";
+	donpcevent "#arn_timer_70::OnEnable";
+	mapwarp "force_3-1","prt_are_in",22,87,0,0;
+	end;
+}
+
+-	script	force_01start#70	-1,{
+OnEnable:
+	donpcevent "force_01mob#70::OnEnable";
+	end;
+}
+
+-	script	force_01mob#70	-1,{
+OnEnable:
+	monster "force_3-1",25,36,"كوبولد",1545,1,"force_01mob#70::OnMyMobDead";
+	monster "force_3-1",20,36,"كوبولد",1545,1,"force_01mob#70::OnMyMobDead";
+	monster "force_3-1",25,20,"كوبولد",1546,1,"force_01mob#70::OnMyMobDead";
+	monster "force_3-1",30,36,"كوبولد",1547,1,"force_01mob#70::OnMyMobDead";
+	monster "force_3-1",28,15,"كوبولد",1547,1,"force_01mob#70::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_3-1","force_01mob#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_3-1","force_01mob#70::OnMyMobDead") < 1) {
+		donpcevent "Cadillac#arena::On01_End";
+		donpcevent "arena#70::OnReset_01";
+	}
+	end;
+}
+
+-	script	force_02start#70	-1,{
+OnEnable:
+	donpcevent "force_02mob#70::OnEnable";
+	end;
+}
+
+-	script	force_02ex#70	-1,{
+OnReset:
+	killmonster "force_3-1","force_02ex#70::OnMyMobDead";
+	end;
+
+OnSummonMob2:
+	monster "force_3-1",21,78,"هيكل رامي",1420,1,"force_02ex#70::OnMyMobDead";
+	monster "force_3-1",22,93,"هيكل رامي",1420,1,"force_02ex#70::OnMyMobDead";
+	monster "force_3-1",29,93,"هيكل رامي",1420,1,"force_02ex#70::OnMyMobDead";
+	monster "force_3-1",25,101,"مومياء",1393,1,"force_02ex#70::OnMyMobDead";
+	monster "force_3-1",26,101,"مومياء",1393,1,"force_02ex#70::OnMyMobDead";
+	monster "force_3-1",27,101,"مومياء",1393,1,"force_02ex#70::OnMyMobDead";
+	monster "force_3-1",28,101,"مومياء",1393,1,"force_02ex#70::OnMyMobDead";
+	monster "force_3-1",24,104,"غول",1423,1,"force_02ex#70::OnMyMobDead";
+	monster "force_3-1",24,113,"غول",1423,1,"force_02ex#70::OnMyMobDead";
+	monster "force_3-1",29,120,"غول",1423,1,"force_02ex#70::OnMyMobDead";
+	monster "force_3-1",29,126,"غول",1423,1,"force_02ex#70::OnMyMobDead";
+	monster "force_3-1",30,110,"غول",1423,1,"force_02ex#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_02mob#70	-1,{
+OnReset:
+	killmonster "force_3-1","force_02mob#70::OnMyMobDead";
+	end;
+
+OnEnable:
+	monster "force_3-1",25,79,"هورونغ",1578,1,"force_02mob#70::OnMyMobDead";
+	monster "force_3-1",29,114,"هورونغ",1578,1,"force_02mob#70::OnMyMobDead";
+	donpcevent "force_02ex#70::OnSummonMob2";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_3-1","force_02mob#70::OnMyMobDead") < 1) {
+		donpcevent "Cadillac#arena::On02_End";
+		donpcevent "arena#70::OnReset_02";
+	}
+	end;
+}
+
+-	script	force_03start#70	-1,{
+OnEnable:
+	donpcevent "force_03mob#70::OnEnable";
+	end;
+}
+
+-	script	force_03ex#70	-1,{
+OnReset:
+	killmonster "force_3-1","force_03ex#70::OnMyMobDead";
+	end;
+
+OnSummonMob_03:
+	monster "force_3-1",10,170,"خوخة مسحورة",1550,1,"force_03ex#70::OnMyMobDead";
+	monster "force_3-1",26,180,"خوخة مسحورة",1550,1,"force_03ex#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_03mob#70	-1,{
+OnEnable:
+	donpcevent "force_03ex#70::OnSummonMob_03";
+	monster "force_3-1",23,174,"طفيلي",1555,1,"force_03mob#70::OnMyMobDead";
+	monster "force_3-1",33,173,"طفيلي",1555,1,"force_03mob#70::OnMyMobDead";
+	monster "force_3-1",26,166,"فراشة دموية",1526,1,"force_03mob#70::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_3-1","force_03mob#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	donpcevent "force_03ex#70::OnSummonMob_03";
+	if (mobcount("force_3-1","force_03mob#70::OnMyMobDead") < 1) {
+		donpcevent "Cadillac#arena::On03_End";
+		donpcevent "arena#70::OnReset_03";
+	}
+	end;
+}
+
+-	script	force_04start#70	-1,{
+OnEnable:
+	donpcevent "force_04mob#70::OnEnable";
+	end;
+}
+
+-	script	force_04ex#70	-1,{
+OnReset:
+	killmonster "force_3-1","force_04ex#70::OnMyMobDead";
+	end;
+
+OnSummonMob_04:
+	monster "force_3-1",94,179,"باثوري",1525,1,"force_04ex#70::OnMyMobDead";
+	monster "force_3-1",110,179,"باثوري",1525,1,"force_04ex#70::OnMyMobDead";
+	monster "force_3-1",90,170,"باثوري",1525,1,"force_04ex#70::OnMyMobDead";
+	monster "force_3-1",100,170,"باثوري",1525,1,"force_04ex#70::OnMyMobDead";
+	monster "force_3-1",125,178,"باثوري",1525,1,"force_04ex#70::OnMyMobDead";
+	monster "force_3-1",125,169,"باثوري",1525,1,"force_04ex#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_04mob#70	-1,{
+OnEnable:
+	donpcevent "force_04ex#70::OnSummonMob_04";
+	monster "force_3-1",87,174,"دودة الساق",1440,1,"force_04mob#70::OnMyMobDead";
+	monster "force_3-1",103,174,"دودة الساق",1440,1,"force_04mob#70::OnMyMobDead";
+	monster "force_3-1",96,170,"دودة الساق",1440,1,"force_04mob#70::OnMyMobDead";
+	end;
+OnReset:
+	killmonster "force_3-1","force_04mob#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_3-1","force_04mob#70::OnMyMobDead") < 1) {
+		donpcevent "Cadillac#arena::On04_End";
+		donpcevent "arena#70::OnReset_04";
+	}
+	end;
+}
+
+-	script	force_05start#70	-1,{
+OnEnable:
+	donpcevent "force_05mob#70::OnEnable";
+	end;
+}
+
+-	script	force_05ex#70	-1,{
+OnReset:
+	killmonster "force_3-1","force_05ex#70::OnMyMobDead";
+	end;
+
+OnSummonMob_05:
+	switch(rand(1,2)) {
+	case 1:
+		monster "force_3-1",174,174,"ريد وورد",1478,1,"force_05ex#70::OnMyMobDead";
+		break;
+	case 2:
+		monster "force_3-1",173,173,"فرس النبي",1457,1,"force_05ex#70::OnMyMobDead";
+		break;
+	}
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_05mob#70	-1,{
+OnEnable:
+	monster "force_3-1",164,183,"أرغيوب",1429,1,"force_05mob#70::OnMyMobDead";
+	monster "force_3-1",168,158,"أرغيوب",1429,1,"force_05mob#70::OnMyMobDead";
+	monster "force_3-1",175,174,"أرغيوب",1429,1,"force_05mob#70::OnMyMobDead";
+	monster "force_3-1",176,179,"أرغيوب",1429,1,"force_05mob#70::OnMyMobDead";
+	monster "force_3-1",183,160,"أرغيوب",1429,1,"force_05mob#70::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_3-1","force_05mob#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_3-1","force_05mob#70::OnMyMobDead") < 1) {
+		donpcevent "Cadillac#arena::On05_End";
+		donpcevent "arena#70::OnReset_05";
+	}
+	else donpcevent "force_05ex#70::OnSummonMob_05";
+	end;
+}
+
+-	script	force_06start#70	-1,{
+OnEnable:
+	donpcevent "force_06mob#70::OnEnable";
+	end;
+}
+
+-	script	force_06ex#70	-1,{
+OnReset:
+	killmonster "force_3-1","force_06ex#70::OnMyMobDead";
+	end;
+
+OnSummonMob_06:
+	monster "force_3-1",176,99,"غوبلن",1534,1,"force_06ex#70::OnMyMobDead";
+	monster "force_3-1",170,86,"غوبلن",1535,1,"force_06ex#70::OnMyMobDead";
+	monster "force_3-1",176,97,"غوبلن",1535,1,"force_06ex#70::OnMyMobDead";
+	monster "force_3-1",170,108,"غوبلن",1535,1,"force_06ex#70::OnMyMobDead";
+	monster "force_3-1",176,112,"غوبلن",1536,1,"force_06ex#70::OnMyMobDead";
+	monster "force_3-1",173,120,"غوبلن",1536,1,"force_06ex#70::OnMyMobDead";
+	monster "force_3-1",177,74,"غوبلن",1536,1,"force_06ex#70::OnMyMobDead";
+	monster "force_3-1",173,118,"غوبلن",1538,1,"force_06ex#70::OnMyMobDead";
+	monster "force_3-1",171,101,"غوبلن",1538,1,"force_06ex#70::OnMyMobDead";
+	monster "force_3-1",174,118,"غوبلن",1538,1,"force_06ex#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_06mob#70	-1,{
+OnEnable:
+	donpcevent "force_06ex#70::OnSummonMob_06";
+	monster "force_3-1",173,90,"غوبلن",1537,1,"force_06mob#70::OnMyMobDead";
+	monster "force_3-1",173,79,"غوبلن",1537,1,"force_06mob#70::OnMyMobDead";
+	monster "force_3-1",172,70,"غوبلن",1537,1,"force_06mob#70::OnMyMobDead";
+	monster "force_3-1",175,70,"غوبلن",1537,1,"force_06mob#70::OnMyMobDead";
+	monster "force_3-1",171,118,"غوبلن",1537,1,"force_06mob#70::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_3-1","force_06mob#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_3-1","force_06mob#70::OnMyMobDead") < 1) {
+		donpcevent "Cadillac#arena::On06_End";
+		donpcevent "arena#70::OnReset_06";
+	}
+	end;
+}
+
+-	script	force_07start#70	-1,{
+OnEnable:
+	donpcevent "force_07mob#70::OnEnable";
+	end;
+}
+
+-	script	force_07ex#70	-1,{
+OnReset:
+	killmonster "force_3-1","force_07ex#70::OnMyMobDead";
+	end;
+
+OnSummonMob_07:
+	monster "force_3-1",168,26,"كابوس",1427,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",186,23,"كابوس",1427,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",160,23,"كابوس",1427,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",188,33,"كابوس",1427,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",174,13,"رامي رايدريك",1453,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",163,15,"فاميليار",1419,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",164,15,"فاميليار",1419,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",163,16,"فاميليار",1419,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",164,16,"فاميليار",1419,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",187,13,"فاميليار",1419,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",187,14,"فاميليار",1419,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",186,14,"فاميليار",1419,1,"force_07ex#70::OnMyMobDead";
+	monster "force_3-1",186,14,"فاميليار",1419,1,"force_07ex#70::OnMyMobDead";
+	end;
+
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_07mob#70	-1,{
+OnEnable:
+	donpcevent "force_07ex#70::OnSummonMob_07";
+	monster "force_3-1",174,25,"أليس",1521,1,"force_07mob#70::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_3-1","force_07mob#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_3-1","force_07mob#70::OnMyMobDead") < 1) {
+		donpcevent "Cadillac#arena::On07_End";
+		donpcevent "arena#70::OnReset_07";
+	}
+	end;
+}
+
+-	script	force_08start#70	-1,{
+OnEnable:
+	donpcevent "force_08ex#70::OnEnable";
+	end;
+}
+
+-	script	force_08ex#70	-1,{
+OnEnable:
+	donpcevent "arena#70::OnReset_08";
+	end;
+}
+
+-	script	force_09start#70	-1,{
+OnEnable:
+	donpcevent "force_09mob#70::OnEnable";
+	end;
+}
+
+-	script	force_09ex#70	-1,{
+OnReset:
+	killmonster "force_3-1","force_09ex#70::OnMyMobDead";
+	end;
+
+OnSummonMob_09:
+	monster "force_3-1",93,100,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",94,100,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",93,99,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",85,114,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",87,114,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",89,114,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",91,114,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",93,114,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",95,114,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",85,112,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",85,110,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",85,108,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",85,106,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	monster "force_3-1",85,104,"فاميليار",1419,1,"force_09ex#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_09mob#70	-1,{
+OnEnable:
+	monster "force_3-1",99,99,"قائد كوبولد",1548,1,"force_09mob#70::OnMyMobDead";
+	monster "force_3-1",98,99,"كوبولد",1545,1,"force_09mob#70::OnMyMobDead";
+	monster "force_3-1",100,99,"كوبولد",1546,1,"force_09mob#70::OnMyMobDead";
+	monster "force_3-1",99,98,"كوبولد",1547,1,"force_09mob#70::OnMyMobDead";
+	donpcevent "force_09ex#70::OnSummonMob_09";
+	end;
+
+OnReset:
+	killmonster "force_3-1","force_09mob#70::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_3-1","force_09mob#70::OnMyMobDead") < 1) {
+		donpcevent "Cadillac#arena::On09_End";
+		donpcevent "arena#70::OnReset_09";
+		donpcevent "arena#70::OnReset_All";
+		set $arena_min70end,gettime(DT_MINUTE);
+		set $arena_sec70end,gettime(DT_SECOND);
+	}
+	end;
+}
+
+prt_are_in,129,83,3	script	موظف الحلبة#70-1::Staff#70-1	67,{
+	mes "[موظف الحلبة]";
+	mes "أداء جيد.";
+	mes "حتى دون إكمال معركة قوة الزمن، ستحصل على عدد قليل من نقاط الحلبة.";
+	next;
+	if (arena_point == 30000) {
+		mes "[موظف الحلبة]";
+		mes "لحظة!";
+		mes "بلغ رصيد نقاط الحلبة الحد الأقصى.";
+		mes "يجب إنفاق بعض نقاط الحلبة أولا، وستضاف مكافأة المحاولة التالية عند العودة.";
+		next;
+	}
+	else set arena_point, arena_point + 1;
+	mes "[موظف الحلبة]";
+	mes "سأرشدك إلى الخارج. آمل أن يكون التحدي ممتعا.";
+	close2;
+	specialeffect2 EF_EXIT;
+	warp "arena_room",100,75;
+	end;
+}
+
+prt_are_in,25,84,3	script	موظف الحلبة#70-2::Staff#70-2	67,{
+	if($arena_min70end < $arena_min70st) {
+		if($arena_sec70end < $arena_sec70st) {
+			set @record_min70,60 - $arena_min70st + $arena_min70end -1;
+			set @record_sec70,60 - $arena_sec70st + $arena_sec70end;
+		} else {
+			set @record_min70,60 - $arena_min70st + $arena_min70end;
+			set @record_sec70,$arena_sec70end - $arena_sec70st;
+		}
+	} else {
+		if($arena_sec70end < $arena_sec70st) {
+			set @record_min70,$arena_min70end - $arena_min70st -1;
+			set @record_sec70,60 - $arena_sec70st + $arena_sec70end;
+		} else {
+			set @record_min70,$arena_min70end - $arena_min70st;
+			set @record_sec70,$arena_sec70end - $arena_sec70st;
+		}
+	}
+	set @gap70,(60 * $top_70min + $top_70sec) - (60 * @record_min70 + @record_sec70);
+	mes "[موظف الحلبة]";
+	mes "رائع! اكتمل التحدي بنجاح.";
+	mes "اسم الشخصية: ^3131FF" + strcharinfo(0) +"^000000، صحيح؟";
+	mes "بلغ إجمالي زمن ^3131FF"+ strcharinfo(0) +"^000000 في اجتياز المعركة:";
+	next;
+	mes "[موظف الحلبة]";
+	mes ""+@record_min70+" دقيقة و"+@record_sec70+" ثانية.";
+	mes "تهانينا!";
+	next;
+	mes "[موظف الحلبة]";
+	mes "أسرع زمن في معركة قوة الزمن للمستوى 70 مسجل باسم ^3131FF"+$arena_70topn$+"^000000.";
+	next;
+	mes "[موظف الحلبة]";
+	mes "الزمن القياسي المسجل باسم ^3131FF"+$arena_70topn$+"^000000: ^3131FF"+$top_70min+"^000000 دقيقة و^3131FF"+$top_70sec+"^000000 ثانية.";
+	next;
+	if (@gap70 < 0) {
+		mes "[موظف الحلبة]";
+		mes "لم يسجل هذا الزمن رقما قياسيا جديدا. حظا أوفر في المحاولة التالية!";
+		next;
+		if (arena_point > 29980) {
+			mes "[موظف الحلبة]";
+			mes "سأضيف مكافأة نقاط الحلبة... لحظة!";
+			mes "بلغ رصيد نقاط الحلبة الحد الأقصى، ولا يمكن إضافة المزيد قبل إنفاق بعض النقاط.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "يمكن مراجعة رصيد نقاط الحلبة في غرفة انتظار الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "آمل أن يكون التحدي ممتعا. سأعيدك إلى مدخل الحلبة.";
+			mes "شكرا!";
+			close2;
+		} else {
+			set arena_point, arena_point + 20;
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "يمكن مراجعة رصيد نقاط الحلبة لدى ^3131FFفينديغوس^000000 عند مدخل الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "سأعيدك إلى مدخل الحلبة.";
+			mes "إلى اللقاء!";
+			close2;
+		}
+		specialeffect2 EF_EXIT;
+ 		donpcevent "cast#70::OnNomal1";
+		warp "arena_room",100,75;
+		donpcevent "#arn_timer_70::OnStop";
+		donpcevent "alloff#70::OnEnable";
+		donpcevent "Lv70 Waiting Room::OnStart";
+		end;
+	} else {
+		emotion ET_HUK;
+		mes "[موظف الحلبة]";
+		mes "رائع! تم تسجيل رقم قياسي جديد!";
+		mes "إنجاز ممتاز!";
+		next;
+		mes "[موظف الحلبة]";
+		mes "سجل الرقم القياسي الجديد باسم ^3131FF"+strcharinfo(0)+"^000000 في ^FF0000معركة قوة الزمن للمستوى 70^000000.";
+		set $top_70min, @record_min70;
+		set $top_70sec, @record_sec70;
+		set $arena_70topn$,strcharinfo(0);
+		donpcevent "Vendigos::OnLineRec_70";
+		next;
+		if (arena_point > 29970) {
+			mes "[موظف الحلبة]";
+			mes "سأضيف مكافأة نقاط الحلبة... لحظة!";
+			mes "بلغ رصيد نقاط الحلبة الحد الأقصى، ولا يمكن إضافة المزيد قبل إنفاق بعض النقاط.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "يمكن مراجعة رصيد نقاط الحلبة في غرفة انتظار الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "آمل أن يكون التحدي ممتعا. سأعيدك إلى مدخل الحلبة.";
+			mes "شكرا!";
+			close2;
+		} else {
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "وبسبب الرقم القياسي الجديد، ستضاف مكافأة نقاط إضافية هذه المرة.";
+			next;
+			set arena_point, arena_point + 50;
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "يمكن مراجعة رصيد نقاط الحلبة لدى ^3131FFفينديغوس^000000 عند مدخل الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "سأعيدك إلى مدخل الحلبة.";
+			mes "إلى اللقاء!";
+			close2;
+		}
+		specialeffect2 EF_HIT5;
+ 		donpcevent "cast#70::OnNomal2";
+		warp "arena_room",100,75;
+		donpcevent "#arn_timer_70::OnStop";
+		donpcevent "alloff#70::OnEnable";
+		donpcevent "Lv70 Waiting Room::OnStart";
+		end;
+	}
+}
+
+-	script	#arn_timer_70	-1,{
+OnEnable:
+	initnpctimer;
+	end;
+
+OnTimer2000:
+	mapannounce "prt_are_in","تنبيه بشأن المهلة الزمنية لحلبة المستوى 70.",0,0xFFCE00;
+	end;
+
+OnTimer3000:
+	mapannounce "prt_are_in","ستتفعل بوابة الخروج خلال دقيقة لضمان انسيابية الحلبة.",0,0xFFCE00;
+	end;
+
+OnTimer4000:
+	mapannounce "prt_are_in","يرجى إكمال المعركة بأسرع ما يمكن لتجنب انتهاء المهلة. شكرا لتعاونك.",0,0xFFCE00;
+	end;
+
+OnTimer60000:
+ 	donpcevent "cast#70::OnTimeOver2";
+	donpcevent "arn_warp_70::OnOut";
+	donpcevent "#arn_timer_70::OnStop";
+	donpcevent "alloff#70::OnEnable";
+	donpcevent "Lv70 Waiting Room::OnStart";
+	end;
+
+OnStop:
+	stopnpctimer;
+	end;
+}
+
+-	script	arn_warp_70	-1,{
+OnOut:
+	areawarp "prt_are_in",14,91,29,74,"arena_room",100,75;
+	end;
+}
+
+-	script	cast#70	-1,{
+OnTimeOver1:
+	mapannounce "force_3-1","ستعاد تهيئة الحلبة بسبب خطأ حدث أثناء المعركة.",0,0xFFCE00;
+	end;
+OnTimeOver2:
+	mapannounce "force_3-1","ستعاد تهيئة الحلبة بسبب خطأ حدث في غرفة الانتظار.",0,0xFFCE00;
+	end;
+OnNomal1:
+	mapannounce "force_3-1","أعيدت تهيئة الحلبة.",0,0xFFCE00;
+	end;
+OnNomal2:
+	mapannounce "force_3-1","أعيدت تهيئة الحلبة.",0,0xFFCE00;
+	end;
+}
+
+-	script	alloff#70	-1,{
+OnEnable:
+	mapwarp "force_3-1","prt_are_in",126,190,0,0;
+	donpcevent "force_01mob#70::OnReset";
+	donpcevent "force_02mob#70::OnReset";
+	donpcevent "force_03mob#70::OnReset";
+	donpcevent "force_04mob#70::OnReset";
+	donpcevent "force_05mob#70::OnReset";
+	donpcevent "force_06mob#70::OnReset";
+	donpcevent "force_07mob#70::OnReset";
+	//donpcevent "force_08mob#70::OnReset";
+	donpcevent "force_09mob#70::OnReset";
+	//donpcevent "force_01ex#70::OnReset";
+	donpcevent "force_02ex#70::OnReset";
+	donpcevent "force_03ex#70::OnReset";
+	donpcevent "force_04ex#70::OnReset";
+	donpcevent "force_05ex#70::OnReset";
+	donpcevent "force_06ex#70::OnReset";
+	donpcevent "force_07ex#70::OnReset";
+	//donpcevent "force_08ex#70::OnReset";
+	donpcevent "force_09ex#70::OnReset";
+	donpcevent "Cadillac#arena::OnTimerOff";
+	disablenpc "Cadillac#arena";
+	disablenpc "force_01_02#70";
+	disablenpc "force_02_03#70";
+	disablenpc "force_03_04#70";
+	disablenpc "force_04_05#70";
+	disablenpc "force_05_06#70";
+	disablenpc "force_06_07#70";
+	disablenpc "force_07_08#70";
+	disablenpc "force_08_09#70";
+	disablenpc "force_exit#70";
+	disablenpc "arena#70";
+	donpcevent "#arn_timer_70::OnStop";
+	enablenpc "Cadillac#arena";
+	enablenpc "arena#70";
+	end;
+
+OnInit:
+	if(!$top_70min && !$top_70sec) set $top_70min,7;
+	end;
+}

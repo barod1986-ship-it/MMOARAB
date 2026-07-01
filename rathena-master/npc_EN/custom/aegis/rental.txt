@@ -1,0 +1,116 @@
+//===== rAthena Script ======================================= 
+//= Rental Service NPC
+//===== By: ======================================================
+//= wrywndp (https://www.youtube.com/@wrywndp)
+//===== Description: ========================================= 
+//= Rental Service NPC script (Pre-Renewal).
+//= Push Cart : 1000z
+//= Falcon : 2500z
+//= Pecopeco : 2500z
+//= Grand Peco : 3500z
+//===== Additional Comments: =====================================
+//= This script is made for Ragnarok Offline Pre-Renewal Pack
+//= https://www.youtube.com/watch?v=aN5OCJdj2qA
+//============================================================
+
+
+aegis_guild,27,27,4	script	Rental Service	603,{
+
+	if (ismounting()) {
+		message strcharinfo(0), "I must remove my mount first.";
+		end;
+	}
+
+	// Cart Rental
+	if (!checkcart() && getskilllv("MC_PUSHCART")) {
+		.@cartFee = 1000;
+		mes "[Rental Service]";
+		mes "Rent a cart for ^FF3355" + callfunc("F_InsertComma", .@cartFee) + "^000000 z?";
+		next;
+		switch(select("Yes:No")) {
+			case 1:
+				mes "[Rental Service]";
+				if (Zeny < .@cartFee) {
+					mes "You need ^FF3355" + callfunc("F_InsertComma", .@cartFee) + "^000000 z to rent a cart.";
+					close;
+				}
+				Zeny -= .@cartFee;
+				setcart;
+				specialeffect2 EF_CARTREVOLUTION;
+				mes "Cart has been rented!";
+				close;
+			case 2:
+				mes "[Rental Service]";
+				mes "Okay then.";
+				close;
+
+		}
+		close;
+	}
+
+	// Falcon Rental
+	if (!checkfalcon() && getskilllv("HT_FALCON")) {
+		.@falconFee = 2500;
+		mes "[Rental Service]";
+		mes "Rent a falcon for ^FF3355" + callfunc("F_InsertComma", .@falconFee) + "^000000 z?";
+		next;
+		switch(select("Yes:No")) {
+			case 1:
+				mes "[Rental Service]";
+				if (Zeny < .@falconFee) {
+					mes "You need ^FF3355" + callfunc("F_InsertComma", .@falconFee) + "^000000 z to rent a falcon.";
+					close;
+				}
+				Zeny -= .@falconFee;
+				setfalcon;
+				specialeffect2 EF_DETECTING;
+				mes "Falcon has been rented!";
+				close;
+			case 2:
+				mes "[Rental Service]";
+				mes "Okay then.";
+				close;
+
+		}
+		close;
+	}
+
+	// Peco Peco Rental
+	if (!checkriding() && getskilllv("KN_RIDING")) {
+		if (BaseJob == Job_Knight) {
+			.@pecoFee = 2500;
+		} else if (BaseJob == Job_Crusader) {
+			.@pecoFee = 3500;
+		} else {
+			mes "[Rental Service]";
+			mes "Only Knights and Crusader can rent a Peco Peco.";
+			close;
+		}
+		
+		mes "[Rental Service]";
+		mes "Rent a Peco Peco for ^FF3355" + callfunc("F_InsertComma", .@pecoFee) + "^000000 z?";
+		next;
+		switch(select("Yes:No")) {
+			case 1:
+				mes "[Rental Service]";
+				if (Zeny < .@pecoFee) {
+					mes "You need ^FF3355" + callfunc("F_InsertComma", .@pecoFee) + "^000000 z to rent a mount.";
+					close;
+				}
+				Zeny -= .@pecoFee;
+				setriding;
+				specialeffect2 EF_MAGNUMBREAK;
+				mes "Peco peco has been rented!";
+				close;
+			case 2:
+				mes "[Rental Service]";
+				mes "Okay then.";
+				close;
+
+		}
+		close;
+	}
+
+	message strcharinfo(0), "I do not meet requirements to rent.";
+	end;
+}

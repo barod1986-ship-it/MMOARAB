@@ -1,0 +1,1022 @@
+//===== rAthena Script =======================================
+//= Izlude Arena Room
+//===== By: ==================================================
+//= SinSloth
+//===== Current Version: =====================================
+//= 1.4
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= Izlude Battle Arena Main Room
+//===== Additional Comments: =================================
+//= 1.0 First version.
+//= 1.1 Fixed a small reward typo (was giving potato.) [L0ne_W0lf]
+//= 1.2 Label standardization, disabled GM NPCs. [Euphy]
+//= 1.2a Added Renewal level checksk. [Euphy]
+//= 1.3 Script updates. [Euphy]
+//= 1.4 Added GM management function. [Euphy]
+//============================================================
+
+arena_room,94,93,5	script	فينديغوس::Vendigos	97,{
+	mes "[فينديغوس]";
+	mes "مرحبا بك في عالم الحلبة، موطن معارك قوة الزمن.";
+	mes "اسمي فينديغوس، وأنا هنا لإرشادك.";
+	next;
+	mes "[فينديغوس]";
+	mes "إذا كانت لديك أي أسئلة، فلا تتردد في سؤالي.";
+	next;
+	while(1) {
+		switch(select("كيفية المشاركة:معلومات عن نقاط الحلبة:عرض رصيد نقاط الحلبة:إنهاء")) {
+		case 1:
+			mes "[فينديغوس]";
+			mes "تتوفر الحلبة بنمطين: ^3131FFالوضع الفردي^000000 و^3131FFوضع الفريق^000000.";
+			next;
+			mes "[فينديغوس]";
+			mes "يضم ^3131FFالوضع الفردي^000000 أربع مراحل، تبدأ من المستوى 50 وتنتهي عند المستوى 80.";
+			mes "أما الفريق المكون من خمسة أعضاء فيمكنه المشاركة في ^3131FFوضع الفريق^000000.";
+			next;
+			mes "[فينديغوس]";
+			mes "في كل مرحلة من ^3131FFالوضع الفردي^000000، لا يسمح بالدخول لمن يتجاوز الحد الأدنى للمستوى بعشرين مستوى أو أكثر، حتى لا تستغل المراحل الأدنى.";
+			next;
+			mes "[فينديغوس]";
+			mes "تنتشر الشخصيات المسؤولة عن مراحل الوضع الفردي حول القاعة، بدءا من اتجاه الساعة 12 بعكس عقارب الساعة.";
+			mes "أثناء الانتظار في غرفة الانتظار، ستنتقل تلقائيا إلى غرفة الحلبة بحسب ترتيب الدخول.";
+			break;
+		case 2:
+			mes "[فينديغوس]";
+			mes "سأشرح لك نظام ^3131FFنقاط الحلبة^000000.";
+			mes "هي نقاط مكافأة تمنح عند ^3131FFإكمال إحدى مراحل الحلبة^000000، ويمكن الاحتفاظ بما يصل إلى 30,000 نقطة.";
+			next;
+			mes "[فينديغوس]";
+			mes "حتى عند عدم إكمال المرحلة بسبب انتهاء الوقت أو سبب آخر، قد تحصل على عدد قليل من نقاط الحلبة.";
+			next;
+			mes "[فينديغوس]";
+			mes "يمكن استخدام نقاط الحلبة في خدمات متنوعة،";
+			mes "ومنها استبدال المكافآت والتقاط الصور التذكارية لدى غيفو.";
+			break;
+		case 3:
+			mes "[فينديغوس]";
+			mes "سأعرض رصيد نقاط الحلبة لدى "+strcharinfo(0)+".";
+			next;
+			mes "[فينديغوس]";
+			mes "رصيد "+strcharinfo(0)+" هو ^3131FF"+arena_point+"^000000 نقطة حلبة.";
+			next;
+			mes "[فينديغوس]";
+			mes "لمعرفة طرق استخدامها، اختر ^3131FFمعلومات عن نقاط الحلبة^000000 من القائمة.";
+			break;
+		case 4:
+			mes "[فينديغوس]";
+			mes "حسنا،";
+			mes "أتمنى لك وقتا";
+			mes "ممتعا في الحلبة.";
+			close;
+		}
+		next;
+		mes "[فينديغوس]";
+		mes "هل تحتاج إلى مساعدة";
+		mes "في أمر آخر؟";
+		next;
+	}
+	close;
+
+OnLineRec_50:
+	mapannounce "arena_room","سجل "+$arena_50topn$+" رقما قياسيا جديدا في معركة قوة الزمن للمستوى 50. تهانينا!",0;
+	end;
+
+OnLineRec_60:
+	mapannounce "arena_room","سجل "+$arena_60topn$+" رقما قياسيا جديدا في معركة قوة الزمن للمستوى 60. تهانينا!",0;
+	end;
+
+OnLineRec_70:
+	mapannounce "arena_room","سجل "+$arena_70topn$+" رقما قياسيا جديدا في معركة قوة الزمن للمستوى 70. تهانينا!",0;
+	end;
+OnLineRec_80:
+	mapannounce "arena_room","سجل "+$arena_80topn$+" رقما قياسيا جديدا في معركة قوة الزمن للمستوى 80. تهانينا!",0;
+	end;
+
+OnLineRec_pt:
+	mapannounce "arena_room","حقق الفريق "+$arena_pttopn$+" رقما قياسيا جديدا في معركة قوة الزمن الجماعية. تهانينا!",0;
+	end;
+
+//OnLineRec_vs:
+//	mapannounce "arena_room","حقق الفريق "+$040611_arn_vstopn$+" رقما قياسيا جديدا في معركة قوة الزمن الجماعية. تهانينا!",0;
+//	end;
+}
+
+arena_room,105,82,5	script	موظف سجلات الحلبة::Arena Record Staff	57,{
+	mes "[أوين كيوف]";
+	mes "مرحبا، اسمي أوين كيوف،";
+	mes "وأنا مسؤول عن سجلات جميع مراحل الحلبة.";
+	next;
+	mes "[أوين كيوف]";
+	mes "هل ترغب في الاطلاع على أصحاب الأرقام القياسية في كل مرحلة؟";
+	mes "اختر المرحلة المطلوبة من القائمة.";
+	next;
+	switch(select("المستوى 50:المستوى 60:المستوى 70:المستوى 80:مرحلة الفريق")) {
+	case 1:
+		mes "[أوين كيوف]";
+		mes "صاحب الرقم القياسي للمستوى 50 هو ^3131FF"+$arena_50topn$+"^000000 بزمن ^3131FF"+$top_50min+"^000000 دقيقة و^3131FF"+$top_50sec+"^000000 ثانية.";
+		close;
+	case 2:
+		mes "[أوين كيوف]";
+		mes "صاحب الرقم القياسي للمستوى 60 هو ^3131FF"+$arena_60topn$+"^000000 بزمن ^3131FF"+$top_60min+"^000000 دقيقة و^3131FF"+$top_60sec+"^000000 ثانية.";
+		close;
+	case 3:
+		mes "[أوين كيوف]";
+		mes "صاحب الرقم القياسي للمستوى 70 هو ^3131FF"+$arena_70topn$+"^000000 بزمن ^3131FF"+$top_70min+"^000000 دقيقة و^3131FF"+$top_70sec+"^000000 ثانية.";
+		close;
+	case 4:
+		mes "[أوين كيوف]";
+		mes "صاحب الرقم القياسي للمستوى 80 هو ^3131FF"+$arena_80topn$+"^000000 بزمن ^3131FF"+$top_80min+"^000000 دقيقة و^3131FF"+$top_80sec+"^000000 ثانية.";
+		close;
+	case 5:
+		mes "[أوين كيوف]";
+		mes "الفريق صاحب الرقم القياسي هو ^3131FF"+$arena_pttopn$+"^000000 بزمن ^3131FF"+$top_ptmin+"^000000 دقيقة و^3131FF"+$top_ptsec+"^000000 ثانية.";
+		close;
+	}
+}
+
+arena_room,68,135,3	script	المساعد بات::Helper Pat	726,{
+	mes "[بات]";
+	mes "مرحبا!";
+	mes "أنا مساعد حلبة المستوى 50.";
+	next;
+	mes "[بات]";
+	mes "هذه ^3131FFمرحلة حلبة المستوى 50^000000";
+	mes "متاحة للشخصيات من ^FF0000المستوى 50^000000 إلى ^FF0000المستوى 69^000000.";
+	next;
+	mes "[بات]";
+	mes "وضع حد المستوى لمنع الشخصيات عالية المستوى من استغلال المراحل الأدنى.";
+	mes "تبلغ رسوم الدخول 1,000 زيني.";
+	next;
+	mes "[بات]";
+	mes "سأشرح لك قواعد المشاركة في الحلبة.";
+	next;
+	mes "[بات]";
+	mes "^3131FFانتظر في غرفة الانتظار حتى يحين دورك.^000000";
+	mes "عندما يحين دورك، ستنتقل تلقائيا إلى خريطة الحلبة.";
+	next;
+	mes "[بات]";
+	mes "يبدأ مؤقت احتساب الزمن فور دخولك.";
+	mes "اتبع إرشادات ^3131FFهيل آند تو^000000.";
+	next;
+	mes "[بات]";
+	mes "لديك ^3131FF5 دقائق^000000 لإكمال القتال.";
+	next;
+	mes "[بات]";
+	mes "بعد اجتياز جميع الغرف، بما فيها غرفة الزعيم، ستنتقل إلى ^3131FFغرفة الانتظار النهائية^000000.";
+	mes "يمكنك البقاء فيها ^3131FFدقيقة واحدة^000000 فقط، فسارع إلى استلام نقاط الحلبة والمغادرة.";
+	next;
+	mes "[بات]";
+	mes "إذا بقيت أكثر من دقيقة في غرفة الانتظار النهائية، ستخرج تلقائيا ولن تحصل على نقاط الحلبة. تذكر ذلك.";
+	next;
+	mes "[بات]";
+	mes "استمتع بوقتك.";
+	close;
+}
+
+arena_room,41,93,5	script	المساعد بن::Helper Ben	750,{
+	mes "[بن]";
+	mes "مرحبا!";
+	mes "أنا مساعد حلبة المستوى 60.";
+	next;
+	mes "[بن]";
+	mes "هذه ^3131FFمرحلة حلبة المستوى 60^000000";
+	mes "متاحة للشخصيات من ^FF0000المستوى 60^000000 إلى ^FF0000المستوى 79^000000.";
+	next;
+	mes "[بن]";
+	mes "وضع حد المستوى لمنع الشخصيات عالية المستوى من استغلال المراحل الأدنى.";
+	mes "تبلغ رسوم الدخول 1,000 زيني.";
+	next;
+	mes "[بن]";
+	mes "سأشرح لك قواعد المشاركة في الحلبة.";
+	next;
+	mes "[بن]";
+	mes "^3131FFانتظر في غرفة الانتظار حتى يحين دورك.^000000";
+	mes "عندما يحين دورك، ستنتقل تلقائيا إلى خريطة الحلبة.";
+	next;
+	mes "[بن]";
+	mes "يبدأ مؤقت احتساب الزمن فور دخولك.";
+	mes "اتبع إرشادات ^3131FFميني لوفر^000000.";
+	next;
+	mes "[بن]";
+	mes "لديك ^3131FF6 دقائق^000000 لإكمال القتال.";
+	next;
+	mes "[بن]";
+	mes "بعد اجتياز جميع الغرف، بما فيها غرفة الزعيم، ستنتقل إلى ^3131FFغرفة الانتظار النهائية^000000.";
+	mes "يمكنك البقاء فيها ^3131FFدقيقة واحدة^000000 فقط، فسارع إلى استلام نقاط الحلبة والمغادرة.";
+	next;
+	mes "[بن]";
+	mes "إذا بقيت أكثر من دقيقة في غرفة الانتظار النهائية، ستخرج تلقائيا ولن تحصل على نقاط الحلبة. تذكر ذلك.";
+	next;
+	mes "[بن]";
+	mes "استمتع بوقتك.";
+	close;
+}
+
+arena_room,53,49,5	script	المساعد فيشوس::Helper Vicious	730,{
+	mes "[فيشوس]";
+	mes "مرحبا.";
+	mes "اسمي فيشوس، وأنا مساعد حلبة المستوى 70.";
+	mes "(...لا أدري كيف ورطت نفسي في هذا العمل السخيف... تمتمة تمتمة... تذمر تذمر..)";
+	next;
+	mes "[فيشوس]";
+	mes "هذه ^3131FFمرحلة حلبة المستوى 70^000000";
+	mes "متاحة للشخصيات من ^FF0000المستوى 70^000000 إلى ^FF0000المستوى 89^000000.";
+	next;
+	mes "[فيشوس]";
+	mes "وضع حد المستوى لمنع الشخصيات عالية المستوى من استغلال المراحل الأدنى.";
+	mes "تبلغ رسوم الدخول 1,000 زيني.";
+	next;
+	mes "[فيشوس]";
+	mes "سأشرح لك قواعد المشاركة في الحلبة.";
+	next;
+	mes "[فيشوس]";
+	mes "^3131FFانتظر في غرفة الانتظار حتى يحين دورك.^000000";
+	mes "عندما يحين دورك، ستنتقل تلقائيا إلى خريطة الحلبة.";
+	next;
+	mes "[فيشوس]";
+	mes "يبدأ مؤقت احتساب الزمن فور دخولك.";
+	mes "اتبع إرشادات ^3131FFكاديلاك^000000.";
+	next;
+	mes "[فيشوس]";
+	mes "لديك ^3131FF7 دقائق^000000 لإكمال القتال.";
+	next;
+	mes "[فيشوس]";
+	mes "بعد اجتياز جميع الغرف، بما فيها غرفة الزعيم، ستنتقل إلى ^3131FFغرفة الانتظار النهائية^000000.";
+	mes "يمكنك البقاء فيها ^3131FFدقيقة واحدة^000000 فقط، فسارع إلى استلام نقاط الحلبة والمغادرة.";
+	next;
+	mes "[فيشوس]";
+	mes "إذا بقيت أكثر من دقيقة في غرفة الانتظار النهائية، ستخرج تلقائيا ولن تحصل على نقاط الحلبة. تذكر ذلك.";
+	next;
+	mes "[فيشوس]";
+	mes "حسنا، بالتوفيق.";
+	close;
+}
+
+arena_room,147,49,3	script	المساعد إيبين::Helper Epin	727,{
+	mes "[إيبين]";
+	mes "مرحبا،";
+	mes "أنا مساعد حلبة المستوى 80، واسمي إيبين.";
+	mes "أحب القراءة وعمري 19 سنة... هاه...؟ ألا تريد أن تسمع عني...؟";
+	next;
+	emotion ET_CRY;
+	mes "[إيبين]";
+	mes "حسنا...";
+	next;
+	mes "[إيبين]";
+	mes "هذه ^3131FFمرحلة حلبة المستوى 80^000000";
+	mes "متاحة للشخصيات من ^FF0000المستوى 80^000000 إلى ^FF0000المستوى "+(checkre(0)?"160":"99")+"^000000.";
+	next;
+	mes "[إيبين]";
+	mes "وضع حد المستوى لمنع الشخصيات عالية المستوى من استغلال المراحل الأدنى.";
+	mes "تبلغ رسوم الدخول 1,000 زيني.";
+	next;
+	mes "[إيبين]";
+	mes "سأشرح لك قواعد المشاركة في الحلبة.";
+	next;
+	mes "[إيبين]";
+	mes "^3131FFانتظر في غرفة الانتظار حتى يحين دورك.^000000";
+	mes "عندما يحين دورك، ستنتقل تلقائيا إلى خريطة الحلبة.";
+	next;
+	mes "[إيبين]";
+	mes "يبدأ مؤقت احتساب الزمن فور دخولك.";
+	mes "اتبع إرشادات ^3131FFأوكتوس^000000.";
+	next;
+	mes "[إيبين]";
+	mes "لديك ^3131FF8 دقائق^000000 لإكمال القتال.";
+	next;
+	mes "[إيبين]";
+	mes "بعد اجتياز جميع الغرف، بما فيها غرفة الزعيم، ستنتقل إلى ^3131FFغرفة الانتظار النهائية^000000.";
+	mes "يمكنك البقاء فيها ^3131FFدقيقة واحدة^000000 فقط، فسارع إلى استلام نقاط الحلبة والمغادرة.";
+	next;
+	mes "[إيبين]";
+	mes "إذا بقيت أكثر من دقيقة في غرفة الانتظار النهائية، ستخرج تلقائيا ولن تحصل على نقاط الحلبة. تذكر ذلك.";
+	next;
+	mes "[إيبين]";
+	mes "استمتع بوقتك.";
+	close;
+}
+
+arena_room,158,93,5	script	المساعد لونيك::Helper Lunic	828,{
+	mes "[لونيك]";
+	mes "مرحبا بك في مرحلة حلبة الفريق.";
+	mes "استمع جيدا إلى الشرح،";
+	mes "فمرحلة الفريق تختلف قليلا عن المراحل الفردية.";
+	next;
+	mes "[لونيك]";
+	mes "^3131FFمرحلة حلبة الفريق^000000";
+	mes "متاحة للاعبين من ^FF0000المستوى 10^000000 إلى ^FF0000المستوى "+(checkre(0)?"160":"99")+"^000000.";
+	next;
+	mes "[لونيك]";
+	mes "لن تبدأ الحلبة حتى يدخل أعضاء الفريق الخمسة، وتبلغ رسوم الدخول 1,000 زيني لكل عضو.";
+	next;
+	mes "[لونيك]";
+	mes "سأشرح لك قواعد المشاركة في الحلبة.";
+	next;
+	mes "[لونيك]";
+	mes "^3131FFكون فريقا من خمسة أعضاء وانتظروا في غرفة الانتظار^000000.";
+	mes "يفضل تشكيل الفريق مسبقا؛ ويمكن المتابعة دون ذلك، لكن تنظيم الدخول سيكون أصعب.";
+	next;
+	mes "[لونيك]";
+	mes "ينقل أول خمسة داخل ^FF0000غرفة الانتظار^000000 بحسب ترتيب الدخول، لا بحسب عضوية ^FF0000الفريق^000000.";
+	next;
+	mes "[لونيك]";
+	mes "لذلك شكل فريقا من ^3131FFخمسة أعضاء^000000 قبل دخول غرفة الانتظار.";
+	next;
+	mes "[لونيك]";
+	mes "عندما يحين دورك، ستنتقل إلى خريطة صغيرة تضم بوابة انتقال وشخصية مساعدة.";
+	mes "إذا دخلت مع أعضاء من فريق آخر، استخدم بوابة الانتقال للعودة إلى غرفة الانتظار.";
+	next;
+	mes "[لونيك]";
+	mes "إذا دخلت مع أعضاء فريقك، فتحدث إلى الشخصية المساعدة في الخريطة الصغيرة.";
+	mes "لا يمكن التحدث إليها إلا من قبل ^FF0000شخص واحد^000000 في كل مرة.";
+	next;
+	mes "[لونيك]";
+	mes "ستنقل الشخصية المساعدة فريقك إلى غرفة الحلبة الفعلية.";
+	mes "إذا كان أحد الأعضاء ^3131FFلا يملك رسوم الدخول الكافية، فسيخرج من الخريطة^000000.";
+	next;
+	mes "[لونيك]";
+	mes "يمكن البقاء في هذه الخريطة ^FF0000دقيقة واحدة^000000 فقط.";
+	next;
+	mes "[لونيك]";
+	mes "يبدأ مؤقت احتساب زمن القتال فور دخول خريطة الحلبة.";
+	mes "اتبع إرشادات ^3131FFسليبسلو ران^000000.";
+	next;
+	mes "[لونيك]";
+	mes "لديك ^3131FF10 دقائق^000000 لإكمال المرحلة، فاستخدم وقتك بحكمة.";
+	next;
+	mes "[لونيك]";
+	mes "بعد اجتياز جميع الغرف، بما فيها غرفة الزعيم، ستنتقل إلى ^3131FFغرفة الانتظار النهائية^000000.";
+	mes "يمكنك البقاء فيها ^3131FFدقيقة واحدة^000000 فقط، فسارع إلى استلام نقاط الحلبة والمغادرة.";
+	next;
+	mes "[لونيك]";
+	mes "إذا بقيت أكثر من دقيقة في غرفة الانتظار النهائية، ستخرج تلقائيا ولن تحصل على نقاط الحلبة. تذكر ذلك.";
+	next;
+	mes "[لونيك]";
+	mes "إذا حقق فريقك زمنا قياسيا جديدا،";
+	mes "يمكن لـ^3131FFقائد الفريق^000000 تسجيل ^3131FFاسم الفريق^000000.";
+	next;
+	mes "[لونيك]";
+	mes "إذا كان للفريق أكثر من قائد أو لم يكن له قائد، فلن يمكن تسجيل ^FF0000الرقم القياسي للفريق^000000.";
+	mes "لذلك تأكد من تنظيم الفريق قبل دخول الحلبة.";
+	next;
+	mes "[لونيك]";
+	mes "شكرا لاستماعك.";
+	mes "استمتع بوقتك.";
+	close;
+}
+
+arena_room,158,82,1	script	المساعد لونيك::Helper Lonik	828,{
+	emotion ET_BEST;
+	mes "[لونيك]";
+	mes "تادا! ها أنا!";
+	next;
+	mes "[لونيك]";
+	mes "تريد معرفة ما إذا كان أحد داخل الحلبة، أليس كذلك؟";
+	next;
+	mes "[لونيك]";
+	mes "الإجابة هي...";
+	mes ".............";
+	if (getmapusers("force_1-2")) {
+		emotion ET_O;
+		mes "نعم!";
+		mes "يوجد شخص داخل الحلبة.";
+		next;
+		mes "[لونيك]";
+		mes "من الأفضل أن تنتظر قليلا!";
+	} else {
+		emotion ET_X;
+		mes "لا!";
+		mes "يمكنك الدخول. بالتوفيق!";
+	}
+	close;
+}
+
+sec_in02,72,180,3	script	مدير الحلبة#arena::Arena Manager#arena	802,{
+	set .@i, callfunc("F_GM_NPC",1357,0);
+	if (.@i == -1) {
+		mes "[مدير الحلبة]";
+		mes "تم إلغاء الأمر.";
+		close;
+	} else if (.@i == 0) {
+		mes "كلمة المرور غير صحيحة.";
+		close;
+	} else {
+		mes "[مدير الحلبة]";
+		mes "اختر الإجراء المطلوب.";
+		next;
+		switch(select("إعادة تفعيل الحلبة:تعديل الزمن القياسي")) {
+		case 1:
+			switch(select("المستوى 50:المستوى 60:المستوى 70:المستوى 80:وضع الفريق")) {
+			case 1:
+				set .@arena,50;
+				break;
+			case 2:
+				set .@arena,60;
+				break;
+			case 3:
+				set .@arena,70;
+				break;
+			case 4:
+				set .@arena,80;
+				break;
+			case 5:
+				mes "[مدير الحلبة]";
+				mes "== تحذير ==";
+				mes "اخترت إعادة تفعيل مرحلة الفريق.";
+				mes "هل تريد المتابعة؟";
+				next;
+				switch(select("نعم:لا")) {
+				case 1:
+					donpcevent "Ponox::OnStart";
+					mes "[مدير الحلبة]";
+					mes "تمت إعادة تفعيل مرحلة الحلبة بنجاح.";
+					close;
+
+				case 2:
+					mes "[مدير الحلبة]";
+					mes "تم إلغاء الأمر.";
+					close;
+				}
+			}
+			mes "[مدير الحلبة]";
+			mes "== تحذير ==";
+			mes "اخترت إعادة تفعيل مرحلة الحلبة للمستوى "+.@arena+".";
+			mes "هل تريد المتابعة؟";
+			next;
+			switch(select("نعم:لا")) {
+			case 1:
+				donpcevent "Lv"+.@arena+" Waiting Room::OnStart";
+				mes "[مدير الحلبة]";
+				mes "تمت إعادة تفعيل مرحلة الحلبة بنجاح.";
+				close;
+			case 2:
+				mes "[مدير الحلبة]";
+				mes "تم إلغاء الأمر.";
+				close;
+			}
+		case 2:
+			mes "[مدير الحلبة]";
+			mes "== تحذير ==";
+			mes "^CE0000اخترت تعديل الزمن القياسي. لا تستخدم هذا الإجراء إلا عند الضرورة.^000000";
+			next;
+			mes "[مدير الحلبة]";
+			mes "هل أنت متأكد من تعديل الزمن القياسي؟";
+			next;
+			switch(select("لا:نعم")) {
+			case 1:
+				mes "[مدير الحلبة]";
+				mes "تم الإلغاء.";
+				close;
+			case 2:
+				switch(select("المستوى 50:المستوى 60:المستوى 70:المستوى 80:وضع الفريق")) {
+				case 1:
+					set .@min$,"$top50min";
+					set .@sec$,"$top50sec";
+					set .@mode$,"المستوى 50";
+					break;
+				case 2:
+					set .@min$,"$top60min";
+					set .@sec$,"$top60sec";
+					set .@mode$,"المستوى 60";
+					break;
+				case 3:
+					set .@min$,"$top70min";
+					set .@sec$,"$top70sec";
+					set .@mode$,"المستوى 70";
+					break;
+				case 4:
+					set .@min$,"$top80min";
+					set .@sec$,"$top80sec";
+					set .@mode$,"المستوى 80";
+					break;
+				case 5:
+					set .@min$,"$top_ptmin";
+					set .@sec$,"$top_ptsec";
+					set .@mode$,"الفريق";
+					break;
+				}
+				mes "[مدير الحلبة]";
+				// Doesn't work with Athena's implementation.
+				//mes "Please enter 0 to cancel.";
+				//mes "If not, please enter a value for minutes first and then seconds.";
+				mes "أدخل قيمة الدقائق أولا، ثم قيمة الثواني.";
+				next;
+				input .@arenamin;
+				setd .@min$,.@arenamin;
+				input .@arenasec;
+				setd .@sec$,.@arenasec;
+				mes "[مدير الحلبة]";
+				mes "تم تعديل الزمن القياسي لـ"+.@mode$+" إلى ^FF0000"+getd(.@min$)+"^000000 دقيقة و^FF0000"+getd(.@sec$)+"^000000 ثانية.";
+				close;
+			}
+		}
+	}
+}
+
+sec_in02,79,171,3	script	مدير المكافآت#arena::Reward Manager#arena	802,{
+	set .@i, callfunc("F_GM_NPC",1357,0);
+	if (.@i == -1) {
+		mes "[مدير المكافآت]";
+		mes "تم إلغاء الأمر.";
+		close;
+	} else if (.@i == 0) {
+		mes "[مدير المكافآت]";
+		mes "كلمة المرور غير صحيحة.";
+		close;
+	} else {
+		mes "[مدير المكافآت]";
+		mes "اختر إجراء الناقل.";
+		next;
+		switch(select("إلغاء:إخفاء:إظهار")) {
+		case 1:
+			mes "[مدير المكافآت]";
+			mes "تم إلغاء الأمر.";
+			close;
+		case 2:
+			mes "[مدير المكافآت]";
+			mes "تم إخفاء الناقل.";
+			disablenpc "Teleporter#arena";
+			close;
+		case 3:
+			mes "[مدير المكافآت]";
+			mes "تم إظهار الناقل.";
+			enablenpc "Teleporter#arena";
+			close;
+		}
+	}
+}
+
+arena_room,105,93,5	script	ناقل#arena::Teleporter#arena	55,{
+	mes "[ناقل]";
+	mes "يمكنني نقلك إلى منطقة مكافآت الحلبة.";
+	mes "هل تريد الانتقال إليها؟";
+	next;
+	switch(select("نعم:لا")) {
+	case 1:
+		mes "[ناقل]";
+		mes "سأنقلك الآن.";
+		close2;
+		warp "prt_are_in",60,14;
+		end;
+	case 2:
+		mes "[ناقل]";
+		mes "لا بأس، عد إلي متى شئت.";
+		close;
+	}
+}
+
+prt_are_in,98,14,3	script	غيفو#arena::Givu#arena	728,{
+	if (checkweight(526,5) == 0) {
+		mes "- لحظة من فضلك! -";
+		mes "- تحمل حاليا عددا -";
+		mes "- كبيرا من العناصر. -";
+		mes "- خفف حمولتك -";
+		mes "- ثم حاول مجددا. -";
+		close;
+	}
+	mes "[غيفو]";
+	mes "مرحبا بك في عالم الحلبة.";
+	mes "اسمي غيفو، وأنا مسؤول عن خدمة استبدال نقاط الحلبة.";
+	next;
+	mes "[غيفو]";
+	mes "يمكنك استبدال نقاط الحلبة بمكافآت متنوعة.";
+	mes "اختر الخدمة المطلوبة من القائمة.";
+	next;
+	switch(select("استبدال بعناصر استهلاكية:استبدال بنقاط خبرة:التقاط صورة تذكارية:عرض رصيد نقاط الحلبة")) {
+	case 1:
+		mes "[غيفو]";
+		mes "اختر العنصر الاستهلاكي المطلوب.";
+		next;
+		switch(select("عسل:هلام ملكي:فاكهة ماستيلا:جرعة بيضاء مركزة:أنوداين:بذرة يغدراسيل:ثمرة يغدراسيل:صندوق أزرق قديم:صندوق بنفسجي قديم:ألبوم بطاقات قديم")) {
+			case 1: callfunc "Func_Are_Rew",518,5,20;
+			case 2: callfunc "Func_Are_Rew",526,5,30;
+			case 3: callfunc "Func_Are_Rew",522,5,30;
+			case 4: callfunc "Func_Are_Rew",547,8,30;
+			case 5: callfunc "Func_Are_Rew",605,3,20;
+			case 6: callfunc "Func_Are_Rew",608,1,20;
+			case 7: callfunc "Func_Are_Rew",607,1,40;
+			case 8: callfunc "Func_Are_Rew",603,1,100;
+			case 9: callfunc "Func_Are_Rew",617,1,300;
+			case 10: callfunc "Func_Are_Rew",616,1,1000;
+		}
+	case 2:
+		mes "[غيفو]";
+		mes "هل تريد استبدال نقاط الحلبة بنقاط خبرة؟";
+		mes "تكلف الخدمة 40 نقطة حلبة.";
+		next;
+		switch(select("إلغاء:نعم")) {
+		case 1:
+			mes "[غيفو]";
+			mes "تم إلغاء الطلب.";
+			close;
+		case 2:
+			if (arena_point < 40) {
+				mes "[غيفو]";
+				mes "لا تملك نقاط حلبة كافية.";
+				mes "تحقق من رصيد نقاط الحلبة ثم حاول مجددا.";
+				close;
+			}
+			set arena_point, arena_point-40;
+			if (checkre(3)) {
+				if (BaseLevel < 70) getexp 300,0;
+				else if (BaseLevel < 80) getexp 900,0;
+				else if (BaseLevel < 90) getexp 1000,0;
+				else getexp 3000,0;
+			} else {
+				if (BaseLevel < 70) getexp 3000,0;
+				else if (BaseLevel < 80) getexp 9000,0;
+				else if (BaseLevel < 90) getexp 10000,0;
+				else getexp 30000,0;
+			}
+			mes "[غيفو]";
+			mes "تمت إضافة نقاط الخبرة. شكرا لك.";
+			close;
+		}
+	case 3:
+		mes "[غيفو]";
+		mes "اخترت خدمة الصور التذكارية.";
+		next;
+		switch(select("معلومات عن الصور التذكارية:التقاط صورة")) {
+		case 1:
+			mes "[غيفو]";
+			mes "هل ترى الدرج إلى يميني؟";
+			next;
+			mes "[غيفو]";
+			mes "عند الدرج يمكنك التقاط صورة مع شخصية أو وحش.";
+			next;
+			mes "[غيفو]";
+			mes "بعد اختيار الشخصية أو الوحش، ستظهر مجموعة من التعبيرات ^FF0000لمدة دقيقة واحدة^000000.";
+			next;
+			mes "[غيفو]";
+			mes "لا تفوت فرصة التقاط صورة تذكارية مع شخصيتك المفضلة!";
+			close;
+		case 2:
+			if ($@arena_picture) {
+				mes "[غيفو]";
+				mes "تستخدم خدمة الصور التذكارية حاليا. انتظر قليلا.";
+				close;
+			}
+			mes "[غيفو]";
+			mes "اختر الشخصية أو الوحش المطلوب.";
+			mes "سيظهر الاختيار لمدة دقيقة واحدة، وتكلف الخدمة 10 نقاط حلبة.";
+			next;
+			switch(select("بافوميت:سيد الظلام:دوبلغانغر:إدغا:دراكولا:شبح ساموراي:فارس العاصفة:فريوني:فتيات:فالكيري")) {
+				case 1: set $@arena_picture_id,1039; break;
+				case 2: set $@arena_picture_id,1272; break;
+				case 3: set $@arena_picture_id,1046; break;
+				case 4: set $@arena_picture_id,1115; break;
+				case 5: set $@arena_picture_id,1389; break;
+				case 6: set $@arena_picture_id,1492; break;
+				case 7: set $@arena_picture_id,1251; break;
+				case 8: set $@arena_picture_id,1159; break;
+				case 9: set $@arena_picture_id,6969; break;
+				case 10: set $@arena_picture_id,7777; break;
+			}
+			if (arena_point < 10) {
+				mes "[غيفو]";
+				mes "لا تملك نقاط حلبة كافية.";
+				mes "تحقق من رصيد نقاط الحلبة ثم حاول مجددا.";
+				close;
+			}
+			mes "[غيفو]";
+			if ($@arena_picture_id == 6969)
+				mes "هل تريد التقاط صورة مع الفتيات؟";
+			else if ($@arena_picture_id == 7777)
+				mes "هل تريد التقاط صورة مع فالكيري؟";
+			else
+				mes "هل تريد التقاط صورة مع "+getmonsterinfo($@arena_picture_id, MOB_NAME)+"؟";
+			next;
+			switch(select("نعم:لا")) {
+			case 1:
+				set arena_point, arena_point-10;
+				set $@arena_picture,1;
+				enablenpc "#arena_"+$@arena_picture_id+"";
+				movenpc "#arena_"+$@arena_picture_id+"",96,28;
+				if ($@arena_picture_id == 6969) {
+					enablenpc "#arena_ss_2";
+					enablenpc "#arena_ss_3";
+					enablenpc "#arena_ss_4";
+				}
+				donpcevent "npctime#arena::OnStart";
+				mes "[غيفو]";
+				mes "شكرا لك.";
+				close;
+			case 2:
+				mes "[غيفو]";
+				mes "لا بأس، عد إلي عندما تقرر.";
+				close;
+			}
+		}
+	case 4:
+		mes "[غيفو]";
+		mes "سأعرض رصيد نقاط الحلبة لدى "+strcharinfo(0)+".";
+		next;
+		mes "[غيفو]";
+		mes "رصيد "+strcharinfo(0)+" هو ^3131FF"+arena_point+"^000000 نقطة حلبة.";
+		close;
+	}
+}
+
+prt_are_in,1,1,5	script	#arena_1039	1039,{
+	end;
+
+OnInit:
+	disablenpc "#arena_6969";
+	disablenpc "#arena_ss_2";
+	disablenpc "#arena_ss_3";
+	disablenpc "#arena_ss_4";
+	disablenpc "#arena_1272";
+	disablenpc "#arena_1046";
+	disablenpc "#arena_1115";
+	disablenpc "#arena_1389";
+	disablenpc "#arena_1492";
+	disablenpc "#arena_1251";
+	disablenpc "#arena_1159";
+	disablenpc "#arena_7777";
+	disablenpc "#arena_1039";
+	end;
+
+OnHeart:
+	emotion ET_THROB;
+	end;
+OnSci:
+	emotion ET_SCISSOR;
+	end;
+OnBest:
+	emotion ET_BEST;
+	end;
+OnOmg:
+	emotion ET_HUK;
+	end;
+OnKik:
+	emotion ET_KIK;
+	end;
+OnKis:
+	emotion ET_CHUP;
+	end;
+}
+prt_are_in,1,1,5	duplicate(#arena_1039)	#arena_6969	714
+prt_are_in,94,26,5	duplicate(#arena_1039)	#arena_ss_2	714
+prt_are_in,100,28,3	duplicate(#arena_1039)	#arena_ss_3	714
+prt_are_in,102,26,3	duplicate(#arena_1039)	#arena_ss_4	714
+prt_are_in,1,1,5	duplicate(#arena_1039)	#arena_1272	1272
+prt_are_in,1,1,5	duplicate(#arena_1039)	#arena_1046	1046
+prt_are_in,1,1,5	duplicate(#arena_1039)	#arena_1115	1115
+prt_are_in,1,1,5	duplicate(#arena_1039)	#arena_1389	1389
+prt_are_in,1,1,5	duplicate(#arena_1039)	#arena_1492	1492
+prt_are_in,1,1,5	duplicate(#arena_1039)	#arena_1251	1251
+prt_are_in,1,1,5	duplicate(#arena_1039)	#arena_1159	1159
+prt_are_in,1,1,5	duplicate(#arena_1039)	#arena_7777	811
+
+-	script	npctime#arena	-1,{
+OnStop:
+	stopnpctimer;
+	end;
+
+OnStart:
+	initnpctimer;
+	end;
+
+OnTimer2000:
+	mapannounce "prt_are_in","غيفو: راقب توقيت ظهور التعبيرات!",1,0xFFCE00;
+	end;
+
+OnTimer5000:
+	mapannounce "prt_are_in","أمر التعبير: /lv",1,0xFFCE00;
+	end;
+
+OnTimer7000:
+	mapannounce "prt_are_in"," 3 ",1,0xFFCE00;
+	end;
+
+OnTimer8000:
+	mapannounce "prt_are_in"," 2 ",1,0xFFCE00;
+	end;
+
+OnTimer9000:
+	mapannounce "prt_are_in"," 1 ",1,0xFFCE00;
+	end;
+
+OnTimer10000:
+	mapannounce "prt_are_in"," ",1,0xFFCE00;
+	donpcevent "#arena_"+$@arena_picture_id+"::OnHeart";
+	if ($@arena_picture_id == 6969) {
+		donpcevent "#arena_ss_2::OnHeart";
+		donpcevent "#arena_ss_3::OnHeart";
+		donpcevent "#arena_ss_4::OnHeart";
+	}
+	end;
+
+OnTimer15000:
+	mapannounce "prt_are_in","أمر التعبير: /gawi",1,0xFFCE00;
+	end;
+
+OnTimer17000:
+	mapannounce "prt_are_in"," 3 ",1,0xFFCE00;
+	end;
+
+OnTimer18000:
+	mapannounce "prt_are_in"," 2 ",1,0xFFCE00;
+	end;
+
+OnTimer19000:
+	mapannounce "prt_are_in"," 1 ",1,0xFFCE00;
+	end;
+
+OnTimer20000:
+	mapannounce "prt_are_in"," ",1,0xFFCE00;
+	donpcevent "#arena_"+$@arena_picture_id+"::OnSci";
+	if ($@arena_picture_id == 6969) {
+		donpcevent "#arena_ss_2::OnSci";
+		donpcevent "#arena_ss_3::OnSci";
+		donpcevent "#arena_ss_4::OnSci";
+	}
+	end;
+
+OnTimer25000:
+	mapannounce "prt_are_in","أمر التعبير: /no1",1,0xFFCE00;
+	end;
+
+OnTimer27000:
+	mapannounce "prt_are_in"," 3 ",1,0xFFCE00;
+	end;
+
+OnTimer28000:
+	mapannounce "prt_are_in"," 2 ",1,0xFFCE00;
+	end;
+
+OnTimer29000:
+	mapannounce "prt_are_in"," 1 ",1,0xFFCE00;
+	end;
+
+OnTimer30000:
+	mapannounce "prt_are_in"," ",1,0xFFCE00;
+	donpcevent "#arena_"+$@arena_picture_id+"::OnBest";
+	if ($@arena_picture_id == 6969) {
+		donpcevent "#arena_ss_2::OnBest";
+		donpcevent "#arena_ss_3::OnBest";
+		donpcevent "#arena_ss_4::OnBest";
+	}
+	end;
+
+OnTimer35000:
+	mapannounce "prt_are_in","أمر التعبير: /huk",1,0xFFCE00;
+	end;
+
+OnTimer37000:
+	mapannounce "prt_are_in"," 3 ",1,0xFFCE00;
+	end;
+
+OnTimer38000:
+	mapannounce "prt_are_in"," 2 ",1,0xFFCE00;
+	end;
+
+OnTimer39000:
+	mapannounce "prt_are_in"," 1 ",1,0xFFCE00;
+	end;
+
+OnTimer40000:
+	mapannounce "prt_are_in"," ",1,0xFFCE00;
+	donpcevent "#arena_"+$@arena_picture_id+"::OnOmg";
+	if ($@arena_picture_id == 6969) {
+		donpcevent "#arena_ss_2::OnOmg";
+		donpcevent "#arena_ss_3::OnOmg";
+		donpcevent "#arena_ss_4::OnOmg";
+	}
+	end;
+
+OnTimer45000:
+	mapannounce "prt_are_in","أمر التعبير: /gg",1,0xFFCE00;
+	end;
+
+OnTimer47000:
+	mapannounce "prt_are_in"," 3 ",1,0xFFCE00;
+	end;
+
+OnTimer48000:
+	mapannounce "prt_are_in"," 2 ",1,0xFFCE00;
+	end;
+
+OnTimer49000:
+	mapannounce "prt_are_in"," 1 ",1,0xFFCE00;
+	end;
+
+OnTimer50000:
+	mapannounce "prt_are_in"," ",1,0xFFCE00;
+	donpcevent "#arena_"+$@arena_picture_id+"::OnKik";
+	if ($@arena_picture_id == 6969) {
+		donpcevent "#arena_ss_2::OnKik";
+		donpcevent "#arena_ss_3::OnKik";
+		donpcevent "#arena_ss_4::OnKik";
+	}
+	end;
+
+OnTimer55000:
+	mapannounce "prt_are_in","أمر التعبير: /kis",1,0xFFCE00;
+	end;
+
+OnTimer57000:
+	mapannounce "prt_are_in"," 3 ",1,0xFFCE00;
+	end;
+
+OnTimer58000:
+	mapannounce "prt_are_in"," 2 ",1,0xFFCE00;
+	end;
+
+OnTimer59000:
+	mapannounce "prt_are_in"," 1 ",1,0xFFCE00;
+	end;
+
+OnTimer60000:
+	mapannounce "prt_are_in"," ",1,0xFFCE00;
+	donpcevent "#arena_"+$@arena_picture_id+"::OnKis";
+	if ($@arena_picture_id == 6969) {
+		donpcevent "#arena_ss_2::OnKis";
+		donpcevent "#arena_ss_3::OnKis";
+		donpcevent "#arena_ss_4::OnKis";
+	}
+	end;
+
+OnTimer62000:
+	mapannounce "prt_are_in","انتهى وقت التصوير. شكرا لاستخدام الخدمة.",1,0xFFCE00;
+	movenpc "#arena_"+$@arena_picture_id+"",1,1;
+	donpcevent "#arena_1039::OnInit";
+	set $@arena_picture,0;
+	stopnpctimer;
+	end;
+}
+
+sec_in02,72,171,3	script	مدير الصور#arena::Picture Manager#arena	802,{
+	set .@i, callfunc("F_GM_NPC",1357,0);
+	if (.@i == -1) {
+		mes "[مدير الصور]";
+		mes "تم إلغاء الأمر.";
+		close;
+	} else if (.@i == 0) {
+		mes "[مدير الصور]";
+		mes "كلمة المرور غير صحيحة.";
+		close;
+	} else {
+		mes "[مدير الصور]";
+		mes "هل تريد إعادة ضبط حالة خدمة الصور إلى 0؟";
+		next;
+		switch(select("إلغاء:نعم")) {
+		case 1:
+			mes "[مدير الصور]";
+			mes "تم إلغاء الطلب.";
+			close;
+		case 2:
+			mes "[مدير الصور]";
+			mes "تمت إعادة ضبط حالة خدمة الصور.";
+			set $@arena_picture,0;
+			close;
+		}
+	}
+}
+
+sec_in02,76,176,5	script	بث مباشر#arena::Live Broadcast#arena	802,{
+	callfunc "F_GM_NPC";
+	mes "[بث مباشر]";
+	mes "عدد الموجودين حاليا في خريطة المستوى 50: "+getmapusers("force_1-1")+".";
+	mes "عدد الموجودين حاليا في خريطة المستوى 60: "+getmapusers("force_2-1")+".";
+	mes "عدد الموجودين حاليا في خريطة المستوى 70: "+getmapusers("force_3-1")+".";
+	mes "عدد الموجودين حاليا في خريطة المستوى 80: "+getmapusers("force_4-1")+".";
+	mes "عدد الموجودين حاليا في خريطة الفريق: "+getmapusers("force_1-2")+".";
+	mes "عدد الموجودين حاليا في غرفة الانتظار: "+getmapusers("arena_room")+".";
+	close;
+}
+
+function	script	Func_Are_Rew	{
+	.@item_id = getarg(0);
+	.@amount = getarg(1);
+	.@arena_point = getarg(2);
+
+	mes "[غيفو]";
+	mes "هل تريد استبدال نقاط الحلبة بـ "+ getitemname(.@item_id) +"؟";
+	mes "تكلف الدفعة ^3131FF"+ .@arena_point +" نقطة حلبة مقابل "+ .@amount +" من "+ getitemname(.@item_id) +"^000000.";
+	mes "أدخل 0 للإلغاء، أو أدخل عدد ^3131FFالدفعات^000000 المطلوب استبدالها.";
+	next;
+	input .@reward;
+	if (.@reward <= 0) {
+		mes "[غيفو]";
+		mes "تم إلغاء الطلب.";
+		close;
+	} else if (.@reward > 1500) {
+		mes "[غيفو]";
+		mes "تجاوز العدد الحد الأقصى المسموح به.";
+		close;
+	}
+	if (arena_point < (.@reward * .@arena_point)) {
+		mes "[غيفو]";
+		mes "لا تملك نقاط حلبة كافية.";
+		mes "تحقق من رصيد نقاط الحلبة ثم حاول مجددا.";
+		close;
+	}
+	arena_point = arena_point - (.@reward * .@arena_point);
+	getitem .@item_id,.@reward * .@amount;
+	mes "[غيفو]";
+	mes "شكرا لك. نراك مجددا.";
+	close;
+}

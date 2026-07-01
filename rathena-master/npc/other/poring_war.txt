@@ -1,0 +1,1771 @@
+//===== rAthena Script ======================================= 
+//= Poring War
+//===== By: ================================================== 
+//= Kisuka
+//===== Current Version: ===================================== 
+//= 1.2
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Join a team in battle between Angeling and Deviling.
+//===== Additional Comments: ================================= 
+//= 1.0 First version. [Kisuka][5511]
+//= 1.1 Fixed some typos/bugs. [CalciumKid]
+//= 1.1a Fixed Waiting rooms witht he default MAX_LEVEL [Slim]
+//= 1.1b Fixed incorrect label calls. [Euphy]
+//= 1.2 Added missing barrier resets, credits to Zopokx. [Euphy]
+//============================================================
+
+// Poring War Recruiter
+//============================================================
+prt_fild08,159,371,3	script	مجند حرب بورينغ#wop::Poring War Recruiter#wop	909,{
+	mes "[بورينغ]";
+	mes "!!!!!";
+	mes "واه-! بشر، رينغ~!!";
+	mes "يجب أن نختبئ، نختبئ، صحيح~!";
+	mes "إنهم يغووننا بالجيلوبي! لا تنخدعوا!";
+	next;
+	mes "[بورينغ]";
+	mes "هواك!!";
+	mes "رينغ، رينغ~ ما خطبكم أيها الناس..؟";
+	mes "مهلا.. مهلا، أنتم. ب.. بشر...";
+	mes "بورينغ..";
+	next;
+	mes "[بورينغ]";
+	mes "لـ.. لدي عمل مثير لكم.. هل أنتم مهتمون؟";
+	mes "نـ.. نحن البورينغ نحتاج إلى الكثير والكثير من المحاربين البشر الشجعان، رينغ~.";
+	next;
+	switch(select("حسنا، أنا معكم!:ما هذا؟:تجاهل")) {
+	case 1:
+		if (Zeny > 499) {
+			mes "[بورينغ]";
+			mes "أوه، وهناك رسم دخول قدره 500 زيني، رينغ.";
+			mes "استمتع بوقتك، رينغ.";
+			delitem 7773,countitem(7773);
+			set Zeny,Zeny-500;
+			close2;
+			warp "poring_w01",112,138;
+			end;
+		} else {
+			mes "[بورينغ]";
+			mes "أوه، وهناك رسم دخول قدره 500 زيني، رينغ.";
+			mes "...........";
+			mes "مهلا، هذه هي الحياة، رينغ. نحن نحتاج إلى الزيني أيضا كما تعلم~!";
+			close;
+		}
+	case 2:
+		mes "[بورينغ]";
+		mes "ذلك.. لأن هناك.. خلافا بسيطا في.. مجتمع الرينغ الخاص بنا..";
+		mes "لذلك علينا أن.............نخوض معركة لحل هذه المشكلة..";
+		mes "سترى عندما تصل إلى هناك!";
+		close;
+	case 3:
+		mes "[بورينغ]";
+		mes "هااااه! البـ.. البشر باردون وقساة جدا!!!";
+		close;
+	}
+}
+
+// Poring Vending Machine
+//============================================================
+poring_w01,100,97,3	script	آلة بيع بورينغ#w::Poring Vending Machine#w	909,{
+	if (checkweight(714,3) == 0) {
+		mes "- أنت تحمل عناصر كثيرة جدا لاستخدام آلة بيع. -";
+		close;
+	}
+	mes "إنها آلة بيع. يمكنك استخدام عملات البورينغ للشراء.";
+	next;
+	if(select("شراء.:قراءة وصف البضائع.") == 1) {
+		mes "تحتاج إلى عملات البورينغ لشراء العناصر.";
+		mes "لا يمكنك استخدام أي زيني.";
+		mes "اسم العنصر - السعر بعملة البورينغ(P.Co)";
+		next;
+		switch(select("ميدالية رائعة - 4 P.Co:اتحاد القبيلة - 20 P.Co:صندوق بورينغ - 30 P.Co:التالي")) {
+		case 1:
+			callsub S_PoringVending,7515,4;
+		case 2:
+			callsub S_PoringVending,658,20;
+		case 3:
+			callsub S_PoringVending,12109,30;
+		case 4:
+			mes "هذا عنصر خاص.";
+			mes "اسم العنصر - عملة البورينغ(P.Co)";
+			next;
+			switch(select("وردة برية - 15 P.Co:دوبلغانغر - 20 P.Co:إغنجم سينيا - 20 P.Co:عنصر مجموعة")) {
+			case 1:
+				callsub S_PoringVending,12300,15;
+			case 2:
+				callsub S_PoringVending,12301,20;
+			case 3:
+				callsub S_PoringVending,12302,20;
+			case 4:
+				mes "تم أخيرا عرض مجسمات شخصيات الوظائف الأولى، بما في ذلك المبتدئ، للبيع!";
+				mes "كل المجسمات ما عدا المبتدئ هي ^4d4dffعناصر مرتبطة بالشخصية^000000.";
+				mes "يرجى الانتباه قبل الشراء~";
+				mes "اسم العنصر - عملة البورينغ(P.Co)";
+				next;
+				switch(select("مجسم المبتدئ - 50 P.Co:مجسم السياف - 100 P.Co:مجسم اللص - 100 P.Co:مجسم التاجر - 100 P.Co:مجسم المريد - 100 P.Co:مجسم الساحر - 100 P.Co:مجسم الرامي - 100 P.Co:سحب عشوائي - 50 P.Co:إلغاء")) {
+				case 1:
+					callsub S_PoringVending,2765,50;
+				case 2:
+					callsub S_PoringVending,2766,100;
+				case 3:
+					callsub S_PoringVending,2770,100;
+				case 4:
+					callsub S_PoringVending,2771,100;
+				case 5:
+					callsub S_PoringVending,2767,100;
+				case 6:
+					callsub S_PoringVending,2768,100;
+				case 7:
+					callsub S_PoringVending,2769,100;
+				case 8:
+					mes "لقد اخترت السحب العشوائي.";
+					mes "سيتم اختيار 1 من 7 أنواع مختلفة من المجسمات.";
+					next;
+					if(select("اسحب:إلغاء") == 1) {
+						if (countitem(7539) >= 50) {
+							mes "أدخل عملة البورينغ واسحب الذراع.";
+							mes "كليك~ خرج العنصر من فم البورينغ مع صوت قرقعة.";
+							mes "ما الذي يمكن أن يكون؟";
+							next;
+							switch(rand(1,17)) {
+							case 5: set .@Random_Figure,2766; break; // Swordman_Figure
+							case 6: set .@Random_Figure,2767; break; // Acolyte_Figure
+							case 8: set .@Random_Figure,2770; break; // Thief_Figure
+							case 11: set .@Random_Figure,2771; break; // Merchant_Figure
+							case 13: set .@Random_Figure,2769; break; // Archer_Figure
+							case 14: set .@Random_Figure,2768; break; // Mage_Figure
+							default: set .@Random_Figure,2765; break; // Novice_Figure
+							}
+							mes "إنه " + getitemname(.@Random_Figure) + " جميل.";
+							delitem 7539,50; // Poring_Coin
+							getitem .@Random_Figure,1;
+							close;
+						} else {
+							mes "لا توجد عملات كافية.";
+							close;
+						}
+					}
+					mes "["+strcharinfo(0)+"]";
+					mes "... ربما في المرة القادمة...";
+					close;
+				case 9:
+					mes "["+strcharinfo(0)+"]";
+					mes "... ربما في المرة القادمة...";
+					close;
+				}
+			}
+		}
+	}
+	mes "قائمة العناصر المعروضة";
+	mes "====================";
+	mes "[ميدالية رائعة]";
+	mes " : ميدالية مصنوعة من معدن خاص لا ينتج إلا في هويغل.";
+	mes " ";
+	mes "[اتحاد القبيلة]";
+	mes " : تمثال بصورة اتحاد قوي بين القبائل. يعتقد الناس أن النظر إلى هذا التمثال يساعد فعلا على تقوية العلاقات بين القبائل.";
+	mes " ";
+	mes "[صندوق بورينغ]";
+	mes " : صندوق مغلف بورق تغليف بنقشة البورينغ. يوجد شيء بداخله.";
+	mes " ";
+	mes "[وردة برية]";
+	mes " : سيأتي صديقك وردة برية لمساعدتك.";
+	mes " ";
+	mes "[السيد دوبل]";
+	mes " : سيأتي شاب النبيل دوبلغانغر لمساعدتك.";
+	mes " ";
+	mes "[إغنجم سينيا]";
+	mes " : ستأتي الفتاة الجميلة إغنجم سينيا من مختبر علم الأحياء لمساعدتك.";
+	mes " ";
+	mes "[مجسم المبتدئ]";
+	mes " : مجسم جميل لمبتدئ. يمكن تجهيزه كـ '^4d4dffإكسسوار^000000'.";
+	mes " HP + 70، وتأثير إضافي HP + 30 عند تجهيزه بواسطة المبتدئين.";
+	mes " ";
+	mes "[مجسم السياف]";
+	mes " : مجسم جميل لسياف. يمكن تجهيزه كـ '^4d4dffإكسسوار^000000'.";
+	mes " VIT + 1، وتأثير إضافي DEF + 2 عند تجهيزه بواسطة وظائف السياف.";
+	mes " ";
+	mes "[مجسم التاجر]";
+	mes " : مجسم جميل لتاجر. يمكن تجهيزه كـ '^4d4dffإكسسوار^000000'.";
+	mes " STR + 1، وتأثير إضافي CRI + 5 عند تجهيزه بواسطة وظائف التاجر.";
+	mes " ";
+	mes "[مجسم اللص]";
+	mes " : مجسم جميل للص. يمكن تجهيزه كـ '^4d4dffإكسسوار^000000'.";
+	mes " AGI + 1، وتأثير إضافي ASPD + 3% عند تجهيزه بواسطة وظائف اللص.";
+	mes " ";
+	mes "[مجسم الساحر]";
+	mes " : مجسم جميل لساحر. يمكن تجهيزه كـ '^4d4dffإكسسوار^000000'.";
+	mes " INT + 1، وزيادة إضافية في استعادة SP بنسبة 5% عند تجهيزه بواسطة وظائف الساحر.";
+	mes " ";
+	mes "[مجسم المريد]";
+	mes " : مجسم جميل لمريد. يمكن تجهيزه كـ '^4d4dffإكسسوار^000000'.";
+	mes " INT + 1، وتأثير إضافي SP + 50 عند تجهيزه بواسطة وظائف المريد.";
+	mes " ";
+	mes "[مجسم الرامي]";
+	mes " : مجسم جميل لرامي. يمكن تجهيزه كـ '^4d4dffإكسسوار^000000'.";
+	mes " DEX + 1، وتأثير إضافي ATK + 10 عند تجهيزه بواسطة وظائف الرامي.";
+	close;
+	end;
+
+S_PoringVending:
+	if (countitem(7539) >= getarg(1)) {
+		mes "كليك~ خرج العنصر من فم البورينغ مع صوت قرقعة.";
+		delitem 7539,getarg(1); // Poring_Coin
+		getitem getarg(0),1;
+	} else {
+		mes "لا توجد عملات كافية.";
+	}
+	close;
+}
+
+// Information
+//============================================================
+poring_w01,96,97,3	script	ديفي اللطيف#wop::Sweet Devi#wop	738,{
+	if (MaxWeight-Weight < 2000 || checkweight(1201,1) == 0) {
+		mes "- انتظر دقيقة !! -";
+		mes "- أنت تحمل حاليا -";
+		mes "- الكثير من العناصر معك. -";
+		mes "- يرجى المحاولة مرة أخرى -";
+		mes "- بعد أن تخفف بعض الوزن. -";
+		close;
+	}
+	mes "[ديفيروتشي]";
+	mes "أوه، محارب بشري آخر!";
+	mes "لماذا يريد الكثير من البشر الانضمام إلى حرب البورينغ هذه الأيام؟";
+	next;
+	mes "[ديفيروتشي]";
+	mes "حسنا، لا يهم، ما دمت أجني المال من ذلك~";
+	mes "حسنا، أيها المحاربون-! هاهاها، كم تمنيت أن أصرخ بها~!!";
+	next;
+	mes "[ديفيروتشي]";
+	mes "أنت، أيها المحارب الشجاع، هل أنت مستعد للانضمام إلى المعركة المقدسة بين أنجلينغ وديفيلينغ؟";
+	next;
+	mes "[ديفيروتشي]";
+	mes "هيهيهي، أشعر بالخجل قليلا الآن.";
+	mes "على أي حال، أيها البشري. هل تريد الانضمام إلى حرب البورينغ؟";
+	next;
+	switch(select("هل أنا مؤهل للانضمام؟:كيف أنضم إلى الحرب؟:إلغاء:أخرجني من هنا، من فضلك!")) {
+	case 1:
+		mes "[ديفيروتشي]";
+		mes "لا يوجد تمييز عرقي! يمكن لأي أحد الانضمام إذا كان مستعدا للقتال.";
+		mes "لكن الأمر الغريب أنكم أيها البشر، الذين كنتم أعظم أعدائنا، أصبحتم الآن مشاركين معنا.";
+		next;
+		mes "[ديفيروتشي]";
+		mes "إذا كنت تريد حقا القتال في الحرب أو أيا يكن.. فمجند الفريق هناك.";
+		mes "وأيضا، اختيار الفريق الذي تريد القتال من أجله يعود إليك تماما~";
+		close;
+	case 2:
+		mes "[ديفيروتشي]";
+		mes "الأمر بسيط. هل ترى غرفة تجنيد الفريق تلك؟";
+		mes "كل فريق يتكون من 5 أشخاص. بمجرد جمع 5 أعضاء، تبدأ المعركة.";
+		mes "تفوز إذا قتلت بورينغ الفريق الآخر.";
+		next;
+		mes "[ديفيروتشي]";
+		mes "وهذا يعني أيضا أن المعركة تحتاج إلى مجموع 10 أعضاء.";
+		next;
+		mes "[ديفيروتشي]";
+		mes "عندما يتم جمع كل الأعضاء العشرة، يختار المشاركون فريقا. ثم يجب أن يضم كل فريق 5 أعضاء في نفس المجموعة.";
+		next;
+		mes "[ديفيروتشي]";
+		mes "لذلك، في النهاية، ينضم نصف الأعضاء إلى فريق أنجلينغ";
+		mes "والنصف الآخر ينضم إلى فريق ديفلينغ.";
+		next;
+		mes "[ديفيروتشي]";
+		mes "إذا كنت عضوا في فريق أنجلينغ، فهدفك هو قتل الديفيلينغ في قاعدة الفريق الآخر، والعكس صحيح.";
+		next;
+		mes "[ديفيروتشي]";
+		mes "يجب على كل فريق محاولة قتل كلا البورينغ في قاعدة الفريق الآخر. بعد قتل بورينغ واحد، لديك وقت محدود لقتل البورينغ الآخر. وإلا فسيعود الذي قتلته حيا.";
+		next;
+		mes "[ديفيروتشي]";
+		mes "إنها تشبه نوعا ما لعبة الاستيلاء على العلم، لكن باستخدام البورينغ بدلا من ذلك. هل فهمت؟";
+		mes "وعليك التأكد من معرفة من في أي مجموعة.";
+		close;
+	case 3:
+		mes "[" + strcharinfo(0) + "]";
+		mes "همم، فهمت.";
+		close;
+	case 4:
+		mes "[ديفيروتشي]";
+		mes "أوه، حسنا. يمكنني المساعدة.";
+		mes "سأعيدك إلى نقطة حفظك.";
+		close2;
+		if (WoP_SaveMap$ != "") {
+			savepoint WoP_SaveMap$,WoP_SaveMap_X,WoP_SaveMap_Y,1,1;
+			set WoP_SaveMap$,"";
+			set WoP_SaveMap_X,0;
+			set WoP_SaveMap_Y,0;
+		}
+		warp getsavepoint(0), getsavepoint(1), getsavepoint(2);
+		end;
+	}
+
+OnPCLogoutEvent:
+	getmapxy .@map$,.@x,.@y;
+	if (.@map$ == "poring_w02") {
+		if (WoP_SaveMap$ != "") {
+			savepoint WoP_SaveMap$,WoP_SaveMap_X,WoP_SaveMap_Y,1,1;
+			set WoP_SaveMap$,"";
+			set WoP_SaveMap_X,0;
+			set WoP_SaveMap_Y,0;
+		}
+		delitem 7773,countitem(7773);
+		set wop_team,0;
+	}
+	end;
+
+OnPCDieEvent:
+	getmapxy .@map$,.@x,.@y;
+	if (.@map$ == "poring_w02" && wop_team) {
+		if (getsavepoint(0) != "poring_w02" && WoP_SaveMap$ == "") {
+			set WoP_SaveMap$,getsavepoint(0);
+			set WoP_SaveMap_X,getsavepoint(1);
+			set WoP_SaveMap_Y,getsavepoint(2);
+		}
+		if (wop_team == 1) {
+			savepoint "poring_w02",rand(44,51),rand(76,87);
+		}
+		if (wop_team == 2) {
+			savepoint "poring_w02",rand(146,153),rand(76,87);
+		}
+	}
+	end;
+
+OnPCKillEvent:
+	getmapxy .@map$,.@x,.@y;
+	if (.@map$ == "poring_w02" && wop_team) {
+		getnameditem 7773,rid2name(killedrid);
+	}
+	end;
+
+OnInit:
+	removemapflag "poring_w02",mf_partylock;
+	removemapflag "poring_w02",mf_pvp;
+	removemapflag "poring_w02",mf_pvp_noguild;
+	removemapflag "poring_w02",mf_pvp_nocalcrank;
+	set $@wop_teamcount,0;
+	set $@wop_deadcount_a,0;
+	set $@wop_deadcount_d,0;
+	set $@wop_team_a,0;
+	set $@wop_team_d,0;
+	set $@wop_doorcount_a,0;
+	set $@wop_doorcount_d,0;
+	end;
+}
+
+// Poring Registers
+//============================================================
+poring_w01,91,97,3	script	بورينغ#wop_door_all::Poring#wop_door_all	1002,{
+	end;
+	
+OnInit:
+	waitingroom "[تجنيد 10 مشاركين للمعركة]",11,"Poring#wop_door_all::OnStartArena",10,500,9;
+	enablewaitingroomevent;
+	end;
+
+OnStartArena:
+	warpwaitingpc "poring_w01",101,70;
+	donpcevent "#wop_warp_rtry::OnReady";
+	disablewaitingroomevent;
+	end;
+
+OnEnable:
+	enablewaitingroomevent;
+	end;
+
+OnDisable:
+	disablewaitingroomevent;
+	end;
+}
+
+poring_w01,91,68,5	script	بورينغ#wop_door_a::Poring#wop_door_a	1002,{
+	end;
+
+OnInit:
+	waitingroom "[مجند فريق أنجلينغ]",6,"Poring#wop_door_a::OnStartArena",5,0,9;
+	enablewaitingroomevent;
+	end;
+
+OnStartArena:
+	warpwaitingpc "poring_w02",26,175;
+	disablewaitingroomevent;
+	if ($@wop_teamcount == 0) {
+		set $@wop_teamcount,1;
+		donpcevent "Poring#wop_door_d::OnDevilingStart";
+		donpcevent "#wop_warp_rtry::OnStop";
+	}
+	else if ($@wop_teamcount == 1) {
+		donpcevent "#wop_master::OnStart";
+		donpcevent "Poring#wop_door_d::OnStop";
+		stopnpctimer;
+	}
+	end;
+
+OnEnable:
+	enablewaitingroomevent;
+	end;
+
+OnDisable:
+	disablewaitingroomevent;
+	end;
+
+OnAngelingStart:
+	initnpctimer;
+	end;
+
+OnStop:
+	stopnpctimer;
+	end;
+
+OnTimer1000:
+	mapannounce "poring_w01","أعظم معركة في كل الأزمنة، انتهى التجنيد لفريق ديفيلينغ، رينغ!",0,0xf08080;
+	end;
+
+OnTimer4000:
+	mapannounce "poring_w01","انضم إلى فريق أنجلينغ الفخور ذي أجنحة الملاك!!",0,0xf08080;
+	end;
+
+OnTimer8000:
+	mapannounce "poring_w01","لديك دقيقة واحدة للانضمام إلى فريق أنجلينغ. سيتم إلغاء المعركة خلال دقيقة إذا لم تكتمل الاستعدادات!!",0,0xf08080;
+	donpcevent "#wop_master::OnAngelingWarn";
+	end;
+
+OnTimer13000:
+	mapannounce "poring_w01","هذا هو وقت الانضمام إلى فريق أنجلينغ العظيم، رينغ!",0,0xf08080;
+	end;
+
+OnTimer20000:
+	mapannounce "poring_w01","هذه المعركة هي فخر البورينغ! رينغ! انضموا إلى فريق أنجلينغ!!",0,0xf08080;
+	end;
+
+OnTimer30000:
+	mapannounce "poring_w01","ليس لدينا الكثير من الوقت، رينغ. لا تدعوا الديفيلينغ يلوثونكم!",0,0xf08080;
+	end;
+
+OnTimer40000:
+	mapannounce "poring_w01","تعالوا! انضموا إلينا!",0,0xf08080;
+	end;
+
+OnTimer50000:
+	mapannounce "poring_w01","يا للأسف! لا أصدق أن المحاربين الشجعان مفقودون!",0,0xf08080;
+	end;
+
+OnTimer55000:
+	mapannounce "poring_w01","ديفلينغ: لا يمكنكم تركنا ننتظر إلى الأبد!! سنلغي المعركة، رينغ!",0,0x33FF66;
+	end;
+
+OnTimer55100:
+	donpcevent "Poring#wop_door_a::OnDisable";
+	donpcevent "Poring#wop_door_d::OnDisable";
+	donpcevent "Poring#wop_door_all::OnDisable";
+	set $@wop_teamcount,0;
+	donpcevent "#wop_master::OnAngelingEnd";
+	donpcevent "#wop_warp_rtry::OnEnable";
+	end;
+
+OnTimer58000:
+	mapannounce "poring_w01","...لا يوجد ما يمكننا فعله، رينغ... لنشجع المعركة التالية، رينغ.",0,0xf08080;
+	donpcevent "#wop_master::OnReset";
+	stopnpctimer;
+	end;
+}
+
+poring_w01,112,68,3	script	بورينغ#wop_door_d::Poring#wop_door_d	1002,{
+	end;
+
+OnInit:
+	waitingroom "[مجند فريق ديفلينغ]",6,"Poring#wop_door_d::OnStartArena",5,0,9;
+	enablewaitingroomevent;
+	end;
+
+OnStartArena:
+	warpwaitingpc "poring_w02",170,175;
+	disablewaitingroomevent;
+	if ($@wop_teamcount == 0) {
+		set $@wop_teamcount,1;
+		donpcevent "Poring#wop_door_a::OnAngelingStart";
+		donpcevent "#wop_warp_rtry::OnStop";
+	}
+	else if ($@wop_teamcount == 1) {
+		donpcevent "#wop_master::OnStart";
+		donpcevent "Poring#wop_door_a::OnStop";
+		stopnpctimer;
+	}
+	end;
+
+OnEnable:
+	enablewaitingroomevent;
+	end;
+
+OnDisable:
+	disablewaitingroomevent;
+	end;
+
+OnDevilingStart:
+	initnpctimer;
+	end;
+
+OnStop:
+	stopnpctimer;
+	end;
+
+OnTimer1000:
+	mapannounce "poring_w01","لا مزيد من الطيبين، انتهى التجنيد لفريق أنجلينغ، رينغ!",0,0x33FF66;
+	end;
+
+OnTimer4000:
+	mapannounce "poring_w01","أعضاء فريق ديفلينغ الرائعون! لنتجمع، رينغ!!",0,0x33FF66;
+	end;
+
+OnTimer8000:
+	mapannounce "poring_w01","سيتم إلغاء المعركة إذا لم يتم تجنيد الأعضاء خلال دقيقة واحدة!!",0,0x33FF66;
+	donpcevent "#wop_master::OnDevilingWarn";
+	end;
+
+OnTimer13000:
+	mapannounce "poring_w01","هذا هو وقت الانضمام إلى فريق ديفلينغ الشجاع، رينغ!",0,0x33FF66;
+	end;
+
+OnTimer20000:
+	mapannounce "poring_w01","D,E,V,I,L,I,N,G! فريق ديفلينغ! تعالوا وانضموا إلينا!",0,0x33FF66;
+	end;
+
+OnTimer30000:
+	mapannounce "poring_w01","لم يتبق الكثير من الوقت، رينغ! إذا أردت أن تصبح عضوا في فريق ديفيلينغ، تعال وانضم!",0,0x33FF66;
+	end;
+
+OnTimer40000:
+	mapannounce "poring_w01","D,E,V,I,L,I,N,G! فريق ديفلينغ! تعالوا وانضموا إلينا!!",0,0x33FF66;
+	end;
+
+OnTimer50000:
+	mapannounce "poring_w01","يا للأسف! لا أصدق أنه لا يوجد عدد كاف من اللاعبين!",0,0x33FF66;
+	end;
+
+OnTimer55000:
+	mapannounce "poring_w01","أنجلينغ: لا وقت لدينا للانتظار، يا ديفلينغ الغبي! تم إلغاء المعركة، رينغ!",0,0xf08080;
+	end;
+
+OnTimer55100:
+	donpcevent "Poring#wop_door_a::OnDisable";
+	donpcevent "Poring#wop_door_d::OnDisable";
+	donpcevent "Poring#wop_door_all::OnDisable";
+
+	set $@wop_teamcount,0;
+	donpcevent "#wop_master::OnDevilingEnd";
+	donpcevent "#wop_warp_rtry::OnEnable";
+	end;
+
+OnTimer58000:
+	mapannounce "poring_w01","...أوووووه... أخبرني أن هذا لا يحدث، رينغ! حسنا، استعدوا للمعركة التالية، رينغ!!",0,0x33FF66;
+	donpcevent "#wop_master::OnReset";
+	stopnpctimer;
+	end;
+}
+
+poring_w01,103,70,0	script	#wop_warp_rtry	139,13,13,{
+	end;
+
+OnInit:
+	disablenpc "#wop_warp_rtry";
+	end;
+
+OnEnable:
+	enablenpc "#wop_warp_rtry";
+	end;
+
+OnDisable:
+	disablenpc "#wop_warp_rtry";
+	end;
+
+OnReady:
+	initnpctimer;
+	end;
+
+OnStop:
+	stopnpctimer;
+	end;
+
+OnTouch:
+	warp "poring_w01",112,138;
+	end;
+
+OnTimer3000:
+	mapannounce "poring_w01","البورينغ: سأعطيكم دقيقة واحدة. اختاروا فريقكم، رينغ!",0,0xf08080;
+	end;
+
+OnTimer33000:
+	mapannounce "poring_w01","البورينغ: بقيت 30 ثانية! هيا، اختاروا فريقا الآن، رينغ؟!!",0,0xf08080;
+	end;
+
+OnTimer58000:
+	mapannounce "poring_w01","البورينغ: هل أنت متأكد أنك محارب؟!!! لقد خيبت أملي، رينغ!",0,0xf08080;
+	end;
+
+OnTimer60000:
+	mapannounce "poring_w01","تم إلغاء المعركة لأن الفرق لم تكتمل كلها!!",0,0xf08080;
+	end;
+
+OnTimer61000:
+	enablenpc "#wop_warp_rtry";
+	end;
+
+OnTimer65000:
+	disablenpc "#wop_warp_rtry";
+	donpcevent "#wop_master::OnReset";
+	stopnpctimer;
+	end;
+}
+
+// Mr. Doppel
+//============================================================
+poring_w02,26,181,3	script	السيد دوبل#wop_team_a::Mr. Doppel#wop_team_a	739,{
+	if (checkweight(714,3) == 0) {
+		mes "- انتظر دقيقة !! -";
+		mes "- أنت تحمل حاليا -";
+		mes "- الكثير من العناصر معك. -";
+		mes "- يرجى المحاولة مرة أخرى -";
+		mes "- بعد أن تخفف بعض الوزن. -";
+		close;
+	}
+	set .@a_tname$,getpartyname($@wop_team_a);
+	set .@pname$,getpartyname(getcharid(1));
+	if ($@wop_team_a != 0 && $@wop_team_a == getcharid(1)) {
+		mes "[السيد دوبل]";
+		mes "إذن، هل انضم الجميع إلى المجموعة؟";
+		mes "اسم المجموعة هو... " + .@pname$ + "، صحيح؟";
+		mes "سأنقلك إلى منطقة التحضير للمعركة.";
+		next;
+		switch(select("لا! انتظر!:اذهب إلى منطقة التحضير.")) {
+		case 1:
+			mes "[السيد دوبل]";
+			mes "ما الأمر الآن؟";
+			mes "ألا يمكنك أن تكون أكثر مراعاة قليلا؟";
+			mes "ليس لديك الكثير من الوقت. قرر الآن!";
+			next;
+			mes "[السيد دوبل]";
+			mes "إذا لم تصل في الوقت المناسب، فلن تلحق بالمعركة.";
+			close;
+		case 2:
+			if (is_party_leader() == true) {
+				mes "[السيد دوبل]";
+				mes "إذن، أنت القائد. قبل الذهاب إلى ساحة المعركة، عليك التحقق من جميع أعضائك.";
+				next;
+				switch(select("حسنا جدا. سأكون الأخير.:أنا الأخير. أرسلني إلى ساحة المعركة.")) {
+				case 1:
+					mes "[السيد دوبل]";
+					mes "أولا، تأكد من أن جميع الأعضاء في مجموعتك.";
+					close;
+				case 2:
+					mes "[السيد دوبل]";
+					mes "حسنا جدا. جيد أنك أنجزت كل شيء في الوقت المحدد.";
+					delitem 7773,countitem(7773);
+					close2;
+					set wop_team,0;
+					warp "poring_w02",44,82;
+					end;
+				}
+			}
+			else {
+				mes "[السيد دوبل]";
+				mes "حسنا. سأرسلك إلى منطقة التحضير للمعركة.";
+				mes "انتظر بقية أعضاء المجموعة هناك.";
+				delitem 7773,countitem(7773);
+				close2;
+				set wop_team,0;
+				warp "poring_w02",44,82;
+				end;
+			}
+		}
+	}
+	else {
+		if (is_party_leader() == true) {
+			if ($@wop_team_a == 0) {
+				mes "[السيد دوبل]";
+				mes "إذن، أنت قائد مجموعة فريق أنجلينغ.";
+				mes "هل أنت متأكد أن جميع الأعضاء في مجموعتك؟";
+				mes "أولا، لنسجل اسم مجموعتك، وبعد ذلك، سنتحقق من الأعضاء.";
+				next;
+				mes "[السيد دوبل]";
+				mes "لنر... اسم المجموعة هو...";
+				mes " ";
+				mes "^4d4dff " + .@pname$ + " ^000000";
+				mes " ";
+				mes "صحيح؟ هل هذا هو الاسم الذي تريده؟";
+				next;
+				switch(select("لا! أنت مخطئ.:نعم. أريد تسجيل ذلك الاسم.:إلغاء")) {
+				case 1:
+					mes "[السيد دوبل]";
+					mes "مهلا، ليس لدي اليوم كله! اتخذ قرارك وسجل بأسرع ما يمكنك.";
+					mes "لا تنس أن تجعل كل الأعضاء ينضمون إلى المجموعة. فقط أعضاء المجموعة المسجلة يمكنهم الانضمام إلى المعركة.";
+					close;
+				case 2:
+					mes "[السيد دوبل]";
+					mes "إذن، سأسجل اسم مجموعتك باسم - " +.@pname$ + " -.";
+					mes "والآن، أخبر ^4d4dffأعضاءك بتأكيد مجموعتك^000000.";
+					mes "سأرسلك إلى ساحة المعركة بمجرد أن أؤكد مجموعتك.";
+					set $@wop_team_a,getcharid(1);
+					mapannounce "poring_w02","تم تأكيد تسجيل فريق أنجلينغ. يجب على أعضاء المجموعة تأكيد فريقهم مع سيد دوبل.",0,0x33FF66;
+					close;
+				case 3:
+					mes "[السيد دوبل]";
+					mes "الوقت يمضي. اتخذ قرارك وسجل بأسرع ما يمكنك.";
+					close;
+				}
+			}
+			else {
+				mes "[السيد دوبل]";
+				mes "إذن، أنت قائد المجموعة.";
+				mes "ألم تنته من تسجيل المجموعة بعد؟";
+				mes "يجب أن تبقى في المجموعة التي تم تسجيلها!";
+				next;
+				mes "[السيد دوبل]";
+				mes "اسم المجموعة هو ";
+				mes " " + .@a_tname$ + " ";
+				mes "يرجى التأكيد.";
+				close;
+			}
+		}
+		else {
+			mes "[السيد دوبل]";
+			mes "إذا لم تكن عضوا مسجلا في المجموعة، فلا يمكنك الانضمام إلى المعركة.";
+			next;
+			mes "[السيد دوبل]";
+			mes "سأتحقق مرة أخرى، وبعد تسجيل اسم المجموعة، سيتم إرسالك إلى ساحة المعركة.";
+			mes "يجب أن نبقى معا كمجموعة، لأن هذه لعبة فرق. وإلا فستحدث لدينا مشاكل.";
+			close;
+		}
+	}
+
+OnInit:
+	disablenpc "Mr. Doppel#wop_team_a";
+	end;
+
+OnEnable:
+	enablenpc "Mr. Doppel#wop_team_a";
+	end;
+
+OnDisable:
+	disablenpc "Mr. Doppel#wop_team_a";
+	end;
+}
+
+poring_w02,170,181,3	script	السيد دوبل#wop_team_d::Mr. Doppel#wop_team_d	739,{
+	if (checkweight(714,3) == 0) {
+		mes "- انتظر دقيقة !! -";
+		mes "- أنت تحمل حاليا -";
+		mes "- الكثير من العناصر معك. -";
+		mes "- يرجى المحاولة مرة أخرى -";
+		mes "- بعد أن تخفف بعض الوزن. -";
+		close;
+	}
+	set .@d_tname$,getpartyname($@wop_team_d);
+	set .@pname$,getpartyname(getcharid(1));
+	if ($@wop_team_d != 0 && $@wop_team_d == getcharid(1)) {
+		mes "[السيد دوبل]";
+		mes "إذن، هل انضم الجميع إلى المجموعة؟";
+		mes "اسم المجموعة هو... " + .@pname$ + "، صحيح؟";
+		mes "سأنقلك إلى منطقة التحضير للمعركة.";
+		next;
+		switch(select("لا! انتظر!:اذهب إلى منطقة التحضير.")) {
+		case 1:
+			mes "[السيد دوبل]";
+			mes "ما الأمر الآن؟";
+			mes "ألا يمكنك أن تكون أكثر مراعاة قليلا؟";
+			mes "ليس لديك الكثير من الوقت. قرر الآن!";
+			next;
+			mes "[السيد دوبل]";
+			mes "إذا لم تصل في الوقت المناسب، فلن تلحق بالمعركة.";
+			close;
+		case 2:
+			if (is_party_leader() == true) {
+				mes "[السيد دوبل]";
+				mes "إذن، أنت القائد. قبل الذهاب إلى ساحة المعركة، عليك التحقق من جميع أعضائك.";
+				next;
+				switch(select("حسنا جدا. سأكون الأخير.:أنا الأخير. أرسلني إلى ساحة المعركة.")) {
+				case 1:
+					mes "[السيد دوبل]";
+					mes "أولا، تأكد من أن جميع الأعضاء في مجموعتك.";
+					close;
+				case 2:
+					mes "[السيد دوبل]";
+					mes "حسنا جدا. جيد أنك أنجزت كل شيء في الوقت المحدد.";
+					delitem 7773,countitem(7773);
+					close2;
+					set wop_team,0;
+					warp "poring_w02",153,82;
+					end;
+				}
+			} else {
+				mes "[السيد دوبل]";
+				mes "حسنا. سأرسلك إلى منطقة التحضير للمعركة.";
+				mes "انتظر بقية أعضاء المجموعة هناك.";
+				delitem 7773,countitem(7773);
+				close2;
+				set wop_team,0;
+				warp "poring_w02",153,82;
+				end;
+			}
+		}
+	} else {
+		if (is_party_leader() == true) {
+			if ($@wop_team_d == 0) {
+				mes "[السيد دوبل]";
+				mes "إذن، أنت قائد مجموعة فريق ديفلينغ.";
+				mes "هل أنت متأكد أن جميع الأعضاء في مجموعتك؟";
+				mes "أولا، لنسجل اسم مجموعتك، وبعد ذلك، سنتحقق من الأعضاء.";
+				next;
+				mes "[السيد دوبل]";
+				mes "لنر... اسم المجموعة هو...";
+				mes " ";
+				mes "^4d4dff " + .@pname$ + " ^000000";
+				mes " ";
+				mes "صحيح؟ هل هذا هو الاسم الذي تريده؟";
+				next;
+				switch(select("لا! أنت مخطئ.:نعم. أريد تسجيل ذلك الاسم.:إلغاء")) {
+				case 1:
+					mes "[السيد دوبل]";
+					mes "مهلا، ليس لدي اليوم كله! اتخذ قرارك وسجل بأسرع ما يمكنك.";
+					mes "لا تنس أن تجعل كل الأعضاء ينضمون إلى المجموعة. فقط أعضاء المجموعة المسجلة يمكنهم الانضمام إلى المعركة.";
+					close;
+				case 2:
+					mes "[السيد دوبل]";
+					mes "إذن، سأسجل اسم مجموعتك باسم - " + .@pname$ + " -.";
+					mes "والآن، أخبر ^4d4dffأعضاءك بتأكيد مجموعتك^000000.";
+					mes "سأرسلك إلى ساحة المعركة بمجرد أن أؤكد مجموعتك.";
+					set $@wop_team_d,getcharid(1);
+					mapannounce "poring_w02","تم تأكيد تسجيل فريق ديفلينغ. يجب على أعضاء المجموعة تأكيد فريقهم مع سيد دوبل.",0,0x33FF66;
+					close;
+				case 3:
+					mes "[السيد دوبل]";
+					mes "الوقت يمضي. اتخذ قرارك وسجل بأسرع ما يمكنك.";
+					close;
+				}
+			} else {
+				mes "[السيد دوبل]";
+				mes "إذن، أنت قائد المجموعة.";
+				mes "ألم تنته من تسجيل المجموعة بعد؟";
+				mes "يجب أن تبقى في المجموعة التي تم تسجيلها!";
+				next;
+				mes "[السيد دوبل]";
+				mes "اسم المجموعة هو ";
+				mes " " + .@d_tname$ + " ";
+				mes "يرجى التأكيد.";
+				close;
+			}
+		} else {
+			mes "[السيد دوبل]";
+			mes "إذا لم تكن عضوا مسجلا في المجموعة، فلا يمكنك الانضمام إلى المعركة.";
+			next;
+			mes "[السيد دوبل]";
+			mes "سأتحقق مرة أخرى، وبعد تسجيل اسم المجموعة، سيتم إرسالك إلى ساحة المعركة.";
+			mes "يجب أن نبقى معا كمجموعة، لأن هذه لعبة فرق. وإلا فستحدث لدينا مشاكل.";
+			close;
+		}
+	}
+
+OnInit:
+	disablenpc "Mr. Doppel#wop_team_d";
+	end;
+
+OnEnable:
+	enablenpc "Mr. Doppel#wop_team_d";
+	end;
+
+OnDisable:
+	disablenpc "Mr. Doppel#wop_team_d";
+	end;
+}
+
+poring_w02,1,1,0	script	#wop_master	-1,{
+	end;
+
+OnReset:
+	removemapflag "poring_w02",mf_partylock;
+	removemapflag "poring_w02",mf_pvp;
+	removemapflag "poring_w02",mf_pvp_noguild;
+	removemapflag "poring_w02",mf_pvp_nocalcrank;
+	mapwarp "poring_w02","poring_w01",112,138;
+	donpcevent "#wop_angellium1::OnReset";
+	donpcevent "#wop_angellium2::OnReset";
+	donpcevent "#wop_devillium1::OnReset";
+	donpcevent "#wop_devillium2::OnReset";
+	set $@wop_team_a,0;
+	set $@wop_team_d,0;
+	set $@wop_deadcount_a,0;
+	set $@wop_deadcount_d,0;
+	set $@wop_teamcount,0;
+	set $@wop_doorcount_a,0;
+	set $@wop_doorcount_d,0;
+	donpcevent "#wop_warp_a::OnDisable";
+	donpcevent "#wop_warp_d::OnDisable";
+	donpcevent "#wop_warp_rtry::OnDisable";
+	donpcevent "Poring#wop_door_a::OnEnable";
+	donpcevent "Poring#wop_door_d::OnEnable";
+	donpcevent "Poring#wop_door_all::OnEnable";
+	stopnpctimer;
+	end;
+
+OnStart:
+	initnpctimer;
+	end;
+
+OnAngelingWarn:
+	mapannounce "poring_w02","اكتمل تجنيد فريق ديفلينغ. سيتم إلغاء المعركة تلقائيا إذا لم يكن تجنيد فريق أنجلينغ جاهزا خلال دقيقة واحدة.",0,0xf08080;
+	end;
+
+OnDevilingWarn:
+	mapannounce "poring_w02","اكتمل تجنيد فريق أنجلينغ. سيتم إلغاء المعركة تلقائيا إذا لم يكن تجنيد فريق ديفلينغ جاهزا خلال دقيقة واحدة.",0,0xf08080;
+	end;
+
+OnDevilingEnd:
+	mapannounce "poring_w02","فشل تجنيد فريق ديفلينغ. سيتم إلغاء المعركة بعد قليل.",0,0xf08080;
+	end;
+
+OnAngelingEnd:
+	mapannounce "poring_w02","فشل تجنيد فريق أنجلينغ. سيتم إلغاء المعركة بعد قليل.",0,0xf08080;
+	end;
+
+OnStop:
+	stopnpctimer;
+	end;
+
+OnAngelingWin:
+	set .@i,1;
+OnDevilingWin:
+	removemapflag "poring_w02",mf_partylock;
+	removemapflag "poring_w02",mf_pvp;
+	removemapflag "poring_w02",mf_pvp_noguild;
+	removemapflag "poring_w02",mf_pvp_nocalcrank;
+	if (.@i)
+		mapannounce "poring_w02","سيد دوبل: فاز فريق أنجلينغ من مجموعة " + getpartyname($@wop_team_a) + " بالمعركة!",0,0xf08080;
+	else
+		mapannounce "poring_w02","سيد دوبل: فاز فريق ديفلينغ من مجموعة " + getpartyname($@wop_team_d) + " بالمعركة!",0,0xf08080;
+	donpcevent "Deviruchi#wop_endmaster::OnEnable";
+	stopnpctimer;
+	// Reset Barriers
+	donpcevent "#aroom_ingate_wop::OnDisable";
+	donpcevent "#aroom_outgate_wop::OnDisable";
+	donpcevent "#droom_ingate_wop::OnDisable";
+	donpcevent "#droom_outgate_wop::OnDisable";
+	end;
+
+OnTimer5000:
+	mapannounce "poring_w02","سيد دوبل: مرحبا بكل المحاربين الذين حضروا لخوض المعركة.",0,0xf08080;
+	donpcevent "Mr. Doppel#wop_team_a::OnEnable";
+	donpcevent "Mr. Doppel#wop_team_d::OnEnable";
+	end;
+
+OnTimer8000:
+	mapannounce "poring_w02","سيد دوبل: يجب أن ينضم كل عضو من الفريق إلى المجموعة، وسيقوم القائد بتسجيل اسم فريقه.",0,0xf08080;
+	end;
+
+OnTimer12000:
+	mapannounce "poring_w02","سيد دوبل: لديكم 50 ثانية. انضموا إلى المجموعة، وسجلوا اسمها، واذهبوا إلى ساحة المعركة.",0,0xf08080;
+	end;
+
+OnTimer32000:
+	mapannounce "poring_w02","سيد دوبل: ما زالت لديكم 30 ثانية. انضموا إلى المجموعة، وسجلوا اسمها، واذهبوا إلى ساحة المعركة.",0,0xf08080;
+	end;
+
+OnTimer62000:
+	mapannounce "poring_w02","سيد دوبل: انتهى الوقت. سيتم شرح القواعد قبل المعركة بقليل.",0,0xf08080;
+	end;
+
+OnTimer70000:
+	mapannounce "poring_w02","سيد دوبل: هل الجميع جاهز؟ دعوني أشرح قواعد المعركة.",0,0xf08080;
+	end;
+
+OnTimer75000:
+	mapannounce "poring_w02","سيد دوبل: على فريق أنجلينغ حماية 2 من أنجلينغ في قواعدهم، وفي الوقت نفسه القضاء على الديفيلينغ في قواعد فريق ديفيلينغ، والعكس صحيح.",0,0xf08080;
+	end;
+
+OnTimer80000:
+	mapannounce "poring_w02","سيد دوبل: يفوز فريقك إذا قضيت على الوحشين التابعين للفريق العدو. القواعد بسيطة هكذا.",0,0xf08080;
+	end;
+
+OnTimer85000:
+	mapannounce "poring_w02","سيد دوبل: لكن أنجلينغ أو ديفلينغ يعودون إلى الحياة بعد فترة معينة، لذلك من المهم القضاء على البورينغ الآخر بسرعة بعد القضاء على الأول.",0,0xf08080;
+	end;
+
+OnTimer90000:
+	mapannounce "poring_w02","سيد دوبل: واعلموا أيضا أن هؤلاء البورينغ غاضبون وسيهاجمون الجميع، ولا يهم إلى أي فريق ينتمون.",0,0xf08080;
+	end;
+
+OnTimer95000:
+	mapannounce "poring_w02","سيد دوبل: في الأساس، البورينغ أعداء طبيعيون للبشر، لذلك الهجوم لا مفر منه، حتى لو كان الاثنان في نفس الفريق.",0,0xf08080;
+	end;
+
+OnTimer100000:
+	mapannounce "poring_w02","سيد دوبل: في مناطق معينة، ستحتاجون إلى شارات حرب يتم الحصول عليها بالقضاء على أعضاء الفريق الآخر. حسنا، لنبدأ!",0,0xf08080;
+	setmapflag "poring_w02",mf_partylock;
+	setmapflag "poring_w02",mf_pvp;
+	setmapflag "poring_w02",mf_pvp_noguild;
+	setmapflag "poring_w02",mf_pvp_nocalcrank;
+	donpcevent "#wop_warp_a::OnEnable";
+	donpcevent "#wop_warp_d::OnEnable";
+	donpcevent "#wop_angellium1::OnAngelingSpawn";
+	donpcevent "#wop_angellium2::OnAngelingSpawn";
+	donpcevent "#wop_devillium1::OnDevilingSpawn";
+	donpcevent "#wop_devillium2::OnDevilingSpawn";
+	end;
+
+OnTimer700000:
+	mapannounce "poring_w02","سيد دوبل: انتهى الوقت. قريبا، سيتم نقلكم إلى منصة الفائزين.",0,0xf08080;
+	removemapflag "poring_w02",mf_partylock;
+	removemapflag "poring_w02",mf_pvp;
+	removemapflag "poring_w02",mf_pvp_noguild;
+	removemapflag "poring_w02",mf_pvp_nocalcrank;
+	donpcevent "#wop_angellium1::OnReset";
+	donpcevent "#wop_angellium2::OnReset";
+	donpcevent "#wop_devillium1::OnReset";
+	donpcevent "#wop_devillium2::OnReset";
+	end;
+
+OnTimer703000:
+	donpcevent "Deviruchi#wop_endmaster::OnEnable";
+	stopnpctimer;
+	end;
+}
+
+poring_w02,51,82,0	script	#wop_warp_a	139,1,1,{
+	end;
+
+OnInit:
+	disablenpc "#wop_warp_a";
+	end;
+
+OnEnable:
+	enablenpc "#wop_warp_a";
+	specialeffect EF_MAPPILLAR2,AREA,"#wop_warp_a";
+	end;
+
+OnDisable:
+	disablenpc "#wop_warp_a";
+	end;
+
+OnTouch_:
+	set wop_team,1;
+	warp "poring_w02",57,82;
+	end;
+}
+
+poring_w02,146,82,0	script	#wop_warp_d	139,1,1,{
+	end;
+
+OnInit:
+	disablenpc "#wop_warp_d";
+	end;
+
+OnEnable:
+	enablenpc "#wop_warp_d";
+	specialeffect EF_MAPPILLAR2,AREA,"#wop_warp_d";
+	end;
+
+OnDisable:
+	disablenpc "#wop_warp_d";
+	end;
+
+OnTouch_:
+	set wop_team,2;
+	warp "poring_w02",140,82;
+	end;
+}
+
+// Poring Spawn
+//============================================================
+poring_w02,80,82,0	script	#wop_angellium1	-1,{
+	end;
+
+OnReset:
+	killmonster "poring_w02","#wop_angellium1::OnMyMobDead";
+	stopnpctimer;
+	end;
+
+OnAngelingSpawn:
+	monster "poring_w02",80,82,"أنجلينغ",1766,1,"#wop_angellium1::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	set $@wop_deadcount_a,$@wop_deadcount_a + 1;
+	if ($@wop_deadcount_a == 1) {
+		mapannounce "poring_w02","سيد دوبل: قتل أنجلينغ في القاعدة الأولى! خسارة نقطة واحدة!!",0,0x00ff00;
+		initnpctimer;
+	}
+	else {
+		donpcevent "#wop_angellium1::OnReset";
+		donpcevent "#wop_angellium2::OnReset";
+		donpcevent "#wop_devillium1::OnReset";
+		donpcevent "#wop_devillium2::OnReset";
+		donpcevent "#wop_master::OnDevilingWin";
+	}
+	end;
+
+OnTimer120000:
+	set $@wop_deadcount_a,$@wop_deadcount_a - 1;
+	donpcevent "#wop_angellium1::OnAngelingSpawn";
+	mapannounce "poring_w02","سيد دوبل: عاد أنجلينغ في القاعدة الأولى إلى الحياة! كسب نقطة واحدة!!",0,0x00ff00;
+	stopnpctimer;
+}
+
+poring_w02,98,41,0	script	#wop_angellium2	-1,{
+	end;
+
+OnReset:
+	killmonster "poring_w02","#wop_angellium2::OnMyMobDead";
+	stopnpctimer;
+	end;
+
+OnAngelingSpawn:
+	monster "poring_w02",98,41,"أنجلينغ",1766,1,"#wop_angellium2::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	set $@wop_deadcount_a,$@wop_deadcount_a + 1;
+	if ($@wop_deadcount_a == 1) {
+		mapannounce "poring_w02","سيد دوبل: قتل أنجلينغ في القاعدة الثانية! خسارة نقطة واحدة!!",0,0x00ff00;
+		initnpctimer;
+	}
+	else {
+		donpcevent "#wop_angellium1::OnReset";
+		donpcevent "#wop_angellium2::OnReset";
+		donpcevent "#wop_devillium1::OnReset";
+		donpcevent "#wop_devillium2::OnReset";
+		donpcevent "#wop_master::OnDevilingWin";
+	}
+	end;
+
+OnTimer120000:
+	set $@wop_deadcount_a,$@wop_deadcount_a - 1;
+	donpcevent "#wop_angellium2::OnAngelingSpawn";
+	mapannounce "poring_w02","سيد دوبل: عاد أنجلينغ في القاعدة الثانية إلى الحياة! كسب نقطة واحدة!!",0,0x00ff00;
+	stopnpctimer;
+	end;
+}
+
+poring_w02,116,82,0	script	#wop_devillium1	-1,{
+	end;
+
+OnReset:
+	killmonster "poring_w02","#wop_devillium1::OnMyMobDead";
+	stopnpctimer;
+	end;
+
+OnDevilingSpawn:
+	monster "poring_w02",116,82,"ديفلينغ",1767,1,"#wop_devillium1::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	set $@wop_deadcount_d,$@wop_deadcount_d + 1;
+	if ($@wop_deadcount_d == 1) {
+		mapannounce "poring_w02","سيد دوبل: قتل ديفلينغ في القاعدة الأولى! خسارة نقطة واحدة!!",0,0x00ff00;
+		initnpctimer;
+	}
+	else {
+		donpcevent "#wop_devillium1::OnReset";
+		donpcevent "#wop_devillium2::OnReset";
+		donpcevent "#wop_devillium1::OnReset";
+		donpcevent "#wop_devillium2::OnReset";
+		donpcevent "#wop_master::OnAngelingWin";
+	}
+	end;
+
+OnTimer120000:
+	set $@wop_deadcount_d,$@wop_deadcount_d - 1;
+	donpcevent "#wop_devillium1::OndevilingSpawn";
+	mapannounce "poring_w02","سيد دوبل: عاد ديفلينغ في القاعدة الأولى إلى الحياة! كسب نقطة واحدة!!",0,0x00ff00;
+	stopnpctimer;
+	end;
+}
+
+poring_w02,98,124,0	script	#wop_devillium2	-1,{
+	end;
+
+OnReset:
+	killmonster "poring_w02","#wop_devillium2::OnMyMobDead";
+	stopnpctimer;
+	end;
+
+OndevilingSpawn:
+	monster "poring_w02",98,124,"ديفلينغ",1767,1,"#wop_devillium2::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	set $@wop_deadcount_d,$@wop_deadcount_d + 1;
+	if ($@wop_deadcount_d == 1) {
+		mapannounce "poring_w02","سيد دوبل: قتل ديفلينغ في القاعدة الثانية! خسارة نقطة واحدة!!",0,0x00ff00;
+		initnpctimer;
+	}
+	else {
+		donpcevent "#wop_devillium1::OnReset";
+		donpcevent "#wop_devillium2::OnReset";
+		donpcevent "#wop_devillium1::OnReset";
+		donpcevent "#wop_devillium2::OnReset";
+		donpcevent "#wop_master::OnAngelingWin";
+	}
+	end;
+
+OnTimer120000:
+	set $@wop_deadcount_d,$@wop_deadcount_d - 1;
+	donpcevent "#wop_devillium2::OndevilingSpawn";
+	mapannounce "poring_w02","سيد دوبل: عاد ديفلينغ في القاعدة الثانية إلى الحياة! كسب نقطة واحدة!!",0,0x00ff00;
+	stopnpctimer;
+}
+
+// Deviruchi
+//============================================================
+poring_w02,99,201,3	script	ديفيروتشي#wop_endmaster::Deviruchi#wop_endmaster	738,{
+	if (MaxWeight-Weight < 2000 || checkweight(1201,1) == 0) {
+		mes "- انتظر دقيقة !! -";
+		mes "- أنت تحمل حاليا -";
+		mes "- الكثير من العناصر معك. -";
+		mes "- يرجى المحاولة مرة أخرى -";
+		mes "- بعد أن تخفف بعض الوزن. -";
+		close;
+	}
+	set .@a_point,$@wop_deadcount_a;
+	set .@d_point,$@wop_deadcount_d;
+	if (getcharid(1) == $@wop_team_a) {
+		if (.@a_point < .@d_point) {
+			mes "[ديفي]";
+			mes "عمل جيد!";
+			mes "بفضلك، زادت فرصنا في النصر.";
+			mes "يرجى قبول عملات البورينغ هذه كعلامة على تقديرنا.";
+			next;
+			if (wop_team == 1) {
+				mes "[ديفي]";
+				mes "وداعا، يا صديقي البشري.";
+				close2;
+				getitem 7539,3; // Poring_Coin
+				warp "prt_fild08",150,370;
+				end;
+			}
+			else {
+				mes "[ديفي]";
+				mes "انتظر لحظة، تبدو مشبوها!!";
+				mes "آه، فهمت! أنت في جانب الديفيلينغ؟!";
+				mes "أنت تتجسس علينا!";
+				mes "لن أسامحك أبدا!";
+				close2;
+				percentheal 99,0;
+				warp "prt_fild08",150,370;
+				end;
+			}
+		}
+		else if (.@a_point == .@d_point) {
+			mes "[ديفي]";
+			mes "لقد بذلت ما بوسعك.";
+			mes "من المؤسف أن المعركة انتهت بالتعادل...";
+			mes "ومع ذلك، شكرا لأنك أتيت للقتال من أجلنا. يرجى قبول عملة البورينغ هذه.";
+			next;
+			if (wop_team == 1) {
+				mes "[ديفي]";
+				mes "وداعا، يا صديقي البشري.";
+				close2;
+				getitem 7539,1; // Poring_Coin
+				warp "prt_fild08",150,370;
+				end;
+			}
+			else {
+				mes "[ديفي]";
+				mes "انتظر لحظة، تبدو مشبوها!!";
+				mes "آه، فهمت! أنت في جانب الديفيلينغ؟!";
+				mes "أنت تتجسس علينا!";
+				mes "لا بد أنك أنت من جعل المعركة تنتهي بالتعادل!!";
+				mes "لن أسامحك أبدا!";
+				close2;
+				percentheal 99,0;
+				warp "prt_fild08",150,370;
+				end;
+			}
+		}
+		else {
+			if (wop_team == 1) {
+				mes "[ديفي]";
+				mes "حسنا، أظن أن حظنا كان سيئا...";
+				mes "لا أستطيع أن أعطيك شيئا، بما أننا خسرنا وكل ذلك...";
+				next;
+				mes "[ديفي]";
+				mes "وداعا، يا صديقي البشري.";
+				close2;
+				warp "prt_fild08",150,370;
+				end;
+			}
+			else {
+				mes "[ديفي]";
+				mes "انتظر لحظة... هناك خائن هنا!";
+				mes "آه، فهمت! أنت في جانب الديفيلينغ؟!";
+				mes "أنت تتجسس علينا، نحن الأنجلينغ!";
+				next;
+				mes "[ديفي]";
+				mes "يجب أن تخجل!";
+				close2;
+				percentheal 99,0;
+				warp "prt_fild08",150,370;
+				end;
+			}
+		}
+	}
+	else if (getcharid(1) == $@wop_team_d) {
+		if (.@a_point > .@d_point) {
+			mes "[ديفي]";
+			mes "عمل جيد!";
+			mes "بفضلك، زادت فرصنا في النصر.";
+			mes "يرجى قبول عملات البورينغ هذه كعلامة على تقديرنا.";
+			next;
+			if (wop_team == 2) {
+				mes "[ديفي]";
+				mes "وداعا، يا صديقي البشري.";
+				close2;
+				getitem 7539,3; // Poring_Coin
+				warp "prt_fild08",150,370;
+				end;
+			}
+			else {
+				mes "[ديفي]";
+				mes "انتظر لحظة، تبدو مشبوها!!";
+				mes "آه، فهمت! أنت في جانب الأنجلينغ؟!";
+				mes "أنت تتجسس علينا!!";
+				mes "لن أسامحك أبدا!";
+				close2;
+				percentheal 99,0;
+				warp "prt_fild08",150,370;
+				end;
+			}
+		}
+		else if (.@a_point == .@d_point) {
+			mes "[ديفي]";
+			mes "لقد بذلت ما بوسعك.";
+			mes "من المؤسف أن المعركة انتهت بالتعادل...";
+			mes "ومع ذلك، شكرا لأنك أتيت للقتال من أجلنا. يرجى قبول عملة البورينغ هذه.";
+			next;
+			if (wop_team == 2) {
+				mes "[ديفي]";
+				mes "وداعا، يا صديقي البشري.";
+				close2;
+				getitem 7539,1; // Poring_Coin
+				warp "prt_fild08",150,370;
+				end;
+			}
+			else {
+				mes "[ديفي]";
+				mes "انتظر لحظة، تبدو مشبوها!!";
+				mes "آه، فهمت! أنت في جانب الأنجلينغ؟!";
+				mes "أنت تتجسس علينا!";
+				mes "لا بد أنك أنت من جعل المعركة تنتهي بالتعادل!!";
+				mes "لن أسامحك أبدا!";
+				close2;
+				percentheal 99,0;
+				warp "prt_fild08",150,370;
+				end;
+			}
+		}
+		else {
+			if (wop_team == 2) {
+				mes "[ديفي]";
+				mes "حسنا، أظن أن حظنا كان سيئا...";
+				mes "لا أستطيع أن أعطيك شيئا، بما أننا خسرنا وكل ذلك...";
+				next;
+				mes "[ديفي]";
+				mes "سأسمح لك بالعودة إلى عالمك البشري.";
+				close2;
+				warp "prt_fild08",150,370;
+				end;
+			}
+			else {
+				mes "[ديفي]";
+				mes "انتظر لحظة، تبدو مشبوها!!";
+				mes "آه، فهمت! أنت في جانب الأنجلينغ؟!";
+				mes "أنت تتجسس علينا، نحن الديفيلينغ!";
+				next;
+				mes "[ديفي]";
+				mes "يجب أن تخجل!";
+				close2;
+				percentheal 99,0;
+				warp "prt_fild08",150,370;
+				end;
+			}
+		}
+	}
+	else {
+		mes "[ديفي]";
+		mes "هذا غريب... اسم مجموعتك غير مسجل.";
+		mes "آسف، لكن القواعد هي القواعد. لا أستطيع مساعدتك إذا لم تكن مجموعتك مسجلة.";
+		close;
+	}
+OnInit:
+	disablenpc "Deviruchi#wop_endmaster";
+	end;
+
+OnEnable:
+	enablenpc "Deviruchi#wop_endmaster";
+	initnpctimer;
+	end;
+
+OnDisable:
+	disablenpc "Deviruchi#wop_endmaster";
+	end;
+
+OnTimer3000:
+	mapwarp "poring_w02","poring_w02",99,196;
+	end;
+
+OnTimer5000:
+	mapannounce "poring_w02","سيد دوبل: اسمحوا لي أن أقدم تذكارا للبشر الذين قاتلوا بشجاعة من أجل البورينغ! يرجى التحدث إلى ديفي.",0,0x00ff00;
+	end;
+
+OnTimer65000:
+	mapannounce "poring_w02","سيد دوبل: انتهى الوقت! دعوني أنقلكم.",0,0x00ff00;
+	end;
+
+OnTimer68000:
+	mapwarp "poring_w02","poring_w01",112,138;
+	end;
+
+OnTimer68100:
+	donpcevent "#wop_master::OnStop";
+	donpcevent "#wop_devillium1::OnReset";
+	donpcevent "#wop_devillium2::OnReset";
+	donpcevent "#wop_angellium1::OnReset";
+	donpcevent "#wop_angellium2::OnReset";
+	set $@wop_team_a,0;
+	set $@wop_team_d,0;
+	set $@wop_deadcount_a,0;
+	set $@wop_deadcount_d,0;
+	set $@wop_teamcount,0;
+	set $@wop_doorcount_a,0;
+	set $@wop_doorcount_d,0;
+	donpcevent "#wop_warp_a::OnDisable";
+	donpcevent "#wop_warp_d::OnDisable";
+	donpcevent "Mr. Doppel#wop_team_a::OnDisable";
+	donpcevent "Mr. Doppel#wop_team_d::OnDisable";
+	donpcevent "#wop_warp_rtry::OnDisable";
+	donpcevent "Poring#wop_door_a::OnEnable";
+	donpcevent "Poring#wop_door_d::OnEnable";
+	donpcevent "Poring#wop_door_all::OnEnable";
+	stopnpctimer;
+	end;
+}
+
+// Gate Guardian
+//============================================================
+poring_w02,99,52,0	script	حارس أنجلينغ#wop_da::Angeling Guardian#wop_da	111,{
+	cutin "wop_emb0" + $@wop_doorcount_a,1;
+	if ($@wop_doorcount_a < 4) {
+		if (wop_team == 2) {
+			mes "هناك جهاز لتجهيز شارات الحرب.";
+			mes "أرى الفتحات الفارغة لتجهيز الشارات.";
+			next;
+			switch(select("تجهيز شارة حرب.:إلغاء.")) {
+			case 1:
+				if (countitem(7773)) {
+					if ($@wop_doorcount_a < 4) {
+						mes "تم تجهيز شارة الحرب.";
+						delitem 7773,1; // War_Badge
+						set $@wop_doorcount_a,$@wop_doorcount_a + 1;
+						cutin "wop_emb0" + $@wop_doorcount_a,1;
+						if ($@wop_doorcount_a == 4) {
+							next;
+							mes "تم تفعيل البوابة.";
+							donpcevent "#aroom_ingate_wop::OnEnable";
+							donpcevent "#aroom_outgate_wop::OnEnable";
+						}
+						close2;
+					}
+					else {
+						mes "تم تجهيز جميع شارات الحرب.";
+						mes "لا حاجة لتجهيز المزيد.";
+						close2;
+					}
+				}
+				else {
+					mes "^4d4dff - شارة الحرب مفقودة. يمكنك الحصول على شارة حرب بقتل أعضاء الفريق الآخر. - ^000000";
+					close2;
+				}
+				break;
+			case 2:
+				mes "إلغاء.";
+				close2;
+			}
+		}
+		else {
+			mes "هناك جهاز لتجهيز شارة حرب.";
+			mes "احذر من السماح للعدو بأخذ شارة الحرب الخاصة بك وتجهيزها هنا.";
+			close2;
+		}
+	}
+	else {
+		mes "تم تجهيز جميع شارات الحرب.";
+		close2;
+	}
+	cutin "",255;
+	end;
+
+OnInit:
+	set $@wop_doorcount_a,0;
+	end;
+}
+
+poring_w02,103,52,0	script	#aroom_ingate_wop	139,1,1,{
+	end;
+
+OnInit:
+	disablenpc "#aroom_ingate_wop";
+	end;
+
+OnEnable:
+	enablenpc "#aroom_ingate_wop";
+	end;
+
+OnDisable:
+	disablenpc "#aroom_ingate_wop";
+	end;
+
+OnTouch_:
+	warp "poring_w02",99,49;
+	end;
+}
+
+poring_w02,93,51,0	script	#aroom_outgate_wop	139,1,1,{
+	end;
+
+OnInit:
+	disablenpc "#aroom_outgate_wop";
+	end;
+
+OnEnable:
+	enablenpc "#aroom_outgate_wop";
+	end;
+
+OnDisable:
+	disablenpc "#aroom_outgate_wop";
+	end;
+
+OnTouch_:
+	warp "poring_w02",99,54;
+	end;
+}
+
+poring_w02,98,113,0	script	حارس ديفلينغ#wop_dd::Deviling Guardian#wop_dd	111,{
+	cutin "wop_emb0" + $@wop_doorcount_d,1;
+	if ($@wop_doorcount_d < 4) {
+		if (wop_team == 1) {
+			mes "هناك جهاز لتجهيز شارات الحرب.";
+			mes "أرى الفتحات الفارغة لتجهيز الشارات.";
+			next;
+			switch(select("تجهيز شارة حرب.:إلغاء.")) {
+			case 1:
+				if (countitem(7773)) {
+					if ($@wop_doorcount_d < 4) {
+						mes "تم تجهيز شارة الحرب.";
+						delitem 7773,1; // War_Badge
+						set $@wop_doorcount_d,$@wop_doorcount_d + 1;
+						cutin "wop_emb0" + $@wop_doorcount_d,1;
+						if ($@wop_doorcount_d == 4) {
+							next;
+							mes "تم تفعيل البوابة.";
+							donpcevent "#droom_ingate_wop::OnEnable";
+							donpcevent "#droom_outgate_wop::OnEnable";
+						}
+						close2;
+					}
+					else {
+						mes "تم تجهيز جميع شارات الحرب.";
+						mes "لا حاجة لتجهيز المزيد.";
+						close2;
+					}
+				}
+				else {
+					mes "^4d4dff - شارة الحرب مفقودة. يمكنك الحصول على شارة حرب بقتل أعضاء الفريق الآخر. - ^000000";
+					close2;
+				}
+				break;
+			case 2:
+				mes "إلغاء.";
+				close2;
+			}
+		}
+		else {
+			mes "هناك جهاز لتجهيز شارة حرب.";
+			mes "احذر من السماح للعدو بأخذ شارة الحرب الخاصة بك وتجهيزها هنا.";
+			close2;
+		}
+	}
+	else {
+		mes "تم تجهيز جميع شارات الحرب.";
+		close2;
+	}
+	cutin "",255;
+	end;
+
+OnInit:
+	set $@wop_doorcount_d,0;
+	end;
+}
+
+poring_w02,93,113,0	script	#droom_ingate_wop	139,1,1,{
+	end;
+
+OnInit:
+	disablenpc "#droom_ingate_wop";
+	end;
+
+OnEnable:
+	enablenpc "#droom_ingate_wop";
+	end;
+
+OnDisable:
+	disablenpc "#droom_ingate_wop";
+	end;
+
+OnTouch_:
+	warp "poring_w02",98,116;
+	end;
+}
+
+poring_w02,103,114,0	script	#droom_outgate_wop	139,1,1,{
+	end;
+
+OnInit:
+	disablenpc "#droom_outgate_wop";
+	end;
+
+OnEnable:
+	enablenpc "#droom_outgate_wop";
+	end;
+
+OnDisable:
+	disablenpc "#droom_outgate_wop";
+	end;
+
+OnTouch_:
+	warp "poring_w02",98,111;
+	end;
+}
+
+// Other NPCs
+//============================================================
+-	script	بورينغ جهة أنجلينغ#wpa::Angeling Side Poring#wpa	-1,{
+	end;
+}
+
+-	script	مارين جهة ديفلينغ#wpd::Deviling Side Marin#wpd	-1,{
+	end;
+}
+
+poring_w01,79,102,5	duplicate(Angeling Side Poring#wpa)	بورينغ جهة أنجلينغ#wa1::Angeling Side Poring#wa1	1002
+poring_w01,80,107,5	duplicate(Angeling Side Poring#wpa)	بورينغ جهة أنجلينغ#wa2::Angeling Side Poring#wa2	1002
+poring_w01,84,108,5	duplicate(Angeling Side Poring#wpa)	بورينغ جهة أنجلينغ#wa3::Angeling Side Poring#wa3	1002
+poring_w01,84,112,5	duplicate(Angeling Side Poring#wpa)	بورينغ جهة أنجلينغ#wa4::Angeling Side Poring#wa4	1002
+poring_w01,88,112,5	duplicate(Angeling Side Poring#wpa)	بورينغ جهة أنجلينغ#wa5::Angeling Side Poring#wa5	1002
+
+poring_w01,114,112,3	duplicate(Deviling Side Marin#wpd)	مارين جهة ديفلينغ#wd1::Deviling Side Marin#wd1	1242
+poring_w01,117,111,3	duplicate(Deviling Side Marin#wpd)	مارين جهة ديفلينغ#wd2::Deviling Side Marin#wd2	1242
+poring_w01,117,108,3	duplicate(Deviling Side Marin#wpd)	مارين جهة ديفلينغ#wd3::Deviling Side Marin#wd3	1242
+poring_w01,122,108,3	duplicate(Deviling Side Marin#wpd)	مارين جهة ديفلينغ#wd4::Deviling Side Marin#wd4	1242
+poring_w01,121,105,3	duplicate(Deviling Side Marin#wpd)	مارين جهة ديفلينغ#wd5::Deviling Side Marin#wd5	1242
+
+poring_w01,84,108,3	script	#wop_ex_1	139,3,3,{
+	end;
+
+OnTouch:
+	mes "[البورينغ]";
+	mes "ب~وووووووو -!!!";
+	mes "لنعلمهم درسا، رينغ!";
+	mes "لم نعد نراهن بحياتنا من أجل الجيلوبي، رينغ!!!";
+	next;
+	mes "[البورينغ]";
+	mes "هيا بنا! لنقاتل! لنفز، نفز، نفز!!!";
+	emotion ET_GO, getnpcid(0, "Angeling Side Poring#wa1");
+	emotion ET_GO, getnpcid(0, "Angeling Side Poring#wa2");
+	emotion ET_GO, getnpcid(0, "Angeling Side Poring#wa3");
+	emotion ET_GO, getnpcid(0, "Angeling Side Poring#wa4");
+	emotion ET_GO, getnpcid(0, "Angeling Side Poring#wa5");
+	next;
+	if (wop_team == 1) {
+		mes "[البورينغ]";
+		mes "أوووووه، ها هو، المحارب الذي قاتل من أجلنا!!";
+		mes "يا إلهي... رائع، رينغ!";
+		mes "بورينغ~ بورينغ~ بوووووو~";
+		mes "مجموعة أنجلينغ~ بوبوبو، بورينغ!";
+	}
+	else if (wop_team == 2) {
+		mes "[البورينغ]";
+		mes "انتظر، أنت! ألست في جانب الديفيلينغ؟!";
+		mes "اخرج الآن! غادر!!";
+		mes "بوووو~ بوو~ بوووو~";
+		emotion ET_HUK, getnpcid(0, "Angeling Side Poring#wa1");
+		emotion ET_FRET, getnpcid(0, "Angeling Side Poring#wa2");
+		emotion ET_HUK, getnpcid(0, "Angeling Side Poring#wa3");
+		emotion ET_FRET, getnpcid(0, "Angeling Side Poring#wa4");
+		emotion ET_SURPRISE, getnpcid(0, "Angeling Side Poring#wa5");
+	}
+	else {
+		mes "[البورينغ]";
+		mes "مهلا، أيها البشري. ما رأيك في القتال من أجلنا نحن البورينغ في جانب أنجلينغ؟؟!";
+		emotion ET_HELP, getnpcid(0, "Angeling Side Poring#wa1");
+		emotion ET_GO, getnpcid(0, "Angeling Side Poring#wa2");
+		emotion ET_HELP, getnpcid(0, "Angeling Side Poring#wa3");
+		emotion ET_GO, getnpcid(0, "Angeling Side Poring#wa4");
+		emotion ET_GO, getnpcid(0, "Angeling Side Poring#wa5");
+	}
+	next;
+	mes "[البورينغ]";
+	mes "مجموعة أنجلينغ~ بوبوبو، بورينغ!";
+	mes "النصر~ النصر~ بووووووو~";
+	next;
+	mes "- البورينغ يهتفون بمرح من أجل النصر. -";
+	close;
+}
+
+poring_w01,119,107,3	script	#wop_ex_2	139,3,3,{
+	end;
+
+OnTouch:
+	mes "[المارين]";
+	mes "وووووووووووووو!";
+	mes "أخيرا، حان الوقت لنلقن تلك الخنازير الغبية درسا!!";
+	mes "كل أولئك البورينغ ذوي المستوى المنخفض حمقى!!";
+	next;
+	mes "[المارين]";
+	mes "هيا بنا! لنقاتل! قاتلوا من أجل النصر!!!!";
+	emotion ET_GO, getnpcid(0, "Deviling Side Marin#wd1");
+	emotion ET_GO, getnpcid(0, "Deviling Side Marin#wd2");
+	emotion ET_GO, getnpcid(0, "Deviling Side Marin#wd3");
+	emotion ET_GO, getnpcid(0, "Deviling Side Marin#wd4");
+	emotion ET_GO, getnpcid(0, "Deviling Side Marin#wd5");
+	next;
+	if (wop_team == 2) {
+		mes "[المارين]";
+		mes "أوووه... ها هو المحارب الذي قاتل من أجلنا!!";
+		mes "مذهل!";
+		mes "هذا يثبت أن البشر يعترفون بنا كوحوش حقيقية!!";
+	}
+	else if (wop_team == 1) {
+		mes "[المارين]";
+		mes "انتظر، أنت! ألست في جانب الأنجلينغ؟!";
+		mes "اخرج الآن! غادر!!";
+		mes "بوووو~ بوو~ بوووو~";
+		emotion ET_HUK, getnpcid(0, "Deviling Side Marin#wd1");
+		emotion ET_FRET, getnpcid(0, "Deviling Side Marin#wd2");
+		emotion ET_HUK, getnpcid(0, "Deviling Side Marin#wd3");
+		emotion ET_FRET, getnpcid(0, "Deviling Side Marin#wd4");
+		emotion ET_SURPRISE, getnpcid(0, "Deviling Side Marin#wd5");
+	}
+	else {
+		mes "[المارين]";
+		mes "مهلا، أيها البشري. ألا تريد القتال من أجل ديفيلينغ، نبيل الظلام؟ ما رأيك؟!";
+		emotion ET_HELP, getnpcid(0, "Deviling Side Marin#wd1");
+		emotion ET_GO, getnpcid(0, "Deviling Side Marin#wd2");
+		emotion ET_HELP, getnpcid(0, "Deviling Side Marin#wd3");
+		emotion ET_GO, getnpcid(0, "Deviling Side Marin#wd4");
+		emotion ET_GO, getnpcid(0, "Deviling Side Marin#wd5");
+	}
+	next;
+	mes "[المارين]";
+	mes "أفضل بورينغ معجزة في العالم! ديفلينغ لديه كل شيء! هيا، ديفيلينغ، هيا-!!";
+	next;
+	mes "- المارين يهتفون بمرح من أجل النصر. -";
+	close;
+}
