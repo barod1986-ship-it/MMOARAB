@@ -1,0 +1,74 @@
+    row259 = "| 259 | الأنظمة والخدمات | دالة حماية شخصيات إدارة GM والتحقق من الصلاحية وكلمات المرور وسجل المحاولات | `rathena-master/npc/other/gm_npcs.txt` | تحقق دون تعديل: المرجع الرسمي | 38 |"
+    row260 = "| 260 | الأنظمة والخدمات | مرشد معارك النقابات ونقل الفرق إلى خمس خرائط PvP | `rathena-master/npc/other/guildpvp.txt` | تحقق دون تعديل: navi_npc_krpri.lub والمرجع الرسمي | 18 |"
+    if row260 not in track_md:
+        if row259 not in track_md:
+            raise AssertionError("Stage 259 table row missing")
+        track_md = track_md.replace(row259, row259 + "\n" + row260, 1)
+
+    stage_section = f"""
+## المرحلة 260 — مكتملة
+
+- الملف الأساسي: `{MAIN_REL}`
+- المرجع الإنجليزي الداخلي مطابق بايتيا للنسخة الرسمية الحالية: 56 سطرا؛ بصمة Git blob: `{OFFICIAL_BLOB}`.
+- روجع حوار مرشد معارك النقابات كاملا، بما يشمل اختيار خمس خرائط PvP وتحديد أحد فريقين والتأكيد أو الإلغاء.
+- نُقحت الصياغة العربية ووُحد اسم المرشد، وأزيلت مخاطبة اللاعب المذكرة في سؤال الاستعداد ورسالة النجاح.
+- تحقق اسم المرشد مع `navi_npc_krpri.lub` دون الحاجة إلى تعديل الملف المرتبط.
+- حُفظ الاسم الداخلي `Guild Battle Guide` والخريطة والإحداثيات والصورة والمصفوفات والمتغيرات والخيارات وأمر النقل وجميع الشروط والفروع.
+- إجمالي تعديلات المرحلة: **{STAGE_CHANGES}**
+- الإجمالي التراكمي: **{CUMULATIVE_CHANGES:,}**
+- ملفات NPC المراجعة بعمق: **{NPC_REVIEWED} من {NPC_TOTAL}**
+- الملفات المستبعدة: **28**
+- الملفات المتبقية للمراجعة: **{REMAINING}**
+- ملفات المهمات المكتملة: **88 من 88**
+- أول ملف متبق: `{NEXT_FILE}`
+- التحقق الفني الساكن: **PASS**
+""".lstrip()
+    if "## المرحلة 260 — مكتملة" not in track_md:
+        track_md = track_md.rstrip() + "\n\n" + stage_section
+    write_text_preserve(track_md_path, track_md, track_md_bom, track_md_nl)
+
+    # Append stage row to tracker CSV.
+    track_csv_text, track_csv_bom, track_csv_nl = read_text_preserve(track_csv_path)
+    if not re.search(r"(?m)^260,", track_csv_text):
+        new_row = csv_line([
+            260,
+            "الأنظمة والخدمات",
+            "مرشد معارك النقابات ونقل الفرق إلى خمس خرائط PvP",
+            MAIN_REL,
+            "تحقق دون تعديل: navi_npc_krpri.lub والمرجع الرسمي",
+            "مكتمل",
+            STAGE_CHANGES,
+            "المرحلة_260",
+        ])
+        track_csv_text = track_csv_text.rstrip("\r\n") + "\n" + new_row + "\n"
+    write_text_preserve(track_csv_path, track_csv_text, track_csv_bom, track_csv_nl)
+
+    # Append completed-file row.
+    completed_text, completed_bom, completed_nl = read_text_preserve(completed_csv_path)
+    if MAIN_REL not in completed_text:
+        completed_row = csv_line([
+            MAIN_REL,
+            "other",
+            "مراجعة حوارية وتقنية عميقة",
+            "مكتمل",
+            260,
+            (
+                "مراجعة كاملة لمرشد معارك النقابات في قاعة PvP: اختيار واحدة من خمس خرائط "
+                "وتحديد الفريق الأول أو الثاني ثم تأكيد النقل أو إلغاؤه. نُقحت الحوارات "
+                "والخيارات سياقيا، ووُحد اسم المرشد مع ملف الملاحة، وأزيلت مخاطبة اللاعب "
+                "المذكرة. حُفظ الاسم الداخلي Guild Battle Guide والخريطة والإحداثيات والصورة "
+                "والمصفوفات والمتغيرات وخيارات الخرائط والفرق وشرط الرفض وأوامر close وclose2 "
+                "وwarp وend دون تغيير."
+            ),
+            "المرحلة_260",
+        ])
+        completed_text = completed_text.rstrip("\r\n") + "\n" + completed_row + "\n"
+    write_text_preserve(completed_csv_path, completed_text, completed_bom, completed_nl)
+
+    # Remove the completed file from remaining list.
+    remaining_text, remaining_bom, remaining_nl = read_text_preserve(remaining_csv_path)
+    remaining_lines = remaining_text.replace("\r\n", "\n").replace("\r", "\n").splitlines()
+    before_count = len(remaining_lines)
+    remaining_lines = [line for line in remaining_lines if not line.startswith(MAIN_REL + ",")]
+    if len(remaining_lines) != before_count - 1:
+        raise AssertionError("Could not remove exactly one guildpvp row from remaining list")
