@@ -1,30 +1,3 @@
-    write_text_preserve(completed_path, completed, c_bom, c_nl)
-
-    # Remaining list.
-    remaining_text, r_bom, r_nl = read_text_preserve(remaining_path)
-    remaining_lines = remaining_text.replace("\r\n", "\n").replace("\r", "\n").splitlines()
-    original_count = len(remaining_lines)
-    remaining_lines = [line for line in remaining_lines if not line.startswith(MAIN_REL + ",")]
-    if len(remaining_lines) != original_count - 1:
-        raise AssertionError("Failed to remove exactly one gympass row")
-    if len(remaining_lines) < 2 or not remaining_lines[1].startswith(NEXT_FILE + ","):
-        raise AssertionError("Unexpected next file")
-    write_text_preserve(remaining_path, "\n".join(remaining_lines) + "\n", r_bom, r_nl)
-
-    # Changes CSV from line-level replacements.
-    old_lines = original_text.splitlines()
-    new_lines = final_text.splitlines()
-    changes = []
-    for i, (old, new) in enumerate(zip(old_lines, new_lines), 1):
-        if old != new:
-            changes.append([len(changes)+1, MAIN_REL, i, "تنقيح لغوي", old, new, "تغيير نصي فقط؛ منطق السكربت محفوظ"])
-    if len(changes) != STAGE_CHANGES:
-        raise AssertionError(f"Expected {STAGE_CHANGES} changed lines, got {len(changes)}")
-    with (STAGE_DIR / "تقرير_المرحلة_261_التعديلات.csv").open("w", encoding="utf-8-sig", newline="") as f:
-        writer = csv.writer(f, lineterminator="\n")
-        writer.writerow(["رقم", "الملف", "السطر", "النوع", "النص قبل", "النص بعد", "ملاحظة"])
-        writer.writerows(changes)
-
     sources = [
         {"source": "المرجع الإنجليزي داخل الحزمة", "type": "داخلي", "purpose": "مطابقة الحوار والبنية والأوامر", "location": EN_REL},
         {"source": "rAthena gympass.txt", "type": "رسمي", "purpose": "التحقق من النسخة الرسمية وتسلسل التدريب", "location": "https://github.com/rathena/rathena/blob/master/npc/other/gympass.txt"},
