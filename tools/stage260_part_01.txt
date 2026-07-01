@@ -1,0 +1,128 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import base64
+import csv
+import hashlib
+import io
+import json
+import os
+import re
+import shutil
+import zipfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+REPORT_ROOT = ROOT / "تقارير_المراجعة_الحوارية"
+STAGE_DIR = REPORT_ROOT / "المرحلة_260"
+
+MAIN_REL = "rathena-master/npc/other/guildpvp.txt"
+EN_REL = "rathena-master/npc_EN/other/guildpvp.txt"
+NAVI_REL = "data/luafiles514/lua files/navigation/navi_npc_krpri.lub"
+TRACK_MD_REL = "تقارير_المراجعة_الحوارية/00_متابعة_المراجعة_الحوارية.md"
+TRACK_CSV_REL = "تقارير_المراجعة_الحوارية/00_متابعة_المراجعة_الحوارية.csv"
+COMPLETED_CSV_REL = "تقارير_المراجعة_الحوارية/00_الملفات_المكتملة.csv"
+REMAINING_CSV_REL = "تقارير_المراجعة_الحوارية/00_الملفات_المتبقية.csv"
+XLSX_REL = "تقارير_المراجعة_الحوارية/ملف_تتبع_المراجعة_الحوارية_حتى_المرحلة_260.xlsx"
+
+OFFICIAL_BLOB = "68f62bbb43d5b5580ce4c4beb47b8cf833830465"
+NEXT_FILE = "rathena-master/npc/other/gympass.txt"
+STAGE_CHANGES = 18
+CUMULATIVE_CHANGES = 62435
+NPC_REVIEWED = 261
+NPC_TOTAL = 555
+REMAINING = 266
+
+TEMP_FILES = {
+    "tools/apply_stage_260.py",
+    ".github/workflows/stage260.yml",
+}
+
+XLSX_BASE64 = ""
+
+REPLACEMENTS = [
+    ("//= Guild Battle NPC", "//= مرشد معارك النقابات"),
+    ("//= [Official Conversion]", "//= [تحويل رسمي]"),
+    ("//= Guild Battle with PVP mechanics.", "//= معارك نقابات بآليات لاعب ضد لاعب (PvP)."),
+    ("//= 1.0 First version. [L0ne_W0lf]", "//= 1.0 الإصدار الأول. [L0ne_W0lf]"),
+    ("//= 1.1 Optimized. [Euphy]", "//= 1.1 تحسين الأداء. [Euphy]"),
+    ('\tmes "كيف حالك؟";', '\tmes "مرحبا، كيف حالك؟";'),
+    ('\tmes "أنا مرشد معركة النقابات";', '\tmes "أنا مرشد معارك النقابات";'),
+    ('\tmes "لخرائط PvP الجديدة.";', '\tmes "في خرائط PvP الجديدة.";"'),
+    ('\tmes "أخبرني إلى أي خريطة";', '\tmes "أخبرني بالخريطة التي";'),
+    ('\tmes "تريد أن أنقلك.";', '\tmes "تريد الانتقال إليها.";"'),
+    ('\tmes "لقد اخترت الخريطة "+.@i+".";', '\tmes "اخترت الخريطة "+.@i+".";"'),
+    ('\tmes "والآن، في أي فريق";', '\tmes "والآن، إلى أي فريق";'),
+    ('\tmes "أنت؟ يمكنك اختيار";', '\tmes "تنتمي؟ يمكنك اختيار";'),
+    ('\tmes "إما الفريق 1 أو الفريق 2.";', '\tmes "الفريق 1 أو الفريق 2.";"'),
+    ('\tmes "إلى الخريطة "+.@i+" كعضو";', '\tmes "إلى الخريطة "+.@i+" ضمن";'),
+    ('\tmes "في الفريق "+.@j+". هل أنت مستعد";', '\tmes "الفريق "+.@j+". هل نبدأ";'),
+    ('\tmes "ليتم نقلك إلى هناك الآن؟";', '\tmes "الانتقال الآن؟";'),
+    ('\tmes "رائع! استمتع بوقتك~";', '\tmes "رائع! أتمنى لك وقتا ممتعا~";'),
+]
+
+# Correct accidental sentinel quote in replacement literals while keeping source readable.
+REPLACEMENTS = [(a, b[:-1] if b.endswith(';"') else b) for a, b in REPLACEMENTS]
+
+
+def p(rel: str) -> Path:
+    return ROOT / rel
+
+
+def sha256(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def git_blob_sha(data: bytes) -> str:
+    return hashlib.sha1(f"blob {len(data)}\0".encode("ascii") + data).hexdigest()
+
+
+def detect_newline(data: bytes) -> str:
+    return "\r\n" if b"\r\n" in data else "\n"
+
+
+def write_utf8_lf(path: Path, text: str, bom: bool = False) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    data = text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+    if bom:
+        data = b"\xef\xbb\xbf" + data
+    path.write_bytes(data)
+
+
+def read_text_preserve(path: Path) -> tuple[str, bool, str]:
+    data = path.read_bytes()
+    bom = data.startswith(b"\xef\xbb\xbf")
+    newline = detect_newline(data)
+    text = data.decode("utf-8-sig")
+    return text, bom, newline
+
+
+def write_text_preserve(path: Path, text: str, bom: bool, newline: str) -> None:
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    if newline == "\r\n":
+        normalized = normalized.replace("\n", "\r\n")
+    data = normalized.encode("utf-8")
+    if bom:
+        data = b"\xef\xbb\xbf" + data
+    path.write_bytes(data)
+
+
+def snapshot_repo() -> dict[str, str]:
+    result: dict[str, str] = {}
+    for file in ROOT.rglob("*"):
+        if not file.is_file():
+            continue
+        rel = file.relative_to(ROOT).as_posix()
+        if rel.startswith(".git/") or rel in TEMP_FILES or rel.startswith("tools/stage260_part_"):
+            continue
+        result[rel] = sha256(file.read_bytes())
+    return result
+
+
+def csv_line(values: list[object]) -> str:
+    stream = io.StringIO(newline="")
+    writer = csv.writer(stream, lineterminator="")
+    writer.writerow(values)
+    return stream.getvalue()
+
+
