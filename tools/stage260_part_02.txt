@@ -1,0 +1,100 @@
+def _xlsx_cell(value: object, style: int = 0) -> str:
+    from xml.sax.saxutils import escape
+    if isinstance(value, (int, float)):
+        return f'<c s="{style}"><v>{value}</v></c>'
+    return f'<c s="{style}" t="inlineStr"><is><t>{escape(str(value))}</t></is></c>'
+
+
+def _xlsx_sheet(rows: list[list[object]]) -> str:
+    body = []
+    for index, row in enumerate(rows, 1):
+        cells = "".join(_xlsx_cell(value, 1 if index == 1 else 0) for value in row)
+        body.append(f'<row r="{index}">{cells}</row>')
+    return (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '
+        'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
+        '<sheetData>' + "".join(body) + '</sheetData></worksheet>'
+    )
+
+
+def make_tracker_xlsx(path: Path) -> None:
+    sheets = [
+        ("الملخص", [
+            ["المؤشر", "القيمة"],
+            ["آخر مرحلة مكتملة", 260],
+            ["إجمالي التعديلات", 62435],
+            ["ملفات NPC المراجعة", "261 من 555"],
+            ["الملفات المتبقية", 266],
+            ["ملفات المهام", "88 من 88"],
+            ["الملف المنجز", MAIN_REL],
+            ["الملف التالي", NEXT_FILE],
+            ["تعديلات المرحلة", 18],
+            ["التحقق الفني", "PASS"],
+        ]),
+        ("المراحل_الأخيرة", [
+            ["المرحلة", "الملف", "التعديلات", "الحالة"],
+            [251, "rathena-master/npc/other/arena/arena_room.txt", 235, "مكتمل"],
+            [252, "rathena-master/npc/other/auction.txt", 34, "مكتمل"],
+            [253, "rathena-master/npc/other/books.txt", 742, "مكتمل"],
+            [254, "rathena-master/npc/other/bulletin_boards.txt", 128, "مكتمل"],
+            [255, "rathena-master/npc/other/card_trader.txt", 43, "مكتمل"],
+            [256, "rathena-master/npc/other/comodo_gambling.txt", 84, "مكتمل"],
+            [257, "rathena-master/npc/other/divorce.txt", 91, "مكتمل"],
+            [258, "rathena-master/npc/other/fortune.txt", 894, "مكتمل"],
+            [259, "rathena-master/npc/other/gm_npcs.txt", 38, "مكتمل"],
+            [260, MAIN_REL, 18, "مكتمل"],
+        ]),
+        ("التحقق", [
+            ["الاختبار", "الحالة", "التفاصيل"],
+            ["المرجع الرسمي", "PASS", OFFICIAL_BLOB],
+            ["الاسم الداخلي", "PASS", "Guild Battle Guide"],
+            ["الخرائط", "PASS", "5"],
+            ["الفرق", "PASS", "2"],
+            ["منطق النقل", "PASS", "محفوظ"],
+            ["ملفات التتبع", "PASS", "محدثة"],
+            ["الملف التالي", "PASS", NEXT_FILE],
+        ]),
+    ]
+    content_types = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+        '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+        '<Default Extension="xml" ContentType="application/xml"/>'
+        '<Override PartName="/xl/workbook.xml" '
+        'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'
+        '<Override PartName="/xl/styles.xml" '
+        'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'
+        + "".join(
+            f'<Override PartName="/xl/worksheets/sheet{i}.xml" '
+            'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
+            for i in range(1, 4)
+        ) + '</Types>'
+    )
+    root_rels = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        '<Relationship Id="rId1" '
+        'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" '
+        'Target="xl/workbook.xml"/></Relationships>'
+    )
+    workbook = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '
+        'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>'
+        + "".join(
+            f'<sheet name="{name}" sheetId="{i}" r:id="rId{i}"/>'
+            for i, (name, _) in enumerate(sheets, 1)
+        ) + '</sheets></workbook>'
+    )
+    workbook_rels = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        + "".join(
+            f'<Relationship Id="rId{i}" '
+            'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" '
+            f'Target="worksheets/sheet{i}.xml"/>'
+            for i in range(1, 4)
+        )
+        + '<Relationship Id="rId4" '
+        'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" '
