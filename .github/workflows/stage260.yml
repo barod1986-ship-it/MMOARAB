@@ -1,0 +1,61 @@
+name: Build stage 260 package
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+jobs:
+  stage260:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout review branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Assemble and validate stage tool
+        shell: bash
+        run: |
+          cat tools/stage260_part_*.txt > tools/apply_stage_260.py
+          python -m py_compile tools/apply_stage_260.py
+
+      - name: Apply stage 260
+        run: python tools/apply_stage_260.py
+
+      - name: Remove temporary automation files
+        shell: bash
+        run: |
+          rm -f tools/stage260_part_*.txt
+          rm -f tools/apply_stage_260.py
+          rm -f .github/workflows/stage260.yml
+          rmdir tools 2>/dev/null || true
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+
+      - name: Commit reviewed package
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "المرحلة 260: مراجعة guildpvp وتحديث التتبع"
+          git push origin HEAD:${{ github.head_ref }}
+
+      - name: Upload complete package
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage-260-complete-package
+          path: .
+          include-hidden-files: false
+          retention-days: 7

@@ -1,0 +1,107 @@
+    if len(remaining_lines) < 2 or not remaining_lines[1].startswith(NEXT_FILE + ","):
+        raise AssertionError("Next remaining file is not gympass.txt")
+    remaining_text = "\n".join(remaining_lines) + "\n"
+    write_text_preserve(remaining_csv_path, remaining_text, remaining_bom, remaining_nl)
+
+    # Store the generated Excel tracker.
+    xlsx_path = p(XLSX_REL)
+    make_tracker_xlsx(xlsx_path)
+    xlsx_data = xlsx_path.read_bytes()
+
+    # Reports: summary, changes, sources.
+    summary_md = f"""# ملخص المرحلة 260
+
+- الملف الأساسي: `{MAIN_REL}`
+- الملف التالي: `{NEXT_FILE}`
+- تعديلات الملف الأساسي: **{STAGE_CHANGES}**
+- تعديلات الملفات المرتبطة: **0**
+- إجمالي تعديلات المرحلة: **{STAGE_CHANGES}**
+- إجمالي التعديلات التراكمي: **{CUMULATIVE_CHANGES:,}**
+- ملفات NPC المراجعة: **{NPC_REVIEWED} من {NPC_TOTAL}**
+- الملفات المتبقية: **{REMAINING}**
+- ملفات المهام: **88 من 88**
+- المرجع الداخلي مطابق بايتيا للنسخة الرسمية؛ Git blob: `{OFFICIAL_BLOB}`.
+- روجع الحوار الكامل لاختيار خمس خرائط وفريقين ومساري التأكيد والإلغاء.
+- نُقحت الصياغة العربية ووُحد اسم المرشد مع الملاحة، دون تعديل الملف المرتبط.
+- حُفظ الاسم الداخلي `Guild Battle Guide` والمصفوفات والمتغيرات والإحداثيات وشروط الاختيار وأمر `warp` دون تغيير.
+- التحقق الفني: **PASS**.
+- لم يجر تشغيل `map-server` فعليا؛ التحقق ساكن وبنيوي شامل.
+"""
+    write_utf8_lf(STAGE_DIR / "ملخص_المرحلة_260.md", summary_md)
+
+    changes_path = STAGE_DIR / "تقرير_المرحلة_260_التعديلات.csv"
+    changes_rows = [["رقم", "الملف", "النوع", "النص قبل", "النص بعد", "ملاحظة"]]
+    for idx, (old, new) in enumerate(applied, 1):
+        changes_rows.append([
+            idx, MAIN_REL, "تنقيح لغوي", old, new,
+            "تغيير نصي فقط؛ لم يتغير منطق السكربت",
+        ])
+    with changes_path.open("w", encoding="utf-8-sig", newline="") as f:
+        csv.writer(f, lineterminator="\n").writerows(changes_rows)
+
+    sources = [
+        {
+            "source": "المرجع الإنجليزي داخل الحزمة",
+            "type": "داخلي",
+            "purpose": "مطابقة الحوار والبنية والأوامر",
+            "location": EN_REL,
+        },
+        {
+            "source": "rAthena guildpvp.txt",
+            "type": "رسمي",
+            "purpose": "التحقق من النسخة الرسمية الحالية وتسلسل النقل",
+            "location": "https://github.com/rathena/rathena/blob/master/npc/other/guildpvp.txt",
+        },
+        {
+            "source": "Git blob SHA للمرجع الرسمي",
+            "type": "رسمي",
+            "purpose": "إثبات التطابق البايتي للمرجع الداخلي",
+            "location": OFFICIAL_BLOB,
+        },
+        {
+            "source": "مرجع rAthena الرسمي المحفوظ",
+            "type": "خارجي محفوظ",
+            "purpose": "نسخة بايتية من المرجع الرسمي",
+            "location": official_rel,
+        },
+        {
+            "source": "ملف الملاحة",
+            "type": "داخلي مرتبط",
+            "purpose": "التحقق من توحيد اسم مرشد معارك النقابات",
+            "location": NAVI_REL,
+        },
+        {
+            "source": "rAthena Basic Scripting",
+            "type": "رسمي",
+            "purpose": "التحقق من بنية سكربت NPC وأوامر الحوار",
+            "location": "https://github.com/rathena/rathena/wiki/Basic-Scripting",
+        },
+        {
+            "source": "الملف التالي",
+            "type": "داخلي",
+            "purpose": "استمرار تسلسل المراجعة",
+            "location": NEXT_FILE,
+        },
+    ]
+    sources_md = "# مصادر المرحلة 260\n\n" + "\n".join(
+        f"- **{s['source']}** ({s['type']}): {s['purpose']} — `{s['location']}`"
+        for s in sources
+    ) + "\n"
+    write_utf8_lf(STAGE_DIR / "تقرير_المرحلة_260_المصادر.md", sources_md)
+    with (STAGE_DIR / "تقرير_المرحلة_260_المصادر.csv").open(
+        "w", encoding="utf-8-sig", newline=""
+    ) as f:
+        writer = csv.DictWriter(
+            f, fieldnames=["source", "type", "purpose", "location"], lineterminator="\n"
+        )
+        writer.writeheader()
+        writer.writerows(sources)
+    write_utf8_lf(
+        STAGE_DIR / "تقرير_المرحلة_260_المصادر.json",
+        json.dumps(sources, ensure_ascii=False, indent=2) + "\n",
+    )
+
+    # Technical checks.
+    final_main = main_path.read_bytes()
+    final_text = final_main.decode("utf-8")
+    final_md = track_md_path.read_text(encoding="utf-8-sig")
