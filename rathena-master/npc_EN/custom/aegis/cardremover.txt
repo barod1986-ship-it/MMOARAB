@@ -1,0 +1,120 @@
+//===== rAthena Script ======================================= 
+//= Card Remover NPC
+//===== By: ======================================================
+//= wrywndp (https://www.youtube.com/@wrywndp)
+//===== Description: ========================================= 
+//= Card Remover NPC script (Pre-Renewal).
+//===== Additional Comments: =====================================
+//= This script is made for Ragnarok Offline Pre-Renewal Pack
+//= https://www.youtube.com/watch?v=aN5OCJdj2qA
+//============================================================
+
+aegis_works,25,30,4	script	Card Remover	448,{
+
+	disable_items;
+
+	mes .npcName$;
+	mes "Do you want to remove cards on your equipment?";
+	mes "Catalyst: ^1A66FF" + callfunc("F_InsertPlural", .catalyst[1], getitemname(.catalyst[0])) + "^000000";
+	mes "Remove Fee per Card: ^00A000" + callfunc("F_InsertComma", .cardFee) + "^000000^727272 z^000000";
+	next;
+	switch(select("^1A66FFYes^000000:^727272Cancel^000000")) {
+		case 1:
+			setarray .@indices[1],
+				EQI_HEAD_TOP,
+				EQI_HEAD_MID,
+				EQI_HEAD_LOW,
+				EQI_ARMOR,
+				EQI_HAND_L,
+				EQI_HAND_R,
+				EQI_GARMENT,
+				EQI_SHOES,
+				EQI_ACC_L,
+				EQI_ACC_R;
+
+			for (.@i = 1; .@i < getarraysize(.@indices); .@i++) {
+				if (getequipisequiped(.@indices[.@i]) && getequipcardcnt(.@indices[.@i])) {
+					.@equipSlot = (getequipcardid(.@indices[.@i], 0) == 255) ? 0 : getitemslots(getequipid(.@indices[.@i]));
+
+					if (.@equipSlot) {
+						set .@menu$, .@menu$
+							+ "^727272" + F_getpositionname(.@indices[.@i]) + " "
+							+ (getequiprefinerycnt(.@indices[.@i]) ? "^FF3355+" + getequiprefinerycnt(.@indices[.@i]) + " " : "")
+							+ "^1A66FF" + getequipname(.@indices[.@i])
+							+ " ^727272[" + getequipcardcnt(.@indices[.@i]) + "/" + .@equipSlot + "]"
+							+ "^000000";
+						.@equipped = 1;
+					}
+				}
+				.@menu$ += ":";
+			}
+			if (!.@equipped) {
+				mes .npcName$;
+				mes "You're not wearing anything that I can remove the card from.";
+				close;
+			}
+
+			.@part = .@indices[select(.@menu$)];
+
+			if (!getequipisequiped(.@part)) {
+				mes .npcName$;
+				mes "Your not wearing anything there.";
+				close;
+			}
+
+			.@cardCount = getequipcardcnt(.@part);
+
+			getinventorylist;
+			if (!checkweight(4001, .@cardCount)) {
+				mes .npcName$;
+				mes "You're carrying too much items in your inventory.";
+				close;
+			}
+
+			.@equipSlot = (getequipcardid(.@part,0) == 255) ? 0 : getitemslots(getequipid(.@part));
+			.@equipRefine = getequiprefinerycnt(.@part);
+			.@totalCost = .cardFee * .@cardCount;
+			clear;
+			mes .npcName$;
+			mes "You're going to remove " + callfunc("F_InsertPlural", .@cardCount, "card", 0, "^1A66FF%d^000000 %s") + " from " + ((.@equipRefine) ? "^FF3355+" + .@equipRefine + " " : "") + "^1A66FF" + getequipname(.@part) + ((.@equipSlot) ? " ^727272[" + .@equipSlot + "]" : "") + "^000000.";
+			mes "Catalyst: ^1A66FF" + callfunc("F_InsertPlural", .catalyst[1], getitemname(.catalyst[0])) + "^000000.";
+			mes "Total Fee: ^00A000" + callfunc("F_InsertComma", .@totalCost) + "^000000^727272 z^000000.";
+			mes "Do you want to continue?";
+			next;
+
+			if (select("^1A66FFYes, remove " + ((.@cardCount > 1) ? "all of them" : "it") + ":^727272Never mind^000000") == 2) {
+				mes .npcName$;
+				mes "Very well. Return at once if you seek my services.";
+				close;
+			}
+
+			if (Zeny < .@totalCost || countitem(.catalyst[0]) < .catalyst[1]) {
+				mes .npcName$;
+				mes "You don't meet the requirements I've requested.";
+				mes "I need ^00A000" + callfunc("F_InsertComma", .@totalCost) + "^727272 z^000000 and ^1A66FF" + callfunc("F_InsertPlural", .catalyst[1], getitemname(.catalyst[0])) + "^000000.";
+				close;
+			}
+
+			specialeffect2 EF_REFINEOK;
+			Zeny -= .@totalCost;
+			delitem .catalyst[0], .catalyst[1];
+			successremovecards .@part;
+
+			mes .npcName$;
+			mes "The process was a success.";
+			mes "Here are your cards and your equipment.";
+			mes "Farewell.";
+			close;
+		case 2:
+			clear;
+			mes .npcName$;
+			mes "Very well. Return at once if you seek my services.";
+			close;
+	}
+	close;
+
+OnInit:
+	.npcName$ = "[Card Remover]";
+	setarray .catalyst, 1005, 1; // Item ID required for removing the cards (Default: Hammer of Blacksmith) and the quantity.
+	.cardFee = 5000000; // Per-card fee (In Zeny)
+}

@@ -1,0 +1,129 @@
+//===== rAthena Script =======================================
+//= Geffenia Dungeon Monster Spawn Script
+//===== By: ==================================================
+//= Muad_Dib, rAthena Dev Team
+//===== Current Version: =====================================
+//= 1.1
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Additional Comments: =================================
+//= Added 1st Version. [Muad_Dib]
+//= Conversion to eA [MasterOfMuppets]
+//= Updated spawns, information from emperium.org [MasterOfMuppets]
+//= Kept the old spawns incase someone would want them.
+//= Aegis ep 10.1 spawns [MasterOfMuppets]
+//============================================================
+
+//==================================================
+// gefenia01 - Geffenia
+//==================================================
+gefenia01,0,0	monster	ملاك زائف	1371,60
+gefenia01,0,0	monster	سوكيوبوس	1370,10
+gefenia01,0,0	monster	إنكيوبوس	1374,10
+gefenia01,0,0	monster	فيولي	1390,30
+gefenia01,0,0	monster	شيطان صغير	1292,20
+gefenia01,0,0	monster	فارس سحيق	1219,10
+gefenia01,0,0	monster	فارس دموي	1268,1,3600000,3000000
+gefenia01,0,0	monster	ميستلتين	1203,1,10800000,7200000
+gefenia01,0,0	monster	الجلاد	1205,1,18000000,14400000
+gefenia01,0,0	monster	سن الغول	1204,1,18000000,14400000
+
+//==================================================
+// gefenia02 - Geffenia
+//==================================================
+gefenia02,0,0	monster	ملاك زائف	1371,30
+gefenia02,0,0	monster	سوكيوبوس	1370,20
+gefenia02,0,0	monster	إنكيوبوس	1374,10
+gefenia02,0,0	monster	فيولي	1390,40
+gefenia02,0,0	monster	شيطان صغير	1292,30
+gefenia02,0,0	monster	فارس سحيق	1219,10
+gefenia02,0,0	monster	فارس دموي	1268,1,3600000,3000000
+gefenia02,0,0	monster	ميستلتين	1203,1,18000000,14400000
+gefenia02,0,0	monster	الجلاد	1205,1,18000000,14400000
+gefenia02,0,0	monster	سن الغول	1204,1,10800000,7200000
+
+//==================================================
+// gefenia03 - Geffenia
+//==================================================
+gefenia03,0,0	monster	ملاك زائف	1371,40
+gefenia03,0,0	monster	سوكيوبوس	1370,10
+gefenia03,0,0	monster	إنكيوبوس	1374,20
+gefenia03,0,0	monster	فيولي	1390,40
+gefenia03,0,0	monster	شيطان صغير	1292,30
+gefenia03,0,0	monster	فارس سحيق	1219,10
+gefenia03,0,0	monster	فارس دموي	1268,1,3600000,3000000
+gefenia03,0,0	monster	ميستلتين	1203,1,18000000,14400000
+gefenia03,0,0	monster	الجلاد	1205,1,10800000,7200000
+gefenia03,0,0	monster	سن الغول	1204,1,18000000,14400000
+
+//==================================================
+// gefenia04 - Geffenia
+//==================================================
+gefenia04,0,0	monster	ملاك زائف	1371,30
+gefenia04,0,0	monster	سوكيوبوس	1370,10,600000,300000
+gefenia04,0,0	monster	إنكيوبوس	1374,10,600000,300000
+gefenia04,0,0	monster	فيولي	1390,30
+gefenia04,0,0	monster	شيطان صغير	1292,20
+gefenia04,0,0	monster	فارس سحيق	1219,10
+gefenia04,0,0	monster	فارس دموي	1268,1,3600000,3000000
+gefenia04,0,0	monster	ميستلتين	1203,1,18000000,14400000
+gefenia04,0,0	monster	الجلاد	1205,1,18000000,14400000
+gefenia04,0,0	monster	سن الغول	1204,1,18000000,14400000
+
+
+//The spawns bellow, are old ones that were used in events.
+//==================================================
+// gefenia01 - Geffenia (Old)
+//==================================================
+//gefenia01,0,0	monster	ملاك زائف	1371,10
+//gefenia01,0,0	monster	شيطان صغير	1292,6,300000
+//gefenia01,0,0	monster	أبوكاليبس	1365,4,300000
+//gefenia01,0,0	monster	إلدر	1377,10,300000
+//gefenia01,0,0	monster	فارس الهاوية	1219,3,1800000,900000
+//gefenia01,0,0	monster	فارس دموي	1268,2,300000
+//gefenia01,0,0	monster	بورينغ	1502,1
+//gefenia01,0,0	monster	الجلاد	1205,1,3600000,1800000
+//gefenia01,0,0	monster	ميستلتين	1203,1,7200000,3600000
+
+//==================================================
+// gefenia02 - Geffenia (Old)
+//==================================================
+//gefenia02,0,0	monster	ملاك زائف	1371,10
+//gefenia02,0,0	monster	سوكيوبوس	1370,6
+//gefenia02,0,0	monster	إنكيوبوس	1374,6
+//gefenia02,0,0	monster	شيطان صغير	1292,10,300000
+//gefenia02,0,0	monster	أبوكاليبس	1365,8,300000
+//gefenia02,0,0	monster	فارس الهاوية	1219,2,1800000,900000
+//gefenia02,0,0	monster	فارس دموي	1268,5,300000
+//gefenia02,0,0	monster	بورينغ	1502,1
+//gefenia02,0,0	monster	غريفون	1259,1,3600000,1800000
+//gefenia02,0,0	monster	كيميرا	1283,1,7200000,3600000
+
+//==================================================
+// gefenia03 - Geffenia (Old)
+//==================================================
+//gefenia03,0,0	monster	ملاك زائف	1371,4
+//gefenia03,0,0	monster	سوكيوبوس	1370,5
+//gefenia03,0,0	monster	إنكيوبوس	1374,5
+//gefenia03,0,0	monster	شيطان صغير	1292,10,300000
+//gefenia03,0,0	monster	أبوكاليبس	1365,6,300000
+//gefenia03,0,0	monster	إلدر	1377,10,300000
+//gefenia03,0,0	monster	فارس الهاوية	1219,3,1800000,900000
+//gefenia03,0,0	monster	فارس دموي	1268,2,300000
+//gefenia03,0,0	monster	بورينغ	1502,1
+//gefenia03,0,0	monster	وهم مظلم	1302,1,300000
+//gefenia03,0,0	monster	بارون البوم	1295,1
+
+//==================================================
+// gefenia04 - Geffenia (Old)
+//==================================================
+//gefenia04,0,0	monster	ملاك زائف	1371,10
+//gefenia04,0,0	monster	سوكيوبوس	1370,5
+//gefenia04,0,0	monster	إنكيوبوس	1374,3
+//gefenia04,0,0	monster	أبوكاليبس	1365,4,300000
+//gefenia04,0,0	monster	فارس الهاوية	1219,5,1800000,900000
+//gefenia04,0,0	monster	فارس دموي	1268,2,300000
+//gefenia04,0,0	monster	بورينغ	1502,1
+//gefenia04,0,0	monster	أرك أنجلينغ	1388,1,3600000,1800000
+//gefenia04,0,0	monster	مايا بنفسجية	1289,1,1200000
+//gefenia04,0,0	monster	قط التسعة ذيول	1307,1,0,0,0

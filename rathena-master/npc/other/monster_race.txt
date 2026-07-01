@@ -1,0 +1,2979 @@
+//===== rAthena Script =======================================
+//= Hugel Monster Races
+//===== By: ==================================================
+//= L0ne_W0lf
+//===== Current Version: =====================================
+//= 2.0
+//===== Compatible With: =====================================
+//= rAthena Project; SVN r12752+
+//===== Description: =========================================
+//= [Official Conversion]
+//= - Hugel Monster Races (Single and Double)
+//= - Prize Medal Exchanging, and Monster Track NPCs.
+//= - Contains both euRO and iRO dialog.
+//===== Additional Comments: =================================
+//= 1.0 First version. Please report bugs. [L0ne_W0lf]
+//= 1.1 Corrected a minor typo. [L0ne_W0lf]
+//= 1.2 Replaced effect numerics with constants. [L0ne_W0lf]
+//= 1.3 Ei'felle now gives Exercise. (Bugreport:4092) [L0ne_W0lf]
+//= 1.4 Fixed call to a non-existant event. [L0ne_W0lf]
+//= 1.5 Updated Dialog. [L0ne_W0lf]
+//= 1.6 Updated experience rewards. [L0ne_W0lf]
+//= 1.7 Optimization, -4000 lines (more can still be done). [Euphy]
+//= 1.8 Optimized.
+//=     Fixed Medal Distributor (Dual Race) disappears accordingly. [Joseph] 
+//= 1.9 Updated RE/Pre-RE EXP. [Euphy]
+//= 2.0 Added GM management NPC. [Euphy]
+//= 2.1 Fixed prize in dual race and optimization. [Capuche]
+//============================================================
+
+// Monster Race - Single Monster Race
+//============================================================
+hugel,51,61,0	script	#race_timer1-1	-1,{
+OnEnable:
+	enablenpc "#race_timer1-1";
+OnInit:
+	$@mon_time_1_1 = 2;
+	initnpctimer;
+	end;
+
+OnTimer10000:
+	mapannounce "hugel","سيبدأ سباق الوحوش الفردي قريبا. نأمل أن يشارك الكثير منكم!",bc_map,"0x87ceeb";
+	end;
+OnTimer30000:
+	mapannounce "hugel","تم فتح حلبة سباق الوحوش الفردي الآن.",bc_map,"0x87ceeb";
+	$@mon_time_1_1 = 1;
+	donpcevent "Race Progress Timer::OnEnable";
+	end;
+OnTimer90000:
+	mapannounce "hugel","حلبة سباق الوحوش الفردي مفتوحة الآن. على المشاركين دخول الحلبة بأسرع ما يمكن.",bc_map,"0x87ceeb";
+	end;
+OnTimer210000:
+	mapannounce "hugel","سيغلق مدخل حلبة سباق الوحوش الفردي بعد قليل. أيها المشاركون، يرجى دخول الحلبة الآن.",bc_map,"0x87ceeb";
+	end;
+OnTimer270000:
+	mapannounce "hugel","سيغلق مدخل حلبة سباق الوحوش الفردي قريبا.",bc_map,"0x87ceeb";
+	end;
+OnTimer272000:
+	mapannounce "hugel","أيها المشاركون، يرجى دخول الحلبة قبل إغلاق الأبواب.",bc_map,"0x87ceeb";
+	end;
+OnTimer330000:
+	mapannounce "hugel","سيبدأ السباق الآن. إذا فاتتك فرصة دخول هذا السباق، يرجى المحاولة مرة أخرى في المرة القادمة~!",bc_map,"0x87ceeb";
+	$@mon_time_1_1 = 0;
+	disablenpc "#race_timer1-1";
+	stopnpctimer;
+	end;
+}
+
+p_track01,58,0,0	script	Race Progress Timer	-1,{
+OnEnable:
+	initnpctimer;
+	enablenpc "Race Progress Timer";
+	for ( .@c = 1; .@c < 7; .@c++ ) {
+		.@line = rand(1,70);
+		enablenpc "starting#"+.@c;
+		enablenpc "Tire"+.@c+"#1";
+		if ( .@line <= 10 ) {
+			.@tired = rand(50,60);
+			enablenpc "Luk"+.@c+"#5";
+			enablenpc "Luk"+.@c+"#6";
+		} else if ( .@line <= 30 ) {
+			.@tired = rand(40,60);
+			enablenpc "Luk"+.@c+"#5";
+			if (.@tired >= 50) enablenpc "Tire"+.@c+"#2";
+		} else if ( .@line <= 40 ) {
+			.@tired = rand(30,50);
+			enablenpc "Luk"+.@c+"#1";
+			enablenpc "Tire"+.@c+"#2";
+			if ( .@tired < 40 ) enablenpc "Tire"+.@c+"#3";
+		} else if (.@line <= 50) {
+			.@tired = rand(20,40);
+			enablenpc "Luk"+.@c+"#1";
+			enablenpc "Luk"+.@c+"#2";
+			enablenpc "Tire"+.@c+"#2";
+			enablenpc "Tire"+.@c+"#3";
+			if (.@tired < 30) enablenpc "Tire"+.@c+"#4";
+		} else if (.@line <= 60) {
+			.@tired = rand(10,30);
+			for ( .@i = 1; .@i <= 3; .@i++ )
+				enablenpc "Luk"+.@c+"#"+.@i;
+			for ( .@i = 2; .@i <= 4; .@i++ )
+				enablenpc "Tire"+.@c+"#"+.@i;
+			if ( .@tired < 20) enablenpc "Tire"+.@c+"#5";
+		} else if (.@line <= 70) {
+			.@tired = rand(0,20);
+			for ( .@i = 1; .@i <= 4; .@i++ )
+				enablenpc "Luk"+.@c+"#"+.@i;
+			for ( .@i = 2; .@i <= 5; .@i++ )
+				enablenpc "Tire"+.@c+"#"+.@i;
+			if (.@tired < 10) enablenpc "Tire"+.@c+"#6";
+		}
+		setd "$@mr_1_luk"+.@c, .@line;
+		setd "$@mr_1_tire"+.@c, .@tired;
+	}
+	end;
+OnTimer1000:
+	enablenpc "Ticket Helper#single";
+	end;
+OnTimer7000:
+	mapannounce "p_track01","مرحبا بك في حلبة سباق الوحوش.",bc_map,"0xffb6c1";
+	end;
+OnTimer10000:
+	mapannounce "p_track01","لا تتردد في الاستفسار من مكتب المساعدة متى كانت لديك أسئلة.",bc_map,"0xffb6c1";
+	end;
+OnTimer120000:
+	mapannounce "p_track01","سيبدأ سباق الوحوش الفردي بعد 3 دقائق.",bc_map,"0xffb6c1";
+	end;
+OnTimer123000:
+	mapannounce "p_track01","يرجى سؤال مساعد التذاكر إذا كنت ترغب في المراهنة على السباق.",bc_map,"0xffb6c1";
+	end;
+OnTimer240000:
+	mapannounce "p_track01","سيبدأ سباق الوحوش الفردي بعد قليل.",bc_map,"0xffb6c1";
+	end;
+OnTimer243000:
+	mapannounce "p_track01","يرجى سؤال مساعد التذاكر إذا كنت ترغب في المراهنة على السباق.",bc_map,"0xffb6c1";
+	end;
+OnTimer300000:
+	mapannounce "p_track01","لقد بدأ سباق الوحوش بالفعل. حظا موفقا لجميع المشاركين.",bc_map,"0xffb6c1";
+	$@monster_race = 0;
+	disablenpc "Ticket Helper#single";
+	for ( .@i = 1; .@i <= 6; .@i++ )
+		donpcevent "Runner No. "+.@i+"#"+.@i+"::OnEnable";
+	stopnpctimer;
+	end;
+
+OnDisable:
+OnInit:
+	disablenpc "Race Progress Timer";
+	end;
+}
+
+p_track01,73,22,1	script	مساعد التذاكر#single::Ticket Helper#single	899,{
+	mes "[مساعد التذاكر]";
+	mes "مرحبا بك في";
+	mes "حلبة سباق الوحوش.";
+	mes "إذا أردت المشاركة";
+	mes "في ^3131FFسباق الوحوش الفردي^000000،";
+	mes "فيرجى اختيار وحش واحد";
+	mes "من بين الوحوش الستة في القائمة.";
+	next;
+	if (!checkweight("Spawn",200)) {
+		mes "[مساعد التذاكر]";
+		mes "انتظر، انتظر...";
+		mes "لا يمكنني إعطاءك";
+		mes "أي شيء الآن.";
+		mes "أنت تحمل الكثير";
+		mes "من الأشياء...";
+		close;
+	}
+	.@m = select ("حالة الوحوش", "الوحش 1", "الوحش 2", "الوحش 3", "الوحش 4", "الوحش 5", "الوحش 6") - 1;
+	if (.@m == 0) {
+		for ( .@i = 1; .@i <= 6; .@i++ )
+			mes "الوحش "+.@i+" [^CC6600الحظ^000000: " + getd("$@mr_1_luk"+.@i) + "] [^EE0000HP^000000: " + getd("$@mr_1_tire"+.@i) + "]";
+		close;
+	} else {
+		if ($@mon_time_1_1 == 1) {
+			if (monster_race_1) {
+				mes "[مساعد التذاكر]";
+				mes "لقد اخترت";
+				mes "الوحش ^FF0000"+ monster_race_1 +"^000000 في";
+				mes "سباق الوحوش الفردي.";
+				mes "سيتم الإعلان عن";
+				mes "بدء السباق قريبا،";
+				mes "لذا يرجى الانتظار. شكرا لك.";
+				close;
+			}
+			mes "[مساعد التذاكر]";
+			mes "لقد اخترت الوحش "+.@m+"?";
+			mes "حسنا إذن، يرجى الانتظار";
+			mes "حتى يتم الإعلان عن";
+			mes "بدء السباق. إذا فاز الوحش";
+			mes "الذي اخترته، فاستخدم هذه التذكرة لاستلام جائزتك.";
+			getitem 7514,1; //Monster_Ticket
+			monster_race_1 = .@m;
+			close;
+		}
+		mes "[مساعد التذاكر]";
+		mes "آسف، لكن سباق";
+		mes "الوحوش جار الآن.";
+		mes "إذا أردت المشاركة، فيرجى انتظار السباق التالي.";
+		close;
+	}
+
+OnInit:
+	disablenpc "Ticket Helper#single";
+	end;
+}
+
+-	script	Runner_main	-1,{
+OnEnable:
+	emotion ET_SURPRISE;
+	enablenpc();
+	getmapxy(.@m$,.@x,.@y,BL_NPC);
+	setarray .@mob[1], 1725,1726,1727,1728,1730,1729;
+	.@n = atoi( strnpcinfo(2) );
+	monster "p_track01",58,.@y,"المتسابق رقم "+.@n,.@mob[.@n],1,strnpcinfo(3)+"::OnMyMobDead";
+	end;
+
+OnDisable:
+	disablenpc();
+	killmonster "p_track01",strnpcinfo(3)+"::OnMyMobDead";
+	end;
+
+OnTouchNPC:
+	.@n = atoi( strnpcinfo(2) );
+	$@monster_race = .@n;
+	for ( .@i = 1; .@i <= 6; .@i++ ) {
+		if (.@n == .@i) continue;
+		donpcevent "Runner No. "+.@i+"#"+.@i+"::OnDisable";
+	}
+	sleep 1000;
+	mapannounce "p_track01","لدينا فائز...!",bc_map,"0x33FF66";
+	sleep 1000;
+	mapannounce "p_track01","الوحش رقم "+.@n+" هو الفائز في هذا السباق!",bc_map,"0x33FF66";
+	sleep 4000;
+	mapannounce "p_track01","إذا راهنت على الوحش رقم "+.@n+" في هذا السباق، فتحدث إلى موزع الميداليات لاستلام جائزتك!",bc_map,"0x33FF66";
+	sleep 2000;
+	mapannounce "p_track01","يرجى تذكر أننا لا نستطيع توزيع ميداليات الجائزة إلا لمدة 5 دقائق بعد كل سباق.",bc_map,"0x33FF66";
+	sleep 1000;
+	donpcevent "Medal Distributor#single::OnEnable";
+	donpcevent strnpcinfo(3)+"::OnDisable";
+	killmonster "p_track01",strnpcinfo(3)+"::OnMyMobDead";
+	end;
+	
+OnInit:
+	if (strnpcinfo(2) != "" )
+		disablenpc();
+	end;
+}
+p_track01,30,38,0	duplicate(Runner_main)	Runner No. 1#1	-1,1,0
+p_track01,30,36,0	duplicate(Runner_main)	Runner No. 2#2	-1,1,0
+p_track01,30,34,0	duplicate(Runner_main)	Runner No. 3#3	-1,1,0
+p_track01,30,32,0	duplicate(Runner_main)	Runner No. 4#4	-1,1,0
+p_track01,30,30,0	duplicate(Runner_main)	Runner No. 5#5	-1,1,0
+p_track01,30,28,0	duplicate(Runner_main)	Runner No. 6#6	-1,1,0
+
+p_track01,67,45,5	script	موزع الميداليات#single::Medal Distributor#single	845,{
+	if (!checkweight("Spawn",200)) {
+		mes "[موزع الميداليات]";
+		mes "آسف، لكن لا يمكنني";
+		mes "منحك أي ميداليات";
+		mes "حتى تفرغ مساحة";
+		mes "أكبر في حقيبتك.";
+		close;
+	}
+	if (countitem("Monster_Ticket")) {// 7514
+		mes "[موزع الميداليات]";
+		mes "أهلا بك~";
+		mes "إذا راهنت على";
+		mes "الوحش الفائز في";
+		mes "سباق حديث، فيمكنك";
+		mes "استبدال تذكرة اللعبة";
+		mes "هنا ببعض ميداليات الجائزة.";
+		next;
+		mes "[موزع الميداليات]";
+		mes "يرجى تذكر أنه يمكنك";
+		mes "استبدال تذاكر اللعبة";
+		mes "الفائزة بميداليات الجائزة";
+		mes "بعد انتهاء السباق مباشرة فقط.";
+		mes "يمكن إعطاء ميداليات الجائزة إلى واين";
+		mes "في هويغل مقابل عناصر.";
+		next; 
+		if ($@monster_race) {
+			if (monster_race_1 == $@monster_race) {
+				mes "[موزع الميداليات]";
+				mes "أوه، تهانينا، لديك";
+				mes "تذكرة فائزة في";
+				mes "سباق الوحوش الفردي! إذن ";
+				mes "هل تريد استبدال تذكرة";
+				mes "السباق بميداليات الجائزة؟";
+				next;
+				if (select("نعم، من فضلك.:لا، شكرا.") == 2) {
+					mes "[موزع الميداليات]";
+					mes "همم، هل أنت متأكد؟ ";
+					mes "يمكنك استبدال تذكرة";
+					mes "السباق الفائزة بميداليات الجائزة";
+					mes "لفترة قصيرة فقط بعد السباق. إذا أخطأت،";
+					mes "فعليك أن تسألني مجددا بسرعة.";
+					close;
+				}
+				mes "[موزع الميداليات]";
+				mes "دعني أرى تذكرتك...";
+				mes "أوه! تهانينا، لقد";
+				mes "فزت! هل يمكنني معرفة اسمك؟";
+				next;
+				input .@input$;
+				if (.@input$ == strcharinfo(0)) {
+					.@insa = rand(1,1000);
+					mes "[موزع الميداليات]";
+					mes "آه، "+strcharinfo(0)+".";
+					mes "يمكنك استبدال هذه";
+					mes "التذكرة بميدالية جائزة";
+					mes "عن طريق إدخال رقم";
+					mes "استبدال التذكرة الآن.";
+					mes "رقم استبدال تذكرتك هو ^FF0000" + .@insa + "^000000.";
+					next;
+					input .@input;
+					if (!.@input) {
+						mes "[موزع الميداليات]";
+						mes "أوه؟ ألا تريد";
+						mes "استبدال تذكرتك";
+						mes "الفائزة؟";
+						close;
+					} else if (.@input == .@insa) {
+						mes "[موزع الميداليات]";
+						mes "شكرا لك! لقد أدخلت";
+						mes "الرقم الصحيح...";
+						mes "يبدو أن كل شيء";
+						mes "على ما يرام. حسنا!";
+						next;
+						mes "[موزع الميداليات]";
+						mes "والآن، يرجى قبول";
+						mes "ميداليات الجائزة! يمكنك";
+						mes "استبدالها مع";
+						mes "واين في هويغل ببعض";
+						mes "العناصر المثيرة للاهتمام. شكرا لك~";
+						delitem 7514,1; //Monster_Ticket
+						monster_race_1 = 0;
+						getitem 7515,4; //Marvelous_Medal
+						close;
+					}
+					mes "[موزع الميداليات]";
+					mes "آسف، لكن يبدو";
+					mes "أنك أدخلت";
+					mes "رقم التذكرة غير الصحيح.";
+					mes "هل يمكنك العودة";
+					mes "مرة أخرى بعد قليل؟";
+					close;
+				}
+				mes "[موزع الميداليات]";
+				mes "ما هذا...؟";
+				mes "أعتقد أن هناك مشكلة...";
+				mes "هل أدخلت اسمك";
+				mes "بشكل غير صحيح؟ يرجى التحقق";
+				mes "من اسمك، ثم المحاولة مرة أخرى.";
+				close;
+			}
+			mes "[موزع الميداليات]";
+			mes "ربما لم تراهن";
+			mes "على الوحش الفائز في";
+			mes "السباق الأخير، لكنني آمل";
+			mes "أن يحالفك الحظ في المرة القادمة~";
+			close;
+		}
+	}
+	mes "[موزع الميداليات]";
+	mes "أهلا بك~";
+	mes "إذا راهنت على";
+	mes "الوحش الفائز في";
+	mes "سباق حديث، فيمكنك";
+	mes "استبدال تذكرة اللعبة";
+	mes "هنا ببعض ميداليات الجائزة.";
+	next;
+	mes "[موزع الميداليات]";
+	mes "يرجى تذكر أنه يمكنك";
+	mes "استبدال تذاكر اللعبة";
+	mes "الفائزة بميداليات الجائزة";
+	mes "بعد انتهاء السباق مباشرة فقط.";
+	mes "يمكن إعطاء ميداليات الجائزة إلى واين";
+	mes "في هويغل مقابل عناصر.";
+	close;
+
+OnEnable:
+	enablenpc "Medal Distributor#single";
+	emotion ET_SURPRISE;
+	initnpctimer;
+	end;
+
+OnTimer1000:
+	mapannounce "p_track01","انتهى سباق الوحوش! تهانينا لجميع الفائزين!",bc_map,"0xFFFF00";
+	end;
+OnTimer4000:
+	mapannounce "p_track01","يرجى إعطاء تذكرة السباق إلى موزع الميداليات إذا راهنت على الوحش الفائز.",bc_map,"0xFFFF00";
+	end;
+OnTimer7000:
+	mapannounce "p_track01","لديك 5 دقائق لاستبدال التذكرة الفائزة بميداليات الجائزة من موزع الميداليات.",bc_map,"0xFFFF00";
+	end;
+OnTimer10000:
+	mapannounce "p_track01","تصبح جميع التذاكر باطلة بعد فترة الـ 5 دقائق هذه، لذا يجب على الفائزين المطالبة بجائزتهم الآن.",bc_map,"0xFFFF00";
+	end;
+OnTimer13000:
+	mapannounce "p_track01","يرجى مغادرة حلبة السباق قبل انتهاء فترة الـ 5 دقائق هذه. شكرا لك.",bc_map,"0xFFFF00";
+	end;
+OnTimer240000:
+	mapannounce "p_track01","تنبيه. سنبدأ الاستعداد للسباق التالي بعد قليل...",bc_map,"0xFFFF00";
+	end;
+OnTimer243000:
+	mapannounce "p_track01","سنغلق حلبة السباق خلال دقيقة واحدة للاستعداد للسباق التالي.",bc_map,"0xFFFF00";
+	end;
+OnTimer246000:
+	mapannounce "p_track01","على المشاركين في السباق الأخير مغادرة الحلبة بأسرع ما يمكن.",bc_map,"0xFFFF00";
+	end;
+OnTimer249000:
+	mapannounce "p_track01","شكرا لتعاونكم.",bc_map,"0xFFFF00";
+	end;
+OnTimer252000:
+	mapannounce "p_track01","نأمل أن تكون قد استمتعت بحلبة سباق الوحوش. عد مرة أخرى قريبا~",bc_map,"0xFFFF00";
+	$@mr_1_luk1 = $@mr_1_tire1 = 0;
+	for ( .@i = 1; .@i <= 6; .@i++ ) {
+		for ( .@j = 1; .@j <= 6; .@j++ ) {
+			disablenpc "Tire"+.@i+"#"+.@j;
+			disablenpc "Luk"+.@i+"#"+.@j;
+		}
+		enablenpc "Luk1#"+.@i;
+		enablenpc "Tire1#"+.@i;
+		setd "$@mr_1_luk"+.@i,0;
+		setd "$@mr_1_tire"+.@i,0;
+	}
+	end;
+OnTimer300000:
+	donpcevent "#race_timer1-1::OnEnable";
+	$@monster_race = 0;
+	mapwarp "p_track01","hugel",63,73;
+	end;
+
+OnTimer342000:
+	stopnpctimer;
+OnInit:
+	disablenpc "Medal Distributor#single";
+	end;
+}
+
+p_track01,76,36,1	script	دليل الخروج#single::Exit Guide#single	798,{
+	mes "[دليل الخروج]";
+	mes "إذا كانت لديك تذكرة سباق";
+	mes "فائزة، فيرجى التأكد من";
+	mes "استبدالها بميداليات الجائزة";
+	mes "الآن. تصبح جميع تذاكر السباق";
+	mes "باطلة عند بدء السباق التالي.";
+	next;
+	mes "[دليل الخروج]";
+	mes "إذا كنت ترغب في مغادرة";
+	mes "الحلبة، فيمكنني إرشادك";
+	mes "إلى الخارج. هل تريد";
+	mes "مغادرة الحلبة الآن؟";
+	next;
+	if (select("نعم:لا") == 2) {
+		mes "[دليل الخروج]";
+		mes "حسنا إذن.";
+		mes "أخبرني فقط";
+		mes "عندما تكون";
+		mes "جاهزا للمغادرة.";
+		close;
+	}
+	if (!countitem(7514)) {
+		mes "[دليل الخروج]";
+		mes "شكرا لك على";
+		mes "رعايتك، وآمل";
+		mes "أن تزورنا";
+		mes "مرة أخرى قريبا~";
+	} else {
+		mes "[دليل الخروج]";
+		mes "وفقا لسياساتنا،";
+		mes "يجب أن آخذ تذكرة";
+		mes "السباق الخاصة بك قبل مغادرتك.";
+		mes "شكرا لك على رعايتك،";
+		mes "وآمل أن تستمتع بوقتك";
+		mes "هنا في حلبة سباق الوحوش.";
+		delitem 7514,1; //Monster_Ticket
+	}
+	monster_race_1 = 0;
+	close2;
+	warp "hugel",63,73;
+	end;
+}
+
+hugel,58,72,6	script	إيكار إلبيرد#single::Eckar Ellebird#single	798,{
+	mes "[إيكار إلبيرد]";
+	mes "مرحبا بك في أكبر";
+	mes "معلم ترفيهي في هويغل،";
+	mes "حلبة سباق الوحوش.";
+	mes "كيف يمكنني مساعدتك اليوم؟";
+	next;
+	if (select("معلومات سباق الوحوش:دخول سباق الوحوش") == 1) {
+		mes "[إيكار إلبيرد]";
+		mes "نشأت سباقات الوحوش من";
+		mes "ألعاب أطفال بسيطة كانت";
+		mes "تتسابق فيها الحيوانات الأليفة اللطيفة مع بعضها. ثم تحولت إلى";
+		mes "هواية للكبار بلغت شهرة كبيرة، حتى بنينا حلبة سباق في هويغل.";
+		next;
+		mes "[إيكار إلبيرد]";
+		mes "تستضيف حلبة سباق الوحوش";
+		mes "لدينا نوعين من سباقات الوحوش. أولا، لدينا سباق الوحوش الفردي،";
+		mes "وفيه تتم مكافأة من راهنوا على الوحش صاحب المركز الأول.";
+		next;
+		mes "[إيكار إلبيرد]";
+		mes "ثم لدينا سباق الوحوش";
+		mes "المزدوج، وفيه تكون احتمالات الفوز والمكافآت أكبر من سباقات";
+		mes "الوحوش الفردية: يجب أن تراهن على وحشين، ويجب أن يحصلا على";
+		mes "المركزين الأول والثاني حتى تفوز.";
+		next;
+		mes "[إيكار إلبيرد]";
+		mes "رغم أن هناك رسما صغيرا";
+		mes "للدخول، إلا أننا نستخدم";
+		mes "المال فقط لمنح المكافآت";
+		mes "للمشاركين وصيانة هذه";
+		mes "الحلبة. لذلك، نحن لا";
+		mes "نربح من هذا المشروع.";
+		next;
+		mes "[إيكار إلبيرد]";
+		mes "كما أننا نمنع الآخرين";
+		mes "من إجراء رهانات شخصية";
+		mes "ومقامرات باستخدام العناصر";
+		mes "والزيني، بناء على نتائج";
+		mes "هذه السباقات. هذا النوع";
+		mes "من المقامرة غير قانوني هنا...";
+		next;
+		mes "[إيكار إلبيرد]";
+		mes "بمجرد دخولك حلبة السباق، ستحصل على تذكرة سباق.";
+		mes "تذكر أن تذاكر السباق الفائزة لا يمكن استبدالها";
+		mes "بميداليات الجائزة إلا خلال مدة 5 دقائق بعد نهاية السباق.";
+		next;
+	}
+	mes "[إيكار إلبيرد]";
+	mes "رسم الدخول لكل السباقات";
+	mes "في حلبة سباق الوحوش هو";
+	mes "2,000 زيني. إذا أردت المراهنة على سباق الوحوش المزدوج،";
+	mes "فيرجى سؤال أخي إرينيس،";
+	mes "وسيساعدك.";
+	next;
+	mes "[إيكار إلبيرد]";
+	mes "أما إن كنت مهتما";
+	mes "بسباق الوحوش الفردي،";
+	mes "فسأساعدك على البدء.";
+	mes "هل تود المراهنة على";
+	mes "سباق وحوش فردي؟";
+	next;
+	if (select("نعم، من فضلك.:لا، شكرا.") == 2) {
+		mes "[إيكار إلبيرد]";
+		mes "حسنا. آمل أن";
+		mes "تستمتع بوقتك هنا";
+		mes "في حلبة سباق الوحوش~";
+		close;
+	}
+	if (!checkweight("Spawn",700)) {
+		mes "[إيكار إلبيرد]";
+		mes "أوه، عجبا. أنت تحمل";
+		mes "كمية هائلة من الأشياء... نعم،";
+		mes "من الأفضل أن تضع بعضها";
+		mes "في مخزن كافرا أو ما شابه.";
+		close;
+	}
+	if (Zeny < 2000) {
+		mes "[إيكار إلبيرد]";
+		mes "آسف، لكنك";
+		mes "لا تملك ما يكفي";
+		mes "من المال لدفع";
+		mes "رسم الدخول البالغ 2,000 زيني. ";
+		close;
+	}
+	if (countitem("Monster_Ticket")) {
+		mes "[إيكار إلبيرد]";
+		mes "همم؟ ماذا تفعل";
+		mes "بتذكرة سباق منتهية؟";
+		mes "حسنا، من الأفضل أن أتخلص منها لك قبل أن تختلط";
+		mes "بتذكرة السباق الجديدة.";
+		delitem 7514,1; //Monster_Ticket
+		next;
+		if ($@mon_time_1_1 == 1) {
+			if (Zeny < 2000) {
+				mes "[إيكار إلبيرد]";
+				mes "آسف، لكنك";
+				mes "لا تملك ما يكفي";
+				mes "من المال لدفع";
+				mes "رسم الدخول البالغ 2,000 زيني. ";
+				close;
+			}
+			mes "[إيكار إلبيرد]";
+			mes "حسنا، أظن أن";
+			mes "كل شيء جاهز الآن. آمل";
+			mes "أن تستمتع بالسباق~";
+			mes "دعني أرشدك إلى داخل";
+			mes "حلبة سباق الوحوش الآن.";
+			Zeny -= 2000;
+			monster_race_1 = 0;
+			close2;
+			warp "p_track01",75,41;
+			end;
+		}
+	} else if ($@mon_time_1_1 == 1) {
+		mes "[إيكار إلبيرد]";
+		mes "شكرا، آمل أن";
+		mes "تستمتع بهذا السباق.";
+		mes "دعني أرشدك الآن";
+		mes "إلى حلبة سباق الوحوش.";
+		Zeny -= 2000;
+		monster_race_1 = 0;
+		close2;
+		warp "p_track01",75,41;
+		end;
+	}
+	if ($@mon_time_1_1 == 2) {
+		mes "[إيكار إلبيرد]";
+		mes "ما زلنا ننهي";
+		mes "استعداداتنا لسباق";
+		mes "الوحوش الفردي التالي، لذلك";
+		mes "نطلب منك أن";
+		mes "تنتظر قليلا بعد...";
+		close;
+	}
+	if ($@monster_race == 0) {
+		mes "[إيكار إلبيرد]";
+		mes "حاليا، هناك سباق وحوش";
+		mes "جار. لقد فات وقت المراهنة، لكن إذا أردت";
+		mes "المشاهدة، فرسم الدخول للمشاهدين";
+		mes "هو 500 زيني. هل تود دخول حلبة سباق الوحوش؟";
+		next;
+		if (select("دخول:إلغاء") == 2) {
+			mes "[إيكار إلبيرد]";
+			mes "حسنا إذن. إذا أردت";
+			mes "المراهنة على سباق";
+			mes "وحوش، فيرجى انتظار";
+			mes "انتهاء السباق الحالي. آمل";
+			mes "أن تستمتع بوقتك هنا";
+			mes "في حلبة سباق الوحوش~";
+			close;
+		}
+		if (Zeny > 499) {
+			mes "[إيكار إلبيرد]";
+			mes "شكرا لك~";
+			mes "آمل أن تستمتع";
+			mes "بمشاهدة هذا السباق!";
+			Zeny -= 500;
+			monster_race_1 = 0;
+			close2;
+			warp "p_track01",75,41;
+			end;
+		}
+		mes "[إيكار إلبيرد]";
+		mes "آسف، لكنك لا";
+		mes "تملك ما يكفي من المال";
+		mes "لدفع رسم المشاهدة البالغ 500 زيني.";
+		close;
+	}
+	mes "[إيكار إلبيرد]";
+	mes "آسف، لكن سباق";
+	mes "الوحوش انتهى للتو، لذلك لدينا";
+	mes "فترة 5 دقائق يستطيع فيها";
+	mes "الفائزون المطالبة";
+	mes "بميداليات الجائزة. ستفتح";
+	mes "البوابة قريبا، لذا يرجى الانتظار.";
+	close;
+OnEnable:
+	enablenpc "Eckar Ellebird#single";
+	end;
+OnDisable:
+	disablenpc "Eckar Ellebird#single";
+	end;
+}
+
+p_track01,39,49,3	script	دليل اللعبة#single::Game Guide#single	845,{
+	mes "[دليل اللعبة]";
+	mes "مرحبا بك في";
+	mes "حلبة سباق الوحوش.";
+	mes "كيف يمكنني مساعدتك؟";
+	next;
+	switch(select("معلومات سباق الوحوش:معلومات الرهان:معلومات استبدال التذاكر")) {
+	case 1:
+		mes "[دليل اللعبة]";
+		mes "نشأت سباقات الوحوش من";
+		mes "ألعاب أطفال بسيطة كانت";
+		mes "تتسابق فيها الحيوانات الأليفة اللطيفة مع بعضها. ثم تحولت إلى";
+		mes "هواية للكبار بلغت شهرة كبيرة، حتى بنينا حلبة سباق في هويغل.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "تستضيف حلبة سباق الوحوش";
+		mes "لدينا نوعين من سباقات الوحوش. أولا، لدينا سباق الوحوش الفردي،";
+		mes "وفيه تتم مكافأة من راهنوا على الوحش صاحب المركز الأول.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "ثم لدينا سباق الوحوش";
+		mes "المزدوج، وفيه تكون احتمالات الفوز والمكافآت أكبر من سباقات";
+		mes "الوحوش الفردية: يجب أن تراهن على وحشين، ويجب أن يحصلا على";
+		mes "المركزين الأول والثاني حتى تفوز.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "رغم أن هناك رسما صغيرا";
+		mes "للدخول، إلا أننا نستخدم";
+		mes "المال فقط لمنح المكافآت";
+		mes "للمشاركين وصيانة هذه";
+		mes "الحلبة. لذلك، نحن لا";
+		mes "نربح من هذا المشروع.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "كما أننا نمنع الآخرين";
+		mes "من إجراء رهانات شخصية";
+		mes "ومقامرات باستخدام العناصر";
+		mes "والزيني، بناء على نتائج";
+		mes "هذه السباقات. هذا النوع";
+		mes "من المقامرة غير قانوني هنا...";
+		next;
+		mes "[دليل اللعبة]";
+		mes "بمجرد دخولك حلبة السباق، ستحصل على تذكرة سباق.";
+		mes "تذكر أن تذاكر السباق الفائزة لا يمكن استبدالها";
+		mes "بميداليات الجائزة إلا خلال مدة 5 دقائق بعد نهاية السباق.";
+		next;
+		break;
+	case 2:
+		mes "[دليل اللعبة]";
+		mes "قبل وضع الرهان، يجب";
+		mes "أن تحصل على تذكرة سباق";
+		mes "مجانية من مساعد التذاكر.";
+		mes "لقد حددت لك مساعد التذاكر";
+		mes "على خريطتك المصغرة، حتى";
+		mes "تتمكن من العثور عليه بسهولة.";
+		viewpoint 1,73,22,1,0xFF3355;
+		next;
+		break;
+	case 3:
+		mes "[دليل اللعبة]";
+		mes "إذا راهنت على الفائز";
+		mes "في سباق الوحوش الفردي، أو";
+		mes "على الفائزين بالمركزين الأول أو الثاني";
+		mes "في سباق الوحوش المزدوج، فيمكنك";
+		mes "استبدال تذكرة السباق";
+		mes "بميداليات الجائزة.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "لكن يجب أن تستبدل";
+		mes "تذكرة السباق الخاصة بك لدى";
+		mes "موزع الميداليات خلال";
+		mes "فترة 5 دقائق بعد نهاية";
+		mes "السباق. ^FF0000تصبح تذكرتك^FFFFFF ^FF0000 باطلة بعد هذه الدقائق الخمس.^000000";
+		next;
+		mes "[دليل اللعبة]";
+		mes "عندما تنتهي فترة";
+		mes "الخمس دقائق هذه، سيتم نقلك إلى الخارج، وسنبدأ فورا";
+		mes "الاستعداد للسباق التالي. تأكد من تذكر هذه";
+		mes "المعلومات عندما تراهن.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "إذا لم تحصل على";
+		mes "تذكرة السباق المجانية،";
+		mes "فيرجى زيارة مساعد";
+		mes "التذاكر. لقد حددت للتو";
+		mes "موقعه على خريطتك المصغرة.";
+		viewpoint 1,67,45,2,0xCE6300;
+		next;
+		break;
+	}
+	mes "[دليل اللعبة]";
+	mes "شكرا لك، وآمل";
+	mes "أن تستمتع بوقتك";
+	mes "هنا في حلبة";
+	mes "سباق الوحوش.";
+	close;
+}
+
+-	script	starting_1	-1,{
+OnTouchNPC:
+	// .@speed = 10 * ( 6 + rand(100)/10 );// speed 60-150
+	.@start = rand(1,100);
+	if (.@start < 11) .@speed = 60;
+	else if (.@start < 21) .@speed = 70;
+	else if (.@start < 31) .@speed = 80;
+	else if (.@start < 41) .@speed = 90;
+	else if (.@start < 51) .@speed = 100;
+	else if (.@start < 61) .@speed = 110;
+	else if (.@start < 71) .@speed = 120;
+	else if (.@start < 81) .@speed = 130;
+	else if (.@start < 91) .@speed = 140;
+	else .@speed = 150;
+	sc_start SC_WALKSPEED,5000,.@speed;
+	end;
+	
+OnInit:
+	disablenpc();
+	end;
+}
+
+-	script	Luk_1	-1,{
+OnTouchNPC:
+	.@start = rand(1,100);
+	if (.@start < 61) .@speed = 110;
+	else if (.@start < 71) .@speed = 120;
+	else if (.@start < 81) .@speed = 130;
+	else if (.@start < 91) .@speed = 140;
+	else .@speed = 150;
+	sc_start SC_WALKSPEED,10000,.@speed;
+	end;
+	
+OnInit:
+	disablenpc();
+	end;
+}
+
+-	script	Luk_2	-1,{
+OnTouchNPC:
+	.@start = rand(1,100);
+	if (.@start < 61) .@time = 1000;
+	else if (.@start < 71) .@time = 2000;
+	else if (.@start < 81) .@time = 3000;
+	else if (.@start < 91) .@time = 4000;
+	if (.@time) sc_start SC_STUN,.@time,0;
+	end;
+	
+OnInit:
+	disablenpc();
+	end;
+}
+
+-	script	Tire_1	-1,{
+OnTouchNPC:
+	.@start = rand(1,100);
+	if (.@start < 61) .@time = 1000;
+	else if (.@start < 71) .@time = 2000;
+	else if (.@start < 81) .@time = 3000;
+	else if (.@start < 91) .@time = 4000;
+	if (.@time) sc_start SC_SLEEP,.@time,0;
+	end;
+	
+OnInit:
+	disablenpc();
+	end;
+}
+
+p_track01,56,38,0	duplicate(starting_1)	starting#1	-1,0,0
+p_track01,56,36,0	duplicate(starting_1)	starting#2	-1,0,0
+p_track01,56,34,0	duplicate(starting_1)	starting#3	-1,0,0
+p_track01,56,32,0	duplicate(starting_1)	starting#4	-1,0,0
+p_track01,56,30,0	duplicate(starting_1)	starting#5	-1,0,0
+p_track01,56,28,0	duplicate(starting_1)	starting#6	-1,0,0
+
+p_track01,33,38,0	duplicate(Luk_1)	Luk1#1	-1,0,0
+p_track01,37,38,0	duplicate(Luk_1)	Luk1#2	-1,0,0
+p_track01,53,38,0	duplicate(Luk_1)	Luk1#3	-1,0,0
+p_track01,45,38,0	duplicate(Luk_1)	Luk1#4	-1,0,0
+p_track01,33,36,0	duplicate(Luk_1)	Luk2#1	-1,0,0
+p_track01,37,36,0	duplicate(Luk_1)	Luk2#2	-1,0,0
+p_track01,53,36,0	duplicate(Luk_1)	Luk2#3	-1,0,0
+p_track01,45,36,0	duplicate(Luk_1)	Luk2#4	-1,0,0
+p_track01,33,34,0	duplicate(Luk_1)	Luk3#1	-1,0,0
+p_track01,37,34,0	duplicate(Luk_1)	Luk3#2	-1,0,0
+p_track01,53,34,0	duplicate(Luk_1)	Luk3#3	-1,0,0
+p_track01,45,34,0	duplicate(Luk_1)	Luk3#4	-1,0,0
+p_track01,33,32,0	duplicate(Luk_1)	Luk4#1	-1,0,0
+p_track01,37,32,0	duplicate(Luk_1)	Luk4#2	-1,0,0
+p_track01,53,32,0	duplicate(Luk_1)	Luk4#3	-1,0,0
+p_track01,45,32,0	duplicate(Luk_1)	Luk4#4	-1,0,0
+p_track01,33,30,0	duplicate(Luk_1)	Luk5#1	-1,0,0
+p_track01,37,30,0	duplicate(Luk_1)	Luk5#2	-1,0,0
+p_track01,53,30,0	duplicate(Luk_1)	Luk5#3	-1,0,0
+p_track01,45,30,0	duplicate(Luk_1)	Luk5#4	-1,0,0
+p_track01,33,28,0	duplicate(Luk_1)	Luk6#1	-1,0,0
+p_track01,37,28,0	duplicate(Luk_1)	Luk6#2	-1,0,0
+p_track01,53,28,0	duplicate(Luk_1)	Luk6#3	-1,0,0
+p_track01,45,28,0	duplicate(Luk_1)	Luk6#4	-1,0,0
+
+p_track01,49,38,0	duplicate(Luk_2)	Luk1#5	-1,0,0
+p_track01,41,38,0	duplicate(Luk_2)	Luk1#6	-1,0,0
+p_track01,49,36,0	duplicate(Luk_2)	Luk2#5	-1,0,0
+p_track01,41,36,0	duplicate(Luk_2)	Luk2#6	-1,0,0
+p_track01,49,34,0	duplicate(Luk_2)	Luk3#5	-1,0,0
+p_track01,41,34,0	duplicate(Luk_2)	Luk3#6	-1,0,0
+p_track01,49,32,0	duplicate(Luk_2)	Luk4#5	-1,0,0
+p_track01,41,32,0	duplicate(Luk_2)	Luk4#6	-1,0,0
+p_track01,49,30,0	duplicate(Luk_2)	Luk5#5	-1,0,0
+p_track01,41,30,0	duplicate(Luk_2)	Luk5#6	-1,0,0
+p_track01,49,28,0	duplicate(Luk_2)	Luk6#5	-1,0,0
+p_track01,41,28,0	duplicate(Luk_2)	Luk6#6	-1,0,0
+
+p_track01,43,38,0	duplicate(Tire_1)	Tire1#1	-1,0,0
+p_track01,39,38,0	duplicate(Tire_1)	Tire1#2	-1,0,0
+p_track01,35,38,0	duplicate(Tire_1)	Tire1#3	-1,0,0
+p_track01,55,38,0	duplicate(Tire_1)	Tire1#4	-1,0,0
+p_track01,51,38,0	duplicate(Tire_1)	Tire1#5	-1,0,0
+p_track01,47,38,0	duplicate(Tire_1)	Tire1#6	-1,0,0
+p_track01,43,36,0	duplicate(Tire_1)	Tire2#1	-1,0,0
+p_track01,39,36,0	duplicate(Tire_1)	Tire2#2	-1,0,0
+p_track01,35,36,0	duplicate(Tire_1)	Tire2#3	-1,0,0
+p_track01,55,36,0	duplicate(Tire_1)	Tire2#4	-1,0,0
+p_track01,51,36,0	duplicate(Tire_1)	Tire2#5	-1,0,0
+p_track01,47,36,0	duplicate(Tire_1)	Tire2#6	-1,0,0
+p_track01,43,34,0	duplicate(Tire_1)	Tire3#1	-1,0,0
+p_track01,39,34,0	duplicate(Tire_1)	Tire3#2	-1,0,0
+p_track01,35,34,0	duplicate(Tire_1)	Tire3#3	-1,0,0
+p_track01,55,34,0	duplicate(Tire_1)	Tire3#4	-1,0,0
+p_track01,51,34,0	duplicate(Tire_1)	Tire3#5	-1,0,0
+p_track01,47,34,0	duplicate(Tire_1)	Tire3#6	-1,0,0
+p_track01,43,32,0	duplicate(Tire_1)	Tire4#1	-1,0,0
+p_track01,39,32,0	duplicate(Tire_1)	Tire4#2	-1,0,0
+p_track01,35,32,0	duplicate(Tire_1)	Tire4#3	-1,0,0
+p_track01,55,32,0	duplicate(Tire_1)	Tire4#4	-1,0,0
+p_track01,51,32,0	duplicate(Tire_1)	Tire4#5	-1,0,0
+p_track01,47,32,0	duplicate(Tire_1)	Tire4#6	-1,0,0
+p_track01,43,30,0	duplicate(Tire_1)	Tire5#1	-1,0,0
+p_track01,39,30,0	duplicate(Tire_1)	Tire5#2	-1,0,0
+p_track01,35,30,0	duplicate(Tire_1)	Tire5#3	-1,0,0
+p_track01,55,30,0	duplicate(Tire_1)	Tire5#4	-1,0,0
+p_track01,51,30,0	duplicate(Tire_1)	Tire5#5	-1,0,0
+p_track01,47,30,0	duplicate(Tire_1)	Tire5#6	-1,0,0
+p_track01,43,28,0	duplicate(Tire_1)	Tire6#1	-1,0,0
+p_track01,39,28,0	duplicate(Tire_1)	Tire6#2	-1,0,0
+p_track01,35,28,0	duplicate(Tire_1)	Tire6#3	-1,0,0
+p_track01,55,28,0	duplicate(Tire_1)	Tire6#4	-1,0,0
+p_track01,51,28,0	duplicate(Tire_1)	Tire6#5	-1,0,0
+p_track01,47,28,0	duplicate(Tire_1)	Tire6#6	-1,0,0
+
+// Monster Race - Dual Monster Race
+//============================================================
+hugel,47,56,0	script	#race_timer2-1	-1,{
+OnEnable:
+	enablenpc "#race_timer2-1";
+OnInit:
+	$@mon_time_2_1 = 2;
+	initnpctimer;
+	end;
+
+OnTimer10000:
+	mapannounce "hugel","سيبدأ سباق الوحوش المزدوج قريبا. نأمل أن يشارك الكثير منكم!",bc_map,"0xffb6c1";
+	end;
+
+OnTimer30000:
+	mapannounce "hugel","تم فتح حلبة سباق الوحوش المزدوج الآن.",bc_map,"0xffb6c1";
+	$@mon_time_2_1 = 1;
+	donpcevent "#race_timer2-2::OnEnable";
+	donpcevent "TrapGlobal#race02::OnEnable";
+	enablenpc "Ticket Helper#2";
+	end;
+
+OnTimer90000:
+	mapannounce "hugel","حلبة سباق الوحوش المزدوج مفتوحة الآن. على المشاركين دخول الحلبة بأسرع ما يمكن.",bc_map,"0xffb6c1";
+	end;
+
+OnTimer210000:
+	mapannounce "hugel","سيغلق مدخل حلبة سباق الوحوش المزدوج بعد قليل. أيها المشاركون، يرجى دخول الحلبة الآن.",bc_map,"0xffb6c1";
+	end;
+
+OnTimer270000:
+	mapannounce "hugel","سيغلق مدخل حلبة سباق الوحوش المزدوج قريبا.",bc_map,"0xffb6c1";
+	end;
+
+OnTimer272000:
+	mapannounce "hugel","أيها المشاركون، يرجى دخول الحلبة قبل إغلاق الأبواب.",bc_map,"0xffb6c1";
+	end;
+
+OnTimer330000:
+	mapannounce "hugel","سيبدأ السباق الآن. إذا فاتتك فرصة دخول هذا السباق، يرجى المحاولة مرة أخرى في المرة القادمة~!",bc_map,"0xffb6c1";
+	$@mon_time_2_1 = 0;
+	disablenpc "#race_timer2-1";
+	stopnpctimer;
+	end;
+}
+
+p_track02,42,23,0	script	#race_timer2-2	-1,{
+OnEnable:
+	enablenpc "#race_timer2-2";
+	$@mon_time_2_2 = 0;
+	initnpctimer;
+	end;
+
+OnTimer5000:
+	mapannounce "p_track02","مرحبا بك في حلبة سباق الوحوش.",bc_map,"0x87ceeb";
+	end;
+
+OnTimer7000:
+	mapannounce "p_track02","لا تتردد في الاستفسار من مكتب المساعدة متى كانت لديك أسئلة.",bc_map,"0x87ceeb";
+	end;
+
+OnTimer120000:
+	mapannounce "p_track02","سيبدأ سباق الوحوش المزدوج بعد 3 دقائق.",bc_map,"0x87ceeb";
+	end;
+
+OnTimer122000:
+	mapannounce "p_track02","يرجى سؤال مساعد التذاكر إذا كنت ترغب في المراهنة على السباق.",bc_map,"0x87ceeb";
+	end;
+
+OnTimer240000:
+	mapannounce "p_track02","سيبدأ سباق الوحوش المزدوج بعد قليل.",bc_map,"0x87ceeb";
+	end;
+
+OnTimer242000:
+	mapannounce "p_track02","يرجى سؤال مساعد التذاكر إذا كنت ترغب في المراهنة على السباق.",bc_map,"0x87ceeb";
+	end;
+
+OnTimer300000:
+	mapannounce "p_track02","سيبدأ سباق الوحوش الآن. حظا موفقا للجميع!",bc_map,"0x87ceeb";
+	$@mon_time_2_2 = 1;
+	disablenpc "Ticket Helper#2";
+	donpcevent "#poring1::OnEnable";
+	donpcevent "#lunatic1::OnEnable";
+	donpcevent "#savagebebe1::OnEnable";
+	donpcevent "#desertwolf1::OnEnable";
+	donpcevent "#deviruchi1::OnEnable";
+	donpcevent "#baphomet1::OnEnable";
+	stopnpctimer;
+	disablenpc "#race_timer2-2";
+	end;
+
+OnInit:
+	disablenpc "#race_timer2-2";
+	$@mon_time_2_2 = 0;
+	end;
+}
+
+p_track02,80,43,0	script	#race_timer2-3	-1,{
+OnEnable:
+	enablenpc "#race_timer2-3";
+	initnpctimer;
+	end;
+
+OnTimer3000:
+	mapannounce "p_track02","انتهى سباق الوحوش! تهانينا لجميع الفائزين!",bc_map,"0xFFFF00";
+	end;
+
+OnTimer6000:
+	mapannounce "p_track02","يرجى إعطاء تذكرة السباق إلى موزع الميداليات إذا راهنت على الوحش الفائز.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer9000:
+	mapannounce "p_track02","لديك 5 دقائق لاستبدال التذكرة الفائزة بميداليات الجائزة من موزع الميداليات.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer12000:
+	mapannounce "p_track02","تصبح جميع التذاكر باطلة بعد فترة الـ 5 دقائق هذه، لذا يجب على الفائزين المطالبة بجائزتهم الآن.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer15000:
+	mapannounce "p_track02","يرجى مغادرة حلبة السباق قبل انتهاء فترة الـ 5 دقائق هذه. شكرا لك.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer240000:
+	mapannounce "p_track02","تنبيه. سنبدأ الاستعداد للسباق التالي بعد قليل...",bc_map,"0xFFFF00";
+	end;
+
+OnTimer243000:
+	mapannounce "p_track02","سنغلق حلبة السباق خلال دقيقة واحدة للاستعداد للسباق التالي.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer246000:
+	mapannounce "p_track02","على المشاركين في السباق الأخير مغادرة الحلبة بأسرع ما يمكن.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer249000:
+	mapannounce "p_track02","شكرا لتعاونكم.",bc_map,"0xFFFF00";
+	end;
+
+OnTimer252000:
+	mapannounce "p_track02","نأمل أن تكون قد استمتعت بحلبة سباق الوحوش. عد مرة أخرى قريبا~",bc_map,"0xFFFF00";
+	end;
+
+OnTimer300000:
+	mapwarp "p_track02","hugel",63,73;
+	disablenpc "Medal Distributor#medal";
+	donpcevent "#race_timer2-1::OnEnable";
+	stopnpctimer;
+OnInit:
+	$@mon_race_2_1 = $@mon_race_2_2 = 0;
+	disablenpc "#race_timer2-3";
+	end;
+}
+
+hugel,62,69,1	script	إيكار إيرينيس#double::Eckar Erenes#double	798,{
+	mes "[إيكار إيرينيس]";
+	mes "مرحبا بك في";
+	mes "حلبة سباق الوحوش،";
+	mes "فخر وسرور";
+	mes "قرية هويغل!";
+	mes "كيف يمكنني مساعدتك؟";
+	next;
+	if (select("معلومات سباق الوحوش:دخول سباق الوحوش") == 1) {
+		mes "[إيكار إيرينيس]";
+		mes "نشأت سباقات الوحوش من";
+		mes "ألعاب أطفال بسيطة كانت";
+		mes "تتسابق فيها الحيوانات الأليفة اللطيفة مع بعضها. ثم تحولت إلى";
+		mes "هواية للكبار بلغت شهرة كبيرة، حتى بنينا حلبة سباق في هويغل.";
+		next;
+		mes "[إيكار إيرينيس]";
+		mes "تستضيف حلبة سباق الوحوش";
+		mes "لدينا نوعين من سباقات الوحوش. أولا، لدينا سباق الوحوش الفردي،";
+		mes "وفيه تتم مكافأة من راهنوا على الوحش صاحب المركز الأول.";
+		next;
+		mes "[إيكار إيرينيس]";
+		mes "ثم لدينا سباق الوحوش";
+		mes "المزدوج، وفيه تكون احتمالات الفوز والمكافآت أكبر من سباقات";
+		mes "الوحوش الفردية: يجب أن تراهن على وحشين، ويجب أن يحصلا على";
+		mes "المركزين الأول والثاني حتى تفوز.";
+		next;
+		mes "[إيكار إيرينيس]";
+		mes "رغم أن هناك رسما صغيرا";
+		mes "للدخول، إلا أننا نستخدم";
+		mes "المال فقط لمنح المكافآت";
+		mes "للمشاركين وصيانة هذه";
+		mes "الحلبة. لذلك، نحن لا";
+		mes "نربح من هذا المشروع.";
+		next;
+		mes "[إيكار إيرينيس]";
+		mes "كما أننا نمنع الآخرين";
+		mes "من إجراء رهانات شخصية";
+		mes "ومقامرات باستخدام العناصر";
+		mes "والزيني، بناء على نتائج";
+		mes "هذه السباقات. هذا النوع";
+		mes "من المقامرة غير قانوني هنا...";
+		next;
+		mes "[إيكار إيرينيس]";
+		mes "بمجرد دخولك حلبة السباق، ستحصل على تذكرة سباق.";
+		mes "تذكر أن تذاكر السباق الفائزة لا يمكن استبدالها";
+		mes "بميداليات الجائزة إلا خلال مدة 5 دقائق بعد نهاية السباق.";
+		next;
+	}
+	mes "[إيكار إيرينيس]";
+	mes "رسم الدخول لكل السباقات";
+	mes "في حلبة سباق الوحوش هو";
+	mes "2,000 زيني. إذا أردت المراهنة على سباق الوحوش الفردي،";
+	mes "فيرجى سؤال أخي";
+	mes "إلبيرد ليساعدك.";
+	next;
+	mes "[إيكار إيرينيس]";
+	mes "أما إن كنت مهتما";
+	mes "بسباق الوحوش المزدوج،";
+	mes "فسأساعدك على البدء.";
+	mes "هل تود المراهنة";
+	mes "على سباق وحوش مزدوج؟";
+	next;
+	if (select("نعم، من فضلك.:لا، شكرا.") == 2) {
+		mes "[إيكار إيرينيس]";
+		mes "حسنا. آمل أن";
+		mes "تستمتع بوقتك هنا";
+		mes "في حلبة سباق الوحوش~";
+		close;
+	}
+	if (!checkweight("Jellopy",700)) {
+		mes "[إيكار إيرينيس]";
+		mes "همم... أنت تحمل";
+		mes "الكثير من الأشياء معك";
+		mes "الآن. من الأفضل أن تضع";
+		mes "بعض أغراضك في";
+		mes "مخزن كافرا قبل أن";
+		mes "تراهن على أي سباق وحوش...";
+		close;
+	}
+	if (Zeny < 2000) {
+		mes "[إيكار إيرينيس]";
+		mes "آسف، لكنك";
+		mes "لا تملك ما يكفي";
+		mes "من المال لدفع";
+		mes "رسم الدخول البالغ 2,000 زيني. ";
+		close;
+	}
+	if (countitem(7514)) {
+		mes "[إيكار إيرينيس]";
+		mes "همم؟ ماذا تفعل";
+		mes "بتذكرة سباق منتهية؟";
+		mes "حسنا، من الأفضل أن أتخلص منها لك قبل أن تختلط";
+		mes "بتذكرة السباق الجديدة.";
+		delitem 7514,1; //Monster_Ticket
+		next;
+		if ($@mon_time_2_1 == 1) {
+			mes "[إيكار إيرينيس]";
+			mes "حسنا، أظن أن";
+			mes "كل شيء جاهز الآن. آمل";
+			mes "أن تستمتع بالسباق~";
+			mes "دعني أرشدك إلى داخل";
+			mes "حلبة سباق الوحوش الآن.";
+			Zeny -= 2000;
+			monster_race_2_1 = monster_race_2_2 = 0;
+			close2;
+			warp "p_track02",75,41;
+			end;
+		}
+		else if ($@mon_time_2_1 == 2) {
+			mes "[إيكار إيرينيس]";
+			mes "ما زلنا ننهي";
+			mes "استعداداتنا لسباق";
+			mes "الوحوش المزدوج التالي، لذلك";
+			mes "نطلب منك أن";
+			mes "تنتظر قليلا بعد...";
+			close;
+		}
+	} else {
+		if ($@mon_time_2_1 == 1) {
+			mes "[إيكار إيرينيس]";
+			mes "شكرا، آمل أن";
+			mes "تستمتع بهذا السباق.";
+			mes "دعني أرشدك الآن";
+			mes "إلى حلبة سباق الوحوش.";
+			Zeny -= 2000;
+			monster_race_2_1 = monster_race_2_2 = 0;
+			close2;
+			warp "p_track02",75,41;
+			end;
+		} else if ($@mon_time_2_1 == 2) {
+			mes "[إيكار إيرينيس]";
+			mes "ما زلنا ننهي";
+			mes "استعداداتنا لسباق";
+			mes "الوحوش المزدوج التالي، لذلك";
+			mes "نطلب منك أن";
+			mes "تنتظر قليلا بعد...";
+			close;
+		}
+	}
+	if ($@mon_time_2_2 == 1) {
+		mes "[إيكار إيرينيس]";
+		mes "حاليا، هناك سباق وحوش";
+		mes "جار. لقد فات وقت المراهنة، لكن إذا أردت";
+		mes "المشاهدة، فرسم الدخول للمشاهدين";
+		mes "هو 500 زيني. هل تود دخول حلبة سباق الوحوش؟";
+		next;
+		if (select("دخول:إلغاء") == 2) {
+			mes "[إيكار إيرينيس]";
+			mes "حسنا إذن. إذا أردت";
+			mes "المراهنة على سباق";
+			mes "وحوش، فيرجى انتظار";
+			mes "انتهاء السباق الحالي. آمل";
+			mes "أن تستمتع بوقتك هنا";
+			mes "في حلبة سباق الوحوش~";
+			close;
+		}
+		if (Zeny > 499) {
+			mes "[إيكار إيرينيس]";
+			mes "شكرا لك~";
+			mes "آمل أن تستمتع";
+			mes "بمشاهدة هذا السباق!";
+			Zeny -= 500;
+			monster_race_2_1 = monster_race_2_2 = 0;
+			close2;
+			warp "p_track02",75,41;
+			end;
+		}
+		mes "[إيكار إيرينيس]";
+		mes "آسف، لكنك لا";
+		mes "تملك ما يكفي من المال";
+		mes "لدفع رسم المشاهدة البالغ 500 زيني.";
+		close;
+	}
+	mes "[إيكار إيرينيس]";
+	mes "آسف، لكن سباق";
+	mes "الوحوش انتهى للتو، لذلك لدينا";
+	mes "فترة 5 دقائق يستطيع فيها";
+	mes "الفائزون المطالبة";
+	mes "بميداليات الجائزة. ستفتح";
+	mes "البوابة قريبا، لذا يرجى الانتظار.";
+	close;
+OnEnable:
+	enablenpc "Eckar Erenes#double";
+	end;
+OnDisable:
+	disablenpc "Eckar Erenes#double";
+	end;
+}
+
+p_track02,73,22,1	script	مساعد التذاكر#2::Ticket Helper#2	899,{
+	if (!checkweight("Spawn",200)) {
+		mes "[مساعد التذاكر]";
+		mes "مرحبا بك في";
+		mes "حلبة سباق الوحوش.";
+		mes "إذا أردت المشاركة";
+		mes "في ^3131FFسباق الوحوش المزدوج^000000،";
+		mes "فيرجى اختيار وحش واحد";
+		mes "من بين الوحوش الستة في القائمة.";
+		next;
+		mes "[مساعد التذاكر]";
+		mes "انتظر، انتظر...";
+		mes "لا يمكنني إعطاءك";
+		mes "أي شيء الآن.";
+		mes "أنت تحمل الكثير";
+		mes "من الأشياء...";
+		close;
+	}
+	if (!monster_race_2_1 && !monster_race_2_2) {
+		mes "[مساعد التذاكر]";
+		mes "أهلا بك!";
+		mes "هل أنت مهتم بالمراهنة";
+		mes "على سباق الوحوش المزدوج؟";
+		mes "أنا هنا لمساعدتك إذا";
+		mes "كانت لديك أي أسئلة، أو إذا";
+		mes "كنت تريد وضع رهانك.";
+		next;
+		switch(select("تحقق من حالة الوحوش:راهن على السباق:ما هو سباق الوحوش؟:إلغاء")) {
+		case 1:
+			for ( .@i = 1; .@i <= 6; .@i++ )
+				mes "الوحش "+.@i+" [^CC6600الحظ^000000: " + getd("$@mon_r02_Luk"+.@i) + "] [^EE0000HP^000000: " + getd("$@mon_r02_tire"+.@i) + "]";
+			close;
+		case 2:
+			mes "[مساعد التذاكر]";
+			mes "حسنا، يرجى اختيار";
+			mes "الوحشين اللذين تعتقد";
+			mes "أنهما سيحصلان على المركزين الأول والثاني.";
+			mes "إذا جاء كلا الوحشين";
+			mes "في المركزين الأول والثاني بأي ترتيب،";
+			mes "فستفوز بالرهان.";
+			next;
+			mes "[مساعد التذاكر]";
+			mes "والآن، يرجى إخباري";
+			mes "باختيارك الأول لأحد";
+			mes "الوحوش التي";
+			mes "ستفوز بهذا السباق.";
+			next;
+			for ( .@i = 1; .@i <= 6; .@i++ )
+				.@menu$ = .@menu$ + "الوحش "+ .@i +":";
+			while (1) {
+				if ( .@m1 > 0 )
+					.@menu$ = replacestr( .@menu$, "الوحش "+ .@m1, "" );
+				.@m = select (.@menu$);
+				switch (.@m) {
+					case 1: setarray .@string$, "وحش ودود","من نوع بورينغ"; break;
+					case 2: setarray .@string$, "وحش لطيف","من نوع لوناتيك"; break;
+					case 3: setarray .@string$, "وحش محبوب","من نوع متوحش بيبي"; break;
+					case 4: setarray .@string$, "وحش صغير ووديع","من نوع ذئب الصحراء"; break;
+					case 5: setarray .@string$, "وحش صغير لكنه","شيطاني، ديفيروتشي"; break;
+					case 6: setarray .@string$, "وحش مشاغب","من نوع بافوميت صغير"; break;
+				}
+				mes "[مساعد التذاكر]";
+				mes "لقد اخترت";
+				mes "^0000FFالوحش "+.@m+"^000000، "+.@string$[0];
+				mes .@string$[1]+".";
+				mes "هل أنت متأكد أنك تريد";
+				mes "اختيار هذا الوحش؟";
+				next;
+				if (select("نعم:لا") == 2) {
+					mes "[مساعد التذاكر]";
+					mes "لقد ألغيت";
+					mes "رهانك. حسنا،";
+					mes "أنا أفهم. ربما";
+					mes "ستشعر براحة أكبر";
+					mes "إذا تفقدت الوحوش أولا؟";
+					close;			
+				}
+				if (.@m1 == 0) {
+					mes "[مساعد التذاكر]";
+					mes "والآن، يرجى تحديد";
+					mes "اختيارك الثاني";
+					mes "للوحش الذي";
+					mes "تعتقد أنه سيحصل";
+					mes "على المركز الأول أو الثاني في هذا السباق.";
+					next;
+					.@m1 = .@m;
+				} else {
+					if (!$@mon_time_2_2) {
+						mes "[مساعد التذاكر]";
+						mes "لقد راهنت على";
+						mes "^0000FFالوحش "+.@m1+"^000000 و ^0000FFالوحش "+.@m+"^000000";
+						mes "للفوز بهذا السباق. حظا موفقا!";
+						mes "آمل حقا أن تكون";
+						mes "الاحتمالات في صالحك~";
+						emotion ET_CHUP;
+						monster_race_2_1 = .@m1;
+						monster_race_2_2 = .@m;
+						getitem 7514,1; //Monster_Ticket
+					} else {
+						mes "[مساعد التذاكر]";
+						mes "أنا آسف جدا، لكن";
+						mes "سباق الوحوش جار الآن.";
+						mes "يرجى الانتظار، ثم ضع";
+						mes "رهانك للسباق التالي.";
+					}
+					close;
+				}
+			}
+		case 3:
+			mes "[مساعد التذاكر]";
+			mes "نشأت سباقات الوحوش من";
+			mes "ألعاب أطفال بسيطة كانت";
+			mes "تتسابق فيها الحيوانات الأليفة اللطيفة مع بعضها. ثم تحولت إلى";
+			mes "هواية للكبار بلغت شهرة كبيرة، حتى بنينا حلبة سباق في هويغل.";
+			next;
+			mes "[مساعد التذاكر]";
+			mes "تستضيف حلبة سباق الوحوش";
+			mes "لدينا نوعين من سباقات الوحوش. أولا، لدينا سباق الوحوش الفردي،";
+			mes "وفيه تتم مكافأة من راهنوا على الوحش صاحب المركز الأول.";
+			next;
+			mes "[إكلار إلبيرد]";
+			mes "ثم لدينا سباق الوحوش";
+			mes "المزدوج، وفيه تتم مكافأة من راهنوا على الوحوش أصحاب المركزين الأول والثاني";
+			mes "بالتساوي. احتمالات الفوز";
+			mes "ومكافآت الرهان أكبر في السباقات المزدوجة من السباقات الفردية.";
+			next;
+			mes "[مساعد التذاكر]";
+			mes "رغم أن هناك رسما صغيرا";
+			mes "للدخول، إلا أننا نستخدم";
+			mes "المال فقط لمنح المكافآت";
+			mes "للمشاركين وصيانة هذه";
+			mes "الحلبة. لذلك، نحن لا";
+			mes "نربح من هذا المشروع.";
+			next;
+			mes "[مساعد التذاكر]";
+			mes "كما أننا نمنع الآخرين";
+			mes "من إجراء رهانات شخصية";
+			mes "ومقامرات باستخدام العناصر";
+			mes "والزيني، بناء على نتائج";
+			mes "هذه السباقات. هذا النوع";
+			mes "من المقامرة غير قانوني هنا...";
+			next;
+			mes "[مساعد التذاكر]";
+			mes "بمجرد دخولك حلبة السباق، ستحصل على تذكرة سباق.";
+			mes "تذكر أن تذاكر السباق الفائزة لا يمكن استبدالها";
+			mes "بميداليات الجائزة إلا خلال مدة 5 دقائق بعد نهاية السباق.";
+			next;
+			mes "[مساعد التذاكر]";
+			mes "أنت بالفعل هنا";
+			mes "داخل حلبة سباق";
+			mes "الوحوش، لذا يمكنك";
+			mes "تجربة وضع رهان. الأمر";
+			mes "أمتع مما تظن~";
+			close;
+		case 4:
+			mes "[مساعد التذاكر]";
+			mes "لقد ألغيت";
+			mes "رهانك. حسنا،";
+			mes "أنا أفهم. ربما";
+			mes "ستشعر براحة أكبر";
+			mes "إذا تفقدت الوحوش أولا؟";
+			close;
+		}
+	} else {
+		if (countitem(7514)) {
+			mes "[مساعد التذاكر]";
+			mes "لقد راهنت على";
+			mes "^0000FFالوحش " + monster_race_2_1 + "^000000 و ^0000FFالوحش " + monster_race_2_2 + "^000000";
+			mes "في سباق الوحوش المزدوج هذا.";
+			next;
+		} 
+		mes "[مساعد التذاكر]";
+		mes "سيتم الإعلان عن بدء";
+		mes "السباق عبر بث عام.";
+		mes "يمكنك الرجوع إلى خريطتك المصغرة";
+		mes "لتتبع مواقع الوحوش";
+		mes "في السباق. شكرا لك،";
+		mes "واستمتع بوقتك!";
+		viewpoint 1,43,35,0,0xFF0000;
+		close;	
+	}
+
+OnInit:
+	disablenpc "Ticket Helper#2";
+	end;
+}
+
+p_track02,39,49,3	script	دليل اللعبة#double::Game Guide#double	845,{
+	mes "[دليل اللعبة]";
+	mes "مرحبا بك في";
+	mes "حلبة سباق الوحوش.";
+	mes "كيف يمكنني مساعدتك؟";
+	next;
+	switch(select("معلومات سباق الوحوش:معلومات الرهان:معلومات استبدال التذاكر")) {
+	case 1:
+		mes "[دليل اللعبة]";
+		mes "نشأت سباقات الوحوش من";
+		mes "ألعاب أطفال بسيطة كانت";
+		mes "تتسابق فيها الحيوانات الأليفة اللطيفة مع بعضها. ثم تحولت إلى";
+		mes "هواية للكبار بلغت شهرة كبيرة، حتى بنينا حلبة سباق في هويغل.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "تستضيف حلبة سباق الوحوش";
+		mes "لدينا نوعين من سباقات الوحوش. أولا، لدينا سباق الوحوش الفردي،";
+		mes "وفيه تتم مكافأة من راهنوا على الوحش صاحب المركز الأول.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "ثم لدينا سباق الوحوش";
+		mes "المزدوج، وفيه تكون احتمالات الفوز والمكافآت أكبر من سباقات";
+		mes "الوحوش الفردية: يجب أن تراهن على وحشين، ويجب أن يحصلا على";
+		mes "المركزين الأول والثاني حتى تفوز.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "رغم أن هناك رسما صغيرا";
+		mes "للدخول، إلا أننا نستخدم";
+		mes "المال فقط لمنح المكافآت";
+		mes "للمشاركين وصيانة هذه";
+		mes "الحلبة. لذلك، نحن لا";
+		mes "نربح من هذا المشروع.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "كما أننا نمنع الآخرين";
+		mes "من إجراء رهانات شخصية";
+		mes "ومقامرات باستخدام العناصر";
+		mes "والزيني، بناء على نتائج";
+		mes "هذه السباقات. هذا النوع";
+		mes "من المقامرة غير قانوني هنا...";
+		next;
+		mes "[دليل اللعبة]";
+		mes "بمجرد دخولك حلبة السباق، ستحصل على تذكرة سباق.";
+		mes "تذكر أن تذاكر السباق الفائزة لا يمكن استبدالها";
+		mes "بميداليات الجائزة إلا خلال مدة 5 دقائق بعد نهاية السباق.";
+		next;
+		break;
+	case 2:
+		mes "[دليل اللعبة]";
+		mes "قبل وضع الرهان، يجب";
+		mes "أن تحصل على تذكرة سباق";
+		mes "مجانية من مساعد التذاكر.";
+		mes "لقد حددت لك مساعد التذاكر";
+		mes "على خريطتك المصغرة، حتى";
+		mes "تتمكن من العثور عليه بسهولة.";
+		viewpoint 1,73,22,1,0xFF3355;
+		next;
+		break;
+	case 3:
+		mes "[دليل اللعبة]";
+		mes "إذا راهنت على الفائز";
+		mes "في سباق الوحوش الفردي، أو";
+		mes "على الفائزين بالمركزين الأول أو الثاني";
+		mes "في سباق الوحوش المزدوج، فيمكنك";
+		mes "استبدال تذكرة السباق";
+		mes "بميداليات الجائزة.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "لكن يجب أن تستبدل";
+		mes "تذكرة السباق الخاصة بك لدى";
+		mes "موزع الميداليات خلال";
+		mes "فترة 5 دقائق بعد نهاية";
+		mes "السباق. ^FF0000تصبح تذكرتك^FFFFFF ^FF0000 باطلة بعد هذه الدقائق الخمس.^000000";
+		next;
+		mes "[دليل اللعبة]";
+		mes "عندما تنتهي فترة";
+		mes "الخمس دقائق هذه، سيتم نقلك إلى الخارج، وسنبدأ فورا";
+		mes "الاستعداد للسباق التالي. تأكد من تذكر هذه";
+		mes "المعلومات عندما تراهن.";
+		next;
+		mes "[دليل اللعبة]";
+		mes "إذا لم تحصل على";
+		mes "تذكرة السباق المجانية،";
+		mes "فيرجى زيارة مساعد";
+		mes "التذاكر. لقد حددت للتو";
+		mes "موقعه على خريطتك المصغرة.";
+		viewpoint 1,67,45,2,0xCE6300;
+		next;
+		break;
+	}
+	mes "[دليل اللعبة]";
+	mes "شكرا لك، وآمل";
+	mes "أن تستمتع بوقتك";
+	mes "هنا في حلبة";
+	mes "سباق الوحوش.";
+	close;
+}
+
+p_track02,67,45,5	script	موزع الميداليات#medal::Medal Distributor#medal	845,{
+	if (!checkweight("Jellopy",20)) {
+		mes "[موزع الميداليات]";
+		mes "آسف، لكن لا يمكنني";
+		mes "منحك أي ميداليات";
+		mes "حتى تفرغ مساحة";
+		mes "أكبر في حقيبتك.";
+		close;
+	}
+	mes "[موزع الميداليات]";
+	mes "أهلا بك~";
+	mes "إذا راهنت على";
+	mes "الوحش الفائز في";
+	mes "سباق حديث، فيمكنك";
+	mes "استبدال تذكرة اللعبة";
+	mes "هنا ببعض ميداليات الجائزة.";
+	next;
+	if (!countitem(7514)) {
+		mes "[موزع الميداليات]";
+		mes "يرجى تذكر أنه يمكنك";
+		mes "استبدال تذاكر اللعبة";
+		mes "الفائزة بميداليات الجائزة";
+		mes "بعد انتهاء السباق مباشرة فقط.";
+		mes "يمكن إعطاء ميداليات الجائزة إلى واين";
+		mes "في هويغل مقابل عناصر.";
+		close;
+	}
+	mes "[موزع الميداليات]";
+	mes "يرجى تذكر أنه يمكنك";
+	mes "استبدال تذاكر اللعبة";
+	mes "الفائزة بميداليات الجائزة";
+	mes "بعد انتهاء السباق مباشرة فقط.";
+	mes "يمكن إعطاء ميداليات الجائزة إلى واين";
+	mes "في هويغل مقابل عناصر.";
+	next;
+	if ((monster_race_2_1 == $@mon_race_2_1 && monster_race_2_2 == $@mon_race_2_2) || (monster_race_2_1 == $@mon_race_2_2 && monster_race_2_2 == $@mon_race_2_1)) {
+		mes "[موزع الميداليات]";
+		mes "تهانينا! من الصعب حقا";
+		mes "تخمين الفائزين";
+		mes "في سباق الوحوش المزدوج، لذلك";
+		mes "لا بد أنك محظوظ جدا! هل";
+		mes "تريد استبدال تذكرة السباق";
+		mes "الفائزة بميداليات الجائزة؟";
+		next;
+		if (select("نعم، من فضلك.:لا، شكرا.") == 1) {
+			mes "[موزع الميداليات]";
+			mes "حسنا، كل شيء يبدو سليما،";
+			mes "لذا هذه ميداليات جائزتك~";
+			mes "إذا أردت استبدال هذه";
+			mes "الميداليات بعناصر، فيرجى";
+			mes "زيارة واين في هويغل. نأمل";
+			mes "أنك استمتعت بسباق الوحوش~";
+			monster_race_2_1 = monster_race_2_2 = 7;
+			delitem 7514,1; //Monster_Ticket
+			getitem 7515,15; //Marvelous_Medal
+			close;
+		}
+		mes "[موزع الميداليات]";
+		mes "همم، هل أنت متأكد؟ ";
+		mes "يمكنك استبدال تذكرة";
+		mes "السباق الفائزة بميداليات الجائزة";
+		mes "لفترة قصيرة فقط بعد السباق. إذا أخطأت،";
+		mes "فعليك أن تسألني مجددا بسرعة.";
+		close;
+	} else if (!monster_race_2_1 && !monster_race_2_2) {
+		mes "[موزع الميداليات]";
+		mes "حسنا، حظا أوفر في المرة القادمة...";
+		mes "رغم أنك لا تستطيع دائما";
+		mes "أن تكون محظوظا، إلا أن";
+		mes "المراهنة على سباقات الوحوش ممتعة دائما!";
+		close;
+	} else if (monster_race_2_1 == 7 && monster_race_2_2 == 7) {
+		mes "[موزع الميداليات]";
+		mes "شكرا لزيارتك";
+		mes "حلبة سباق الوحوش،";
+		mes "وآمل أن تستمتع بوقتك";
+		mes "هنا. أراك في المرة القادمة~";
+		close;
+	} else if (monster_race_2_1 != $@mon_race_2_1 || monster_race_2_2 != $@mon_race_2_2) {
+		mes "[موزع الميداليات]";
+		mes "ربما لم تراهن";
+		mes "على الوحش الفائز في";
+		mes "السباق الأخير، لكنني آمل";
+		mes "أن يحالفك الحظ في المرة القادمة~";
+		close;
+	}
+
+OnInit:
+	disablenpc "Medal Distributor#medal";
+	end;
+}
+
+p_track02,76,38,1	script	دليل الخروج#double::Exit Guide#double	798,{
+	mes "[دليل الخروج]";
+	mes "إذا كانت لديك تذكرة سباق";
+	mes "فائزة، فيرجى التأكد من";
+	mes "استبدالها بميداليات الجائزة";
+	mes "الآن. تصبح جميع تذاكر السباق";
+	mes "باطلة عند بدء السباق التالي.";
+	next;
+	mes "[دليل الخروج]";
+	mes "إذا كنت ترغب في مغادرة";
+	mes "الحلبة، فيمكنني إرشادك";
+	mes "إلى الخارج. هل تريد";
+	mes "مغادرة الحلبة الآن؟";
+	next;
+	if (select("نعم:لا") == 2) {
+		mes "[دليل الخروج]";
+		mes "حسنا إذن.";
+		mes "أخبرني فقط";
+		mes "عندما تكون";
+		mes "جاهزا للمغادرة.";
+		close;
+	}
+	if (!countitem(7514)) {
+		mes "[دليل الخروج]";
+		mes "شكرا لك على";
+		mes "رعايتك، وآمل";
+		mes "أن تزورنا";
+		mes "مرة أخرى قريبا~";
+	} else {
+		mes "[دليل الخروج]";
+		mes "وفقا لسياساتنا،";
+		mes "يجب أن آخذ تذكرة";
+		mes "السباق الخاصة بك قبل مغادرتك.";
+		mes "شكرا لك على رعايتك،";
+		mes "وآمل أن تستمتع بوقتك";
+		mes "هنا في حلبة سباق الوحوش.";
+		delitem 7514,1; //Monster_Ticket
+	}
+	monster_race_2_1 = monster_race_2_2 = 0;
+	close2;
+	warp "hugel",63,73;
+	end;
+}
+
+-	script	mob1#main	-1,{
+function	MN	{
+	setarray .@n$[1], "poring","lunatic","savagebebe","desertwolf","deviruchi","baphomet";
+	for ( .@i = 1; .@i <= 6; .@i++ ) {
+		if (compare(strnpcinfo(3),.@n$[.@i])) 
+			break;
+	}
+	return .@i;	
+}
+
+OnEnable:
+	enablenpc();
+	setarray .@n[1], 1725,1726,1727,1728,1730,1729;
+	getmapxy(.@m$,.@x,.@y,BL_NPC);
+	.@i = MN;
+	monster "p_track02",58,.@y,"الوحش "+.@i,.@n[.@i],1,strnpcinfo(3)+"::OnMyMobDead";
+	end;
+
+OnTouchNPC:
+	.@i = MN;
+	if (!$@mon_race_2_1) {
+		emotion ET_THROB;
+		specialeffect EF_MVP;
+		mapannounce "p_track02","الوحش "+.@i+" وصل إلى خط النهاية!",bc_map,"0x66FFCC";
+		$@mon_race_2_1 = .@i;
+		donpcevent strnpcinfo(3)+"::OnDisable";
+	} else {
+		emotion ET_THROB;
+		specialeffect EF_MVP;
+		mapannounce "p_track02","انتهى السباق! الوحش "+.@i+" وصل إلى خط النهاية!",bc_map,"0x66FFCC";
+		$@mon_race_2_2 = .@i;
+		donpcevent "#poring1::OnDisable";
+		donpcevent "#lunatic1::OnDisable";
+		donpcevent "#savagebebe1::OnDisable";
+		donpcevent "#desertwolf1::OnDisable";
+		donpcevent "#deviruchi1::OnDisable";
+		donpcevent "#baphomet1::OnDisable";
+		donpcevent "TrapGlobal#race02::OnDisable";
+		enablenpc "Medal Distributor#medal";
+		donpcevent "#race_timer2-3::OnEnable";
+	}
+OnMyMobDead:
+	end;
+
+OnDisable:
+	killmonster "p_track02",strnpcinfo(3)+"::OnMyMobDead";
+
+OnInit:
+	if ( strnpcinfo(2) != "main" )
+		disablenpc();
+	end;
+}
+p_track02,30,38,0	duplicate(mob1#main)	#poring1	139,0,0
+p_track02,30,36,0	duplicate(mob1#main)	#lunatic1	139,0,0
+p_track02,30,34,0	duplicate(mob1#main)	#savagebebe1	139,0,0
+p_track02,30,32,0	duplicate(mob1#main)	#desertwolf1	139,0,0
+p_track02,30,30,0	duplicate(mob1#main)	#deviruchi1	139,0,0
+p_track02,30,28,0	duplicate(mob1#main)	#baphomet1	139,0,0
+
+p_track02,19,48,0	script	TrapGlobal#race02	-1,{
+OnEnable:
+	enablenpc "TrapGlobal#race02";	
+	for ( .@c = 1; .@c <= 6; .@c++ ) {
+		.@line = rand(1,70);
+		enablenpc "starting#race02_"+.@c;
+		enablenpc "Tire#race02_"+.@c+"_1";
+		if (.@line <= 10) {
+			.@tired = rand(50,60);
+			enablenpc "Luk#race02_"+.@c+"_5";
+			enablenpc "Luk#race02_"+.@c+"_6";
+		} else if (.@line <= 30) {
+			.@tired = rand(40,60);
+			enablenpc "Luk#race02_"+.@c+"_5";
+			if ( .@tired < 50 ) enablenpc "Tire#race02_"+.@c+"_2";
+		} else if (.@line <= 40) {
+			.@tired = rand(30,50);
+			enablenpc "Luk#race02_"+.@c+"_1";
+			enablenpc "Tire#race02_"+.@c+"_2";
+			if ( .@tired < 40 ) enablenpc "Tire#race02_"+.@c+"_3";
+		} else if (.@line <= 50) {
+			.@tired = rand(20,40);
+			enablenpc "Luk#race02_"+.@c+"_1";
+			enablenpc "Luk#race02_"+.@c+"_2";
+			enablenpc "Tire#race02_"+.@c+"_2";
+			enablenpc "Tire#race02_"+.@c+"_3";
+			if ( .@tired < 30 ) enablenpc "Tire#race02_"+.@c+"_4";
+		} else if (.@line <= 60) {
+			.@tired = rand(10,30);
+			for ( .@i = 1; .@i <= 3; .@i++ )
+				enablenpc "Luk#race02_"+.@c+"_"+.@i;
+			for ( .@i = 2; .@i <= 4; .@i++ )
+				enablenpc "Tire#race02_"+.@c+"_"+.@i;
+			if ( .@tired < 20 ) enablenpc "Tire#race02_"+.@c+"_5";
+		}	else if (.@line <= 70) {
+			.@tired = rand(0,20);
+			for ( .@i = 1; .@i <= 4; .@i++ )
+				enablenpc "Luk#race02_"+.@c+"_"+.@i;
+			for ( .@i = 2; .@i <= 5; .@i++ )
+				enablenpc "Tire#race02_"+.@c+"_"+.@i;
+			if ( .@tired < 10 ) enablenpc "Tire#race02_"+.@c+"_6";
+		}
+		setd "$@mon_r02_luk"+.@c, .@line;
+		setd "$@mon_r02_tire"+.@c, .@tired;
+	}
+	end;
+
+OnDisable:
+	disablenpc "TrapGlobal#race02";
+	for ( .@i = 1; .@i <= 6; .@i++ )
+		donpcevent "starting#race02_"+.@i+"::OnDisable";
+	end;
+	
+OnInit:
+	for ( .@i = 1; .@i <= 6; .@i++ ) {
+		setd "$@mon_r02_luk"+.@i,0;
+		setd "$@mon_r02_tire"+.@i,0;
+	}
+	end;
+}
+
+-	script	starting_2	-1,{
+OnTouchNPC:
+	.@start = rand(1,100);
+	if (.@start < 11) .@speed = 60;
+	else if (.@start < 21) .@speed = 70;
+	else if (.@start < 31) .@speed = 80;
+	else if (.@start < 41) .@speed = 90;
+	else if (.@start < 51) .@speed = 100;
+	else if (.@start < 61) .@speed = 110;
+	else if (.@start < 71) .@speed = 120;
+	else if (.@start < 81) .@speed = 130;
+	else if (.@start < 91) .@speed = 140;
+	else .@speed = 150;
+	sc_start SC_WALKSPEED,5000,.@speed;
+	end;
+
+OnDisable:
+	for( .@i = 1; .@i < 7; .@i++ ) {
+		disablenpc "Luk#"+strnpcinfo(2)+"_"+.@i;
+		disablenpc "Tire#"+strnpcinfo(2)+"_"+.@i;
+	}
+	
+OnInit:
+	disablenpc();
+	end;
+}
+
+p_track02,56,38,0	duplicate(starting_2)	starting#race02_1	-1,0,0
+p_track02,56,36,0	duplicate(starting_2)	starting#race02_2	-1,0,0
+p_track02,56,34,0	duplicate(starting_2)	starting#race02_3	-1,0,0
+p_track02,56,32,0	duplicate(starting_2)	starting#race02_4	-1,0,0
+p_track02,56,30,0	duplicate(starting_2)	starting#race02_5	-1,0,0
+p_track02,56,28,0	duplicate(starting_2)	starting#race02_6	-1,0,0
+
+p_track02,33,38,0	duplicate(Luk_1)	Luk#race02_1_1	-1,0,0
+p_track02,37,38,0	duplicate(Luk_1)	Luk#race02_1_2	-1,0,0
+p_track02,53,38,0	duplicate(Luk_1)	Luk#race02_1_3	-1,0,0
+p_track02,45,38,0	duplicate(Luk_1)	Luk#race02_1_4	-1,0,0
+p_track02,33,36,0	duplicate(Luk_1)	Luk#race02_2_1	-1,0,0
+p_track02,37,36,0	duplicate(Luk_1)	Luk#race02_2_2	-1,0,0
+p_track02,53,36,0	duplicate(Luk_1)	Luk#race02_2_3	-1,0,0
+p_track02,45,36,0	duplicate(Luk_1)	Luk#race02_2_4	-1,0,0
+p_track02,33,34,0	duplicate(Luk_1)	Luk#race02_3_1	-1,0,0
+p_track02,37,34,0	duplicate(Luk_1)	Luk#race02_3_2	-1,0,0
+p_track02,53,34,0	duplicate(Luk_1)	Luk#race02_3_3	-1,0,0
+p_track02,45,34,0	duplicate(Luk_1)	Luk#race02_3_4	-1,0,0
+p_track02,33,32,0	duplicate(Luk_1)	Luk#race02_4_1	-1,0,0
+p_track02,37,32,0	duplicate(Luk_1)	Luk#race02_4_2	-1,0,0
+p_track02,53,32,0	duplicate(Luk_1)	Luk#race02_4_3	-1,0,0
+p_track02,45,32,0	duplicate(Luk_1)	Luk#race02_4_4	-1,0,0
+p_track02,33,30,0	duplicate(Luk_1)	Luk#race02_5_1	-1,0,0
+p_track02,37,30,0	duplicate(Luk_1)	Luk#race02_5_2	-1,0,0
+p_track02,53,30,0	duplicate(Luk_1)	Luk#race02_5_3	-1,0,0
+p_track02,45,30,0	duplicate(Luk_1)	Luk#race02_5_4	-1,0,0
+p_track02,33,28,0	duplicate(Luk_1)	Luk#race02_6_1	-1,0,0
+p_track02,37,28,0	duplicate(Luk_1)	Luk#race02_6_2	-1,0,0
+p_track02,53,28,0	duplicate(Luk_1)	Luk#race02_6_3	-1,0,0
+p_track02,45,28,0	duplicate(Luk_1)	Luk#race02_6_4	-1,0,0
+
+p_track02,49,38,0	duplicate(Luk_2)	Luk#race02_1_5	-1,0,0
+p_track02,41,38,0	duplicate(Luk_2)	Luk#race02_1_6	-1,0,0
+p_track02,49,36,0	duplicate(Luk_2)	Luk#race02_2_5	-1,0,0
+p_track02,41,36,0	duplicate(Luk_2)	Luk#race02_2_6	-1,0,0
+p_track02,49,34,0	duplicate(Luk_2)	Luk#race02_3_5	-1,0,0
+p_track02,41,34,0	duplicate(Luk_2)	Luk#race02_3_6	-1,0,0
+p_track02,49,32,0	duplicate(Luk_2)	Luk#race02_4_5	-1,0,0
+p_track02,41,32,0	duplicate(Luk_2)	Luk#race02_4_6	-1,0,0
+p_track02,49,30,0	duplicate(Luk_2)	Luk#race02_5_5	-1,0,0
+p_track02,41,30,0	duplicate(Luk_2)	Luk#race02_5_6	-1,0,0
+p_track02,49,28,0	duplicate(Luk_2)	Luk#race02_6_5	-1,0,0
+p_track02,41,28,0	duplicate(Luk_2)	Luk#race02_6_6	-1,0,0
+
+p_track02,43,38,0	duplicate(Tire_1)	Tire#race02_1_1	-1,0,0
+p_track02,39,38,0	duplicate(Tire_1)	Tire#race02_1_2	-1,0,0
+p_track02,35,38,0	duplicate(Tire_1)	Tire#race02_1_3	-1,0,0
+p_track02,55,38,0	duplicate(Tire_1)	Tire#race02_1_4	-1,0,0
+p_track02,51,38,0	duplicate(Tire_1)	Tire#race02_1_5	-1,0,0
+p_track02,47,38,0	duplicate(Tire_1)	Tire#race02_1_6	-1,0,0
+p_track02,43,36,0	duplicate(Tire_1)	Tire#race02_2_1	-1,0,0
+p_track02,39,36,0	duplicate(Tire_1)	Tire#race02_2_2	-1,0,0
+p_track02,35,36,0	duplicate(Tire_1)	Tire#race02_2_3	-1,0,0
+p_track02,55,36,0	duplicate(Tire_1)	Tire#race02_2_4	-1,0,0
+p_track02,51,36,0	duplicate(Tire_1)	Tire#race02_2_5	-1,0,0
+p_track02,47,36,0	duplicate(Tire_1)	Tire#race02_2_6	-1,0,0
+p_track02,43,34,0	duplicate(Tire_1)	Tire#race02_3_1	-1,0,0
+p_track02,39,34,0	duplicate(Tire_1)	Tire#race02_3_2	-1,0,0
+p_track02,35,34,0	duplicate(Tire_1)	Tire#race02_3_3	-1,0,0
+p_track02,55,34,0	duplicate(Tire_1)	Tire#race02_3_4	-1,0,0
+p_track02,51,34,0	duplicate(Tire_1)	Tire#race02_3_5	-1,0,0
+p_track02,47,34,0	duplicate(Tire_1)	Tire#race02_3_6	-1,0,0
+p_track02,43,32,0	duplicate(Tire_1)	Tire#race02_4_1	-1,0,0
+p_track02,39,32,0	duplicate(Tire_1)	Tire#race02_4_2	-1,0,0
+p_track02,35,32,0	duplicate(Tire_1)	Tire#race02_4_3	-1,0,0
+p_track02,55,32,0	duplicate(Tire_1)	Tire#race02_4_4	-1,0,0
+p_track02,51,32,0	duplicate(Tire_1)	Tire#race02_4_5	-1,0,0
+p_track02,47,32,0	duplicate(Tire_1)	Tire#race02_4_6	-1,0,0
+p_track02,43,30,0	duplicate(Tire_1)	Tire#race02_5_1	-1,0,0
+p_track02,39,30,0	duplicate(Tire_1)	Tire#race02_5_2	-1,0,0
+p_track02,35,30,0	duplicate(Tire_1)	Tire#race02_5_3	-1,0,0
+p_track02,55,30,0	duplicate(Tire_1)	Tire#race02_5_4	-1,0,0
+p_track02,51,30,0	duplicate(Tire_1)	Tire#race02_5_5	-1,0,0
+p_track02,47,30,0	duplicate(Tire_1)	Tire#race02_5_6	-1,0,0
+p_track02,43,28,0	duplicate(Tire_1)	Tire#race02_6_1	-1,0,0
+p_track02,39,28,0	duplicate(Tire_1)	Tire#race02_6_2	-1,0,0
+p_track02,35,28,0	duplicate(Tire_1)	Tire#race02_6_3	-1,0,0
+p_track02,55,28,0	duplicate(Tire_1)	Tire#race02_6_4	-1,0,0
+p_track02,51,28,0	duplicate(Tire_1)	Tire#race02_6_5	-1,0,0
+p_track02,47,28,0	duplicate(Tire_1)	Tire#race02_6_6	-1,0,0
+
+// NPCs for Redeeming Prize Medals (Einbroch and Hugel)
+//============================================================
+ein_in01,85,208,5	script	آيفيل#repay01::Ei'felle#repay01	854,{
+	if (!ein_medal01) {
+		mes "[آيفيل]";
+		mes "اللعنة! علينا تسليم";
+		mes "ما طلبه زبائننا،";
+		mes "لكننا لم نصنع سوى";
+		mes "منتجات رديئة! لو كان";
+		mes "لدينا ذلك المعدن فقط، لاستطعنا";
+		mes "رفع جودة منتجاتنا!";
+		next;
+		select("عن أي معدن تتحدثين؟");
+		mes "[آيفيل]";
+		mes "هناك قرية صغيرة";
+		mes "على أطراف";
+		mes "جمهورية شفارتزفالد";
+		mes "تمنح هذه الميداليات الخاصة";
+		mes "المصنوعة من ذلك المعدن";
+		mes "الذي نحتاج إليه بشدة...";
+		next;
+		mes "[آيفيل]";
+		mes "لقد أرسلنا أحد أفضل";
+		mes "أعضاء نقابتنا ليحضر لنا";
+		mes "بعض تلك الميداليات، لكنه لم";
+		mes "يعد إلينا بتقرير حتى الآن.";
+		mes "بدأ القلق يسيطر علي...";
+		next;
+		mes "[آيفيل]";
+		mes "أعني أننا نحتاج إلى كمية";
+		mes "كبيرة جدا من ذلك المعدن لإنجاز";
+		mes "طلباتنا وإكمال";
+		mes "أبحاث التصنيع،";
+		mes "لكن حتى الآن، لم يتمكن";
+		mes "أي منا من الحصول على أي ميدالية...";
+		next;
+		if (countitem("Marvelous_Medal")) {//7515
+			mes "["+ strcharinfo(0) +"]";
+			mes "أوه! هل تتحدثين";
+			mes "عن الميداليات التي";
+			mes "يعطونها كمكافآت في";
+			mes "حلبة سباق الوحوش؟";
+			mes "لدي بعض منها.";
+			next;
+			mes "[آيفيل]";
+			mes "هاه؟ أرني إياها...";
+			mes "نعم! هذا بالضبط ما";
+			mes "نحتاج إليه! هل يمكنك";
+			mes "التبرع بميدالياتك حتى";
+			mes "نتمكن أخيرا من صنع منتجات";
+			mes "ذات جودة لزبائننا؟";
+			next;
+			callsub S_Reward;
+			end;
+		}
+		mes "[آيفيل]";
+		mes "إذا حصلت على أي";
+		mes "ميداليات من حلبة";
+		mes "سباق الوحوش في هويغل،";
+		mes "فيرجى إحضار بعضها";
+		mes "إلي. سأحرص على مكافأتك";
+		mes "على لطفك...";
+		close;
+	} else if (ein_medal01 < 500) {
+		mes "[آيفيل]";
+		mes "أوه، كيف حالك؟";
+		mes "شكرا جزيلا لك على";
+		mes "التبرع بهذا العدد من الميداليات،";
+		mes "لقد كانت مفيدة في";
+		mes "أبحاثي. ومع ذلك، أحتاج إلى";
+		mes "المزيد والمزيد منها كل يوم...";
+		next;
+		if (countitem("Marvelous_Medal")) {
+			mes "[آيفيل]";
+			mes "أعضاء نقابة الحدادين";
+			mes "الآخرون يبذلون";
+			mes "قصارى جهدهم لجمع ميداليات الجائزة";
+			mes "في هويغل، لكنهم يفشلون دائما";
+			mes "في الفوز بها! إذا كانت لديك أي";
+			mes "ميداليات، فهل يمكنني أخذ بعضها؟";
+			next;
+			callsub S_Reward;
+			end;
+		}
+		mes "[آيفيل]";
+		mes "إذا حصلت على أي";
+		mes "ميداليات من حلبة";
+		mes "سباق الوحوش في هويغل،";
+		mes "فيرجى إحضار بعضها";
+		mes "إلي. سأحرص على مكافأتك";
+		mes "على لطفك...";
+		close;
+	}
+	if (!checkweight("Knife",1)) {//1201
+		mes "[آيفيل]";
+		mes "يا إلهي، أنت تحمل";
+		mes "الكثير من الأشياء معك!";
+		mes "من الأفضل أن تضع بعضا";
+		mes "منها في مخزن كافرا";
+		mes "قبل أن تغمرك";
+		mes "كثرة أغراضك!";
+		close;
+	}
+	if (ein_medal01 > 499 && ein_medal01 < 1500) {
+		if (ein_medal01 < 1000) {
+			mes "[آيفيل]";
+			mes "آه، مرحبا بعودتك! لقد حققت أخيرا";
+			mes "تقدما كبيرا في";
+			mes "أبحاثي على المعدن! انظر، لقد";
+			mes "طورت هذه السترة";
+			mes "اللامعة! إنها خفيفة الوزن";
+			mes "ومتينة جدا، كما ترى؟";
+			next;
+			mes "[آيفيل]";
+			mes "لم أكن لأتمكن";
+			mes "من إكمال هذا دون";
+			mes "مساعدتك. والآن، هل ترغب في";
+			mes "الحصول على هذه السترة اللامعة";
+			mes "كطريقة مني لرد جميلك؟";
+			next;
+			if (select("قبول:انتظار تطوير إضافي") == 1) {
+				callsub S_BonusReward,500,2319;//Glittering_Clothes
+				end;
+			}
+			mes "[آيفيل]";
+			mes "آه، فهمت. تفضل الانتظار";
+			mes "حتى نطور شيئا";
+			mes "يناسب ذوقك أكثر. في هذه";
+			mes "الحالة، هل يمكنك التبرع";
+			mes "بمزيد من الميداليات لأبحاثي؟";
+			mes "نحن دائما نعاني من نقصها...";
+			next;
+		} else if (ein_medal01 < 1500) {
+			mes "[آيفيل]";
+			mes "أوه، لقد عدت!";
+			mes "بفضل كل الميداليات";
+			mes "التي تبرعت بها، أصبحت الآن";
+			mes "قادرا على تصنيع مجموعة";
+			mes "من الدروع ذات الفتحات والمشبعة";
+			mes "بخاصية من اختيارك.";
+			next;
+			mes "[آيفيل]";
+			mes "إذا أردت، يمكنني مكافأتك";
+			mes "الآن بصنع مجموعة دروع عنصرية ذات فتحات لك، أو يمكننا";
+			mes "الانتظار حتى تتبرع بمزيد";
+			mes "من الميداليات إلى أن أتمكن من تطوير";
+			mes "شيء آخر لك.";
+			next;
+			switch(select("قبول الدرع:هل يمكنني الحصول على شيء آخر؟:انتظار تطوير إضافي")) {
+				case 1:
+					mes "[آيفيل]";
+					mes "يمكنني تصنيع مجموعة واحدة من";
+					mes "الدروع ذات الفتحات والمشبعة";
+					mes "بخاصية النار أو الأرض أو الرياح";
+					mes "أو الماء. أي خاصية تريد";
+					mes "أن يحملها درعك؟";
+					next;
+					switch(select("خاصية النار:خاصية الأرض:خاصية الرياح:خاصية الماء")) {
+						case 1: callsub S_BonusReward,1000,2345; end;// Flame_Sprits_Armor_
+						case 2: callsub S_BonusReward,1000,2351; end;// Earth_Sprits_Armor_
+						case 3: callsub S_BonusReward,1000,2349; end;// Wind_Sprits_Armor_
+						case 4: callsub S_BonusReward,1000,2347; end;// Water_Sprits_Armor_
+					}
+				case 2:
+					mes "[آيفيل]";
+					mes "شيء آخر...؟";
+					mes "أوه، لا بد أنك تقصد";
+					mes "السترة اللامعة التي";
+					mes "طورتها سابقا. على";
+					mes "أي حال، لا أملك أي عناصر أخرى";
+					mes "أقدمها لك الآن...";
+					next;
+					callsub S_BonusReward,500,2319;
+					end;
+				case 3:
+					mes "[آيفيل]";
+					mes "آه، فهمت. تفضل الانتظار";
+					mes "حتى نطور شيئا";
+					mes "يناسب ذوقك أكثر. في هذه";
+					mes "الحالة، هل يمكنك التبرع";
+					mes "بمزيد من الميداليات لأبحاثي؟";
+					mes "نحن دائما نعاني من نقصها...";
+					next;
+					break;
+			}
+		}
+		if (countitem("Marvelous_Medal")) {
+			mes "[آيفيل]";
+			mes "أعضاء نقابة الحدادين";
+			mes "الآخرون يبذلون";
+			mes "قصارى جهدهم لجمع ميداليات الجائزة";
+			mes "في هويغل، لكنهم يفشلون دائما";
+			mes "في الفوز بها! إذا كانت لديك أي";
+			mes "ميداليات، فهل يمكنني أخذ بعضها؟";
+			next;
+			callsub S_Reward;
+			end;
+		}
+		mes "[آيفيل]";
+		mes "إذا حصلت على أي";
+		mes "ميداليات من حلبة";
+		mes "سباق الوحوش في هويغل،";
+		mes "فيرجى إحضار بعضها";
+		mes "إلي. سأحرص على مكافأتك";
+		mes "على لطفك...";
+		close;
+	} else if (ein_medal01 > 1499) {
+		mes "[آيفيل]";
+		mes "آه، لقد عدت! لقد";
+		mes "استخرجت كل المعدن";
+		mes "من الميداليات التي";
+		mes "أعطيتني إياها، وأظن أن لدي";
+		mes "ما يكفي لصنع سلاح مستوى 4.";
+		mes "أليس هذا مذهلا؟";
+		next;
+		mes "[آيفيل]";
+		mes "إذا أردت، يمكنني صنع";
+		mes "أحد هذه الأسلحة لك";
+		mes "كطريقة مني لرد جميلك على";
+		mes "مساعدتك. ما رأيك؟";
+		next;
+		if (select("نعم، أريد سلاح مستوى 4.:هل يمكنني الحصول على شيء آخر؟") == 2) {
+			mes "[آيفيل]";
+			mes "شيء آخر؟";
+			mes "أوه، حسنا إذن، هل";
+			mes "ترغب في الحصول على سترة";
+			mes "لامعة، أو مجموعة من الدروع";
+			mes "العنصرية ذات الفتحات؟ تفضل";
+			mes "واختر ما تريد~";
+			next;
+			switch (select("سترة لامعة:درع بخاصية النار:درع بخاصية الأرض:درع بخاصية الرياح:درع بخاصية الماء:إلغاء")) {
+				case 1: callsub S_BonusReward,500,2319; end;
+				case 2: callsub S_BonusReward,1000,2345; end;
+				case 3: callsub S_BonusReward,1000,2351; end;
+				case 4: callsub S_BonusReward,1000,2349; end;
+				case 5: callsub S_BonusReward,1000,2347; end;
+				case 6: end;
+			}
+		}
+		setarray .@type$, "خنجر","سيف أحادي اليد","سيف بيدين","فأس","صولجان","قوس","عصا","كتاب","رمح","كاتار","قبضة","سوط","آلة موسيقية";
+		.@m = select( implode(.@type$,":") ) - 1;
+		mes "[آيفيل]";
+		mes "إذن تريد الحصول على";
+		mes .@type$[.@m]+"؟ يرجى اختيار";
+		mes "سلاح مستوى 4";
+		mes "الذي تريد مني صنعه.";
+		next;
+		switch(.@m) {
+			case 0:
+				.@weapon$ = "جينونغاغاب:سن قاتم:قاتل التنين:محطم الدروع:بازيرالد:محطم السيوف:معول الجليد:سوكساماد:سكين المطبخ:آزوث:طارد الأرواح:خنجر المغتال:خنجر ضوء القمر:سكين إزالة الأعشاب:خنجر ملعون:خنجر الرد:سكين قتالية:سيف الحظ";
+				setarray .@weapon_id, 13002,1237,13001,1225,1231,1224,1230,1236,1229,1235,1233,1232,1234,1227,1241,1242,1228,1223;
+				break;
+			case 1:
+				.@weapon$ = "ناغان:سيف غير مادي:ميستلتين:بيولونغوم:نصل غبار النجوم:سيف قيصر:فالتشيون الجليد:إكسكاليبر:إيدج:كاتلاس:سيف الشمس:تيرفينغ:فايربلند";
+				setarray .@weapon_id, 1130,1141,1138,1140,1148,1134,1131,1137,1132,1135,1136,1139,1133;
+				break;
+			case 2:	
+				.@weapon$ = "قاتل التنين:ماساموني:موراماسا:شويزرسابل:الجلاد:زفايهاندر:كاتزبلغر";
+				setarray .@weapon_id, 1166,1165,1164,1167,1169,1168,1170;
+				break;
+			case 3:
+				.@weapon$ = "فأس عظيم:مقصلة:إبسيلون الضوء:فأس دموي:ساباث:الذبح:ساطور:توماهوك";
+				setarray .@weapon_id, 1364,1369,1366,1363,1365,1367,1305,1368;
+				break;
+			case 4:
+				.@weapon$ = "صولجان ذهبي:الصليب العظيم:صولجان طويل:شوكة:قطع:كوادريل";
+				setarray .@weapon_id, 1524,1528,1525,1523,1526,1527;
+				break;
+			case 5:
+				.@weapon$ = "قوس سيد المارقين:جناح التنين:قوس رودرا:باليستا";
+				setarray .@weapon_id, 1719,1724,1720,1722;
+				break;
+			case 6:
+				.@weapon$ = "عصا الجناح:عصا السحر";
+				setarray .@weapon_id, 1616,1473;
+			case 7:
+				.@weapon$ = "إرث التنين:كتاب نهاية العالم:مذكرات فتاة:كتاب مجلد";
+				setarray .@weapon_id, 1559,1557,1558,1561;
+				break;
+			case 8:
+				.@weapon$ = "غاي بولغ:غيلردريا:غونغنير:سيخ:رمح لونغينوس:بريوناك:بيل غيسارم:زيفيروس:منجل الهلال:تشونغكوليتي:نار الجحيم";
+				setarray .@weapon_id, 1474,1414,1413,1415,1469,1470,1467,1468,1466,1416,1471;
+				break;
+			case 9:
+				.@weapon$ = "المتسلل:زئير دموي:لمسة غير مقدسة";
+				setarray .@weapon_id, 1261,1265,1263;
+				break;
+			case 10:
+				.@weapon$ = "مخلب هاتي:بيرسيرك:قبضة القيصر";
+				setarray .@weapon_id, 1815,1814,1813;
+				break;
+			case 11:
+				.@weapon$ = "لاريات:وردة النشوة:سوط النصل:تشيميتي:سوط الملكة";
+				setarray .@weapon_id, 1962,1963,1969,1964,1970;
+				break;
+			case 12:
+				.@weapon$ = "عود شرقي:غيتار كهربائي";
+				setarray .@weapon_id, 1918,1913;
+				break;		
+		}
+		.@j = select (.@weapon$+":إلغاء") - 1;
+		explode(.@weapon$,.@weapon$,":");
+		if (.@j == getarraysize(.@weapon$)) close;
+		callsub S_BonusReward,1500,.@weapon_id[.@j];
+		end;
+	}
+	
+S_Reward:
+	if (select("بالتأكيد:لا") == 2) {
+		mes "[آيفيل]";
+		mes "أوه، حسنا...";
+		mes "مع ذلك، أنا حقا أحتاج";
+		mes "إلى تلك الميداليات، لذلك إذا";
+		mes "غيرت رأيك، يرجى";
+		mes "العودة بأسرع ما يمكنك.";
+		emotion ET_CRY;
+		close;
+	}
+	mes "[آيفيل]";
+	mes "أوه، شكرا جزيلا لك!";
+	mes "يمكنني استخدام المعدن في تلك";
+	mes "الميداليات لإنتاج منتجات";
+	mes "عالية الجودة. والآن، كيف";
+	mes "أكافئك على إعطائي";
+	mes "بعض ميداليات الجائزة؟";
+	next;
+	switch(select("خبرة القاعدة:خبرة الوظيفة:لا، أنا سعيد بالمساعدة فقط.:كيف تسير أبحاثك؟")) {
+		case 1:
+			mes "[آيفيل]";
+			mes "تريد فقط تحسين";
+			mes "نفسك، هاه؟ حسنا، لا أعرف";
+			mes "إن كنت تريد أن تصبح أقوى،";
+			mes "أذكى، أو أسرع، لكن يمكنني";
+			mes "تدريبك على بعض التخيل إن أردت. والآن، استرخ معي~";
+			mes "تطوير جسدي.";
+			next;
+			mes "[آيفيل]";
+			mes "ركز... وآمن.";
+			mes "آمن بأنك";
+			mes "تصبح ما تريد";
+			mes "أن تكونه! آمن... بكل";
+			mes "قلبك اللعين!";
+			emotion ET_HUK, playerattached();
+			emotion ET_HUK;
+			next;
+			mes "[آيفيل]";
+			mes "*فيوو* كيف كان ذلك؟";
+			mes "هل ترى الآن";
+			mes "قوة الأمل؟";
+			delitem 7515,1; //Marvelous_Medal
+			if (checkre(3)) {
+				if (BaseLevel < 21) getexp 110,0;
+				else if ((BaseLevel > 20) && (BaseLevel < 31)) getexp 280,0;
+				else if ((BaseLevel > 30) && (BaseLevel < 41)) getexp 1000,0;
+				else if ((BaseLevel > 40) && (BaseLevel < 51)) getexp 1200,0;
+				else if ((BaseLevel > 50) && (BaseLevel < 61)) getexp 1500,0;
+				else if ((BaseLevel > 60) && (BaseLevel < 71)) getexp 2800,0;
+				else if ((BaseLevel > 70) && (BaseLevel < 81)) getexp 4500,0;
+				else getexp 8500,0;
+
+			/* iRO EXP Table:
+				if (BaseLevel < 21) getexp 200,0;
+				else if ((BaseLevel > 20) && (BaseLevel < 31)) getexp 300,0;
+				else if ((BaseLevel > 30) && (BaseLevel < 41)) getexp 1000,0;
+				else if ((BaseLevel > 40) && (BaseLevel < 51)) getexp 1800,0;
+				else if ((BaseLevel > 50) && (BaseLevel < 61)) getexp 2500,0;
+				else if ((BaseLevel > 60) && (BaseLevel < 71)) getexp 4700,0;
+				else if ((BaseLevel > 70) && (BaseLevel < 81)) getexp 5500,0;
+				else if ((BaseLevel > 80) && (BaseLevel < 96)) getexp 7000,0;
+				else if ((BaseLevel > 95) && (BaseLevel < 111)) getexp 8800,0;
+				else if ((BaseLevel > 110) && (BaseLevel < 126)) getexp 10900,0;
+				else if ((BaseLevel > 125) && (BaseLevel < 141)) getexp 13300,0;
+				else getexp 16000,0;
+			*/
+
+			} else {
+				if (BaseLevel < 21) getexp 150,0;
+				else if ((BaseLevel > 20) && (BaseLevel < 31)) getexp 300,0;
+				else if ((BaseLevel > 30) && (BaseLevel < 41)) getexp 2000,0;
+				else if ((BaseLevel > 40) && (BaseLevel < 51)) getexp 8000,0;
+				else if ((BaseLevel > 50) && (BaseLevel < 61)) getexp 25000,0;
+				else if ((BaseLevel > 60) && (BaseLevel < 71)) getexp 47000,0;
+				else if ((BaseLevel > 70) && (BaseLevel < 81)) getexp 55000,0;
+				else getexp 65000,0;
+			}
+			close;
+		case 2:
+			mes "[آيفيل]";
+			mes "تريد أن تصبح أكثر";
+			mes "كفاءة في وظيفتك؟ أمم...";
+			mes "حسنا، يمكننا فعل ذلك. فقط";
+			mes "تأمل معي، وسنقوم";
+			mes "ببعض تمارين التخيل معا.";
+			mes "أنا بارعة جدا في هذا كما تعلم.";
+			next;
+			mes "[آيفيل]";
+			mes "ف-فقط... تخيل";
+			mes "نفسك... وأنت...";
+			mes "ر-رائع تماما!";
+			mes "يجب أن تراه، ويجب";
+			mes "أن تشعر به في";
+			mes "قلبك وعقلك اللعينين!";
+			emotion ET_HUK, playerattached();
+			emotion ET_HUK;
+			next;
+			mes "[آيفيل]";
+			mes "نعم، لا يهم";
+			mes "إن كان حقيقيا أو متخيلا...";
+			mes "عقلك سيعمل على";
+			mes "أي شيء تغذيه به.";
+			mes "الأدوية الوهمية والأعراض النفسجسدية-- كلها مترابطة.";
+			delitem 7515,1; //Marvelous_Medal
+			if (checkre(3)) {
+				if (Class == Job_Novice) {
+					getexp 0,15;
+				} else if (Class == Job_Novice_High) {
+					getexp 0,25;
+				} else if ((Class >= Job_Swordman && Class <= Job_Thief) || Class == Job_Taekwon) {
+					if (JobLevel < 11) getexp 0,25;
+					else if ((JobLevel > 10) && (JobLevel < 21)) getexp 0,200;
+					else if ((JobLevel > 20) && (JobLevel < 31)) getexp 0,300;
+					else if ((JobLevel > 30) && (JobLevel < 41)) getexp 0,950;
+					else getexp 0,1800;
+				} else if ((Class >= Job_Knight && Class <= Job_Crusader2) || (Class >= Job_Swordman_High && Class <= Job_Thief_High)) {
+					if (JobLevel < 11) getexp 0,40;
+					else if ((JobLevel > 10) && (JobLevel < 21)) getexp 0,300;
+					else if ((JobLevel > 20) && (JobLevel < 31)) getexp 0,550;
+					else if ((JobLevel > 30) && (JobLevel < 41)) getexp 0,1080;
+					else getexp 0,2150;
+				} else {
+					if (JobLevel < 11) getexp 0,55;
+					else if ((JobLevel > 10) && (JobLevel < 21)) getexp 0,330;
+					else if ((JobLevel > 20) && (JobLevel < 31)) getexp 0,600;
+					else if ((JobLevel > 30) && (JobLevel < 41)) getexp 0,1200;
+					else if ((JobLevel > 40) && (JobLevel < 51)) getexp 0,1750;
+					else getexp 0,2950;
+				}
+
+			/* iRO JEXP Table:
+				if (BaseLevel < 21) getexp 0,150;
+				else if ((BaseLevel > 20) && (BaseLevel < 31)) getexp 0,200;
+				else if ((BaseLevel > 30) && (BaseLevel < 41)) getexp 0,750;
+				else if ((BaseLevel > 40) && (BaseLevel < 51)) getexp 0,1800;
+				else if ((BaseLevel > 50) && (BaseLevel < 61)) getexp 0,2500;
+				else if ((BaseLevel > 60) && (BaseLevel < 71)) getexp 0,3525;
+				else if ((BaseLevel > 70) && (BaseLevel < 81)) getexp 0,4125;
+				else if ((BaseLevel > 80) && (BaseLevel < 96)) getexp 0,5250;
+				else if ((BaseLevel > 95) && (BaseLevel < 111)) getexp 0,6600;
+				else if ((BaseLevel > 110) && (BaseLevel < 126)) getexp 0,8175;
+				else if ((BaseLevel > 125) && (BaseLevel < 141)) getexp 0,9975;
+				else getexp 0,12000;
+			*/
+
+			} else {
+				if (Class == Job_Novice) {
+					getexp 0,30;
+				} else if ((Class >= Job_Swordman && Class <= Job_Thief) || Class == Job_Taekwon) {
+					if (JobLevel < 11) getexp 0,50;
+					else if ((JobLevel > 10) && (JobLevel < 21)) getexp 0,250;
+					else if ((JobLevel > 20) && (JobLevel < 31)) getexp 0,1500;
+					else if ((JobLevel > 30) && (JobLevel < 41)) getexp 0,7000;
+					else getexp 0,20000;
+				} else if (Class >= Job_Knight && Class <= Job_Crusader2) {
+					if (JobLevel < 11) getexp 0,80;
+					else if ((JobLevel > 10) && (JobLevel < 21)) getexp 0,2000;
+					else if ((JobLevel > 20) && (JobLevel < 31)) getexp 0,10000;
+					else if ((JobLevel > 30) && (JobLevel < 41)) getexp 0,25000;
+					else getexp 0,38000;
+				} else if (Class == Job_Novice_High) {
+					getexp 0,40;
+				} else if (Class >= Job_Swordman_High && Class <= Job_Thief_High) {
+					if (JobLevel < 11) getexp 0,65;
+					else if ((JobLevel > 10) && (JobLevel < 21)) getexp 0,300;
+					else if ((JobLevel > 20) && (JobLevel < 31)) getexp 0,2500;
+					else if ((JobLevel > 30) && (JobLevel < 41)) getexp 0,10000;
+					else getexp 0,25000;
+				} else if (Class >= Job_Lord_Knight && Class <= Job_Paladin_2) {
+					if (JobLevel < 11) getexp 0,150;
+					else if ((JobLevel > 10) && (JobLevel < 21)) getexp 0,2200;
+					else if ((JobLevel > 20) && (JobLevel < 31)) getexp 0,13000;
+					else if ((JobLevel > 30) && (JobLevel < 41)) getexp 0,27000;
+					else if ((JobLevel > 40) && (JobLevel < 51)) getexp 0,38000;
+					else getexp 0,40000;
+				} else {
+					if (JobLevel < 11) getexp 0,50;
+					else if ((JobLevel > 10) && (JobLevel < 21)) getexp 0,250;
+					else if ((JobLevel > 20) && (JobLevel < 31)) getexp 0,1500;
+					else if ((JobLevel > 30) && (JobLevel < 41)) getexp 0,7000;
+					else if ((JobLevel > 40) && (JobLevel < 51)) getexp 0,20000;
+					else if ((JobLevel > 50) && (JobLevel < 61)) getexp 0,30000;
+					else getexp 0,38000;
+				}
+			}
+			close;
+		case 3:
+			mes "[آيفيل]";
+			mes "ماذا--؟! هل أنت متأكد";
+			mes "أنك لا تريد شيئا؟";
+			mes "همم، حسنا، أظن أن عدم";
+			mes "إعطائك شيئا في المقابل";
+			mes "سيجلب حظا سيئا، لذا...";
+			mes "فكر في شيء. بسرعة.";
+			next;
+			mes "["+ strcharinfo(0) +"]";
+			mes "آه، استخدمي الميداليات فقط";
+			mes "لتطوير أبحاث التصنيع";
+			mes "الخاصة بك، ثم يمكنك";
+			mes "مكافأتي إذا طورت";
+			mes "شيئا جديدا. إنه، أمم، مثل";
+			mes "استثمار في عملك!";
+			next;
+			mes "[آيفيل]";
+			mes "نعم... نعم.";
+			mes "حسنا، فهمت";
+			mes "ما تقصده.";
+			mes "هذا ذكي جدا.";
+			mes "حسنا، سأكافئك عندما";
+			mes "نطور شيئا جديدا!";
+			next;
+			mes "[آيفيل]";
+			mes "على أي حال، أحتاج إلى أكبر عدد";
+			mes "ممكن من الميداليات";
+			mes "وبأسرع ما أستطيع. كم";
+			mes "ميدالية تظن أنك";
+			mes "تستطيع إعطائي الآن؟";
+			next;
+			switch(select("خذيها كلها.:ما رأيك بهذه الكمية؟:لا، غيرت رأيي.")) {
+			case 1:
+				mes "[آيفيل]";
+				mes "ش-شكرا لك!";
+				mes "شكرا جزيلا لك!";
+				mes "ستساعدني مساعدتك كثيرا";
+				mes "في تقدم أبحاثي،";
+				mes "وأعدك أن أكافئك";
+				mes "بأسرع ما أستطيع!";
+				.@medals = countitem("Marvelous_Medal");
+				delitem 7515, .@medals; //Marvelous_Medal
+				ein_medal01 += .@medals;
+				close;
+			case 2:
+				mes "[آيفيل]";
+				mes "حسنا، يرجى إدخال";
+				mes "عدد الميداليات التي";
+				mes "ترغب في إعطائي إياها.";
+				mes "يرجى عدم إدخال أي";
+				mes "رقم أكبر من 100.";
+				next;
+				while(1) {
+					input .@input;
+					if (!.@input) {
+						mes "[آيفيل]";
+						mes "آه، إذن قررت";
+						mes "الإلغاء؟ حسنا، هذا";
+						mes "اختيارك، لكنني ما زلت";
+						mes "محبطة جدا. يرجى العودة";
+						mes "إذا غيرت رأيك...";
+						close;
+					} else if (.@input < 1 || .@input > 100) {
+						mes "[آيفيل]";
+						mes "تذكر، يمكنك فقط";
+						mes "إدخال رقم من 1 إلى 100.";
+						mes "إذا كنت تريد إعطائي المزيد";
+						mes "من الميداليات، فربما";
+						mes "ينبغي أن تعطيني إياها كلها~";
+						next;
+					} else break;
+				}
+				if (countitem("Marvelous_Medal") < .@input) {
+					mes "[آيفيل]";
+					mes "آسفة، لكنني لا";
+					mes "أظن أن لديك هذا العدد";
+					mes "من الميداليات معك. تأكد";
+					mes "من أنك تعرض علي كمية";
+					mes "من الميداليات تملكها فعلا.";
+					emotion ET_SMILE;
+					close;
+				} else {
+					mes "[آيفيل]";
+					mes "ش-شكرا لك!";
+					mes "شكرا جزيلا لك!";
+					mes "ستساعدني مساعدتك كثيرا";
+					mes "في تقدم أبحاثي،";
+					mes "وأعدك أن أكافئك";
+					mes "بأسرع ما أستطيع!";
+					delitem 7515, .@input; //Marvelous_Medal
+					ein_medal01 += .@input;
+					close;
+				}
+			case 3:
+				mes "[آيفيل]";
+				mes "أوه، حسنا...";
+				mes "مع ذلك، أنا حقا أحتاج";
+				mes "إلى تلك الميداليات، لذلك إذا";
+				mes "غيرت رأيك، يرجى";
+				mes "العودة بأسرع ما يمكنك.";
+				close;
+			}
+		case 4:
+			mes "[آيفيل]";
+			mes "حسنا، لقد تمكنت من";
+			mes "صنع سترة لامعة";
+			mes "باستخدام الميداليات التي";
+			mes "أحضرتها إلي. لكنني أعلم";
+			mes "أنني أستطيع صنع شيء أفضل";
+			mes "إذا أحضرت لي المزيد!";
+			next;
+			mes "[آيفيل]";
+			mes "حتى الآن، لدي المعدن";
+			mes "من ^FF0000"+ ein_medal01 +"^000000 ميدالية جائزة";
+			mes "تبرعت بها لي. كلما";
+			mes "أحضرت المزيد، اقتربت أكثر من تحقيق تقدم جديد!";
+			close;
+	}
+
+S_BonusReward:
+	mes "[آيفيل]";
+	.@arg1 = getarg(1);
+	if (.@arg1 == 2319) {
+		mes "هل تريد حقا";
+		mes "هذا "+getitemname(.@arg1)+"?";
+		mes "قد ترغب في التخلي عن هذه";
+		mes "المكافأة للحصول على";
+		mes "شيء أفضل لاحقا...";
+	} else if (.@arg1 == 2345 || .@arg1 == 2347 || .@arg1 == 2349 || .@arg1 == 2351) {
+		mes "هل أنت متأكد أنك تريد";
+		mes "قبول هذه المجموعة من الدروع";
+		mes "ذات الفتحات؟";
+		if (.@arg1 == 2345) mes "درع بخاصية النار؟ إذا فعلت،";
+		else if (.@arg1 == 2351) mes "درع بخاصية الأرض؟ إذا فعلت،";
+		else if (.@arg1 == 2349) mes "درع بخاصية الرياح؟ إذا فعلت،";
+		else if (.@arg1 == 2347) mes "درع بخاصية الماء؟ إذا فعلت،";
+		mes "فسأحتاج إلى المزيد من الميداليات منك";
+		mes "لتحقيق تقدم إضافي";
+		mes "في أبحاث التصنيع الخاصة بي.";
+	} else {
+		mes "إذن ترغب في الحصول على";
+		mes getitemname(.@arg1)+"؟ إذا اخترت";
+		mes "الحصول على سلاح مستوى 4 هذا،";
+		mes "فسأحتاج إلى صهر الكثير من";
+		mes "الميداليات التي تبرعت";
+		mes "بها لي. هل نتابع؟";
+	}
+	next;
+	if (select("رفض:قبول") == 1) {
+		mes "["+ strcharinfo(0) +"]";
+		mes "ا-انتظري، لقد غيرت";
+		mes "رأيي. هل سيكون الأمر مناسبا";
+		mes "إذا طلبت منك أن تعطيني";
+		mes "مكافأة لاحقا؟";
+		next;
+		mes "[آيفيل]";
+		if (getiteminfo( .@arg1, ITEMINFO_TYPE ) == IT_ARMOR) {
+			mes "بالطبع، بالطبع.";
+			mes "تذكر، إذا تبرعت";
+			mes "بمزيد من الميداليات لي، فسأتمكن";
+			mes "من صنع عناصر";
+			mes "ذات جودة أعلى لك~";
+		} else {
+			mes "لا أظن أنني أستطيع تطوير";
+			mes "أي شيء أفضل من أسلحة مستوى 4 هذه، لكن بعد القيام";
+			mes "بهذا الاستثمار الكبير، عليك أن تقرر ما تريده بعناية.";
+		}
+		close;
+	}
+	mes "[آيفيل]";
+	if (.@arg1 == 2319) {
+		mes "تفضل، أثق أن";
+		mes "هذا "+getitemname(.@arg1)+" سوف";
+		mes "يخدمك جيدا. شكرا";
+		mes "على مساعدتك، وآمل أن";
+		mes "تواصل التبرع";
+		mes "بميدالياتك لأبحاثي على المعدن~";
+	} else if (.@arg1 == 2345 || .@arg1 == 2347 || .@arg1 == 2349 || .@arg1 == 2351) {
+		mes "اختيار رائع! أنا متأكدة";
+		if (.@arg1 == 2345) mes "أن مجموعة النار ذات الفتحات هذه";
+		else if (.@arg1 == 2351) mes "أن مجموعة الأرض ذات الفتحات هذه";
+		else if (.@arg1 == 2349) mes "أن مجموعة الرياح ذات الفتحات هذه";
+		else if (.@arg1 == 2347) mes "أن مجموعة الماء ذات الفتحات هذه";
+		mes "من الدروع ستخدمك";
+		mes "جيدا. شكرا على مساعدتك،";
+		mes "وإذا حصلت على المزيد من الميداليات،";
+		mes "فيرجى التبرع بها لي~";
+	} else {
+		mes "مرة أخرى، أود";
+		mes "أن أشكرك على تزويدي";
+		mes "بكل تلك الميداليات.";
+		mes "أتخيل أن ذلك كان";
+		mes "صعبا. على أي حال، سأقدر";
+		mes "استمرار مساعدتك~";
+	}
+	ein_medal01 -= getarg(0);
+	getitem .@arg1,1;
+	close;
+}
+
+hugel,71,83,4	script	واين::Wayne	900,{
+	if (!checkweight("Knife",1)) {
+		mes "[واين]";
+		mes "انتظر لحظة...";
+		mes "إذا أردت استبدال";
+		mes "ميداليات الجائزة بعناصر،";
+		mes "فمن الأفضل أن تفرغ مساحة أكبر";
+		mes "في حقيبتك أولا. لماذا لا تستخدم مخزن كافرا؟";
+		close;
+	}
+	mes "[واين]";
+	mes "أهلا بك! هل تساءلت يوما";
+	mes "ماذا يمكنك أن تفعل بكل";
+	mes "ميداليات الجائزة التي يمكنك الفوز بها";
+	mes "في حلبة سباق الوحوش؟ يمكنك";
+	mes "التبرع بها في أينبروخ";
+	mes "لنقابة الحدادين...";
+	next;
+	mes "[واين]";
+	mes "...أو يمكنك استبدالها";
+	mes "بعناصر، هنا والآن";
+	mes "معي. وكالعادة،";
+	mes "الخيار يعود إليك حقا.";
+	next;
+	if (select("استبدال ميداليات الجائزة:إلغاء") == 2) {
+		mes "[واين]";
+		mes "حسنا، فقط تذكر";
+		mes "أنه يمكنك دائما أن تأتي";
+		mes "إلي لتستبدل ميداليات";
+		mes "الجائزة بعناصر استهلاكية.";
+		mes "ذلك الرجل في أينبروخ؟ لست متأكدا";
+		mes "ماذا سيعطيك مقابلها...";
+		next;
+		mes "[واين]";
+		mes "كل ما أعرفه أنه";
+		mes "يحتاج إلى عدد كبير من الميداليات";
+		mes "للعمل الذي يقوم به.";
+		mes "ومع ذلك، سمعت أنه قد";
+		mes "يجعل تبرعاتك تستحق";
+		mes "كل جهدك، أتعلم؟";
+		close;
+	}
+	if (!checkweight("Jellopy",550)) {
+		mes "[واين]";
+		mes "انتظر لحظة...";
+		mes "إذا أردت استبدال";
+		mes "ميداليات الجائزة بعناصر،";
+		mes "فمن الأفضل أن تفرغ مساحة أكبر";
+		mes "في حقيبتك أولا. لماذا لا تستخدم مخزن كافرا؟";
+		close;
+	} else {
+		mes "[واين]";
+		mes "والآن، كم عدد ميداليات الجائزة";
+		mes "التي تريد استبدالها؟";
+		mes "لا يحتاج الأمر إلى عبقري";
+		mes "ليعرف أنك تستطيع الحصول";
+		mes "على عناصر أكثر قيمة عند استبدال";
+		mes "عدد أكبر من ميداليات الجائزة دفعة واحدة.";
+		next;
+		setarray .@pm, 1,3,7,8,16,25,42,59;
+		.@total_pm = getarraysize(.@pm);
+		for ( .@i = 0; .@i < .@total_pm; .@i++ )
+			.@menu$ = .@menu$ + .@pm[.@i] + " ميدالية جائزة:";
+		.@m = select(.@menu$) - 1;
+		switch (.@m) {
+			case 0: 
+				.@items$ = "2 من أوراق هينال:2 من أوراق الألوة:1 فاكهة ماستيلا:5 رمال نجوم ساحرة:4 جرعات حمراء مكثفة";
+				setarray .@item_array, 520,2,521,2,522,1,1061,5,545,4;
+				break;
+			case 1:
+				.@items$ = "1 هلام ملكي:6 مياه مقدسة";
+				setarray .@item_array, 526,1,523,6;
+				break;
+			case 2:
+				.@items$ = "1 حقيبة كعك:1 حقيبة إسعاف أولي";
+				setarray .@item_array, 12130,1,12110,1;
+				break;
+			case 3:
+				.@items$ = "1 صندوق هدية";
+				setarray .@item_array, 644,1;
+				break;
+			case 4:
+				.@items$ = "1 صندوق أزرق قديم";
+				setarray .@item_array, 603,1;
+				break;
+			case 5:
+				.@items$ = "1 مجموعة هدايا ترويض";
+				setarray .@item_array, 12105,1;
+				break;
+			case 6:
+				.@items$ = "1 صندوق أرجواني قديم";
+				setarray .@item_array, 617,1;
+				break;
+			case 7:
+				.@items$ = "1 صندوق بورينغ";
+				setarray .@item_array, 12109,1;
+				break;
+		}
+		mes "[واين]";
+		mes "والآن، يرجى اختيار";
+		mes "أي من مجموعات العناصر التالية";
+		mes "التي ترغب في الحصول عليها";
+		mes "مقابل "+.@pm[.@m]+" ميدالية جائزة."+((getarraysize(.@item_array)<3)?" حسنا، لدينا مجموعة واحدة فقط، لكن...":"");
+		next;
+		.@m2 = ( select(.@items$) -1 ) *2;
+		if (countitem("Marvelous_Medal") < .@pm[.@m]) {
+			mes "[واين]";
+			mes "مهلا، أنت لا تملك";
+			mes "ما يكفي من ميداليات الجائزة";
+			mes "معك. اذهب واحصل على المزيد";
+			mes "إذا أردت استبدالها";
+			mes "معي بأي شيء.";
+			close;
+		}
+		mes "[واين]";
+		mes "تفضل~";
+		mes "شكرا لاستخدامك";
+		mes "خدمتي، وآمل أن";
+		mes "تزورني مرة أخرى";
+		mes "قريبا. استمتع بسباقات";
+		mes "الوحوش، أيها مغامر الكريم~";
+		delitem 7515,.@pm[.@m];// Marvelous_Medal
+		getitem .@item_array[.@m2], .@item_array[(.@m2+1)];
+		close;		
+	}
+}
+
+// Monster Race Affiliated NPCs
+//============================================================
+airplane,246,47,1	script	إيوكات#decoy01::Eocatt#decoy01	878,{
+	mes "[إيوكات]";
+	mes "هناك قرية قديمة ومتواضعة";
+	mes "على أطراف";
+	mes "جمهورية شفارتزفالد.";
+	mes "كانت مجرد نقطة صغيرة على";
+	mes "الخريطة حتى افتتحوا";
+	mes "حلبة سباق الوحوش الخاصة بهم!";
+	next;
+	mes "[إيوكات]";
+	mes "إذا فزت في رهانات";
+	mes "ألعاب سباق الوحوش، فستكافأ";
+	mes "بهذه ميداليات الجائزة";
+	mes "المصنوعة من معدن";
+	mes "نادر حقا. سمعت أن هذا المعدن مطلوب في أينبروخ...";
+	next;
+	mes "[إيوكات]";
+	mes "صحيح، صحيح...";
+	mes "لقد تذكرت الآن،";
+	mes "اسم البلدة هو هويغل.";
+	mes "أنا متأكد أن هناك أشياء ممتعة أخرى";
+	mes "يمكن فعلها هناك، لكنني واثق أن حلبة السباق أمر لا يفوت!";
+	close;
+}
+
+hugel,85,93,5	script	مودي#dummy01::Mudie#dummy01	866,{
+	mes "[مودي]";
+	mes "سباقات الوحوش";
+	mes "ربما تكون أكبر";
+	mes "معلم ترفيهي هنا في هويغل.";
+	mes "لا يحدث لدينا الكثير غير ذلك";
+	mes "هنا، للأسف.";
+	next;
+	mes "[مودي]";
+	mes "إذا أردت زيارة";
+	mes "حلبة سباق الوحوش،";
+	mes "فاتجه نحو";
+	mes "اتجاه الساعة 7 على";
+	mes "خريطتك المصغرة، وابحث عن";
+	mes "التل المحاط بسياج.";
+	next;
+	mes "[مودي]";
+	mes "ينبغي أن تجد الحلبة";
+	mes "في مكان ما حول تلك المنطقة.";
+	mes "على أي حال، إذا أردت المراهنة";
+	mes "أو مجرد مشاهدة السباقات، فقط";
+	mes "اسأل أحد أخوي إيكار. آمل أن تستمتع ببلدتنا الصغيرة~";
+	close;
+}
+
+p_track02,32,45,5	script	باحث غريب الأطوار#double::Eccentric Scholar#double	755,{
+	mes "[باحث غريب الأطوار]";
+	mes "لنر الآن...";
+	mes "متوسط سرعة الوحش 1";
+	mes "وحظه، كما يتأثر";
+	mes "بمقاومة الرياح والتعب...";
+	mes "ما الاحتمال التقريبي";
+	mes "للفوز...؟";
+	next;
+	mes "[باحث غريب الأطوار]";
+	mes "أدخله في";
+	mes "الخوارزمية الخاصة بي... وانقل الاثنين...";
+	mes "انتظر، كم رقما معنويا";
+	mes "يجب أن أستخدم؟";
+	mes "آه، صحيح، 7، لحساب x،";
+	mes "وهي قيمة تمثل--";
+	next;
+	mes "["+ strcharinfo(0) +"]";
+	mes "المعذرة، لكن";
+	mes "ماذا تفعل؟";
+	next;
+	mes "[باحث غريب الأطوار]";
+	mes "ص-صمتا!";
+	mes "يجب أن أكمل";
+	mes "حساباتي!";
+	mes "والآن، أين توقفت...؟";
+	specialeffect EF_CLAYMORE;
+	emotion ET_FRET;
+	close;
+}
+
+p_track02,69,31,1	script	عضو نقابة الحدادين#dou::Blacksmith Guildsman#dou	726,{
+	if (!$@mon_time_2_2) {
+		mes "[عضو نقابة الحدادين]";
+		mes "كم مرة يجب أن";
+		mes "أراهن على هذه السباقات؟!";
+		mes "لم أفز ولا مرة!";
+		mes "أوه، لا بد أنني صاحب أسوأ";
+		mes "حظ في تاريخ الرهانات!";
+		emotion ET_CRY;
+		next;
+		mes "[عضو نقابة الحدادين]";
+		mes "لقد كلفتني نقابتي";
+		mes "بإحضار بعض";
+		mes "ميداليات الجائزة إلى أينبروخ...";
+		mes "يبدو أنها مصنوعة";
+		mes "من معدن نادر، لكن...";
+		mes "من الصعب جدا أن أفوز~!";
+		emotion ET_PROFUSELY_SWEAT;
+		close;
+	} 
+	mes "[عضو نقابة الحدادين]";
+	mes "اركض! هيا هيا هيا!";
+	mes "أحتاج إلى الفوز ببعض";
+	mes "الميداليات! وإلا سأكون";
+	mes "خجلا جدا من العودة";
+	mes "إلى بيتي في أينبروخ! أ-أسرع!";
+	emotion ET_FLAG;
+	close;
+}
+
+p_track02,53,45,3	script	فارس شجاع#double::Valiant Knight#double	733,{
+	mes "[فارس شجاع]";
+	mes "مهلا، هل كنت";
+	mes "تراهن على السباقات؟";
+	mes "إذا كانت لديك معلومة قوية،";
+	mes "فهل تشاركها معي؟";
+	mes "لقد فزت ببعض الرهانات... لكن";
+	mes "أريد حقا أن أفوز بالمزيد!";
+	next;
+	mes "[فارس شجاع]";
+	mes "هاها! كما أقول";
+	mes "لهؤلاء الحدادين! إذا كانوا";
+	mes "لا يريدون الخسارة طوال الوقت،";
+	mes "فعليهم فقط الرهان على نفس الوحش. أنا؟ أراهن دائما";
+	mes "على ديفيروتشي الأسود~";
+	next;
+	mes "[فارس شجاع]";
+	mes "وأنت أيضا...!";
+	mes "راهن دائما";
+	mes "على ديفيروتشي!";
+	emotion ET_BEST;
+	close;
+}
+
+p_track01,27,47,5	script	سكير#single::Drunkard#single	853,{
+	mes "[سكير المألوف]";
+	mes "غررر...! ^333333*حازوقة*^000000";
+	mes "يجب أن أفوز بهذه";
+	mes "اللعبة التالية! يجب أن أفعلها!";
+	mes "مهلا، أنت! ما الرقم";
+	mes "الذي يجلب لك الحظ؟ هاه؟";
+	next;
+	mes "["+ strcharinfo(0) +"]";
+	mes "أنا، آه...";
+	next;
+	mes "[سكير المألوف]";
+	mes "هيا، أحتاج إلى";
+	mes "رقم حظك لأن أرقامي";
+	mes "نفدت! أخبرني!";
+	mes "أخبرني! ^333333*حازوقة~*^000000";
+	close;
+}
+
+p_track01,69,31,1	script	عضو نقابة الحدادين#sin::Blacksmith Guildsman#sin	107,{
+	mes "[عضو نقابة الحدادين]";
+	mes "كيف يمكن أن يكون هذا صعبا جدا؟";
+	mes "لماذا لا أستطيع الفوز ولو";
+	mes "بواحد من هذه السباقات؟ آرغ!";
+	mes "لا أستطيع العودة حتى أحصل";
+	mes "على ميدالية جائزة واحدة على الأقل!";
+	next;
+	mes "[عضو نقابة الحدادين]";
+	mes "نعم، لقد كلفني";
+	mes "مصنع أينبروخ";
+	mes "بالحصول على بعض ميداليات الجائزة لأنها";
+	mes "مصنوعة من هذا المعدن النادر. لكن يبدو أنهم اختاروا";
+	mes "الشخص الخطأ لهذه المهمة...";
+	next;
+	mes "[عضو نقابة الحدادين]";
+	mes "أعني، لقد كنت هنا";
+	mes "منذ زمن طويل ولم أفز";
+	mes "بأي شيء حتى الآن! مهلا، اصنع لي";
+	mes "معروفا وأعط أي";
+	mes "ميداليات جائزة إضافية قد تكون لديك";
+	mes "إلى مصنع أينبروخ، حسنا؟";
+	close;
+}
+
+p_track01,45,42,3	script	رجل شارد الذهن#single::Absent Minded Man#single	881,{
+	mes "[رجل شارد الذهن]";
+	mes "قل، هل أنت هنا للمراهنة";
+	mes "على سباقات الوحوش؟ لقد";
+	mes "قطعت كل هذه المسافة إلى هنا، فقط";
+	mes "لأن رجلا غريبا";
+	mes "طلب مني الفوز بميداليات. هذا";
+	mes "هو السبب الوحيد لوجودي في هويغل...";
+	next;
+	mes "[رجل شارد الذهن]";
+	mes "لكنني أجريت أكثر من";
+	mes "100 رهان، ولم أفز";
+	mes "بأي منها! أعني، إذا راهنت";
+	mes "على نفس الوحش 6 مرات،";
+	mes "فينبغي أن أفوز مرة واحدة على الأقل،";
+	mes "أليس كذلك؟ ماذا يحدث؟!";
+	close;
+}
+
+hugel,5,5,3	script	مدير سباق الوحوش::Monster Race Manager	868,{
+	callfunc "F_GM_NPC";
+	mes "[مدير سباق الوحوش]";
+	mes "يمكنني تفعيل";
+	mes "وتعطيل شخصيات دخول الحلبة";
+	mes "الخاصة بسباقات الوحوش";
+	mes "الفردية والمزدوجة.";
+	next;
+	.@select = select("دخول السباق الفردي - تشغيل:دخول السباق المزدوج - تشغيل:دخول السباق الفردي - إيقاف:دخول السباق المزدوج - إيقاف");
+	mes "[مدير سباق الوحوش]";
+	mes "يرجى إدخال";
+	mes "كلمة المرور.";
+	next;
+	.@i = callfunc("F_GM_NPC",1854,0,0,2000);
+	if (.@i == -2) {
+		mes "[مدير سباق الوحوش]";
+		mes "خطأ.";
+	} else if (.@i == -1) {
+		mes "[مدير سباق الوحوش]";
+		mes "كلمة المرور غير صحيحة.";
+	} else if (.@i == 1) {
+		mes "[مدير سباق الوحوش]";
+		switch(.@select) {
+		case 1:
+			mes "تم تشغيل شخصية دخول";
+			mes "سباق الوحوش الفردي.";
+			donpcevent "Eckar Ellebird#single::OnEnable";
+			close;
+		case 2:
+			mes "تم تشغيل شخصية دخول";
+			mes "سباق الوحوش المزدوج.";
+			donpcevent "Eckar Erenes#double::OnEnable";
+			close;
+		case 3:
+			mes "تم إيقاف شخصية دخول";
+			mes "سباق الوحوش الفردي.";
+			donpcevent "Eckar Ellebird#single::OnDisable";
+			close;
+		case 4:
+			mes "تم إيقاف شخصية دخول";
+			mes "سباق الوحوش المزدوج.";
+			donpcevent "Eckar Erenes#double::OnDisable";
+			close;
+		}
+	}
+	close;
+}

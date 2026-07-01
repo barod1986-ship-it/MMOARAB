@@ -1,0 +1,174 @@
+//===== rAthena Script =======================================
+//= Geffen Guides
+//===== By: ==================================================
+//= kobra_k88; L0ne_W0lf
+//===== Current Version: =====================================
+//= 1.4a
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official COnversion]
+//= Guides for the City of Geffen
+//===== Additional Comments: =================================
+//= Fully working.  Added a guide at every exit.
+//= 1.1 Now using duplicate command.
+//= 1.2 Optimized, updated common guide names [Lupus]
+//= 1.2a Small note that the BS guild moved to Einbroch [Poki#3]
+//= 1.3 Removed Duplicates [Silent]
+//= 1.4a Rescripted to official 10.3 standards. [L0ne_W0lf]
+//= 1.4 Fixed some errors with the loop[Samuray22]
+//=     Thanks to $ephiroth.
+//============================================================
+
+geffen,203,116,0	script	مرشد#gef::GefGuide	705,{
+	cutin "gef_soldier",2;
+	mes "[مرشد غيفن]";
+	mes "مرحبا بك في غيفن،";
+	mes "مدينة السحر. إذا كنت";
+	mes "تحتاج إلى أي إرشاد حول";
+	mes "المدينة، فلا تتردد في سؤالي";
+	mes "وسأبذل جهدي لمساعدتك. ^FFFFFFكوبو^000000";
+	set .@loop1,1;
+	while (.@loop1) {
+		next;
+		switch(select("دليل المدينة:إزالة العلامات من الخريطة المصغرة:ملاحظة.:إلغاء")) {
+		case 1:
+			mes "[مرشد غيفن]";
+			mes "يرجى اختيار";
+			mes "موقع من";
+			mes "القائمة التالية.";
+			if (compass_check == 0) {
+				mes "هل تريد مني";
+				mes "وضع علامات للمواقع";
+				mes "على خريطتك المصغرة؟";
+				next;
+				if (select("نعم:لا") == 1) set .@compass_check,1;
+			}
+			set .@loop2,1;
+			while (.@loop2) {
+				if (.@wait_button_chk == 0) set .@wait_button_chk,1;
+				else next;
+//				next;
+				switch(select("^FF0000أكاديمية السحر^000000:متجر الحدادة:متجر الأسلحة:متجر الأدوات:الحانة:النزل:برج غيفن:إلغاء")) {
+				case 1:
+					mes "[مرشد غيفن]";
+					mes "تتولى أكاديمية السحر في";
+					mes "شمال غرب غيفن";
+					mes "تغييرات الوظيفة إلى وظيفة الساحر.";
+					if (.@compass_check)
+						viewpoint 1,61,180,2,0xFF0000;
+					break;
+				case 2:
+					mes "[مرشد غيفن]";
+					mes "يقع متجر الحدادة";
+					mes "جنوب شرق";
+					mes "مركز غيفن مباشرة.";
+					if (.@compass_check)
+						viewpoint 1,182,59,3,0x00FF00;
+					break;
+				case 3:
+					mes "[مرشد غيفن]";
+					mes "يمكن العثور على";
+					mes "متجر الأسلحة شمال غرب";
+					mes "مركز غيفن.";
+					if (.@compass_check)
+						viewpoint 1,99,140,4,0xFF00FF;
+					break;
+				case 4:
+					mes "[مرشد غيفن]";
+					mes "يمكنك العثور على";
+					mes "متجر الأدوات بالتوجه";
+					mes "جنوب غرب من";
+					mes "مركز غيفن.";
+					if (.@compass_check)
+						viewpoint 1,44,86,5,0xFF00FF;
+					break;
+				case 5:
+					mes "[مرشد غيفن]";
+					mes "يمكن العثور على الحانة";
+					mes "شمال شرق";
+					mes "برج غيفن.";
+					if (.@compass_check)
+						viewpoint 1,138,138,6,0xFF00FF;
+					break;
+				case 6:
+					mes "[مرشد غيفن]";
+					mes "يمكن العثور على النزل";
+					mes "بالتوجه";
+					mes "شمال شرق من";
+					mes "مركز غيفن.";
+					if (.@compass_check)
+						viewpoint 1,172,174,7,0xFF00FF;
+					break;
+				case 7:
+					mes "[مرشد غيفن]";
+					mes "يقع برج غيفن";
+					mes "في وسط المدينة.";
+					mes "نقابة السحرة العظماء في";
+					mes "الأعلى، بل وحتى يوجد زنزانة";
+					mes "تحته. تحيط بذلك البرج";
+					mes "ألغاز كثيرة...";
+					if (.@compass_check)
+						viewpoint 1,120,114,8,0x00FF00;
+					break;
+				case 8:
+					mes "[مرشد غيفن]";
+					mes "يرجى أن تطلب مني ''إزالة";
+					mes "العلامات من الخريطة المصغرة'' إذا";
+					mes "لم تعد ترغب في عرض";
+					mes "علامات المواقع";
+					mes "على خريطتك المصغرة.";
+					set .@loop2,0;
+					break;
+				}
+			}
+			break;
+		case 2:
+			viewpoint 2,237,41,2,0xFF0000;
+			viewpoint 2,237,41,3,0x00FF00;
+			viewpoint 2,46,345,4,0xFF00FF;
+			viewpoint 2,175,220,5,0xFF00FF;
+			viewpoint 2,134,221,6,0xFF00FF;
+			viewpoint 2,204,214,7,0xFF00FF;
+			viewpoint 2,204,214,8,0x00FF00;
+			set .@compass_check,0;
+			break;
+		case 3:
+			mes "[مرشد غيفن]";
+			mes "لقد أتاحت لنا التطورات في السحر";
+			mes "والتقنية تحديث";
+			mes "نظام المعلومات لدينا،";
+			mes "مما يتيح لنا وضع";
+			mes "علامات للمواقع على خريطتك المصغرة";
+			mes "لتسهيل التنقل.";
+			next;
+			mes "[مرشد غيفن]";
+			mes "توجد خريطتك المصغرة";
+			mes "في الزاوية العلوية اليمنى";
+			mes "من الشاشة. إذا لم تستطع";
+			mes "رؤيتها، فاضغط مفاتيح Ctrl + Tab";
+			mes "أو اضغط زر ''Map'' في نافذة المعلومات الأساسية.";
+			next;
+			mes "[مرشد غيفن]";
+			mes "على خريطتك المصغرة،";
+			mes "اضغط على رمزي ''+'' و ''-''";
+			mes "لتكبير وتصغير";
+			mes "خريطتك المصغرة. نأمل";
+			mes "أن تستمتع برحلاتك";
+			mes "هنا في مدينة غيفن.";
+			break;
+		case 4:
+			mes "[مرشد غيفن]";
+			mes "حسنا، أيها مغامر.";
+			mes "أتمنى لك السلامة في";
+			mes "رحلاتك عبر";
+			mes "الأراضي التي قد تسافر إليها...";
+			close2;
+			set .@loop1,0;
+		}
+	}
+	cutin "gef_soldier",255;
+	end;
+}
+
+geffen,118,62,0	duplicate(GefGuide)	مرشد#2gef::Guide#2gef	705

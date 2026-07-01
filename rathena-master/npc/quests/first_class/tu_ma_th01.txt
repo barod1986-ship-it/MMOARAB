@@ -1,0 +1,796 @@
+//===== rAthena Script =======================================
+//= Thief Mage Quest Story Mode
+//===== By: ==================================================
+//= Fix up by Jukka
+//===== Current Version: =====================================
+//= 2.0
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Battle Traces from Thief and Magician training quests.
+//===== Additional Comments: =================================
+//= 1.0 Fully working
+//= 1.1 optimized [Lupus]
+//= 1.2 Changed "battle_trace" to "Trace of Battle". [L0ne_W0lf]
+//= 1.3 Misc. updates. [L0ne_W0lf]
+//= 2.0 Clean-up. [Capuche]
+//============================================================
+
+// Battle Traces 1
+//============================================================
+moc_fild12,166,369,0	script	آثار المعركة#1::Trace of Battle#1	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتشير العلامات هنا";
+		mes "إلى وقوع اشتباك عنيف";
+		mes "في هذا المكان،";
+		mes "لكن لا يمكنك تحديد";
+		mes "ما حدث بالضبط...^000000";
+	} else if ((tu_thief01 < 5 && .@class_thief) || (.@class_mage && tu_magician01 < 8)) {
+		mes "^3355FFتعثر على آثار سم";
+		mes "استخدم أثناء معركة. تشعر";
+		mes "بشدة تأثيره، فتقرر ألا";
+		mes "تقترب منه أكثر.^000000";
+		if (.@class_mage)
+			specialeffect EF_VENOMDUST2;
+	} else if (tu_thief01 == 5 && .@class_thief) {
+		mes "^3355FFتعثر على آثار سم";
+		mes "استخدم أثناء معركة. ويصيبك";
+		mes "دوار حاد";
+		mes "بعد تفحص المكان.^000000";
+		tu_thief01 = 6;
+		sc_start SC_Poison,60000,0;
+		specialeffect EF_VENOMDUST2;
+	} else if (tu_thief01 == 6 && .@class_thief) {
+		mes "^3355FFتعثر على آثار سم";
+		mes "استخدم أثناء معركة. ويصيبك";
+		mes "دوار حاد";
+		mes "بعد تفحص المكان.^000000";
+		sc_start SC_Poison,60000,0;
+		specialeffect EF_VENOMDUST2;
+	} else if (tu_thief01 == 7 && .@class_thief) {
+		mes "^3355FFتعثر على آثار سم";
+		mes "استخدم أثناء معركة. تشعر";
+		mes "بشدة تأثيره، فتقرر ألا";
+		mes "تقترب منه أكثر.^000000";
+	} else if ((.@class_thief && tu_thief01 == 8) || (.@class_mage && tu_magician01 == 8)) {
+		mes "^3355FFتنتشر هنا آثار معركة";
+		mes "تتفرع في";
+		mes "اتجاهات مختلفة. ومن";
+		mes "الرائحة الغريبة التي تملأ";
+		mes "المنطقة، يتضح أن نوعا";
+		mes "من السم الفتاك قد استخدم.^000000";
+		next;
+		mes "^3355FFومع ذلك...";
+		mes "يتجه مسار هذه";
+		mes "المعركة بوضوح";
+		mes "نحو الجنوب.^000000";
+		if (tu_magician01 == 8)
+			tu_magician01 = 9;
+		else
+			tu_thief01 = 9;
+	} else {
+		mes "^3355FFتعثر على آثار";
+		mes "مطاردة محتدمة";
+		mes "تتجه جنوبا.";
+	}
+	close;
+}
+
+// Battle Traces 2
+//============================================================
+moc_fild12,173,215,0	script	آثار المعركة#2::Trace of Battle#2	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتشير العلامات هنا";
+		mes "إلى وقوع اشتباك عنيف";
+		mes "في هذا المكان،";
+		mes "لكن لا يمكنك تحديد";
+		mes "ما حدث بالضبط...^000000";
+	} else if ((tu_thief01 < 9 && .@class_thief) || (tu_magician01 < 9 && .@class_mage)) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تدل على مرور عدد كبير";
+		mes "من الأشخاص";
+		mes "عبر هذه البقعة.^000000";
+	} else if ((tu_thief01 == 9 && .@class_thief) || (tu_magician01 == 9 && .@class_mage)) {
+		mes "^3355FFتعثر على آثار";
+		mes "المطاردة، وهي";
+		mes "تواصل امتدادها شرقا.^000000";
+		if (tu_magician01 == 9)
+			tu_magician01 = 10;
+		else
+			tu_thief01 = 10;
+	} else {
+		mes "^3355FFتتجه آثار";
+		mes "هذه المطاردة";
+		mes "نحو الشرق.^000000";
+	}
+	close;
+}
+
+// Battle Traces 3
+//============================================================
+moc_fild12,276,165,0	script	آثار المعركة#3::Trace of Battle#3	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if ((tu_thief01 < 10 && .@class_thief) || (tu_magician01 < 10 && .@class_mage)) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تدل على مرور عدد كبير";
+		mes "من الأشخاص";
+		mes "عبر هذه البقعة.^000000";
+	} else if ((tu_thief01 == 10 && .@class_thief) || (tu_magician01 == 10 && .@class_mage)) {
+		mes "^3355FFتفحص هذه الآثار";
+		mes "وتلاحظ أن إحدى مجموعات";
+		mes "آثار الأقدام تبدو واضحة";
+		mes "على نحو متعمد، كأنها";
+		mes "تركت ليعثر عليها أحد.^000000";
+		if (tu_magician01 == 10)
+			tu_magician01 = 11;
+		else
+			tu_thief01 = 11;
+	} else {
+		mes "^3355FFإنها مجموعة";
+		mes "غريبة جدا";
+		mes "من آثار الأقدام.^000000";
+	}
+	close;
+}
+
+// Battle Traces 4
+//============================================================
+moc_fild11,39,163,0	script	آثار المعركة#4::Trace of Battle#4	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتشير العلامات هنا";
+		mes "إلى وقوع اشتباك عنيف";
+		mes "في هذا المكان،";
+		mes "لكن لا يمكنك تحديد";
+		mes "ما حدث بالضبط...^000000";
+	} else if ((tu_thief01 < 11 && .@class_thief) || (tu_magician01 < 11 && .@class_mage)) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تدل على مرور عدد كبير";
+		mes "من الأشخاص";
+		mes "عبر هذه البقعة.^000000";
+	} else if ((tu_thief01 == 11 && .@class_thief) || (tu_magician01 == 11 && .@class_mage)) {
+		mes "^3355FFتكشف هذه الآثار";
+		mes "عن ظهور مجموعة أخرى";
+		mes "من آثار الأقدام.";
+		mes "ويبدو أن";
+		mes "شخصا آخر تدخل.";
+		mes "هذه الآثار أوضح بكثير";
+		mes "وأصغر حجما.^000000";
+		if (tu_magician01 == 11)
+			tu_magician01 = 12;
+		else
+			tu_thief01 = 12;
+	} else {
+		mes "^3355FFتكشف هذه الآثار";
+		mes "أن شخصا آخر";
+		mes "قد تدخل";
+		mes "في هذا الاشتباك المحتدم.^000000";
+	}
+	close;
+}
+
+// Battle Traces 5
+//============================================================
+moc_fild11,205,52,0	script	آثار المعركة#5::Trace of Battle#5	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if ((tu_thief01 < 12 && .@class_thief) || (tu_magician01 < 12 && .@class_mage)) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تدل على مرور عدد كبير";
+		mes "من الأشخاص";
+		mes "عبر هذه البقعة.^000000";
+	} else if ((tu_thief01 == 12 && .@class_thief) || (tu_magician01 == 12 && .@class_mage)) {
+		mes "^3355FFتنقسم آثار المعركة";
+		mes "الآن وتتجه";
+		mes "شمالا وجنوبا. لكن،^000000";
+		if (countitem(506) == 0) {// Green_Potion
+			mes "^3355FFتوجد بركة من سم قوي يجب تحييدها قبل أن تتمكن من تفحص المكان.^000000";
+			close;
+		}
+		mes "^3355FFتوجد بركة من سم قوي يجب تحييدها قبل أن تتمكن من تفحص المكان.^000000";
+		next;
+		mes "^3355FFلحسن الحظ، يمكنك";
+		mes "تحييد السم";
+		mes "مؤقتا باستخدام";
+		mes "جرعة خضراء.^000000";
+		next;
+		switch(select("استخدم جرعة خضراء.:لا تستخدمها.")) {
+		case 1:
+			mes "^3355FFيضعف السم";
+			mes "ويتبخر جزء منه،";
+			mes "فتظهر قطعة قماش";
+			mes "كانت مخفية في البركة.^000000";
+			next;
+			switch(select("اتركها.:افحصها.")) {
+			case 1:
+				mes "["+strcharinfo(0)+"]";
+				mes "إنها مجرد قطعة قماش،";
+				mes "ولا تستحق";
+				mes "كل هذا الاهتمام.";
+				close;
+			case 2:
+				mes "["+strcharinfo(0)+"]";
+				mes "مهلا... توجد";
+				mes "بقع دم على القماش،";
+				mes "وعليه كتابة";
+				mes "لا أستطيع قراءتها.";
+				mes "ربما تكون هذه";
+				mes "دليلا على ما حدث؟";
+				if (tu_thief01 == 12)
+					tu_thief01 = 13;
+				else
+					tu_magician01 = 13;
+				next;
+				mes "^3355FFتأخذ قطعة";
+				mes "القماش من بركة";
+				mes "السم وتحتفظ بها.^000000";
+				close;
+			}
+		case 2:
+			mes "["+strcharinfo(0)+"]";
+			mes "همم...";
+			mes "ربما يكون";
+			mes "اتباع هذا المسار أسرع";
+			mes "من التوقف هنا";
+			mes "لتفحص المكان.";
+			close;
+		}
+	} else {
+		mes "^3355FFلا تعثر هنا";
+		mes "على شيء آخر،";
+		mes "سوى الآثار";
+		mes "التي تتفرع باتجاه";
+		mes "الشمال والجنوب.^000000";
+	}
+	close;
+}
+
+// Battle Traces 6
+//============================================================
+moc_fild11,226,235,0	script	آثار المعركة#6::Trace of Battle#6	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if ((tu_thief01 < 13 && .@class_thief) || (tu_magician01 < 13 && .@class_mage)) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تدل على مرور عدد كبير";
+		mes "من الأشخاص";
+		mes "عبر هذه البقعة.^000000";
+	} else {
+		mes "^3355FFيبدو أن آثار الأقدام";
+		mes "هذه تتجه";
+		mes "نحو الشمال";
+		mes "آتية من الجنوب.";
+		mes "لكن لا يمكنك";
+		mes "التأكد من ذلك بعد.^000000";
+	}
+	close;
+}
+
+// Battle Traces 7
+//============================================================
+moc_fild11,184,342,0	script	آثار المعركة#7::Trace of Battle#7	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if ((tu_thief01 < 13 && .@class_thief) || (tu_magician01 < 13 && .@class_mage)) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تدل على مرور عدد كبير";
+		mes "من الأشخاص";
+		mes "عبر هذه البقعة.^000000";
+	} else {
+		mes "^3355FFتبدو الآثار هنا متداخلة،";
+		mes "فقد دار في المكان";
+		mes "قتال استمر";
+		mes "مدة طويلة. إلا أن آثار الأقدام";
+		mes "تتجه بوضوح جنوبا.^000000";
+	}
+	close;
+}
+
+// Battle Traces 8
+//============================================================
+moc_fild17,213,358,0	script	آثار المعركة#8::Trace of Battle#8	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if ((tu_thief01 < 13 && .@class_thief) || (tu_magician01 < 13 && .@class_mage)) {
+		mes "^3355FFتوجد مجموعتان";
+		mes "واضحتان من";
+		mes "آثار الأقدام في هذه";
+		mes "المنطقة، لكنهما لا";
+		mes "تحملان أي دلالة";
+		mes "في الوقت الحالي.^000000";
+	} else if ((tu_thief01 == 13 && .@class_thief) || (tu_magician01 == 13 && .@class_mage)) {
+		mes "^3355FFيبدو في هذه المنطقة";
+		mes "أن هناك";
+		mes "مجموعتين فقط من آثار الأقدام.";
+		mes "فماذا حدث للمجموعة الثالثة";
+		mes "التي وجدتها من قبل؟^000000";
+		if (tu_magician01 == 13)
+			tu_magician01 = 14;
+		else
+			tu_thief01 = 14;
+	} else {
+		mes "^3355FFتشير الأدلة";
+		mes "التي عثرت عليها هنا";
+		mes "إلى أن المعركة";
+		mes "باتت بين شخصين فقط";
+		mes "منذ هذه النقطة.^000000";
+	}
+	close;
+}
+
+// Battle Traces 9
+//============================================================
+moc_fild17,228,274,0	script	آثار المعركة#9::Trace of Battle#9	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if ((tu_thief01 < 14 && .@class_thief) || (tu_magician01 < 14 && .@class_mage)) {
+		mes "^3355FFتنتشر آثار";
+		mes "معركة ما";
+		mes "في أنحاء";
+		mes "هذه البقعة.^000000";
+	} else if ((tu_thief01 == 14 && .@class_thief) || (tu_magician01 == 14 && .@class_mage)) {
+		mes "^3355FFتتبع المسار،";
+		mes "وعلى الرغم من اختلاط الآثار الآتية من";
+		mes "الشمال والجنوب الشرقي";
+		mes "بعضها ببعض، يبدو أن المعركة تواصلت شرقا.";
+		mes "لكن من الأفضل تفحص هذه";
+		mes "البقعة بمزيد من الدقة...^000000";
+		if (tu_magician01 == 14)
+			tu_magician01 = 15;
+		else
+			tu_thief01 = 15;
+	} else if ((tu_thief01 == 15 && .@class_thief) || (tu_magician01 == 15 && .@class_mage)) {
+		if (rand(1,10) == 7) {
+			mes "^3355FFبعد تفحص هذه";
+			mes "المنطقة بدقة،";
+			mes "تعثر على قطعة أخرى من";
+			mes "القماش الملطخ بالدم.";
+			mes "تقرر الاحتفاظ بها";
+			mes "على أمل أن تمنحك";
+			mes "مزيدا من الأدلة.^000000";
+			if (tu_magician01 == 15)
+				tu_magician01 = 16;
+			else
+				tu_thief01 = 16;
+		} else {
+			mes "^3355FFلا تعثر على شيء،";
+			mes "لكن يلازمك شعور";
+			mes "بوجود";
+			mes "دليل مهم";
+			mes "ينبغي أن تجده هنا. لا بأس بمواصلة التفتيش.^000000";
+		}
+	} else {
+		mes "^3355FFمن الأفضل مواصلة";
+		mes "اتباع المسار";
+		mes "المتجه غربا.^000000";
+	}
+	close;
+}
+
+// Battle Traces 10
+//============================================================
+moc_fild17,34,292,0	script	آثار المعركة#10::Trace of Battle#10	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if ((tu_thief01 < 16 && .@class_thief) || (tu_magician01 < 16 && .@class_mage)) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تشير إلى وجود عدد كبير";
+		mes "من الأشخاص في";
+		mes "هذه المنطقة من قبل.^000000";
+	} else if ((tu_thief01 == 16 && .@class_thief) || (tu_magician01 == 16 && .@class_mage)) {
+		mes "^3355FFتبدو آثار الأقدام الأولى،";
+		mes "والتي تعود على الأرجح إلى";
+		mes "الشخص المطارد،";
+		mes "أكثر اضطرابا، وكأن الإرهاق";
+		mes "واليأس تمكنا منه. وتتجه الآثار غربا.^000000";
+		if (tu_magician01 == 16)
+			tu_magician01 = 17;
+		else
+			tu_thief01 = 17;
+	} else {
+		mes "^3355FFيتجه المسار من";
+		mes "هذه النقطة";
+		mes "نحو الغرب.^000000";
+	}
+	close;
+}
+
+// Battle Traces 11
+//============================================================
+moc_fild18,346,296,0	script	آثار المعركة#11::Trace of Battle#11	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if ((tu_thief01 < 17 && .@class_thief) || (tu_magician01 < 17 && .@class_mage)) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تشير إلى وجود عدد كبير";
+		mes "من الأشخاص في";
+		mes "هذه المنطقة من قبل.^000000";
+	} else if ((tu_thief01 == 17 && .@class_thief) || (tu_magician01 == 17 && .@class_mage)) {
+		mes "^3355FFأثناء تتبع";
+		mes "المسار، تلاحظ آثارا";
+		mes "لدماء أريقت";
+		mes "في هذه المنطقة. يبدو أن";
+		mes "أحدهم أصيب";
+		mes "بجروح بالغة هنا.^000000";
+		if (tu_magician01 == 17)
+			tu_magician01 = 18;
+		else
+			tu_thief01 = 18;
+	} else {
+		mes "^3355FFبما أن أحد المشاركين";
+		mes "في الصراع كان ينزف،";
+		mes "فقد يسهل الآن العثور";
+		mes "على بقية آثار المطاردة.^000000";
+	}
+	close;
+}
+
+// Battle Traces 12
+//============================================================
+moc_fild18,309,257,0	script	آثار المعركة#12::Trace of Battle#12	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if ((tu_thief01 < 18 && .@class_thief) || (tu_magician01 < 18 && .@class_mage)) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تشير إلى وجود عدد كبير";
+		mes "من الأشخاص في";
+		mes "هذه المنطقة من قبل.^000000";
+	} else if ((tu_thief01 == 18 && .@class_thief) || (tu_magician01 == 18 && .@class_mage)) {
+		mes "^3355FFتتجه هذه الآثار";
+		mes "شمالا، ويبدو";
+		mes "أن المطارد";
+		mes "أصبح قريبا جدا";
+		mes "من فريسته.^000000";
+		if (tu_magician01 == 18)
+			tu_magician01 = 19;
+		else
+			tu_thief01 = 19;
+	} else {
+		mes "^3355FFيتجه مسار هذه";
+		mes "المطاردة الآن";
+		mes "نحو الشمال.^000000";
+	}
+	close;
+}
+
+// Battle Traces 13
+//============================================================
+moc_fild18,177,333,0	script	آثار المعركة#13::Trace of Battle#13	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if (tu_thief01 < 19 && .@class_thief) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تشير إلى وجود عدد كبير";
+		mes "من الأشخاص في";
+		mes "هذه المنطقة من قبل.^000000";
+	} else if (tu_magician01 < 19 && .@class_mage) {
+		mes "يبدو أن مجموعة كبيرة مرت من هنا.";
+	} else if ((tu_thief01 == 19 && .@class_thief) || (tu_magician01 == 19 && .@class_mage)) {
+		mes "^3355FFوفقا لهذه";
+		mes "الآثار، يبدو أن";
+		mes "أشخاصا آخرين";
+		mes "انضموا إلى المعركة، التي";
+		mes "يبدو أن مسارها يتجه الآن";
+		mes "نحو الجنوب الغربي.^000000";
+		if (tu_magician01 == 19)
+			tu_magician01 = 20;
+		else
+			tu_thief01 = 20;
+	} else {
+		mes "^3355FFيبدو أن";
+		mes "مسار المعركة يتجه";
+		mes "نحو الجنوب الغربي";
+		mes "من هذه النقطة.^000000";
+	}
+	close;
+}
+
+// Battle Traces 14
+//============================================================
+moc_fild18,111,303,0	script	آثار المعركة#14::Trace of Battle#14	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if ((tu_thief01 < 20 && .@class_thief) || (tu_magician01 < 20 && .@class_mage)) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تشير إلى وجود عدد كبير";
+		mes "من الأشخاص في";
+		mes "هذه المنطقة من قبل.^000000";
+	} else if ((tu_thief01 == 20 && .@class_thief) || (tu_magician01 == 20 && .@class_mage)) {
+		mes "^3355FFيبدو في هذه المنطقة";
+		mes "أن مزيدا من الأشخاص";
+		mes "انضموا إلى المعركة، وأن";
+		mes "المطاردة تتجه بوضوح";
+		mes "نحو الجنوب.^000000";
+		if (tu_magician01 == 20)
+			tu_magician01 = 21;
+		else
+			tu_thief01 = 21;
+	} else {
+		mes "^3355FFيتجه مسار";
+		mes "هذه المعركة";
+		mes "نحو الجنوب.^000000";
+	}
+	close;
+}
+
+// Battle Traces 15
+//============================================================
+moc_fild18,109,197,0	script	آثار المعركة#15::Trace of Battle#15	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if (tu_thief01 < 21 && .@class_thief) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تشير إلى وجود عدد كبير";
+		mes "من الأشخاص في";
+		mes "هذه المنطقة من قبل.^000000";
+	} else if (tu_magician01 < 21 && .@class_mage)
+		mes "يبدو أن مجموعة كبيرة مرت من هنا.";
+	else if ((tu_thief01 == 21 && .@class_thief) || (tu_magician01 == 21 && .@class_mage)) {
+		mes "^3355FFتغطي هذه المنطقة";
+		mes "آثار واضحة";
+		mes "لمعركة عنيفة، وتنتشر";
+		mes "بقايا السم";
+		mes "على الأرض في كل مكان.^000000";
+		next;
+		switch(select("واصل تتبع الآثار.:تفحص المنطقة أكثر.")) {
+		case 1:
+			mes "^3355FFتفحص";
+			mes "المسار، لكن لا يمكنك";
+			mes "تحديد الاتجاه";
+			mes "الذي تواصلت فيه";
+			mes "المعركة...^000000";
+			close;
+		case 2:
+			mes "^3355FFتعثر على مجموعة من";
+			mes "الفخاخ المحملة بأنواع";
+			mes "مختلفة من السموم. وقد اختلطت";
+			mes "الفخاخ التي انطلقت";
+			mes "بالفخاخ التي";
+			mes "لم تنطلق بعد.^000000";
+			if (tu_thief01 == 21)
+				tu_thief01 = 22;
+			else
+				tu_magician01 = 22;
+			close;
+		}
+	} else if ((tu_thief01 == 22 && .@class_thief) || (tu_magician01 == 22 && .@class_mage)) {
+		if (rand(1,3) == 3) {
+			mes "^3355FFيلفت أحد الفخاخ";
+			mes "انتباهك أكثر";
+			mes "من غيره. ربما";
+			mes "ينبغي سكب";
+			mes "جرعة خضراء عليه";
+			mes "لتحييده أولا.^000000";
+			next;
+			switch(select("اسكب جرعة خضراء.:لا تستخدم الجرعة.")) {
+			case 1:
+				if (countitem(506) < 1) {// Green_Potion
+					mes "^3355FFللأسف، لا";
+					mes "تملك جرعة";
+					mes "خضراء لتسكبها";
+					mes "على هذا الفخ...^000000";
+					close;
+				} else {
+					mes "^3355FFلم يؤد سكب";
+					mes "الجرعة الخضراء";
+					mes "إلى حدوث";
+					mes "أي شيء. ربما";
+					mes "ينبغي تجربة طريقة أخرى.^000000";
+					delitem 506,1; //Green_Potion
+					if (tu_thief01 == 22)
+						tu_thief01 = 23;
+					else
+						tu_magician01 = 23;
+					close;
+				}
+			case 2:
+				mes "["+strcharinfo(0)+"]";
+				mes "أظن...";
+				mes "سأواصل تفحص";
+				mes "هذه المنطقة قليلا.";
+				close;
+			}
+		} else {
+			mes "^3355FFعن طريق الخطأ،";
+			mes "تشغل أحد";
+			mes "الفخاخ في المنطقة.^000000";
+			sc_start SC_Poison,60000,0;
+			specialeffect EF_VENOMDUST2;
+			percentheal -30,0;
+		}
+	} else if ((tu_thief01 == 23 && .@class_thief) || (tu_magician01 == 23 && .@class_mage)) {
+		if (countitem(511) > 0 && countitem(716) > 0) {
+			mes "^3355FFتطحن";
+			mes "عشب أخضر";
+			mes "وتنثره على";
+			mes "الفخ، ثم تضع";
+			mes "فوقه جوهرة حمراء.";
+			mes "تتوهج الجوهرة";
+			mes "وتذوب ببطء...^000000";
+			next;
+			mes "^3355FFرغم عدم إلمامك";
+			mes "الكامل";
+			mes "بعلوم السموم";
+			mes "والترياقات، تنجح";
+			mes "في تفكيك";
+			mes "الفخ. ويمكنك الآن بأمان";
+			mes "تفحص ما بداخله.^000000";
+			delitem 511,1; //Green_Herb
+			delitem 716,1; //Red_Gemstone
+			if (tu_thief01 == 23)
+				tu_thief01 = 24;
+			else
+				tu_magician01 = 24;
+		} else if (countitem(511) > 0) {
+			mes "^3355FFينبغي محاولة";
+			mes "تفكيك هذا الفخ";
+			mes "باستخدام مواد محفزة";
+			mes "مرتبطة بعلاج";
+			mes "السموم أو استخدامها. لديك";
+			mes "عشب أخضر، لذا";
+			mes "تنثره على الفخ.^000000";
+			next;
+			mes "^3355FFلكن لا يحدث";
+			mes "شيء. يبدو أنك";
+			mes "تحتاج إلى مادة محفزة أخرى";
+			mes "إلى جانب العشب الأخضر";
+			mes "الذي لديك كي";
+			mes "تفكك الفخ.^000000";
+		} else if (countitem(716) > 0) {
+			mes "^3355FFينبغي محاولة";
+			mes "تفكيك هذا الفخ";
+			mes "باستخدام مواد محفزة";
+			mes "مرتبطة بعلاج السموم";
+			mes "أو استخدامها. لديك";
+			mes "جوهرة حمراء، فتطحنها";
+			mes "وتنثر مسحوقها على الفخ.^000000";
+			next;
+			mes "^3355FFلكن لا يحدث";
+			mes "شيء. يبدو أنك";
+			mes "تحتاج إلى مادة محفزة أخرى";
+			mes "مع الجوهرة الحمراء";
+			mes "التي لديك كي";
+			mes "تفكك الفخ.^000000";
+		} else {
+			mes "^3355FFينبغي محاولة";
+			mes "تفكيك هذا الفخ";
+			mes "باستخدام مواد محفزة";
+			mes "مرتبطة بعلاج";
+			mes "السموم أو استخدامها. لكن";
+			mes "ما المواد المطلوبة؟^000000";
+		}
+	} else if ((tu_thief01 == 24 && .@class_thief) || (tu_magician01 == 24 && .@class_mage)) {
+		mes "^3355FFداخل الفخ بعد تفكيكه،";
+		mes "تعثر على قطعة أخرى";
+		mes "من القماش الغريب";
+		mes "الملطخ بالدم.";
+		mes "تأخذها معك";
+		mes "على أمل أن تكون";
+		mes "دليلا مفيدا.^000000";
+		if (tu_thief01 == 24)
+			tu_thief01 = 25;
+		else
+			tu_magician01 = 25;
+	} else {
+		mes "^3355FFتتفحص المنطقة";
+		mes "مجددا، وتستنتج";
+		mes "أن مسار المعركة قد يتجه";
+		mes "نحو الجنوب.^000000";
+	}
+	close;
+}
+
+// Battle Traces 16
+//============================================================
+moc_fild18,156,96,0	script	آثار المعركة#16::Trace of Battle#16	CLEAR_NPC,{
+	.@class_thief = ( BaseClass == Job_Thief );
+	.@class_mage = ( BaseClass == Job_Mage );
+	if ((.@class_thief == 0 && .@class_mage == 0) || (eaclass()&EAJL_BABY)) {
+		mes "^3355FFتبدو هذه آثارا";
+		mes "لمطاردة أو";
+		mes "معركة، لكن";
+		mes "يصعب الجزم بذلك.^000000";
+	} else if ((tu_thief01 < 25 && .@class_thief) || (tu_magician01 < 25 && .@class_mage)) {
+		mes "^3355FFتظهر في المكان علامات";
+		mes "تشير إلى وجود مجموعة";
+		mes "كبيرة من الأشخاص في";
+		mes "هذه المنطقة لسبب ما.^000000";
+	} else if ((tu_thief01 == 25 && .@class_thief) || (tu_magician01 == 25 && .@class_mage)) {
+		mes "^3355FFتتجه هذه الآثار";
+		mes "إلى حافة الجرف،";
+		mes "حيث ينتهي المسار.";
+		mes "ويبدو أن الشخص";
+		mes "المطارد لقي مصيره هنا.^000000";
+		next;
+		mes "^3355FFتتجه آثار أقدام كثيرة";
+		mes "نحو حافة";
+		mes "الجرف، ثم تبتعد جميعها";
+		mes "عن المكان، باستثناء آثار";
+		mes "أقدام تعود بوضوح";
+		mes "إلى الشخص الذي";
+		mes "ظل مطاردا طوال الوقت...^3355FF";
+		next;
+		mes "^3355FFيبدو أنك";
+		mes "استخلصت كل ما يمكن";
+		mes "من هذا التحقيق. ومن";
+		mes "الأفضل العودة وإبلاغ";
+		mes "ييرهان بالنتائج قريبا.^000000";
+		if (tu_magician01 == 25)
+			tu_magician01 = 26;
+		else
+			tu_thief01 = 26;
+	} else {
+		mes "^3355FFهذه نهاية";
+		mes "المسار، فلا";
+		mes "توجد أي آثار أخرى";
+		mes "للمعركة.^000000";
+	}
+	close;
+}

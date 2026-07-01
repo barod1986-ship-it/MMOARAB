@@ -1,0 +1,149 @@
+//===== rAthena Script =======================================
+//= Acolyte Warpers
+//===== By: ==================================================
+//= Euphy
+//===== Current Version: =====================================
+//= 1.1
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Warpers to various towns.
+//===== Additional Comments: =================================
+//= 1.0 First version. [Euphy]
+//=     Unsure if this is on kRO, so disabled for now.
+//= 1.1 Added iRO VIP features. [Euphy]
+//=     The function is located in re/quests/eden/eden_vip.txt.
+//============================================================
+
+// Warpers :: acolyte_warp
+//============================================================
+prontera,98,121,4	script	مريدة#Prtclear::Acolyte#Prtclear	90,{
+	mes "[كيكي]";
+	mes "مرحبا أيها المغامر.";
+	mes "درست السحر في شتى أنحاء رون-ميدغارتس لأطور ما أراه إحدى أعظم المهارات المتاحة لفئة المريد.";
+	next;
+
+	if (is_function("VIP_iRO_Acolyte"))
+		callfunc "VIP_iRO_Acolyte","[كيكي]","يونو";
+
+	mes "[كيكي]";
+	mes "أنا المريدة الوحيدة التي أتقنت مهارة بوابة الانتقال حتى المستوى 10!";
+	emotion ET_THINK, playerattached();
+	next;
+	mes "[كيكي]";
+	mes "هذا صحيح! و...";
+	mes "أؤكد لك أنني لا أنسى المواقع التي حفظتها من قبل.";
+	mes "وفي يوم ما سأطور مهاراتي حتى أتمكن من الانتقال إلى أي مكان أشاء~";
+	next;
+	mes "[كيكي]";
+	mes "أنا مستعدة لنقلك إلى العديد من المواقع التي حفظتها مقابل رسوم رمزية.";
+	mes "هل ترغب في استخدام هذه الخدمة؟";
+	next;
+	switch(select("نعم:لا")) {
+	case 1:
+		mes "[كيكي]";
+		mes "إلى أين ترغب في الذهاب؟";
+		mes "أتمنى لك التوفيق في رحلتك.";
+		next;
+
+		setarray .@towns$[0], "إزلود", "غيفن", "بايون", "موروك", "ألبرتا", "ألديباران", "كومودو", "أومبالا", "يونو";
+		setarray .@cost[0],        600,     1200,    1200,     1200,      1800,          2200,     2200,     2200,   1800;
+
+		set .@size, getarraysize(.@towns$);
+		for(set .@i,0; .@i<.@size; set .@i,.@i+1)
+			set .@menu$, .@menu$+.@towns$[.@i]+" -> "+.@cost[.@i]+" زيني:";
+		set .@i, select(.@menu$+"إلغاء")-1;
+		if (.@i == .@size)
+			close;
+		if (Zeny < .@cost[.@i]) {
+			mes "[كيكي]";
+			mes "أنا آسفة، لكنك لا تملك";
+			mes "ما يكفي من الزيني لاستخدام";
+			mes "خدمة الانتقال. رسوم الانتقال";
+			mes "إلى "+.@towns$[.@i]+" هي "+.@cost[.@i]+" زيني.";
+			close;
+		}
+		specialeffect2 EF_READYPORTAL;
+		specialeffect2 EF_TELEPORTATION;
+		specialeffect2 EF_PORTAL;
+		next;
+		set Zeny, Zeny - .@cost[.@i];
+		switch(.@i) {
+			case 0: if (checkre(0)) warp "izlude",128,98; else warp "izlude",91,105; break;
+			case 1: warp "geffen",120,39; break;
+			case 2: warp "payon",161,58; break;
+			case 3: warp "morocc",156,46; break;
+			case 4: warp "alberta",117,56; break;
+			case 5: warp "aldebaran",168,112; break;
+			case 6: warp "comodo",209,143; break;
+			case 7: warp "umbala",100,154; break;
+			case 8: warp "yuno",158,125; break;
+		}
+		close;
+	case 2:
+		close;
+	}
+}
+
+yuno,142,184,6	script	مريدة#Junoclear::Acolyte#Junoclear	90,{
+	mes "[إيسالي]";
+	mes "مرحبا أيها المغامر.";
+	mes "اكتشفت أنا ورفيقتي كيكي طريقة لتعزيز قدراتنا في استخدام بوابة الانتقال.";
+	next;
+
+	if (is_function("VIP_iRO_Acolyte"))
+		callfunc "VIP_iRO_Acolyte","[إيسالي]","برونتيرا";
+
+	mes "[إيسالي]";
+	mes "رغم أنني لم أتقنها بالمستوى الذي بلغته كيكي، فقد تمكنت من الوصول إلى المستوى 5.";
+	emotion ET_THINK, playerattached();
+	next;
+	mes "[إيسالي]";
+	mes "ربما أستطيع يوما ما تطوير مهاراتي بما يكفي لاستخدام بوابة الانتقال إلى مزيد من المواقع المحفوظة.";
+	next;
+	mes "[إيسالي]";
+	mes "أنا مستعدة لنقلك إلى العديد من المواقع التي حفظتها مقابل رسوم رمزية.";
+	mes "هل ترغب في استخدام هذه الخدمة؟";
+	next;
+	switch(select("نعم:لا")) {
+	case 1:
+		mes "[إيسالي]";
+		mes "إلى أين ترغب في الذهاب؟";
+		mes "أتمنى لك التوفيق في رحلتك.";
+		next;
+
+		setarray .@towns$[0], "إينبروخ", "لايت هالزن", "هويغل", "راشيل", "برونتيرا";
+		setarray .@cost[0],         2200,          2200,    2200,     2200,       1800;
+
+		set .@size, getarraysize(.@towns$);
+		for(set .@i,0; .@i<.@size; set .@i,.@i+1)
+			set .@menu$, .@menu$+.@towns$[.@i]+" -> "+.@cost[.@i]+" زيني:";
+		set .@i, select(.@menu$+"إلغاء")-1;
+		if (.@i == .@size)
+			close;
+		if (Zeny < .@cost[.@i]) {
+			mes "[إيسالي]";
+			mes "أنا آسفة، لكنك لا تملك";
+			mes "ما يكفي من الزيني لاستخدام";
+			mes "خدمة الانتقال. رسوم الانتقال";
+			mes "إلى "+.@towns$[.@i]+" هي "+.@cost[.@i]+" زيني.";
+			close;
+		}
+		specialeffect2 EF_READYPORTAL;
+		specialeffect2 EF_TELEPORTATION;
+		specialeffect2 EF_PORTAL;
+		next;
+		set Zeny, Zeny - .@cost[.@i];
+		switch(.@i) {
+			case 0: warp "einbroch",67,195; break;
+			case 1: warp "lighthalzen",159,90; break;
+			case 2: warp "hugel",98,150; break;
+			case 3: warp "rachel",119,135; break;
+			case 4: warp "prontera",116,72; break;
+		}
+		close;
+	case 2:
+		close;
+	}
+}

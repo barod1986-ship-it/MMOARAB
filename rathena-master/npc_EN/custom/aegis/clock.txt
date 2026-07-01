@@ -1,0 +1,28 @@
+//===== rAthena Script =======================================
+//= Clock NPC
+//===== By: ======================================================
+//= wrywndp (https://www.youtube.com/@wrywndp)
+//===== Description: =========================================
+//= Clock NPC script (Pre-Renewal).
+//===== Additional Comments: =====================================
+//= This script is made for Ragnarok Offline Pre-Renewal Pack
+//= https://www.youtube.com/watch?v=aN5OCJdj2qA
+//============================================================
+
+aegis,89,84,4	script	Clock	111,{
+OnInit:
+	callsub OnUpdateClock;
+	initnpctimer;
+	end;
+
+OnTimer1000:
+	callsub OnUpdateClock;
+	initnpctimer;
+	end;
+
+OnUpdateClock:
+	.@format = 1; // 0 = 12-hour, 1 = 24-hour
+	delwaitingroom;
+	waitingroom ((.@format ? "      " : "    ") + gettimestr((.@format ? "%T" : "%r"), 21)), 0;
+	return;
+}

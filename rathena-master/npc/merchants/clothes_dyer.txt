@@ -1,0 +1,176 @@
+//===== rAthena Script ======================================= 
+//= Clothes Dyer
+//===== By: ================================================== 
+//= Usnul
+//===== Current Version: ===================================== 
+//= 2.5
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Clothes dyer with standard palletes
+//===== Additional Comments: ================================= 
+//= Fully working
+//= 2.1 Shortened some labels to make this script loading,
+//= Added Black+White Colors desc [Lupus]
+//= 2.1a added adv classes + baby class support [Lupus]
+//= 2.2 Spell checked. [Nexon]
+//= 2.3 Fixed dis $hit! [Poki#3]
+//= 2.4 Disabled cloth dyeing since it's not implemented
+//	   on official servers and cause your client to crash
+//	   [Playtester]
+//= 2.5 Optimized. [Euphy]
+//============================================================
+
+prt_in,284,168,2	script	الخياط غينيدين ريفير::Dyer Ginedin Rephere	55,{
+function Dyes;
+
+	set .@EnableDyes,1;	// Disable (set to 0) if palettes cause errors [see note v2.4]
+
+	set .n$,"[الخياط غينيدين ريفير]";
+	mes .n$;
+	mes "11... 12... همم... جيد. أظن أنني سأنتهي قبل حفلة الليلة. أوه! لم ألاحظ وجودك هنا!";
+	while(1) {
+		next;
+		mes .n$;
+		mes "كيف يمكنني خدمتك؟";
+		next;
+		switch(select("تحدث:صبغ الملابس:قائمة الأسعار:^777777إلغاء^000000")) {
+		case 1:
+			mes .n$;
+			mes "ربما تحسنت الأحوال قليلا، لكن عندما أنظر إلى كل الطلبات التي تلقيتها... أوف!";
+			mes "يبدو أن شابات رون-ميدغارتس ميسورات الحال جدا هذه الأيام.";
+			next;
+			mes .n$;
+			mes "لا أقصد أنهن يفرطن في الترف، بالطبع.";
+			mes "فلا عيب في السعي إلى الجمال والأناقة.";
+			next;
+			mes .n$;
+			mes "نحن البشر لا نملك فراء ملونا أو حراشف مزخرفة، لذلك تعد الملابس إحدى الطرق القليلة لإظهار شخصيتنا وأسلوبنا وجمالنا.";
+			next;
+			mes .n$;
+			mes "هاها... عندما أفكر في الأمر، أشعر أن عملي يستحق العناء حقا. فأنا أقدم خدمة يرغب بها الناس.";
+			next;
+			mes .n$;
+			mes "ألا تشعر بذلك أيضا؟ بتلك الطاقة التي تنبعث حين تدب الألوان الحياة في الأقمشة الخشنة والجلود؟";
+			next;
+			mes .n$;
+			mes "رغم أن العملية شاقة وتستغرق وقتا طويلا، فإن فرحتي عند اكتمال الثوب تعوض كل ذلك العمل.";
+			break;
+		case 2:
+			mes .n$;
+			if (!.@EnableDyes) {
+				mes "آسف، أنا منشغل بأعمال أخرى ولا أستطيع صبغ ملابسك الآن.";
+				break;
+			}
+			mes "آه... أتيت لصبغ ملابسك؟ حسنا، لنبدأ.";
+			next;
+			mes .n$;
+			mes "اختر اللون";
+			mes "الذي يناسبك.";
+			next;
+
+			// Dyes(<color value>,<dye number>{,...});
+			// Colors: [1]Orange, [2]Violet, [3]Red, [4]Black, [5]Green, [6]Blue, [7]White, [8]Yellow
+			switch(BaseJob) {
+			case Job_Novice:
+				if (Sex == SEX_MALE) Dyes(4,1,6,2,5,3); else Dyes(6,1,3,2,5,3,4,4);
+			case Job_Swordman:
+				if (Sex == SEX_MALE) Dyes(4,1,6,2,5,3); else Dyes(3,1,5,3,4,4);
+			case Job_Mage:
+				if (Sex == SEX_MALE) Dyes(3,1,2,2,1,3,7,4); else Dyes(3,1,2,2,7,3,4,4);
+			case Job_Archer:
+				if (Sex == SEX_MALE) Dyes(4,1,2,2,5,3); else Dyes(3,1,5,2,7,3,4,4);
+			case Job_Acolyte:
+				if (Sex == SEX_MALE) Dyes(6,1,3,2,7,3,4,4); else Dyes(3,1,5,3,4,4);
+			case Job_Merchant:
+				if (Sex == SEX_MALE) Dyes(4,1,6,2,5,3); else Dyes(2,1,5,3,4,4);
+			case Job_Thief:
+				if (Sex == SEX_MALE) Dyes(5,1,3,2,7,4); else Dyes(3,1,7,3,4,4);
+			case Job_Knight:
+			case Job_Crusader:
+				if (Sex == SEX_MALE) Dyes(2,1,3,3,4,4); else Dyes(6,1,7,3,4,4);
+			case Job_Priest:
+			case Job_Monk:
+				if (Sex == SEX_MALE) Dyes(6,1,5,2,3,3,7,4); else Dyes(3,1,5,2,7,3,4,4);
+			case Job_Wizard:
+			case Job_Sage:
+				if (Sex == SEX_MALE) Dyes(6,1,5,3,4,4); else Dyes(3,1,6,2,7,3,5,4);
+			case Job_Blacksmith:
+			case Job_Alchemist:
+				if (Sex == SEX_MALE) Dyes(4,4,5,2,7,3); else Dyes(3,1,5,2,2,3,4,4);
+			case Job_Hunter:
+			case Job_Bard:
+			case Job_Dancer:
+				if (Sex == SEX_MALE) Dyes(4,1,6,2,5,3); else Dyes(6,1,5,3,2,4);
+			case Job_Assassin:
+			case Job_Rogue:
+				if (Sex == SEX_MALE) Dyes(6,1); else Dyes(4,1,8,2,7,3);
+			case Job_Super_Novice:
+				if (Sex == SEX_MALE) Dyes(2,1,6,2,5,3,4,4); else Dyes(6,1,3,2,5,3,4,4);
+			default: 
+				mes "عجبا، لم أر ملابس كهذه من قبل! آسف، لا أظن أنني أستطيع صبغها.";
+				close;
+			}
+		case 3:
+			mes .n$;
+			mes "يكلف كل لون 10,000 زيني ووحدة واحدة من الأصباغ المناسبة:";
+			mes " ";
+			mes " - ^FF4422أحمر^000000: أصباغ قرمزية";
+			mes " - ^D5A500أصفر^000000: أصباغ ليمونية";
+			mes " - ^AA00AAبنفسجي^000000: أصباغ بنفسجية";
+			mes " - ^FF8800برتقالي^000000: أصباغ برتقالية";
+			mes " - ^4422FFأزرق^000000: أصباغ زرقاء كوبالتية";
+			mes " - ^009500أخضر^000000: أصباغ خضراء داكنة";
+			mes " - أسود: أصباغ سوداء";
+			mes " - أبيض: أصباغ بيضاء";
+			break;
+		case 4:
+			goto L_End;
+		}
+	}
+
+L_End:
+	mes .n$;
+	mes "تفضل بالجلوس إن شئت، لكنني منشغل حاليا.";
+	close;
+
+function Dyes {
+	setarray .@DyeName$[0],"اللون الافتراضي","البرتقالي","البنفسجي","الأحمر","الأسود","الأخضر","الأزرق","الأبيض","الأصفر";
+	setarray .@DyeItems[0],0,980,981,975,983,979,978,982,976;
+	set .@menu$,"- اللون الافتراضي:";
+	for(set .@i,0; .@i<getargcount(); set .@i,.@i+2)
+		set .@menu$, .@menu$+"- "+.@DyeName$[getarg(.@i)]+":";
+	set .@menu$, .@menu$+"- ^777777إلغاء^000000";
+	set .@s, select(.@menu$)-1;
+	if (.@s == (getargcount()/2)+1) goto L_End;
+	mes .n$;
+	if (.@s == 0) {
+		mes "يمكنني إعادة لون ملابسك إلى";
+		mes "اللون الافتراضي مجانا.";
+		mes "هل تريد المتابعة؟";
+		next;
+		switch(select("نعم:لا")) {
+		case 1:
+			mes .n$;
+			setlook 7,0;
+			mes "أعيد لون ملابسك إلى "+.@DyeName$[0]+".";
+			close;
+		case 2:
+			goto L_End;
+		}
+	}
+	if (!countitem(.@DyeItems[getarg((.@s-1)*2)])) {
+		mes "أحتاج إلى الأصباغ المناسبة لصبغ ملابسك. راجع قائمة الأسعار لمعرفة النوع المطلوب.";
+		close;
+	}
+	if (Zeny < 10000) {
+		mes "آسف، لا تملك 10,000 زيني المطلوبة.";
+		close;
+	}
+	delitem .@DyeItems[getarg((.@s-1)*2)],1;
+	set Zeny, Zeny-10000;
+	setlook 7, ((.@s)?(getarg((.@s-1)*2+1)):0);
+	mes "صُبغت ملابسك باللون "+((.@s)?.@DyeName$[getarg((.@s-1)*2)]:.@DyeName$[0])+".";
+	close;
+}
+}

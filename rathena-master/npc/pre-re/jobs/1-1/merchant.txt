@@ -1,0 +1,1156 @@
+//===== rAthena Script ======================================= 
+//= Merchant Job Quest
+//===== By: ================================================== 
+//= kobra_k88; L0ne_W0lf
+//===== Current Version: ===================================== 
+//= 2.4
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Job quest for Merchant classes
+//===== Additional Comments: ================================= 
+//= 1.0 Fully working.
+//= 1.1 Added instant job change for High Novice [Lupus]
+//= 1.3 Added Baby Class support [Lupus]
+//= 1.4 Optimised and moved first checker to Jfunc1-1 [massdriller]
+//= 1.5 Changed Prontera->Izlude teleport price to 600 [Lupus]
+//= 1.5.1 Removed Duplicates [Silent]
+//= 1.5.2 Now saves/restores all quest skills [Lupus]
+//= 1.6 Merged back JFunc, CHANGED NUMBERS TO CONSTANTS [Lupus]
+//= 1.7 Updated to use Free Ticket for Kafra [Lupus]
+//= 1.8 Rescripted to Aegis 10.3 stadards. [L0ne_W0lf]
+//=     No longer uses function "F_ToHigh"
+//= 1.9 Bugfixes, thanks to Barron-Monster. [L0ne_W0lf]
+//= 1.9a Added a missing next; (Barron-Monster) [L0ne_W0lf]
+//= 1.9b Typo. "nextl" -> "next;" (Barron-Monster) [L0ne_W0lf]
+//= 2.0 Should "fix" the problem with the Biliban Kafra. [L0ne_W0lf]
+//= 2.1 Fixed mistake in condition check. [L0ne_W0lf]
+//= 2.2 Added Quest Log commands. [L0ne_W0lf]
+//= 2.3 Fixed an issue with completequest by adding checkquest. [Kisuka]
+//= 2.4 Quest log fixes. [Euphy]
+//============================================================ 
+
+alberta_in,53,43,6	script	تاجر#mer::Merchant#mer	86,{
+	if (Upper == 1) {
+		if (Class == Job_Novice_High && (ADVJOB == Job_Whitesmith || ADVJOB == Job_Creator)) {
+			mes "[رئيس مانسو]";
+			mes "لم نرك منذ وقت طويل!";
+			mes "مهلا، لم تترك";
+			mes "عملك التجاري، أليس كذلك؟";
+			mes "ماذا حدث؟";
+			next;
+			mes "[رئيس مانسو]";
+			mes "واو...";
+			mes "هل ذهبت فعلا إلى فالهالا؟! مذهل، لقد قطعت شوطا طويلا...";
+			next;
+			if (!callfunc("F_CanChangeJob")) {
+				mes "[رئيس مانسو]";
+				mes "هممم...";
+				mes "يبدو أنك لست مستعدا لتصبح تاجرا مرة أخرى. اذهب وأكمل تعلم مهارات المبتدئ الأساسية أولا.";
+				next;
+				mes "[رئيس مانسو]";
+				mes "لا تقلق، سيكون لدينا دائما منصب تاجر مفتوح لك. فقط عد عندما تكون مستعدا، حسنا؟";
+				close;
+			}
+			mes "[رئيس مانسو]";
+			mes "أظن أنه القدر أن نلتقي هكذا مرة أخرى. حسنا. مرة أخرى، دعني أحولك إلى تاجر!";
+			next;
+			skill "NV_TRICKDEAD",0,SKILL_PERM;
+			jobchange Job_Merchant_High;
+			skill "MC_CARTREVOLUTION",1,SKILL_PERM;
+			skill "MC_CHANGECART",1,SKILL_PERM;
+			skill "MC_LOUD",1,SKILL_PERM;
+			mes "[رئيس مانسو]";
+			mes "آه~ كم هذا يثير الحنين. تماما مثل الأيام القديمة! حسنا، ابذل أفضل ما لديك!";
+			close;
+		}
+		else {
+			mes "[رئيس مانسو]";
+			mes "^333333*تنهد*^000000";
+			mes "أنا أشعر بملل شديد...";
+			mes "متى سأسمع خبرا من بلوسوم الجميلة؟";
+			close;
+		}
+	}
+	if (BaseJob == Job_Merchant) {
+		mes "[رئيس مانسو]";
+		mes "أهلا بك!";
+		mes "كيف تجد";
+		mes "كونك تاجرا؟";
+		next;
+		mes "[رئيس مانسو]";
+		mes "امتلاك مهارة التعامل";
+		mes "مع المال له";
+		mes "مزاياه بالتأكيد،";
+		mes "أليس كذلك؟";
+		close;
+	}
+	else if (BaseJob != Job_Merchant && BaseJob != Job_Novice) {
+		mes "[رئيس مانسو]";
+		mes "نحن التجار نكره الأشخاص ذوي الوجهين. هذا سيئ للأعمال.";
+		next;
+		mes "[رئيس مانسو]";
+		mes "أسوأ الناس هم من يحاولون دائما استغلال الآخرين ببيع الأشياء بأسعار سخيفة فقط ليكسبوا مالا سيهدرونه لاحقا.";
+		next;
+		mes "[رئيس مانسو]";
+		mes "حسنا، على أي حال، نحن لا نقبل إلا المبتدئين لتغيير الوظيفة إلى فئة التاجر. لكنني أقدر اهتمامك بما نقوم به.";
+		close;
+	}
+	else if (job_merchant_q == 9) {
+		mes "[رئيس مانسو]";
+		mes "أهلا بك،";
+		mes ""+ strcharinfo(0) +".";
+		set job_merchant_q,0;
+		set job_merchant_q2,0;
+		set quest_alb_01,0;
+		mes "للأسف، فشلت في الحصول على رخصة التاجر هذه المرة.";
+		next;
+		mes "[رئيس مانسو]";
+		mes "سأمسح سجلاتك، لذا عد في أي وقت عندما ترغب في التقديم مرة أخرى.";
+		close;
+	}
+	else if (job_merchant_q == 8 || job_merchant_q == 7) {
+		mes "[رئيس مانسو]";
+		mes "أهلا بك،";
+		mes ""+ strcharinfo(0) +".";
+		mes "يسرني أن أخبرك";
+		mes "أن لدي أخبارا جيدة!";
+		next;
+		mes "[رئيس مانسو]";
+		mes "قبلت نقابة التجار طلبك. لقد أثبت أنك مؤهل تماما لتصبح تاجرا.";
+		if (job_merchant_q == 7) {
+			next;
+			mes "[رئيس مانسو]";
+			mes "الشيء الوحيد المتبقي هو رسوم عضويتك.";
+			mes "هل أنت مستعد؟";
+			next;
+			switch(select("ادفع بقية 500 زيني:انسحاب")) {
+			case 1:
+				mes "[رئيس مانسو]";
+				if (Zeny < 500) {
+					mes "هممم...";
+					mes "أظن أنك لا تملك حاليا ما يكفي من الزيني لدفع بقية رسوم عضويتك الآن.";
+					next;
+					mes "[رئيس مانسو]";
+					mes "يرجى العودة عندما تكسب 500 زيني التي تحتاجها لتصبح تاجرا.";
+					close;
+				}
+				set Zeny, Zeny-500;
+				mes "آه نعم...!";
+				mes "الآن أصبحت";
+				mes "عضويتك";
+				mes "مدفوعة بالكامل.";
+				break;
+			case 2:
+				mes "[رئيس مانسو]";
+				mes "أظن أنك تحتاج إلى بعض الوقت لجمع بعض الزيني لدفع رسوم عضويتك. يرجى أن";
+				mes "تعود حالما تكون مستعدا.";
+				close;
+			}
+		}
+		next;
+		mes "[رئيس مانسو]";
+		mes "تهانينا!";
+		callfunc "Job_Change",Job_Merchant;
+		callfunc "F_ClearJobVar";
+		for ( .@quest_id = 1009; .@quest_id <= 1012; .@quest_id++ ) {
+			if (isbegin_quest(.@quest_id) == 1)
+				completequest .@quest_id;
+		}
+		mes "يسرني جدا أنك ستنضم إلى نقابة التجار، وآمل أن تلعب دورا نشطا في اقتصاد رون-ميدغارتس.";
+		next;
+		if (quest_alb_01 == 1) {
+			mes "[رئيس مانسو]";
+			mes "*أحم* وووودعني أعطيك مبلغا صغيرا من المال مقابل إيصال تلك الرسالة إلى بلوسوم من أجلي.";
+			mes "آمل أن تساعدني مرة أخرى في المرة القادمة~";
+			set Zeny, Zeny+200;
+			set quest_alb_01,2;
+		}
+		else {
+			mes "[رئيس مانسو]";
+			mes "الرسالة التي كان يفترض أن توصلها بناء على طلبي؟ هل نسيت ذلك؟ حسنا. عمل جيد!";
+		}
+		next;
+		mes "[رئيس مانسو]";
+		mes "هدفنا هو السيطرة على 20 % من دخل العالم! سنحتاج إلى شباب متحمسين مثلك!";
+		next;
+		mes "[رئيس مانسو]";
+		mes "لكن عموما، سنكون سعداء أيضا بمجرد كسب أكوام من المال.";
+		mes "لكننا جميعا نعرف ذلك~";
+		close;
+	}
+	else if (job_merchant_q2 && job_merchant_q > 0 && job_merchant_q < 7) {
+		mes "[رئيس مانسو]";
+		if (job_merchant_q2 == 1 || job_merchant_q2 == 2) {
+			mes "أولا، خذ طرد التوصيل من المستودع، ثم أوصله إلى جمعية السيافين السابقة في برونتيرا.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "عندما تصل إلى هناك، أعط الطرد لموظفة كافرا الموجودة قرب ذلك المكان. اسمها بلوسوم. هل فهمت كل ذلك؟";
+			next;
+			if (job_merchant_q2 == 1) {
+				mes "[رئيس مانسو]";
+				mes "تذكر، الرقم التسلسلي للطرد هو ^3355FF2485741^000000.";
+			}
+			else {
+				mes "[رئيس مانسو]";
+				mes "تذكر، الرقم التسلسلي للطرد هو ^3355FF2328137^000000.";
+			}
+		}
+		else if (job_merchant_q2 == 3 || job_merchant_q2 == 4) {
+			mes "أولا، خذ طرد التوصيل من المستودع، ثم أوصله إلى نقابة السحرة في غيفن.";
+			next;
+			if (job_merchant_q2 == 3) {
+				mes "[رئيس مانسو]";
+				mes "عندما تصل إلى هناك، أعط الطرد لعضو نقابة السحرة مسؤول. تذكر، الرقم التسلسلي للطرد هو ^3355FF2989396^000000.";
+			}
+			else {
+				mes "[رئيس مانسو]";
+				mes "عندما تصل إلى هناك، أعط الطرد لعضو نقابة السحرة مسؤول. تذكر، الرقم التسلسلي للطرد هو ^3355FF2191737^000000.";
+			}
+		}
+		else if (job_merchant_q2 == 5 || job_merchant_q2 == 6) {
+			mes "أولا، خذ طرد التوصيل من المستودع، ثم أوصله إلى موروك.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "سيتعين عليك العثور على جافا دوليهان، الصباغ، حتى تتمكن من توصيل المنتج الذي طلبه.";
+			next;
+			if (job_merchant_q2 == 5) {
+				mes "[رئيس مانسو]";
+				mes "لكنه كثير النسيان قليلا، لذا أعطه لأحد طلابه. تذكر، الرقم التسلسلي للطرد هو ^3355FF3012685^000000.";
+			}
+			else {
+				mes "[رئيس مانسو]";
+				mes "لكنه كثير النسيان قليلا، أعطه لأحد طلابه. تذكر، الرقم التسلسلي للطرد هو ^3355FF3487372^000000.";
+			}
+		}
+		else if (job_merchant_q2 == 7 || job_merchant_q2 == 8) {
+			mes "أولا، خذ الطرد من المستودع، ثم أعطه لموظفة كافرا الموجودة في جزيرة بيالان. اسمها بلوسوم.";
+			next;
+			if (job_merchant_q2 == 7) {
+				mes "[رئيس مانسو]";
+				mes "تذكر، الرقم التسلسلي للطرد هو ^3355FF3318702^000000.";
+			}
+			else {
+				mes "[رئيس مانسو]";
+				mes "تذكر، الرقم التسلسلي للطرد هو ^3355FF3543625^000000.";
+			}
+		}
+		if (job_merchant_q2 == 7 || job_merchant_q2 == 8) {
+			next;
+			mes "[رئيس مانسو]";
+			mes "وووو...";
+			mes "لا تنس أن توصل تلك الرسالة من أجلي~";
+		}
+		next;
+		mes "[رئيس مانسو]";
+		mes "لا تنس وجهتك والرقم التسلسلي للطرد.";
+		mes "ستحتاج إلى إخباره";
+		mes "لأمين المستودع.";
+		next;
+		mes "[رئيس مانسو]";
+		mes "المستودع في الغرفة";
+		mes "التي على يميني. هناك، يمكنك التحدث";
+		mes "إلى أمين المستودع، وسيساعدك";
+		mes "في الأمر.";
+		next;
+		mes "[رئيس مانسو]";
+		mes "بعد أن تنهي التوصيل، عد إلى المستودع وأعط الإيصال لأمين المستودع.";
+		mes "ثم، عد";
+		mes "وقابلني.";
+		next;
+		mes "[رئيس مانسو]";
+		mes "هل هذا واضح؟";
+		mes "حسنا، هذه";
+		mes "هي الروح المطلوبة.";
+		mes "اعتن بنفسك!";
+		close;
+	}
+	else {
+		mes "[رئيس مانسو]";
+		mes "إذن، ما الذي جاء بك إلى";
+		mes "جمعية التجار؟";
+		mes "هل هناك شيء";
+		mes "يمكنني مساعدتك به؟";
+		next;
+		switch(select("أريد أن أصبح تاجرا.:أخبرني عن التجار.:أخبرني بالمتطلبات.:لا.")) {
+		case 1:
+			mes "[رئيس مانسو]";
+			mes "هل تريد";
+			mes "أن تصبح تاجرا؟";
+			mes "حسنا...";
+			next;
+			if (!callfunc("F_CanChangeJob")) {
+				mes "[رئيس مانسو]";
+				mes "أولا، يجب أن تكون مبتدئا بمستوى وظيفة 10. بعد ذلك، تأكد من تعلم كل المهارات الأساسية.";
+				next;
+				mes "[رئيس مانسو]";
+				mes "نحن لسنا مجرد";
+				mes "صناع مال عاديين!";
+				mes "نحن نفخر بأن لدينا معايير، ولا نقبل إلا المتقدمين المؤهلين!";
+				close;
+			}
+			mes "[رئيس مانسو]";
+			mes "حسنا، ستحتاج إلى ملء هذا الطلب وتجهيز 1,000 زيني لرسوم عضويتك.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "أوه...!";
+			mes "إذا لم يكن لديك كل المال،";
+			mes "يمكنني أن آخذ 500 زيني الآن.";
+			mes "يمكنك دفع الباقي بعد أن";
+			mes "تجتاز الاختبار وتحصل على";
+			mes "رخصة نقابة التجار.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "فما رأيك؟";
+			mes "هل أنت مستعد للانضمام الآن؟";
+			next;
+			if (select("نعم، سأفعل.:أممم، ربما لاحقا...") ==1 ) {
+				mes "[رئيس مانسو]";
+				mes "دعني أتحقق مما إذا كنت";
+				mes "قد ملأت كل شيء";
+				mes "في استمارة طلبك...";
+				next;
+				mes "[رئيس مانسو]";
+				mes "همم... ";
+				mes "" + strcharinfo(0) + "...";
+				mes "هذا اسم جميل.";
+				next;
+				mes "[رئيس مانسو]";
+				mes "لن يتم تسجيل هذا الطلب";
+				mes "إلا بعد دفع";
+				mes "رسوم العضوية.";
+				mes "كيف ترغب في";
+				mes "التعامل مع الرسوم؟";
+				next;
+				switch(select("ادفع كل 1,000 زيني الآن!:دفعتان من 500 زيني.:انسحاب")) {
+				case 1:
+					mes "[رئيس مانسو]";
+					if (Zeny >= 1000) {
+						set job_merchant_q,2;
+						set Zeny, Zeny-1000;
+						mes "حسنا~";
+						mes "هذا 1,000 زيني.";
+						mes "ممتاز، ممتاز.";
+					}
+					else {
+						mes "يبدو أنك لا تملك ما يكفي من الزيني لدفع الرسوم كاملة الآن. لم لا تدفع 500 زيني فقط الآن؟ فكر في الأمر.";
+						close;
+					}
+					break;
+				case 2:
+					mes "[رئيس مانسو]";
+					if (Zeny >= 500) {
+						set job_merchant_q,1;
+						set Zeny, Zeny-500;
+						mes "لنر...";
+						mes "هذا 500 زيني. رغم أنني لا أظن أن تقسيم الدفع فكرة جيدة لأي تاجر، فلا بأس بما أنك ما زلت تتعلم.";
+					}
+					else {
+						mes "همم...";
+						mes "يبدو أنك لا تملك المال لدفع نصف رسوم العضوية. يرجى العودة عندما تجمع الزيني الذي تحتاجه.";
+						close;
+					}
+					break;
+				case 3:
+					mes "[رئيس مانسو]";
+					mes "لا تتردد في العودة في أي وقت";
+					mes "عندما تكون مستعدا، حسنا؟";
+					close;
+				}
+			}
+			else {
+				mes "[رئيس مانسو]";
+				mes "لا تملك ما يكفي من الزيني الآن؟ لا مشكلة في ذلك. خذ وقتك وعد عندما تكون";
+				mes "مستعدا، حسنا؟";
+				close;
+			}
+			next;
+			mes "[رئيس مانسو]";
+			mes "حسنا، أصبحت الآن على قائمة المتقدمين. آه، قبل أن أبدأ دعني أقول شيئا واحدا فقط.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "هناك بعض الحمقى والجشعين في الخارج الذين لا يعرفون معنى أن تكون تاجرا.";
+			mes "آمل ألا تصبح مثلهم، أليس كذلك؟";
+			next;
+			mes "[رئيس مانسو]";
+			mes "والآن، دعني";
+			mes "أشرح ما";
+			mes "عليك فعله من أجل";
+			mes "اختبار رخصة التاجر.";
+			next;
+			mes "[رئيس مانسو]";
+			switch(rand(1,4)) {
+			case 1:
+				mes "أولا، خذ طرد التوصيل من المستودع، ثم اذهب إلى جمعية السيافين السابقة في برونتيرا.";
+				next;
+				mes "[رئيس مانسو]";
+				mes "عندما تصل إلى هناك، زر موظف كافرا الموجودة هناك. اسمها بلوسوم. هل فهمت";
+				mes "كل ذلك؟";
+				callsub S_GiveSerial,2485741,1,2328137,2,1009;
+				break;
+			case 2:
+				mes "أولا، خذ طرد التوصيل من المستودع، ثم اذهب إلى نقابة السحرة في غيفن. عندما تصل إلى هناك، زر عضو نقابة السحرة العظماء مسؤول.";
+				callsub S_GiveSerial,2989396,3,2191737,4,1010;
+				break;
+			case 3:
+				mes "أولا، خذ طرد التوصيل من المستودع، ثم اذهب إلى موروك. هناك يجب أن تجد جافا دوليهان، الصباغ.";
+				next;
+				mes "[رئيس مانسو]";
+				mes "إنه كثير النسيان قليلا، لذا من الأفضل أن تعطي الطرد لأحد طلابه.";
+				callsub S_GiveSerial,3012685,5,3487372,6,1011;
+				break;
+			case 4:
+				mes "أولا، خذ طرد التوصيل من المستودع، ثم أعطه لموظفة كافرا الموجودة في جزيرة بيالان.";
+				callsub S_GiveSerial,3318702,7,3543625,8,1012;
+				next;
+				mes "[رئيس مانسو]";
+				mes "أمممم...";
+				mes "ولدي أيضا";
+				mes "طلب شخصي";
+				mes "صغير منك.";
+				next;
+				mes "[رئيس مانسو]";
+				mes "هل يمكنك من فضلك أن تعطيها هذه الرسالة عندما توصل الطرد؟ أرجوك~";
+				getitem 1072,1; //Delivery_Message
+				break;
+			}
+			next;
+			mes "[رئيس مانسو]";
+			mes "لا تنس وجهتك والرقم التسلسلي للطرد. ستحتاج إلى إخبار أمين المستودع بهما في المستودع الموجود على يميني.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "بعد التوصيل، أعط الإيصال لأمين المستودع، ثم عد وقابلني.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "هل هذا واضح؟";
+			mes "حسنا، هذه";
+			mes "هي الروح المطلوبة.";
+			mes "اعتن بنفسك!";
+			close;
+		case 2:
+			mes "[رئيس مانسو]";
+			mes "تاجر؟";
+			mes "حسنا، نحن نبيع البضائع أساسا لكسب المال. هذا هو طريق";
+			mes "التاجر.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "أظن أننا قد لا نكون الأفضل في القتال، ولا نملك الكثير من الهجمات الخاصة. ولا نملك مهارات علاج...";
+			next;
+			mes "[رئيس مانسو]";
+			mes "لكن يمكننا شراء البضائع بأسعار أقل من متاجر NPC وبيعها بسعر أعلى لأشخاص آخرين~";
+			next;
+			mes "[رئيس مانسو]";
+			mes "مهارتنا الهجومية النهائية هي 'مامونايت.' قوة مامونايت تأتي من الغضب";
+			mes "عندما نضطر إلى رمي زيني جيد تماما.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "رمي الزيني بهذه الطريقة";
+			mes "يسبب غضبا قاتلا يتصاعد في قلب أي تاجر!";
+			mes "مجرد التفكير في ذلك";
+			mes "يجعل دمي يغلي!";
+			next;
+			mes "[رئيس مانسو]";
+			mes "على أي حال، يمكننا استخدام معظم";
+			mes "الأسلحة باستثناء الأقواس، والعصي، والسيوف ذات اليدين. لكن يمكننا دائما بيعها.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "نعم...";
+			mes "نحن التجار عموما";
+			mes "نفكر في المال دائما...";
+			close;
+		case 3:
+			mes "[رئيس مانسو]";
+			mes "هناك ثلاثة شروط يجب تحقيقها قبل أن تتمكن من أن تصبح تاجرا.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "أولا، يجب أن تكون مبتدئا بمستوى وظيفة 10، وأن تكون قد تعلمت كل المهارات الأساسية.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "ثانيا، يجب أن تدفع رسوم عضوية قدرها 1,000 زيني. أعتقد أن أي مرشح تاجر يجب أن يكون قادرا على كسب 1,000 زيني بسهولة.";
+			next;
+			mes "[رئيس مانسو]";
+			mes "ثالثا، يوجد اختبار رخصة لاختبار قوتك الجسدية وحسك بالاتجاهات. ستوصل طردا إلى شخص محدد في موقع محدد.";
+			close;
+		case 4:
+			close;
+		}
+	}
+
+S_GiveSerial:
+	next;
+	mes "[رئيس مانسو]";
+	mes "تذكر...";
+	mes "الرقم التسلسلي";
+	mes "للطرد هو";
+	if (rand(2)) {
+		mes "^3355FF"+getarg(0)+"^000000.";
+		set job_merchant_q2,getarg(1);
+	}
+	else {
+		mes "^3355FF"+getarg(2)+"^000000.";
+		set job_merchant_q2,getarg(3);
+	}
+	setquest getarg(4);
+	return;
+}
+
+alberta_in,28,29,2	script	عضو نقابة التجار#mer::Merchant Guildsman#mer	83,{
+	if (BaseJob == Job_Merchant) {
+		mes "[موظف النقابة كاي]";
+		mes "أهلا يا صديقي.";
+		mes "كيف حالك؟";
+		close;
+	}
+	else if (BaseJob != Job_Merchant && BaseJob != Job_Novice) {
+		mes "[موظف النقابة كاي]";
+		mes "مهلا أنت. ليست لدينا أي وظائف بدوام جزئي شاغرة. إذا كنت تريد كسب بعض الزيني، فعليك أن تبحث في مكان آخر.";
+		close;
+	}
+	else if (job_merchant_q == 9) {
+		mes "[موظف النقابة كاي]";
+		mes "مهلا أنت. نعم، أنت.";
+		mes "إذا كنت تريد إعادة الاختبار، فاذهب لزيارة مانسو في الغرفة الأخرى. بعدها يمكننا التحدث.";
+		close;
+	}
+	else if (job_merchant_q == 8 || job_merchant_q == 7) {
+		mes "[موظف النقابة كاي]";
+		mes "حسنا! كل شيء يبدو مثاليا! سأبلغ سيد النقابة بنجاحك. اذهب الآن وتحدث إلى رئيس مانسو، حسنا؟";
+		close;
+	}
+	else if (job_merchant_q == 6 || job_merchant_q == 5) {
+		mes " [موظف النقابة كاي] ";
+		mes "آه، حقا؟ حسنا، دعني أتحقق. اسمك هو " + strcharinfo(0) + "؟ حسنا، كانت وجهتك...";
+		next;
+		mes "[موظف النقابة كاي]";
+		if (job_merchant_q2 == 1 || job_merchant_q2 == 2)
+			mes "واو! قابلت فتاة كافرا في برونتيرا؟! يا لحظك~ ...الإيصال؟";
+		else if (job_merchant_q2 == 3 || job_merchant_q2 == 4)
+			mes "أكاديمية غيفن للسحر. حسنا، الإيصال؟";
+		else if (job_merchant_q2 == 5 || job_merchant_q2 == 6)
+			mes "الصباغ في موروك. ليس سيئا. الإيصال؟";
+		else if (job_merchant_q2 == 7 || job_merchant_q2 == 8)
+			mes "أوه هوهوهوهو~! فتاة كافرا في جزيرة بيالان؟! رائع! على أي حال، هل أحضرت الإيصال؟";
+
+		if (job_merchant_q2 == 1 && countitem(1073) != 0)
+			delitem 1073,1; //Merchant_Voucher_1
+		else if (job_merchant_q2 == 2 && countitem(1074) != 0)
+			delitem 1074,1; //Merchant_Voucher_2
+		else if (job_merchant_q2 == 3 && countitem(1075) != 0)
+			delitem 1075,1; //Merchant_Voucher_3
+		else if (job_merchant_q2 == 4 && countitem(1076) != 0)
+			delitem 1076,1; //Merchant_Voucher_4
+		else if (job_merchant_q2 == 5 && countitem(1077) != 0)
+			delitem 1077,1; //Merchant_Voucher_5
+		else if (job_merchant_q2 == 6 && countitem(1078) != 0)
+			delitem 1078,1; //Merchant_Voucher_6
+		else if (job_merchant_q2 == 7 && countitem(1079) != 0)
+			delitem 1079,1; //Merchant_Voucher_7
+		else if (job_merchant_q2 == 8 && countitem(1080) != 0)
+			delitem 1080,1; //Merchant_Voucher_8
+		else {
+			next;
+			set job_merchant_q,9;
+			mes " [موظف النقابة كاي] ";
+			mes "انتظر لحظة.";
+			mes "أين الإيصال؟";
+			mes "ماذا حدث؟";
+			next;
+			mes " [موظف النقابة كاي] ";
+			mes "إذا لم يكن لديك الإيصال، فستفشل في الاختبار! من الأفضل أن تتحدث إلى مانسو إذا كنت تريد إعادته، حسنا؟ انتبه في المرة القادمة!";
+			close;
+		}
+		next;
+		mes " [موظف النقابة كاي] ";
+		mes "...رائع! كل شيء مثالي! سأبلغ سيد النقابة بنجاحك. عليك أن تتحدث إلى رئيس مانسو الآن، حسنا؟";
+		close2;
+		if (job_merchant_q == 6)
+			set job_merchant_q,8;
+		else if (job_merchant_q == 5)
+			set job_merchant_q,7;
+		end;
+	}
+	else if (job_merchant_q == 4 || job_merchant_q == 3 && countitem(1081) == 0 && countitem(1082) == 0 && countitem(1091) == 0) {
+		mes " [موظف النقابة كاي] ";
+		mes "هاه؟";
+		mes "لقد عدت؟";
+		mes "فكيف سار";
+		mes "التوصيل؟";
+		next;
+		if (select("*نشيج* لقد فقدت الطرد.:بخير.") == 1) {
+			set job_merchant_q,9;
+			mes "[موظف النقابة كاي]";
+			mes "هل تمزح معي؟ ستفشل في الاختبار إذا فقدت الطرد!";
+			next;
+			mes "[موظف النقابة كاي]";
+			mes "أوووه يا رجل. حسنا، إذا كنت تريد إعادة الاختبار، فتحدث إلى مانسو، حسنا؟ أنت محظوظ لأنك تحصل على فرصة أخرى!";
+			close;
+		}
+		mes "[موظف النقابة كاي]";
+		mes "هاه...";
+		mes "حسنا...";
+		close;
+	}
+	else if (job_merchant_q == 4 || job_merchant_q == 3 && countitem(1081) != 0 || countitem(1082) != 0 || countitem(1091) != 0) {
+		mes "[موظف النقابة كاي]";
+		mes "مهلا، ماذا ما زلت تفعل هنا؟ أليس من المفترض أن تكون في طريقك بالفعل؟";
+		next;
+		if (select("أحتاج إلى طرد جديد.:أوه، نعم. أنت محق!") == 1) {
+			if (countitem(1081) == 0 && countitem(1082) == 0 && countitem(1083) == 0 && countitem(1091) == 0) {
+				mes "[موظف النقابة كاي]";
+				mes "ما--؟";
+				mes "إذن أين ذهب";
+				mes "الطرد؟";
+				mes "أين هو؟!";
+				next;
+				if (select("*نشيج* لقد فقدته!:إنه معي هنا.") == 1) {
+					set job_merchant_q,9;
+					mes "[موظف النقابة كاي]";
+					mes "أنت...";
+					mes "فقدته؟!";
+					mes "لقد فشلت في الاختبار!";
+					next;
+					mes "[موظف النقابة كاي]";
+					mes "*تنهد* إذا كنت تريد إعادة الاختبار، فاذهب لزيارة مانسو في الغرفة الأخرى، حسنا؟";
+					close;
+				}
+				mes "[موظف النقابة كاي]";
+				mes "هاه.";
+				mes "ظننت أنك";
+				mes "فقدته.";
+				mes "لا تحتاج إلى";
+				mes "طرد جديد.";
+				close;
+			}
+			mes "[موظف النقابة كاي]";
+			mes "*تنهد* يا رجل، بدأت تصبح مصدر إزعاج كبير. انتظر، دعني ألغي سجلك...";
+			if (countitem(1081) != 0)
+				delitem 1081,1; //Merchant_Box_1
+			else if (countitem(1082) != 0)
+				delitem 1082,1; //Merchant_Box_2
+			else if (countitem(1091) != 0)
+				delitem 1091,1; //Merchant_Box_Etc
+			if (job_merchant_q == 4)
+				set job_merchant_q,2;
+			else if (job_merchant_q == 3)
+				set job_merchant_q,1;
+			next;
+			mes "[موظف النقابة كاي]";
+			mes "أحتاج إلى بعض الوقت لترتيب كل شيء، لذا عد لاحقا.";
+			close;
+		}
+		mes "[موظف النقابة كاي]";
+		mes "يا له من أمر محبط...";
+		close;
+	}
+	else if ((job_merchant_q == 0 || job_merchant_q == 1 || job_merchant_q == 2)) {
+		set where_village,0;
+		mes "[موظف النقابة كاي]";
+		mes "أهلا.";
+		mes "ما الذي";
+		mes "جاء بك إلى هنا؟";
+		next;
+		switch(select("اختبار رخصة التاجر الخاص بي.:أبحث عن عمل بدوام جزئي.:لا شيء.")) {
+		case 1:
+			mes "[موظف النقابة كاي]";
+			mes "فهمت.";
+			mes "حسنا.";
+			mes "إذن ما";
+			mes "اسمك؟";
+			mes "" + strcharinfo(0) + "...؟";
+			next;
+			if (job_merchant_q == 0) {
+				mes "[موظف النقابة كاي]";
+				mes "هاه. اسمك ليس في قائمتي. هل قدمت طلب مهمة تغيير الوظيفة أم ماذا؟";
+				next;
+				mes "[موظف النقابة كاي]";
+				mes "يجب أن تقدم أولا بالتحدث إلى رئيس مانسو في وسط";
+				mes "هذا المبنى، حسنا؟";
+				close;
+			}
+			mes "[موظف النقابة كاي]";
+			mes "حسنا، ها أنت ذا. دعني أعطيك الطرد. والآن، اختر وجهة التوصيل.";
+			next;
+			switch(select("برونتيرا.:غيفن.:موروك.:جزيرة بيالان.")) {
+			case 1: set .@where_village,1; break;
+			case 2: set .@where_village,2; break;
+			case 3: set .@where_village,3; break;
+			case 4: set .@where_village,4; break;
+			}
+			mes "[موظف النقابة كاي]";
+			mes "حسنا، الآن عليك أن تعطيني الرقم التسلسلي للطرد. إذا أردت الإلغاء، فأدخل '0' فقط، حسنا؟";
+			next;
+			while(1) {
+				while(1) {
+					input .@input;
+					if (.@input == 0) {
+						mes "[موظف النقابة كاي]";
+						mes "هل أنت متأكد أنك تريد الإلغاء؟";
+						if (select("نعم.:دعني أحاول مرة أخرى.") == 1) {
+							mes "حسنا، سنلغي الأمر حاليا.";
+							close;
+						}
+						next;
+					}
+					else if (.@input < 1000000 || .@input > 5000000) {
+						mes "[موظف النقابة كاي]";
+						mes "مهلا مهلا. هذا الرقم غير صالح! أدخل قيمة من 1000000 إلى 5000000. فهمت؟";
+						next;
+					}
+					else 
+						break;
+				}
+				mes "[موظف النقابة كاي]";
+				if (.@where_village == 1)
+					mes "الوجهة هي برونتيرا. الرقم التسلسلي هو " + .@input + ". هل أنت متأكد؟";
+				else if (.@where_village == 2)
+					mes "الوجهة هي غيفن. أوف! إنها بعيدة جدا! الرقم التسلسلي هو " + .@input + ". هل أنت متأكد؟";
+				else if (.@where_village == 3)
+					mes "الوجهة هي موروك. إنها بعيدة إلى حد ما! الرقم التسلسلي هو " + .@input + ". هل أنت متأكد؟";
+				else
+					mes "يا لحظك! وجهتك هي جزيرة بيالان. الرقم التسلسلي هو " + .@input + ". هل أنت متأكد؟";
+				next;
+				if (select("متأكد.:أوه! رقم خاطئ!") == 1) {
+					break;
+				}
+			}
+			if (.@where_village == 1) {
+				if (job_merchant_q2 == 1 && .@input == 2485741)
+					getitem 1081,1; //Merchant_Box_1
+				else if (job_merchant_q2 == 2 && .@input == 2328137)
+					getitem 1082,1; //Merchant_Box_2
+				else
+					getitem 1091,1; //Merchant_Box_Etc
+			}
+			else if (.@where_village == 2) {
+				if (job_merchant_q2 == 3 && .@input == 2989396)
+					getitem 1081,1; //Merchant_Box_1
+				else if (job_merchant_q2 == 4 && .@input == 2191737)
+					getitem 1082,1; //Merchant_Box_2
+				else
+					getitem 1091,1; //Merchant_Box_Etc
+			}
+			else if (.@where_village == 3) {
+				if (job_merchant_q2 == 5 && .@input == 3012685)
+					getitem 1081,1; //Merchant_Box_1
+				else if (job_merchant_q2 == 6 && .@input == 3487372)
+					getitem 1082,1; //Merchant_Box_2
+				else
+					getitem 1091,1; //Merchant_Box_Etc
+			}
+			else {
+				if (job_merchant_q2 == 7 && .@input == 3318702)
+					getitem 1081,1; //Merchant_Box_1
+				else if (job_merchant_q2 == 8 && .@input == 3543625)
+					getitem 1082,1; //Merchant_Box_2
+				else
+					getitem 1091,1; //Merchant_Box_Etc
+			}
+			if (job_merchant_q == 2)
+				set job_merchant_q,4;
+			else if (job_merchant_q == 1)
+				set job_merchant_q,3;
+			mes "[موظف النقابة كاي]";
+			mes "حسنا. خذ هذا الطرد واحرسه بحياتك حتى يصل بأمان إلى الزبون. لا تفقده، فهمت؟";
+			next;
+			mes "[موظف النقابة كاي]";
+			mes "حسنا إذن، أتمنى لك الحظ. تذكر، يجب أن تحضر لي";
+			mes "إيصالا عندما تنهي التوصيل، حسنا؟";
+			close;
+		case 2:
+			mes "[موظف النقابة كاي]";
+			mes "عمل بدوام جزئي؟ آسف يا صديقي، لا توجد وظائف بعد. قسم مدير المدفوعات لا يستطيع أبدا موازنة ميزانيتنا...";
+			close;
+		case 3:
+			mes "[موظف النقابة كاي]";
+			mes "لا شيء، هاه؟";
+			mes "أظن أنك تستمتع";
+			mes "بإزعاج الناس";
+			mes "بلا سبب إذن، صحيح؟";
+			close;
+		}
+	}
+}
+
+morocc_in,140,102,4	script	طالب#mer::Student#mer	86,{
+	if ((job_merchant_q == 4) || (job_merchant_q == 3)) {
+		mes "[طالب الصباغ]";
+		mes "أنت من";
+		mes "نقابة التجار؟";
+		mes "نعم! لقد وصلت إلى";
+		mes "المكان الصحيح.";
+		next;
+		mes "[طالب الصباغ]";
+		if (countitem(1081) == 1 || countitem(1082) == 1 || countitem(1091) == 1) {
+			mes "حسنا~";
+			mes "من فضلك ضع";
+			mes "الطرد";
+			mes "هناك.";
+		}
+		else {
+			mes "لكن...";
+			mes "أين";
+			mes "الطرد الذي طلبته؟";
+			mes "هذا غريب...";
+			close;
+		}
+		next;
+		mes "[طالب الصباغ]";
+		mes "دعني أتحقق من الرقم التسلسلي للطرد حتى أعطيك الإيصال، حسنا؟";
+		next;
+		mes "[طالب الصباغ]";
+		if (job_merchant_q2 == 5 && countitem(1081) != 0) {
+			mes "3012685...";
+			mes "هذا صحيح.";
+			mes "إليك";
+			mes "إيصالك.";
+			delitem 1081,1; //Merchant_Box_1
+			getitem 1077,1; //Merchant_Voucher_5
+		}
+		else if (job_merchant_q2 == 6 && countitem(1082) != 0) {
+			mes "3487372...";
+			mes "هذا صحيح.";
+			mes "إليك";
+			mes "إيصالك.";
+			delitem 1082,1; //Merchant_Box_2
+			getitem 1078,1; //Merchant_Voucher_6
+		}
+		else {
+			mes "عذرا، لكن...";
+			if (job_merchant_q2 == 5)
+				mes "لا أظن أن هذا هو الطرد الذي طلبناه. يجب أن يكون الرقم التسلسلي 3012685. أترى؟";
+			else if (job_merchant_q2 == 6)
+				mes "لا أظن أن هذا هو الطرد الذي طلبناه. يجب أن يكون الرقم التسلسلي 3487372. أترى؟";
+			else
+				mes "لا أظن أن هذا هو الطرد الذي طلبناه. يجب أن يكون الرقم التسلسلي 3012685 أو 3487372. حسنا، أحد هذين الرقمين...";
+			close;
+		}
+		if (job_merchant_q == 4)
+			set job_merchant_q,6;
+		else if (job_merchant_q == 3)
+			set job_merchant_q,5;
+		next;
+		mes "[طالب الصباغ]";
+		mes "شكرا جزيلا!";
+		mes "أراك مرة أخرى";
+		mes "في وقت ما!";
+		close;
+	}
+	else if (job_merchant_q == 6 || job_merchant_q == 5 && job_merchant_q2 == 6 || job_merchant_q2 == 5) {
+		mes "[طالب الصباغ]";
+		mes "أوه...";
+		mes "هل ستعود؟";
+		mes "حسنا إذن،";
+		mes "اعتن بنفسك!";
+		close;
+	}
+	else {
+		mes "[طالب الصباغ]";
+		mes "سيد جافا دوليهان هو الفريد من نوعه، وأفضل صانع أصباغ في قارة ميدغارد.";
+		next;
+		mes "[طالب الصباغ]";
+		mes "وووأنا فخور بأن أقول إنني طالبه! في يوم ما، سأتمكن من صنع أصباغ جميلة جدا أيضا!";
+		next;
+		mes "[طالب الصباغ]";
+		mes "بالطبع، ما زلت أتعلم الأساسيات الآن، لكن يوما ما...";
+		close;
+	}
+}
+
+geffen_in,155,122,4	script	موظف النقابة#mer::Guild Staff#mer	47,{
+	if (job_merchant_q == 4 || job_merchant_q == 3) {
+		mes "[موظف النقابة]";
+		mes "آه، لا بد أنك من نقابة التجار. أخيرا، وصل طردي! حسنا...!";
+		next;
+		mes "[موظف النقابة]";
+		if (countitem(1081) == 1 || countitem(1082) == 1 || countitem(1091) == 1) {
+			mes "لا بد أنك متعب جدا";
+			mes "بسبب السفر";
+			mes "في هذا النوع";
+			mes "من الطقس...";
+		}
+		else {
+			mes "انتظر...";
+			mes "أين";
+			mes "الطرد؟";
+			close;
+		}
+		next;
+		mes "[موظف النقابة]";
+		mes "حسنا، دعني";
+		mes "أتحقق من الرقم التسلسلي...";
+		if (job_merchant_q2 == 3 && countitem(1081) != 0) {
+			mes "2989396. نعم، هذا ما طلبناه. إليك إيصالك.";
+			delitem 1081,1; //Merchant_Box_1
+			getitem 1075,1; //Merchant_Voucher_3
+		}
+		else if (job_merchant_q2 == 4 && countitem(1082) != 0) {
+			mes "2191737. نعم، هذا ما طلبناه. إليك إيصالك.";
+			delitem 1082,1; //Merchant_Box_2
+			getitem 1076,1; //Merchant_Voucher_4
+		}
+		else {
+			mes "أوه لا، هذا هو الرقم الخاطئ. هذا ليس ما طلبناه...";
+			next;
+			mes "[موظف النقابة]";
+			if (job_merchant_q2 == 3) {
+				mes "الرقم التسلسلي";
+				mes "يجب أن يكون 2989396.";
+			}
+			else if (job_merchant_q2 == 4) {
+				mes "الرقم التسلسلي";
+				mes "يجب أن يكون 2191737.";
+			}
+			else {
+				mes "الرقم التسلسلي";
+				mes "يجب أن يكون 2989396";
+				mes "أو 2191737، أحد";
+				mes "هذين الرقمين.";
+			}
+			mes "انظر هنا!";
+			mes "ألا ترى";
+			mes "أن هناك شيئا";
+			mes "خاطئا؟";
+			close;
+		}
+		if (job_merchant_q == 4)
+			set job_merchant_q,6;
+		else if (job_merchant_q == 3)
+			set job_merchant_q,5;
+		next;
+		mes "[موظف النقابة]";
+		mes "هيه هيه~";
+		mes "شكرا لك!";
+		mes "وداعا!";
+		close;
+	}
+	else if (job_merchant_q == 6 || job_merchant_q == 5 && job_merchant_q2 == 4 || job_merchant_q2 == 3) {
+		mes "[موظف النقابة]";
+		mes "مرحبا،";
+		mes "عضو نقابة التجار~";
+		mes "أقدم لك شكري.";
+		close;
+	}
+	else {
+		mes "[موظف النقابة]";
+		mes "كان يفترض أن يصل طردي الآن. هاه. أظن أن نقابة التجار قد تكون متأخرة قليلا...";
+		close;
+	}
+}
+
+prontera,248,42,0	script	موظفة كافرا#mer::Kafra Employee#mer	116,{
+	cutin "kafra_02",2;
+	if (job_merchant_q == 6 || job_merchant_q == 5) && (job_merchant_q2 == 2 || job_merchant_q2 == 1) {
+		mes "[موظفة كافرا]";
+		mes "أوه! شكرا لك على";
+		mes "السفر كل هذه";
+		mes "المسافة الطويلة إلى هنا~";
+		close2;
+		cutin "",255;
+		end;
+	}
+	else if (job_merchant_q == 4 || job_merchant_q == 3) {
+		mes "[موظفة كافرا]";
+		mes "توصيل من";
+		mes "نقابة التجار؟";
+		mes "أوه، نعم، من فضلك ضع";
+		mes "الطرد هناك تماما...";
+		if (countitem(1081) == 1 || countitem(1082) == 1 || countitem(1091) == 1) {
+			mes "لا بد أنك متعب جدا";
+			mes "بعد حمله كل هذه المدة!";
+		}
+		else {
+			mes "ا-انتظر. ألم تحضره؟";
+			mes "أين الطرد؟";
+			close2;
+			cutin "",255;
+			end;
+		}
+		next;
+		mes "[موظفة كافرا]";
+		mes "والآن، دعني أتحقق";
+		mes "من الرقم التسلسلي...";
+		if (job_merchant_q2 == 1 && countitem(1081) != 0) {
+			mes "2485741. صحيح، هذا هو";
+			mes "الذي طلبناه. أوه،";
+			mes "ولا تنس هذا الإيصال!";
+			next;
+			delitem 1081,1; //Merchant_Box_1
+			getitem 1073,1; //Merchant_Voucher_1
+		}
+		else if (job_merchant_q2 == 2 && countitem(1082) != 0) {
+			mes "2328137. صحيح، هذا هو";
+			mes "الذي طلبناه. أوه،";
+			mes "ولا تنس هذا الإيصال!";
+			next;
+			delitem 1082,1; //Merchant_Box_2
+			getitem 1074,1; //Merchant_Voucher_2
+		}
+		else {
+			mes "مممم؟ انتظر. هذا هو";
+			mes "الطرد الخاطئ. ما";
+			if (job_merchant_q2 == 1)
+				mes "طلبناه كان يحمل الرقم التسلسلي 2485741. أنا متأكدة أنه ليس هذا.";
+			else if (job_merchant_q2 == 2)
+				mes "طلبناه كان يحمل الرقم التسلسلي 2328137. أنا متأكدة أنه ليس هذا.";
+			else
+				mes "طلبناه كان يحمل الرقم التسلسلي 2485741 أو 2328137.";
+			next;
+			mes "[موظفة كافرا]";
+			mes "أخشى أن هناك";
+			mes "نوعا من";
+			mes "الخطأ. ربما";
+			mes "ينبغي أن تعود إلى";
+			mes "نقابة التجار";
+			mes "لتوضيح هذا الموقف؟";
+			close2;
+			cutin "",255;
+			end;
+		}
+		if (job_merchant_q == 4)
+			set job_merchant_q,6;
+		else if (job_merchant_q == 3)
+			set job_merchant_q,5;
+		mes "[موظفة كافرا]";
+		mes "شكرا لك مجددا";
+		mes "على تحمل";
+		mes "كل هذا العناء~";
+		close2;
+		cutin "",255;
+		end;
+	}
+	else {
+		mes "[موظفة كافرا]";
+		mes "مرحبا بك في";
+		mes "شركة كافرا،";
+		mes "حيث تكون الخدمة";
+		mes "دائما إلى جانبك~";
+		next;
+		mes "[موظفة كافرا]";
+		mes "كما ترى، فقد";
+		mes "انتقلت جمعية السيافين";
+		mes "إلى إزلود، وهي";
+		mes "مدينة تابعة لبرونتيرا.";
+		mes "نقدم حاليا خدمة انتقال";
+		mes "إلى إزلود مقابل 600 زيني.";
+		next;
+		if (select("استخدام:إلغاء") == 1) {
+			if (Zeny < 600) {
+				mes "[موظفة كافرا]";
+				mes "أنا آسفة، لكنك";
+				mes "لا تملك ما يكفي من الزيني";
+				mes "لاستخدام خدمة انتقال هذه.";
+				close2;
+				cutin "",255;
+				end;
+			}
+			set Zeny, Zeny-600;
+			set RESRVPTS, RESRVPTS + 37;
+			cutin "",255;
+			warp "izlude",94,103;
+			end;
+		}
+		close2;
+		cutin "",255;
+		end;
+	}
+}
+
+//izlu2dun,106,58,4	script	Kafra Employee#mer	116,{
+function	script	F_MercKafra	{
+	if ((job_merchant_q == 6 || job_merchant_q == 5) && (job_merchant_q2 == 8 || job_merchant_q2 == 7)) {
+		mes "[موظفة كافرا]";
+		mes "أوه مرحبا~";
+		mes "أمم، هل هناك";
+		mes "سبب خاص";
+		mes "لوجودك هنا؟";
+		close2;
+		cutin "",255;
+		end;
+	}
+	else if (job_merchant_q == 4 || job_merchant_q == 3) {
+		mes "[موظفة كافرا]";
+		mes "توصيل من";
+		mes "نقابة التجار؟";
+		mes "أوه، نعم، من فضلك ضع";
+		mes "الطرد هناك تماما...";
+		if (countitem(1081) == 1 || countitem(1082) == 1 || countitem(1091) == 1) {
+			mes "لا بد أنك متعب جدا";
+			mes "بعد حمله كل هذه المدة!";
+		}
+		else {
+			mes "ا-انتظر. ألم تحضره؟";
+			mes "أين الطرد؟";
+			close2;
+			cutin "",255;
+			end;
+		}
+		next;
+		mes "[موظفة كافرا]";
+		mes "والآن، دعني أتحقق";
+		mes "من الرقم التسلسلي...";
+		if (job_merchant_q2 == 7 && countitem(1081) != 0) {
+			mes "3318702. صحيح، هذا هو";
+			mes "الذي طلبناه. أوه،";
+			mes "ولا تنس هذا الإيصال!";
+			delitem 1081,1; //Merchant_Box_1
+			getitem 1079,1; //Merchant_Voucher_7
+		}
+		else if (job_merchant_q2 == 8 && countitem(1082) != 0) {
+			mes "3543625. صحيح، هذا هو";
+			mes "الذي طلبناه. أوه،";
+			mes "ولا تنس هذا الإيصال!";
+			delitem 1082,1; //Merchant_Box_2
+			getitem 1080,1; //Merchant_Voucher_8
+		}
+		else {
+			mes "مممم؟ انتظر. هذا هو";
+			mes "الطرد الخاطئ. ما";
+			if (job_merchant_q2 == 7)
+				mes "طلبناه كان يحمل الرقم التسلسلي 3318702. أنا متأكدة أنه ليس هذا.";
+			else if (job_merchant_q2 == 8)
+				mes "طلبناه كان يحمل الرقم التسلسلي 3543625. أنا متأكدة أنه ليس هذا.";
+			else
+				mes "طلبناه كان يحمل الرقم التسلسلي 3318702 أو 3543625.";
+			close2;
+			cutin "",255;
+			end;
+		}
+		if (job_merchant_q == 4)
+			set job_merchant_q,6;
+		else if (job_merchant_q == 3)
+			set job_merchant_q,5;
+		next;
+		if (countitem(1072) != 0 && quest_alb_01 == 0) {
+			select("هذه من رئيس مانسو من نقابة التجار...");
+			delitem 1072,1; //Delivery_Message
+			set quest_alb_01,1;
+			mes "[موظفة كافرا]";
+			mes "أوه~! رسالة من";
+			mes "مانسو! شكرا لك";
+			mes "جزيلا، لقد كنت متشوقة";
+			mes "لسماع أخباره. كيف حاله؟";
+			mes "هل هو بخير؟";
+			mes "لا أطيق انتظار قراءتها...";
+			next;
+			mes "[موظفة كافرا]";
+			mes "أوه، شكرا لك على";
+			mes "تحمل كل هذا";
+			mes "العناء لإيصال";
+			mes "كل هذا. هذا ليس شيئا";
+			mes "مميزا، لكن خذه من فضلك.";
+			mes "حسنا، أراك مجددا~";
+			getitem 513,3; //Banana
+		}
+		else {
+			mes "[موظفة كافرا]";
+			mes "شكرا لك مجددا";
+			mes "على تحمل";
+			mes "كل هذا العناء~";
+		}
+		close2;
+		cutin "",255;
+		end;
+	}
+	return;
+}

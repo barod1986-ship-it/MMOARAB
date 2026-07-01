@@ -1,0 +1,1489 @@
+//===== rAthena Script ======================================= 
+//= The Airship System Script
+//===== By: ================================================== 
+//= rAthena Dev Team
+//===== Current Version: =====================================
+//= 1.0
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= The Airship System used in the official servers.
+//===== Additional Comments: ================================= 
+//= 1.0 First version.
+//============================================================ 
+
+//============================================================ 
+//= Domestic Airship Route
+//= ... -> Juno -> Einbroch -> Lighthalzen -> Einbroch
+//= -> Juno -> Hugel -> ...
+//============================================================ 
+
+airplane,243,73,0	script	#AirshipWarp-1	45,1,1,{
+	end;
+
+OnInit:
+OnHide:
+	specialeffect EF_BASH;
+	disablenpc();
+	end;
+
+OnUnhide:
+	enablenpc();
+	specialeffect EF_SUMMONSLAVE;
+	end;
+
+OnTouch_:
+	switch ($@airplanelocation) {
+	case 0: warp "yuno",92,260; end;
+	case 1: warp "einbroch",92,278; end;
+	case 2: warp "lighthalzen",302,75; end;
+	case 3: warp "hugel",181,146; end;
+	}
+}
+
+airplane,243,29,0	duplicate(#AirshipWarp-1)	#AirshipWarp-2	45,1,1
+
+airplane,1,1,0	script	Domestic_Airship	-1,{
+	end;
+OnInit:
+	initnpctimer;
+	end;
+OnTimer20000:
+	mapannounce "airplane","نحن متجهون إلى إينبروخ.",bc_map,"0x00ff00";
+	end;
+OnTimer50000:
+	mapannounce "airplane","سنصل إلى إينبروخ قريبا.",bc_map,"0x00ff00";
+	end;
+OnTimer60000:
+	set $@airplanelocation,1;
+	donpcevent "#AirshipWarp-1::OnUnhide";
+	donpcevent "#AirshipWarp-2::OnUnhide";
+	mapannounce "airplane","مرحبا بكم في إينبروخ. نتمنى لكم رحلة آمنة.",bc_map,"0x00ff00";
+	end;
+OnTimer70000:
+	mapannounce "airplane","نحن الآن في إينبروخ. سيقلع المنطاد بعد قليل.",bc_map,"0x00ff00";
+	end;
+OnTimer80000:
+	donpcevent "#AirshipWarp-1::OnHide";
+	donpcevent "#AirshipWarp-2::OnHide";
+	mapannounce "airplane","المنطاد يقلع الآن. وجهتنا التالية هي لايت هالزن.",bc_map,"0x70dbdb";
+	end;
+OnTimer100000:
+	mapannounce "airplane","نحن متجهون إلى لايت هالزن.",bc_map,"0x70dbdb";
+	end;
+OnTimer130000:
+	mapannounce "airplane","سنصل إلى لايت هالزن قريبا.",bc_map,"0x70dbdb";
+	end;
+OnTimer140000:
+	set $@airplanelocation,2;
+	donpcevent "#AirshipWarp-1::OnUnhide";
+	donpcevent "#AirshipWarp-2::OnUnhide";
+	mapannounce "airplane","مرحبا بكم في لايت هالزن. نتمنى لكم رحلة آمنة.",bc_map,"0x70dbdb";
+	end;
+OnTimer150000:
+	mapannounce "airplane","نحن الآن في لايت هالزن. سيغادر المنطاد بعد قليل.",bc_map,"0x70dbdb";
+	end;
+OnTimer160000:
+	donpcevent "#AirshipWarp-1::OnHide";
+	donpcevent "#AirshipWarp-2::OnHide";
+	mapannounce "airplane","المنطاد يغادر الآن. وجهتنا التالية هي إينبروخ.",bc_map,"0x00ff00";
+	end;
+OnTimer180000:
+	mapannounce "airplane","نحن متجهون إلى إينبروخ.",bc_map,"0x00ff00";
+	end;
+OnTimer210000:
+	mapannounce "airplane","سنصل إلى إينبروخ قريبا.",bc_map,"0x00FF00";
+	end;
+OnTimer220000:
+	set $@airplanelocation,1;
+	donpcevent "#AirshipWarp-1::OnUnhide";
+	donpcevent "#AirshipWarp-2::OnUnhide";
+	mapannounce "airplane","مرحبا بكم في إينبروخ. نتمنى لكم رحلة آمنة.",bc_map,"0x00ff00";
+	end;
+OnTimer230000:
+	mapannounce "airplane","نحن الآن في إينبروخ. سيقلع المنطاد بعد قليل.",bc_map,"0x00ff00";
+	end;
+OnTimer240000:
+	donpcevent "#AirshipWarp-1::OnHide";
+	donpcevent "#AirshipWarp-2::OnHide";
+	mapannounce "airplane","المنطاد يقلع الآن. وجهتنا التالية هي يونو.",bc_map,"0xff8200";
+	end;
+OnTimer260000:
+	mapannounce "airplane","نحن متجهون إلى يونو.",bc_map,"0xff8200";
+	end;
+OnTimer290000:
+	mapannounce "airplane","سنصل إلى يونو قريبا.",bc_map,"0xff8200";
+	end;
+OnTimer300000:
+	set $@airplanelocation,0;
+	donpcevent "#AirshipWarp-1::OnUnhide";
+	donpcevent "#AirshipWarp-2::OnUnhide";
+	mapannounce "airplane","مرحبا بكم في يونو. نتمنى لكم رحلة آمنة.",bc_map,"0xff8200";
+	end;
+OnTimer310000:
+	mapannounce "airplane","نحن الآن في يونو. سيغادر المنطاد بعد قليل.",bc_map,"0xff8200";
+	end;
+OnTimer320000:
+	donpcevent "#AirshipWarp-1::OnHide";
+	donpcevent "#AirshipWarp-2::OnHide";
+	mapannounce "airplane","المنطاد يغادر الآن. وجهتنا التالية هي هويغل.",bc_map,"0xca4bf3";
+	end;
+OnTimer340000:
+	mapannounce "airplane","نحن متجهون إلى هويغل.",bc_map,"0xca4bf3";
+	end;
+OnTimer370000:
+	mapannounce "airplane","سنصل إلى هويغل قريبا.",bc_map,"0xca4bf3";
+	end;
+OnTimer380000:
+	set $@airplanelocation,3;
+	donpcevent "#AirshipWarp-1::OnUnhide";
+	donpcevent "#AirshipWarp-2::OnUnhide";
+	mapannounce "airplane","مرحبا بكم في هويغل. نتمنى لكم رحلة آمنة.",bc_map,"0xca4bf3";
+	end;
+OnTimer390000:
+	mapannounce "airplane","نحن الآن في هويغل. سيغادر المنطاد بعد قليل.",bc_map,"0xca4bf3";
+	end;
+OnTimer400000:
+	donpcevent "#AirshipWarp-1::OnHide";
+	donpcevent "#AirshipWarp-2::OnHide";
+	mapannounce "airplane","المنطاد يغادر الآن. وجهتنا التالية هي يونو.",bc_map,"0xff8200";
+	end;
+OnTimer420000:
+	mapannounce "airplane","نحن متجهون إلى يونو.",bc_map,"0xff8200";
+	end;
+OnTimer450000:
+	mapannounce "airplane","سنصل إلى يونو قريبا.",bc_map,"0xff8200";
+	end;
+OnTimer460000:
+	set $@airplanelocation,0;
+	donpcevent "#AirshipWarp-1::OnUnhide";
+	donpcevent "#AirshipWarp-2::OnUnhide";
+	mapannounce "airplane","مرحبا بكم في يونو. نتمنى لكم رحلة آمنة.",bc_map,"0xff8200";
+	end;
+OnTimer470000:
+	mapannounce "airplane","نحن الآن في يونو. سيغادر المنطاد بعد قليل.",bc_map,"0xff8200";
+	end;
+OnTimer480000:
+	donpcevent "#AirshipWarp-1::OnHide";
+	donpcevent "#AirshipWarp-2::OnHide";
+	mapannounce "airplane","المنطاد يغادر الآن. وجهتنا التالية هي إينبروخ.",bc_map,"0x00ff00";
+	stopnpctimer;
+	initnpctimer;
+}
+
+airplane,240,64,5	script	مخرج#airplane1a::ExitAirplane	857,{
+	end;
+}
+airplane,247,64,5	duplicate(ExitAirplane)	مخرج#airplane1b::Exit#airplane1b	857
+airplane,240,40,1	duplicate(ExitAirplane)	مخرج#airplane2a::Exit#airplane2a	857
+airplane,247,40,1	duplicate(ExitAirplane)	مخرج#airplane2b::Exit#airplane2b	857
+
+airplane,100,69,3	script	فرد من طاقم المنطاد#ein-1::Airship Crew#ein-1	852,{
+	mes "[أحد أفراد طاقم المنطاد]";
+	mes "إذا وصلنا إلى";
+	mes "وجهتك وأردت";
+	mes "مغادرة المنطاد،";
+	mes "فاستخدم الدرج";
+	mes "الموجود أمامك. شكرا";
+	mes "لاختيارك خدماتنا.";
+	close;
+}
+
+airplane,64,94,1	script	طفل أومبالا#ein_p::Umbala Kid#ein_p	787,{
+	emotion ET_PROFUSELY_SWEAT;
+	mes "[الطفل]";
+	if (event_umbala >= 3) {
+		mes "واو، أمي!";
+		mes "ا-انظري إلى هذا!";
+		mes "نحن نطير! ن-نحن...";
+		mes "نحن في قلب السماء!";
+	}
+	else {
+		mes "ماكومالاغو!";
+		mes "سامبا جوجيمبو";
+		mes "كاكو نا جيدي سولو.";
+		mes "بواهاهاهاهاهاهاه!";
+	}
+	close;
+}
+
+airplane,66,93,3	script	سيدة من أومبالا#ein_p::Umbala Lady#ein_p	783,{
+	emotion ET_THINK;
+	mes "[السيدة]";
+	if (event_umbala >= 3) {
+		mes "اهدأ...";
+		mes "يا صغيري، التزم الأدب~";
+		mes "لا تتحمس هكذا";
+		mes "ونحن في";
+		mes "مكان عام!";
+	}
+	else {
+		mes "تشوكتو!";
+		mes "ساكراب ماتي!";
+		mes "شاكا غورفتالفي";
+		mes "هونتيكي مانجو!";
+	}
+	close;
+}
+
+airplane,71,91,7	script	رجل من أومبالا#ein_p::Umbala Man#ein_p	789,{
+	if (event_umbala >= 3) {
+		mes "[شرمليم]";
+		mes "أهلا بك~";
+		mes "من النظرة التي تعلو";
+		mes "وجهك، أرى أنك";
+		mes "تستطيع فهم";
+		mes "كلامي. ^333333*يا للراحة...!*^000000";
+		next;
+		emotion ET_HNG;
+		mes "[شرمليم]";
+		mes "أساعد شركة";
+		mes "المناطيد عبر إرسال";
+		mes "أفراد الطاقم";
+		mes "للتدرب في أومبالا والتغلب";
+		mes "على خوفهم من المرتفعات بالقفز بالحبال. فكرة رائعة، أليس كذلك؟";
+		next;
+		mes "[شرمليم]";
+		mes "لكن...";
+		mes "بعضهم لم يستطع";
+		mes "التغلب على خوفه";
+		mes "من المرتفعات، وانتهى";
+		mes "بعضهم، أمم، ^333333في نيفلهايم^000000.";
+	}
+	else {
+		mes "[شرمليم]";
+		mes "باجو غا";
+		mes "نوكتا منطاد.";
+		next;
+		mes "[شرمليم]";
+		mes "...";
+		mes "......";
+		next;
+		emotion ET_HNG;
+		mes "[شرمليم]";
+		mes "شابالا موو باجاما";
+		mes "منطاد كولاها غوغونا ";
+		mes "سالو. داما، كوكو نا نو";
+		mes "يوكوتا. أم، فاشوكو نا ريت!";
+	}
+	close;
+}
+
+airplane,250,58,2	script	موظف المنطاد#airplane::Airship Staff#airplane	67,{
+	// Hugel quest addition
+	if (hg_ma1 == 3) {
+		mes "[موظف المنطاد]";
+		mes "مرحبا بك";
+		mes "على متن المنطاد.";
+		mes "كيف يمكنني مساعدتك؟";
+		next;
+		select("هل لديكم راكب اسمه تييري؟");
+		mes "[موظف المنطاد]";
+		mes "أعتذر، لكن لا أظن أن لدينا راكبا بهذا الاسم.";
+		close;
+	}
+	// Hugel quest end
+	mes "[موظف المنطاد]";
+	mes "مرحبا بك";
+	mes "على متن المنطاد.";
+	mes "كيف يمكنني مساعدتك؟";
+	next;
+	switch (select("إرشادات استخدام المنطاد:قمرة القبطان:المرافق:إلغاء")) {
+	case 1:
+		mes "[موظف المنطاد]";
+		mes "عندما تسمع إعلانا";
+		mes "يعلن وصولنا";
+		mes "إلى وجهتك،";
+		mes "فاستخدم أحد المخارج";
+		mes "الموجودة عند الطرفين";
+		mes "الشمالي والجنوبي للمنطاد.";
+		next;
+		mes "[موظف المنطاد]";
+		mes "إذا فاتتك";
+		mes "محطتك، فلا تقلق.";
+		mes "فالمنطاد يواصل";
+		mes "رحلته باستمرار، وستتاح لك";
+		mes "فرصة أخرى للوصول";
+		mes "إلى وجهتك.";
+		close;
+	case 2:
+		mes "[موظف المنطاد]";
+		mes "قمرة القبطان";
+		mes "تقع في مقدمة";
+		mes "المنطاد. هناك يمكنك";
+		mes "مقابلة القبطان";
+		mes "وطيار المنطاد.";
+		close;
+	case 3:
+		mes "[موظف المنطاد]";
+		mes "يوفر المنطاد";
+		mes "ألعابا صغيرة متنوعة";
+		mes "لترفيه جميع";
+		mes "ركابنا. ندعوك";
+		mes "إلى اختبار حظك ومهاراتك";
+		mes "في ألعاب المنطاد~";
+		close;
+	case 4:
+		mes "[موظف المنطاد]";
+		mes "حسنا، أتمنى أن";
+		mes "تستمتع برحلتك على متن";
+		mes "مناطيدنا. شكرا لك،";
+		mes "وطاب يومك.";
+		close;
+	}
+}
+
+airplane,80,71,2	script	زيرتا#01airplane::Zerta#01airplane	834,{
+	mes "[زيرتا]";
+	mes "أوه، مرحبا أيها المغامر.";
+	mes "أنا في";
+	mes "رحلة مقدسة، أصلي";
+	mes "من أجل سلامة";
+	mes "قارة ميدغارد.";
+	close;
+}
+
+airplane,65,63,4	script	مايلين#01airplane::Maelin#01airplane	714,{
+	mes "[مايلين]";
+	mes "أمم، هذا المنطاد";
+	mes "متجه إلى لوتي، أليس كذلك؟";
+	mes "لقد انتظرت طويلا،";
+	mes "لكنني لم أسمع أي";
+	mes "إعلان عن لوتي.";
+	close;
+}
+
+airplane,72,34,6	script	آنوس#01airplane::Aanos#01airplane	702,{
+	mes "[آنوس]";
+	mes "أوه واااو~";
+	mes "تبدو السماء";
+	mes "مختلفة جدا";
+	mes "وجميلة من هنا!";
+	close;
+}
+
+airplane,221,158,2	script	الطيار#airplane::Pilot#airplane	852,{
+	// Hugel quest addition
+	if (hg_ma1 == 3) {
+		mes "[الطيار]";
+		mes "ليتني أستطيع احتساء جعة باردة ومنعشة.";
+		mes "الشرب غاية حياتي! إنه يمنحني الطاقة!";
+		mes "لا أكون نفسي من دون شراب!";
+		next;
+		mes "[الطيار]";
+		mes "لكن القيادة تحت تأثير الشراب أمر خطير!";
+		mes "ومع ذلك، يجعلني هذا أرغب في المزيد!";
+		emotion ET_CRY;
+		next;
+		select("هل تعرف راكبا اسمه تييري؟");
+		mes "[الطيار]";
+		mes "هذا الزي";
+		mes "أنيق حقا، لكنه";
+		mes "سميك جدا ولا";
+		mes "يناسب ارتداءه داخل المنطاد.";
+		next;
+		mes "[الطيار]";
+		mes "...";
+		mes "......";
+		mes "لا يدخل أحد تقريبا";
+		mes "هذه الغرفة.";
+		mes "والقبطان حيوان رنة فعلا. يمكنني البقاء بسروالي الداخلي فقط.";
+		next;
+		emotion ET_HUK;
+		mes "[الطيار]";
+		mes "واه! من هناك؟!";
+		next;
+		mes "- ...إنه لا يصغي إليك إطلاقا. -";
+		close;
+	}
+	// Hugel quest end
+	switch (rand(1,4)) {
+	case 1:
+		mes "[الطيار]";
+		mes "مضى وقت طويل";
+		mes "جدا منذ استمتعت";
+		mes "بشراب بارد";
+		mes "ولذيذ. لكن";
+		mes "عملي يتطلب مني";
+		mes "صفاء الذهن التام!";
+		next;
+		mes "[الطيار]";
+		mes "اشرب بمسؤولية دائما!";
+		mes "لكنني لا أذكر";
+		mes "آخر مرة حصلت فيها على إجازة";
+		mes "حقيقية أو حتى يوم راحة. بعض";
+		mes "الشراب والرقائق والتلفاز";
+		mes "وقسط وافر من الراحة هو ما أحتاجه.";
+		emotion ET_CRY;
+		close;
+	case 2:
+		mes "[الطيار]";
+		mes "يا له من طقس";
+		mes "جميل اليوم.";
+		mes "فالسماء المشرقة والصافية";
+		mes "تتيح رؤية ممتازة";
+		mes "ورحلة آمنة ومريحة.";
+		close;
+	case 3:
+		mes "[الطيار]";
+		mes "تعرف، قبطاننا رجل";
+		mes "محترم، وهو وأخوه";
+		mes "معروفان جدا";
+		mes "في صناعة الطيران.";
+		mes "من كان يظن أن غزلان الرنة";
+		mes "تجيد قيادة المناطيد؟";
+		next;
+		mes "[الطيار]";
+		mes "وبيننا فقط،";
+		mes "يجب أن أخبرك";
+		mes "أن سانتا كان يعرف";
+		mes "ما يفعل حين استعان بغزلان الرنة";
+		mes "والأقزام للعمل لديه.";
+		mes "لا بد أنه عبقري!";
+		close;
+	default:
+		mes "[الطيار]";
+		mes "تعرف، قيادة";
+		mes "المناطيد في السماء";
+		mes "أمر جديد نسبيا، أليس كذلك؟";
+		mes "لقد أطلقوا خدمة";
+		mes "المنطاد على عجل.";
+		next;
+		emotion ET_HUK;
+		mes "[الطيار]";
+		mes "ومع ذلك، كانوا";
+		mes "جادين واستعدوا";
+		mes "مبكرا، فقد بدأنا";
+		mes "التدرب بينما كانت المناطيد";
+		mes "لا تزال قيد التطوير.";
+		mes "أليس هذا جنونيا؟!";
+		close;
+	}
+}
+
+airplane,50,66,5	script	تاجر التفاح#airplane::Apple Merchant#airplane	86,{
+	mes "[فروتز]";
+	mes "مرحبا بك في";
+	mes "متجر فروتز، حيث يمكنك";
+	mes "شراء التفاح أو طحنه";
+	mes "لصنع عصير التفاح.";
+	next;
+	switch (select("شراء التفاح:صنع عصير التفاح:لماذا أنت هنا؟:إلغاء")) {
+	case 1:
+		mes "[فروتز]";
+		mes "أدخل عدد";
+		mes "التفاحات التي تريد";
+		mes "شراءها. سعر التفاحة 15 زيني،";
+		mes "ويمكنك شراء";
+		mes "500 تفاحة كحد أقصى. أدخل";
+		mes " '0' لإلغاء الطلب.";
+		next;
+		while (1) {
+			input .@input;
+			set .@pay, .@input * 15;
+			if (.@input == 0) {
+				mes "[فروتز]";
+				mes "شكرا لزيارة";
+				mes "متجري. إلى اللقاء!";
+				mes "تعال في أي وقت";
+				mes "عندما ترغب في";
+				mes "تناول تفاحة~";
+				close;
+			}
+			else if (.@input < 1 || .@input > 500) {
+				mes "[فروتز]";
+				mes "لقد أدخلت عددا";
+				mes "أعلى من الحد الأقصى";
+				mes "وهو 500. أدخل";
+				mes "عدد التفاحات التي";
+				mes "تريد شراءها.";
+				next;
+			}
+			else {
+				mes "[فروتز]";
+				mes "سيكلف شراء ^FF0000" + .@input + "^000000 تفاحة";
+				mes "مبلغا قدره ^FF0000" + .@pay + "^000000 زيني.";
+				mes "هل تريد المتابعة؟";
+				next;
+				if (select("نعم:لا") == 2) {
+					mes "[فروتز]";
+					mes "شكرا لزيارة";
+					mes "متجري. إلى اللقاء!";
+					mes "تعال في أي وقت";
+					mes "عندما ترغب في";
+					mes "تناول تفاحة~";
+					close;
+				}
+				break;
+			}
+		}
+		if (Zeny < .@pay) {
+			mes "[فروتز]";
+			mes "عذرا، لا تملك";
+			mes "ما يكفي من الزيني";
+			mes "لشراء هذا العدد من التفاحات.";
+			mes "تحقق من رصيدك أو";
+			mes "اشتر عددا أقل من التفاحات.";
+			close;
+		}
+		else if (checkweight(512,.@input) == 0) {
+			mes "[فروتز]";
+			mes "هممم، لا أظن";
+			mes "أن في حقيبتك مساحة تكفي";
+			mes "لحمل هذا";
+			mes "العدد من التفاحات. أفرغ بعض المساحة أولا.";
+			close;
+		}
+		else {
+			set Zeny, Zeny - .@pay;
+			getitem 512,.@input; //Apple
+			mes "[فروتز]";
+			mes "شكرا لزيارة";
+			mes "متجري. آمل أن تستمتع";
+			mes "بمذاق هذه التفاحات~!";
+			close;
+		}
+	case 2:
+		mes "[فروتز]";
+		mes "حسنا، أحتاج إلى";
+		mes "^FF00003 تفاحات وزجاجة فارغة واحدة^000000";
+		mes "لأصنع لك زجاجة واحدة من عصير التفاح.";
+		mes "هل تريد المتابعة؟";
+		next;
+		switch (select("نعم:لا")) {
+		case 1:
+			if (countitem(512) < 3 || countitem(713) < 1) {
+				mes "[فروتز]";
+				mes "عذرا، لا تملك";
+				mes "مواد كافية";
+				mes "لصنع زجاجة من عصير التفاح.";
+				mes "تذكر، أحتاج إلى 3 تفاحات";
+				mes "وزجاجة فارغة واحدة.";
+				close;
+			}
+			else {
+				mes "[فروتز]";
+				mes "شكرا لك،";
+				mes "انتظر";
+				mes "لحظة من فضلك.";
+				next;
+				mes "^3355FF*طحن... طحن*";
+				mes "*طحن... طحن*";
+				mes "*كلانغ...!*^000000";
+				next;
+				delitem 512,3; //Apple
+				delitem 713,1; //Empty_Bottle
+				getitem 531,1; //Apple_Juice
+				mes "[فروتز]";
+				mes "تفضل~";
+				mes "أتمنى أن يعجبك!";
+				mes "لا تتردد في";
+				mes "زيارتي لشراء";
+				mes "التفاح وعصير التفاح";
+				mes "في أي وقت، أيها المغامر~";
+				close;
+			}
+		case 2:
+			mes "[فروتز]";
+			mes "شكرا لزيارة";
+			mes "متجري. إلى اللقاء!";
+			mes "تعال في أي وقت";
+			mes "عندما ترغب في";
+			mes "تناول تفاحة~";
+			close;
+		}
+	case 3:
+		mes "[فروتز]";
+		mes "كنت في الماضي متجولا";
+		mes "بلا مأوى. وفي أحد الأيام،";
+		mes "غفوت قليلا، فسقط شيء";
+		mes "على رأسي وأيقظني";
+		mes "من نومي الهادئ.";
+		next;
+		mes "[فروتز]";
+		mes "اتضح أنني كنت";
+		mes "نائما تحت شجرة";
+		mes "تفاح، وأن تفاحة سقطت";
+		mes "وضربتني على رأسي.";
+		mes "كنت أكاد أموت جوعا";
+		mes "وهممت بأكل تلك التفاحة...";
+		next;
+		mes "[فروتز]";
+		mes "لكن صديقي القديم كاين،";
+		mes "الذي عرفته أيام التعدين،";
+		mes "طلب مني مساعدته";
+		mes "على المنطاد. فوافقت،";
+		mes "وهناك رأيت بعض";
+		mes "الركاب يلعبون النرد.";
+		next;
+		mes "[فروتز]";
+		mes "غلبني الملل والفضول،";
+		mes "فراهنت";
+		mes "بتلك التفاحة الوحيدة";
+		mes "في لعبة نرد. ولسبب ما،";
+		mes "لازمني حظ";
+		mes "عجيب. صارت التفاحة تفاحتين... ";
+		next;
+		mes "[فروتز]";
+		mes "ثم صارت التفاحتان أربعا،";
+		mes "وقبل أن أدرك ما حدث،";
+		mes "استحوذت على سوق التفاح!";
+		mes "ربحت تفاحا كثيرا، فبدأت";
+		mes "عملي الخاص هنا";
+		mes "على المنطاد. غريب، أليس كذلك؟";
+		next;
+		mes "[فروتز]";
+		mes "لذلك، التفاح نافع";
+		mes "لك. وقد كان";
+		mes "نافعا جدا";
+		mes "لي. هاهاهاها~!";
+		close;
+	case 4:
+		mes "[فروتز]";
+		mes "شكرا لاستخدام";
+		mes "متجري.";
+		mes "إلى اللقاء~";
+		close;
+	}
+}
+
+//============================================================ 
+//= International Airship Route
+//= ... -> Izlude -> Juno -> Rachel -> ...
+//============================================================ 
+
+airplane_01,243,73,0	script	#AirshipWarp-3	45,1,1,{
+	end;
+	
+OnTouch_:
+	switch ($@airplanelocation2) {
+	case 0: warp "ra_fild12",292,204; end;
+	case 1: 
+		if(checkre(0))
+			warp "izlude",200,73;
+		else
+			warp "izlude",200,56;
+		end;
+	case 2: warp "yuno",12,261; end;
+	}
+
+OnInit:
+OnHide:
+	specialeffect EF_BASH;
+	disablenpc();
+	end;
+	
+OnUnhide:
+	enablenpc();
+	specialeffect EF_SUMMONSLAVE;
+	end;
+}
+
+airplane_01,243,29,0	duplicate(#AirshipWarp-3)	#AirshipWarp-4	45,1,1
+
+airplane_01,1,1,0	script	International_Airship	-1,{
+	end;
+OnInit:
+OnEnable:
+	initnpctimer;
+	end;
+OnTimer25000:
+	mapannounce "airplane_01","نحن متجهون إلى إزلود.",bc_map,"0x00ff00";
+	end;
+OnTimer50000:
+	mapannounce "airplane_01","سنصل إلى إزلود قريبا.",bc_map,"0x00ff00";
+	end;
+OnTimer60000:
+	set $@airplanelocation2,1;
+	donpcevent "#AirshipWarp-3::OnUnhide";
+	donpcevent "#AirshipWarp-4::OnUnhide";
+	mapannounce "airplane_01","مرحبا بكم في إزلود. نتمنى لكم رحلة آمنة.",bc_map,"0x00ff00";
+	end;
+OnTimer70000:
+	mapannounce "airplane_01","نحن الآن في إزلود. سيقلع المنطاد بعد قليل.",bc_map,"0x00ff00";
+	end;
+OnTimer80000:
+	donpcevent "#AirshipWarp-3::OnHide";
+	donpcevent "#AirshipWarp-4::OnHide";
+	mapannounce "airplane_01","المنطاد يقلع الآن. وجهتنا التالية هي يونو.",bc_map,"0x70dbdb";
+	end;
+OnTimer105000:
+	mapannounce "airplane_01","نحن متجهون إلى يونو.",bc_map,"0x70dbdb";
+	end;
+OnTimer130000:
+	mapannounce "airplane_01","سنصل إلى يونو قريبا.",bc_map,"0x70dbdb";
+	end;
+OnTimer140000:
+	set $@airplanelocation2,2;
+	donpcevent "#AirshipWarp-3::OnUnhide";
+	donpcevent "#AirshipWarp-4::OnUnhide";
+	mapannounce "airplane_01","مرحبا بكم في يونو. نتمنى لكم رحلة آمنة.",bc_map,"0x70dbdb";
+	end;
+OnTimer150000:
+	mapannounce "airplane_01","نحن الآن في يونو. سيغادر المنطاد بعد قليل.",bc_map,"0x70dbdb";
+	end;
+OnTimer160000:
+	donpcevent "#AirshipWarp-3::OnHide";
+	donpcevent "#AirshipWarp-4::OnHide";
+	mapannounce "airplane_01","المنطاد يغادر الآن. وجهتنا التالية هي راشيل.",bc_map,"0xFF8200";
+	end;
+OnTimer185000:
+	mapannounce "airplane_01","نحن متجهون إلى راشيل.",bc_map,"0xFF8200";
+	end;
+OnTimer210000:
+	mapannounce "airplane_01","سنصل إلى راشيل قريبا.",bc_map,"0xFF8200";
+	end;
+OnTimer220000:
+	set $@airplanelocation2,0;
+	donpcevent "#AirshipWarp-3::OnUnhide";
+	donpcevent "#AirshipWarp-4::OnUnhide";
+	mapannounce "airplane_01","مرحبا بكم في راشيل. نتمنى لكم رحلة آمنة.",bc_map,"0xFF8200";
+	end;
+OnTimer230000:
+	mapannounce "airplane_01","نحن الآن في راشيل. سيقلع المنطاد بعد قليل.",bc_map,"0xFF8200";
+	end;
+OnTimer240000:
+	donpcevent "#AirshipWarp-3::OnHide";
+	donpcevent "#AirshipWarp-4::OnHide";
+	mapannounce "airplane_01","المنطاد يقلع الآن. وجهتنا التالية هي إزلود.",bc_map,"0x00ff00";
+	stopnpctimer;
+	set .moninv, .moninv + 1;
+	if (.moninv == 7) {
+		if (rand(1,3) == 3) {
+			donpcevent "Airship#airplane02::OnEnable";
+			end;
+		}
+		set .moninv, 0;
+	}
+	initnpctimer;
+	end;
+}
+
+airplane_01,240,64,5	script	مخرج#airplane_011a::ExitAirplane01	857,{
+	end;
+}
+airplane_01,247,64,5	duplicate(ExitAirplane01)	مخرج#airplane_011b::Exit#airplane_011b	857
+airplane_01,240,40,1	duplicate(ExitAirplane01)	مخرج#airplane_012a::Exit#airplane_012a	857
+airplane_01,247,40,1	duplicate(ExitAirplane01)	مخرج#airplane_012b::Exit#airplane_012b	857
+
+airplane_01,250,58,2	script	موظف المنطاد#airplane01::Airship Staff#airplane01	67,{
+	mes "[موظف المنطاد]";
+	mes "مرحبا بك";
+	mes "على متن المنطاد.";
+	mes "كيف يمكنني مساعدتك؟";
+	next;
+	switch (select("إرشادات استخدام المنطاد:قمرة القبطان:المرافق:إلغاء")) {
+	case 1:
+		mes "[موظف المنطاد]";
+		mes "عندما تسمع إعلانا";
+		mes "يعلن وصولنا";
+		mes "إلى وجهتك،";
+		mes "فاستخدم أحد المخارج";
+		mes "الموجودة عند الطرفين";
+		mes "الشمالي والجنوبي للمنطاد.";
+		next;
+		mes "[موظف المنطاد]";
+		mes "إذا فاتتك";
+		mes "محطتك، فلا تقلق.";
+		mes "فالمنطاد يواصل";
+		mes "رحلته باستمرار، وستتاح لك";
+		mes "فرصة أخرى للوصول";
+		mes "إلى وجهتك.";
+		close;
+	case 2:
+		mes "[موظف المنطاد]";
+		mes "قمرة القبطان";
+		mes "تقع في مقدمة";
+		mes "المنطاد. هناك يمكنك";
+		mes "مقابلة القبطان";
+		mes "وطيار المنطاد.";
+		close;
+	case 3:
+		mes "[موظف المنطاد]";
+		mes "يوفر المنطاد";
+		mes "ألعابا صغيرة متنوعة";
+		mes "لترفيه جميع";
+		mes "ركابنا. ندعوك";
+		mes "إلى اختبار حظك ومهاراتك";
+		mes "في ألعاب المنطاد~";
+		close;
+	case 4:
+		mes "[موظف المنطاد]";
+		mes "حسنا، أتمنى أن";
+		mes "تستمتع برحلتك على متن";
+		mes "مناطيدنا. شكرا لك،";
+		mes "وطاب يومك.";
+		close;
+	}
+}
+
+airplane_01,50,66,5	script	تاجر التفاح#air01::Apple Merchant#air01	86,{
+	if (checkweight(1201,1) == 0) {
+		mes "- انتظر لحظة! -";
+		mes "- أنت تحمل حاليا -";
+		mes "- أغراضا كثيرة جدا. -";
+		mes "- حاول مرة أخرى -";
+		mes "- بعد أن تخفف حمولتك. -";
+		close;
+	}
+	mes "[ميلتز]";
+	mes "مرحبا بك في";
+	mes "متجر ميلتز، حيث يمكنك";
+	mes "شراء التفاح أو طحنه";
+	mes "لصنع عصير التفاح.";
+	next;
+	switch (select("شراء التفاح:صنع عصير التفاح:إلغاء")) {
+	case 1:
+		mes "[ميلتز]";
+		mes "أدخل عدد";
+		mes "التفاحات التي تريد";
+		mes "شراءها. سعر التفاحة 15 زيني،";
+		mes "ويمكنك شراء";
+		mes "500 تفاحة كحد أقصى. أدخل";
+		mes "'0' لإلغاء الطلب.";
+		next;
+		while (1) {
+			input .@input;
+			set .@pay, .@input * 15;
+			if (.@input == 0) {
+				mes "[ميلتز]";
+				mes "شكرا لزيارة";
+				mes "متجري. إلى اللقاء!";
+				mes "تعال في أي وقت";
+				mes "عندما ترغب في";
+				mes "تناول تفاحة~";
+				close;
+			}
+			else if (.@input < 1 || .@input > 500) {
+				mes "[ميلتز]";
+				mes "لقد أدخلت عددا";
+				mes "أعلى من الحد الأقصى";
+				mes "وهو 500. أدخل";
+				mes "عدد التفاحات التي";
+				mes "تريد شراءها.";
+				next;
+			}
+			else {
+				mes "[ميلتز]";
+				mes "سيكلف شراء ^FF0000" + .@input + "^000000 تفاحة";
+				mes "مبلغا قدره ^FF0000" + .@pay + "^000000 زيني.";
+				mes "هل تريد المتابعة؟";
+				next;
+				if (select("نعم:لا") == 2) {
+					mes "[ميلتز]";
+					mes "شكرا لزيارة";
+					mes "متجري. إلى اللقاء!";
+					mes "تعال في أي وقت";
+					mes "عندما ترغب في";
+					mes "تناول تفاحة~";
+					close;
+				}
+				break;
+			}
+		}
+		if (Zeny < .@pay) {
+			mes "[ميلتز]";
+			mes "عذرا، لا تملك";
+			mes "ما يكفي من الزيني.";
+			mes "تحقق من رصيدك أو";
+			mes "اشتر عددا أقل من التفاحات.";
+			close;
+		}
+		else if (checkweight(512,.@input) == 0) {
+			mes "[ميلتز]";
+			mes "همم، لا أظن أن لديك";
+			mes "مساحة تكفي لحمل";
+			mes "هذا العدد من التفاحات.";
+			mes "أفرغ بعض";
+			mes "المساحة في حقيبتك أولا.";
+			close;
+		}
+		else {
+			set Zeny, Zeny - .@pay;
+			getitem 512,.@input; //Apple
+			mes "[ميلتز]";
+			mes "شكرا لزيارة";
+			mes "متجري. آمل أن تستمتع";
+			mes "بمذاق هذه التفاحات~!";
+			close;
+		}
+	case 2:
+		mes "[ميلتز]";
+		mes "حسنا، أحتاج إلى";
+		mes "^FF00003 تفاحات وزجاجة فارغة واحدة^000000";
+		mes "لأصنع لك زجاجة واحدة من عصير التفاح.";
+		mes "هل تريد المتابعة؟";
+		next;
+		switch (select("نعم:لا")) {
+		case 1:
+			if (countitem(512) < 3 || countitem(713) < 1) {
+				mes "[ميلتز]";
+				mes "عذرا، لا تملك";
+				mes "مواد كافية";
+				mes "لصنع زجاجة من عصير التفاح.";
+				mes "تذكر، أحتاج إلى 3 تفاحات";
+				mes "وزجاجة فارغة واحدة.";
+				close;
+			}
+			else {
+				mes "[ميلتز]";
+				mes "شكرا لك، انتظر قليلا.";
+				next;
+				mes "^3355FF*طحن... طحن*";
+				mes "*طحن... طحن*";
+				mes "*كلانغ...!*^000000";
+				next;
+				delitem 512,3; //Apple
+				delitem 713,1; //Empty_Bottle
+				getitem 531,1; //Apple_Juice
+				mes "[ميلتز]";
+				mes "تفضل~";
+				mes "تفضل بزيارتنا مجددا.";
+				close;
+			}
+		case 2:
+			mes "[ميلتز]";
+			mes "شكرا لزيارة";
+			mes "متجري. إلى اللقاء!";
+			mes "تعال في أي وقت";
+			mes "عندما ترغب في";
+			mes "تناول تفاحة~";
+			close;
+		}
+	case 3:
+		mes "[ميلتز]";
+		mes "شكرا لزيارة";
+		mes "متجري. إلى اللقاء!";
+		mes "تعال في أي وقت";
+		mes "عندما ترغب في";
+		mes "تناول تفاحة~";
+		close;
+	}
+}
+
+airplane_01,221,158,2	script	الطيار#airplane_01::Pilot#airplane_01	852,{
+	switch (rand(1,4)) {
+	case 1:
+		mes "[الطيار]";
+		mes "خط الطول 131 درجة شرقا.";
+		mes "خط العرض 37 درجة شمالا.";
+		mes "نحن على المسار المحدد، أيها القبطان.";
+		close;
+	case 2:
+		mes "[الطيار]";
+		mes "يبدو اليوم";
+		mes "غائما جدا. يصعب";
+		mes "تحديد المسار حين لا تكون السماء";
+		mes "صافية. أظن أننا سنحتاج";
+		mes "إلى رفع قدرة الرادار.";
+		close;
+	case 3:
+		mes "[الطيار]";
+		mes "القبطان رجل صالح،";
+		mes "ولا أجد شخصا";
+		mes "أجدر منه بقيادة";
+		mes "هذه السفينة. لكنه";
+		mes "صارم جدا ويعاملنا بقسوة.";
+		next;
+		mes "[^ff0000تارلوك^000000]";
+		mes "^ff0000مهلا...!^000000";
+		mes "^ff0000قلل الكلام^000000";
+		mes "^ff0000وركز على القيادة!^000000";
+		next;
+		mes "[الطيار]";
+		mes "ح-حالا، سيدي!";
+		mes "(أرأيت ما أعنيه؟)";
+		close;
+	default:
+		mes "[الطيار]";
+		mes "هذا الزي";
+		mes "أنيق حقا، لكنه";
+		mes "سميك جدا ولا";
+		mes "يناسب ارتداءه داخل المنطاد.";
+		next;
+		mes "[الطيار]";
+		mes "...";
+		mes "......";
+		mes "لا يدخل أحد تقريبا";
+		mes "هذه الغرفة.";
+		mes "والقبطان حيوان رنة فعلا.";
+		mes "يمكنني البقاء بسروالي الداخلي فقط.";
+		next;
+		emotion ET_HUK;
+		mes "[الطيار]";
+		mes "أوه...! مرحبا بك!";
+		mes "هـ-هـ-هل تستمتع برحلتك؟!";
+		close;
+	}
+}
+
+airplane_01,83,61,2	script	ديان#01airplane_01::Dianne#01airplane_01	72,2,2,{
+	mes "[ديان]";
+	mes "هذا غريب حقا!";
+	mes "ذهبت لمقابلة";
+	mes "قبطان المنطاد،";
+	mes "لكن كل ما رأيته كان";
+	mes "حيوان رنة غريبا. مهلا!";
+	mes "هل تظن أن...";
+	close;
+
+OnTouch_:
+	emotion ET_CRY;
+	end;
+}
+
+airplane_01,69,63,2	script	مندل#01airplane_01::Mendel#01airplane_01	55,{
+	mes "[مندل]";
+	mes "كما توقعت،";
+	mes "وجبات الرحلة لا";
+	mes "تتجاوز مستوى ثلاث نجوم.";
+	mes "*همف* كان يجدر بي";
+	mes "إحضار طباخي كي";
+	mes "أستمتع بوجبة لائقة.";
+	close;
+}
+
+airplane_01,71,31,2	script	السياف شيميزو#air_01::Swordsman Shimizu#air_01	106,{
+	mes "[السياف شيميزو]";
+	mes "أخيرا، بعد خمس";
+	mes "سنوات من الانتظار...";
+	mes "يمكنني أن أنتقم!";
+	next;
+	mes "[السياف شيميزو]";
+	mes "كل ما علي فعله...";
+	mes "هو الحرص على";
+	mes "ألا أفوت";
+	mes "محطتي مجددا. لكن قريبا، قريبا جدا،";
+	mes "سأنتقم!";
+	close;
+}
+
+//============================================================ 
+//= Typing Challenge
+//============================================================ 
+airplane_01,32,61,4	script	نيلز#ein::Nils#ein	49,1,1,{
+	mes "[نيلز]";
+	mes "مرحبا بك في";
+	mes "^ff0000تحدي الكتابة في RO^000000.";
+	mes "هل ترغب في لعب";
+	mes "لعبة كتابة سريعة؟";
+	next;
+	switch (select("العب ^ff0000تحدي الكتابة في RO^000000:التعليمات:عرض الأرقام القياسية:إلغاء")) {
+	case 1:
+		mes "[نيلز]";
+		mes "حسنا، لدينا";
+		mes "متنافس جديد!";
+		mes "اكتب النص التالي";
+		mes "بأسرع ما يمكنك";
+		mes "دون ارتكاب أي";
+		mes "أخطاء! لنبدأ~!";
+		setarray .@line1_1$[0],	"^3cbcbccallipygian salacius lascivious^000000",
+					"^3cbcbcBy the power of^000000",
+					"^0000ffthkelfkskeldmsiejdlslehfndkelsheidl^000000",
+					"^3cbcbcburrdingdingdingdilidingdingdingphoohudaamb^000000",
+					"^3cbcbcCoboman no chikara-yumei na^000000",
+					"^3cbcbcI'm the king of All Weirdos! Now^000000",
+					"^3cbcbcYou give me no choice. I guess it's^000000";
+		setarray .@line1_2$[0],	"^3cbcbclicentious prurient concupiscent^000000",
+					"^3cbcbcp-po-poi-po-poi-poin-poing^000000",
+					"^3cbcbcskemd^000000",
+					"^3cbcbcandoorabambarambambambambamburanbamding^000000",
+					"^3cbcbcchikara-daiookii na chikara da ze!^000000",
+					"^3cbcbcyou know of my true power. Obey~!^000000",
+					"^3cbcbctime for me to reveal my secret...^000000";
+		setarray .@line1_3$[0],	"",
+					"^3cbcbcGOD-POING. I NEVER LOSE!^000000",
+					"",
+					"",
+					"^3cbcbcCOBO ON^000000",
+					"",
+					"";
+		setarray .@word1$[0],	"callipygian salacius lascivious licentious prurient concupiscent",
+					"By the power of p-po-poi-po-poi-poin-poing GOD-POING. I NEVER LOSE!",
+					"thkelfkskeldmsiejdlslehfndkelsheidlskemd",
+					"burrdingdingdingdilidingdingdingphoohudaambandoorabambarambambambambamburanbamding",
+					"Coboman no chikara-yumei na chikara-daiookii na chikara da ze! COBO ON",
+					"I'm the king of All Weirdos! Now you know of my true power. Obey~!",
+					"You give me no choice. I guess it's time for me to reveal my secret...";
+		setarray .@line2_1$[0],	"^3cbcbcuNflAPPaBLe LoVaBLe SeCreTs AnD^000000",
+					"^ff1493LiGhTsPeEd RiGhT SPEed LeFT TURn^000000",
+					"^ff1493hfjdkeldjsieldjshfjdjeiskdlefvbd^000000",
+					"^ff1493burapaphuralanderamduanbatuhiwooi^000000",
+					"^ff1493belief love luck grimace sweat rush^000000",
+					"^800080opeN, Open!op3n.openOpen0p3nOpEn0pen^000000",
+					"^3cbcbcfReeDoM ecstAcy JoUrnaliSm ArMplt^000000";
+		setarray .@line2_2$[0],	"^3cbcbcboWLIiNg aGaINST tHe KarMA of YoUtH^000000",
+					"^ff1493RiGhT BuRn OrIGInAL GaNgSteR SmACk^000000",
+					"",
+					"^ff1493kabamturubamdingding^000000",
+					"^ff1493folktale rodimus optimus bumblebee^000000",
+					"^800080`open'0Pen open? open!111OPENSESAME^000000",
+					"^3cbcbcDisCoverY hEaDaChE MoonbeAmS jUsTiCE^000000";
+		setarray .@word2$[0],	"uNflAPPaBLe LoVaBLe SeCreTs AnD boWLIiNg aGaINST tHe KarMA of YoUtH",
+					"LiGhTsPeEd RiGhT SPEed LeFT TURn RiGhT BuRn OrIGInAL GaNgSteR SmACk",
+					"hfjdkeldjsieldjshfjdjeiskdlefvbd",
+					"burapaphuralanderamduanbatuhiwooikabamturubamdingding",
+					"belief love luck grimace sweat rush folktale rodimus optimus bumblebee",
+					"opeN, Open!op3n.openOpen0p3nOpEn0pen`open'0Pen open? open!111OPENSESAME",
+					"fReeDoM ecstAcy JoUrnaliSm ArMplt DisCoverY hEaDaChE MoonbeAmS jUsTiCE";
+		setarray .@letters[0],	1300,
+					1250,
+					1180,
+					1380,
+					1740,
+					1440,
+					1450;
+		set .@wordtest, rand(7);
+		next;
+		mes "[نيلز]";
+		mes .@line1_1$[.@wordtest];
+		mes .@line1_2$[.@wordtest];
+		mes .@line1_3$[.@wordtest];
+		set .@start_time, gettimetick(1);
+		next;
+		input .@save1$;
+		set .@end_time, gettimetick(1);
+		set .@total_time, .@end_time - .@start_time;
+		mes "[نيلز]";
+		mes .@line2_1$[.@wordtest];
+		mes .@line2_2$[.@wordtest];
+		set .@start_time, gettimetick(1);
+		next;
+		input .@save2$;
+		set .@end_time, gettimetick(1);
+		set .@total_time, .@total_time + (.@start_time - .@end_time);
+		set .@tasoo, (.@letters[.@wordtest] / ( .@total_time > 0 ?  .@total_time : 1)) * 6;
+		if ((.@save1$ == .@word1$[.@wordtest]) && (.@save2$ == .@word2$[.@wordtest])) {
+			mes "[نيلز]";
+			mes "زمنك هو ^ff0000" + .@total_time + " ثانية^000000،";
+			mes "وإجمالي الحروف هو " + .@tasoo + ".";
+			next;
+			if (.@tasoo >= 1300) {
+				mes "[نيلز]";
+				mes "هممم، هذا الزمن غير";
+				mes "ممكن بشريا إلا إذا";
+				mes "نسخت الجملة كاملة ولصقتها.";
+				mes "العب بنزاهة";
+				mes "في المرة القادمة.";
+				close;
+			}
+			if (.@tasoo >= $050320_ein_typing) {
+				mes "[نيلز]";
+				mes "كان الرقم القياسي السابق";
+				mes "مسجلا باسم ^0000ff" + $050320_minus1_typing$ + "^000000";
+				mes "بمجموع ^0000ff" + $050320_ein_typing + "^000000 حرف.";
+				mes "لكن، ^ff0000" + strcharinfo(0) + "^000000،";
+				mes "لقد حققت رقما قياسيا جديدا";
+				mes "هذه المرة. تهانينا!";
+				set $050320_minus1_typing$, strcharinfo(0);
+				set $050320_ein_typing, .@tasoo;
+				close;
+			}
+			else {
+				mes "[نيلز]";
+				mes "^0000ff" + $050320_minus1_typing$ + "^000000";
+				mes "هو صاحب الرقم القياسي";
+				mes "الحالي، بإجمالي";
+				mes "حروف قدره ^0000ff" + $050320_ein_typing + "^000000";
+				mes "حرف. حاول تحطيم";
+				mes "ذلك الرقم القياسي~";
+				close;
+			}
+		}
+		else {
+			mes "[نيلز]";
+			mes "أوووه...";
+			mes "آسف، لكنك";
+			mes "أدخلت النص";
+			mes "بشكل غير صحيح...";
+			close;
+		}
+	case 2:
+		mes "[نيلز]";
+		mes "^ff0000تحدي الكتابة في RO^000000";
+		mes "لعبة تكتب فيها";
+		mes "النص المعروض بأسرع ما";
+		mes "يمكنك. ويسجل اسم أفضل";
+		mes "لاعب في سجل دائم. إن كنت";
+		mes "تريد الشهرة، فهذه فرصتك!";
+		next;
+		mes "[نيلز]";
+		mes "أود فقط أن";
+		mes "أخبرك أنك تكتب";
+		mes "كل النص الذي تراه";
+		mes "في سطر الإدخال الوحيد";
+		mes "الذي يعطى لك. لذلك لا تضغط";
+		mes "مفتاح الإدخال، بل اضغط 'OK.'";
+		close;
+	case 3:
+		mes "[نيلز]";
+		mes "^0000ff" + $050320_minus1_typing$ + "^000000";
+		mes "هو صاحب الرقم القياسي";
+		mes "الحالي، بإجمالي";
+		mes "حروف قدره ^0000ff" + $050320_ein_typing + "^000000";
+		mes "حرف. حاول تحطيم";
+		mes "ذلك الرقم القياسي~";
+		close;
+	case 4:
+		mes "[نيلز]";
+		mes "يمكنك خوض";
+		mes "^ff0000تحدي الكتابة في RO^000000";
+		mes "في أي وقت. سأكون هنا~";
+		close;
+	}
+}
+
+//============================================================ 
+//= Apple Gambling
+//============================================================ 
+airplane_01,33,68,4	script	كلاريس::Clarice	74,{
+	mes "[كلاريس]";
+	mes "مرحبا، أنا كلاريس~";
+	mes "ما رأيك أن";
+	mes "تراهن ببعض التفاح";
+	mes "في لعبة نرد ودية؟";
+	next;
+	callfunc "applegamble","Clarice";
+	end;
+}
+
+function	script	applegamble	{
+	.@npc_name$ = getarg(0);
+	.@npc_name_display$ = .@npc_name$;
+	if (.@npc_name$ == "Clarice") {
+		.@npc_name_display$ = "كلاريس";
+	}
+	switch (select("العب لعبة النرد:تعرف على القواعد:إلغاء")) {
+	case 3:
+		mes "["+ .@npc_name_display$ +"]";
+		mes "أنا مستعدة للعب";
+		mes "النرد متى شئت.";
+		mes "تحدث إلي فقط";
+		mes "حين تراودك";
+		mes "رغبة في المقامرة، اتفقنا؟";
+		close;
+	case 2:
+		mes "["+ .@npc_name_display$ +"]";
+		mes "قواعد لعبة النرد";
+		mes "بسيطة جدا. أولا،";
+		mes "تضع رهانا من التفاح.";
+		mes "يمكنك المراهنة بما لا يزيد على 50";
+		mes "تفاحة في الجولة. ولإبقاء الأمر";
+		mes "قانونيا، لا أقبل سوى التفاح.";
+		next;
+		mes "["+ .@npc_name_display$ +"]";
+		mes "وإن كان الزيني يثقل";
+		mes "جيبك من كثرته،";
+		mes "فتوجه إلى فروتز";
+		mes "واشتر ما تشاء";
+		mes "من التفاح، يا صاح~";
+		next;
+		mes "["+ .@npc_name_display$ +"]";
+		mes "أبدأ أنا";
+		mes "برمي نردين سداسيين.";
+		mes "وعندما يحين دورك، ترمي";
+		mes "نردين سداسيين. بعد";
+		mes "ذلك، يمكن لكل منا";
+		mes "اختيار رمي نرد ثالث.";
+		next;
+		mes "["+ .@npc_name_display$ +"]";
+		mes "وهذه هي القاعدة";
+		mes "المهمة: إن تجاوز مجموعك";
+		mes "12 فستخسر تلقائيا.";
+		mes "وإلا، فإن";
+		mes "الشخص صاحب المجموع الأعلى";
+		mes "هو الفائز. فهمت؟";
+		next;
+		mes "["+ .@npc_name_display$ +"]";
+		mes "ستقرر أنت أولا";
+		mes "ما إذا كنت";
+		mes "سترمي النرد الثالث أم لا. ثم";
+		mes "سأقرر، بناء على نتيجتك،";
+		mes "رمي نردي الثالث... أو عدم رميه.";
+		next;
+		mes "["+ .@npc_name_display$ +"]";
+		mes "إذا فزت، ستحصل";
+		mes "على ضعف عدد";
+		mes "التفاح الذي راهنت به.";
+		mes "وإذا تعادلنا، فستستعيد";
+		mes "التفاح الذي راهنت به.";
+		mes "عادل، أليس كذلك؟";
+		close;
+	case 1:
+		break;
+	}
+	mes "["+ .@npc_name_display$ +"]";
+	mes "إذن ستلعب";
+	mes "معي؟ رائع! كم";
+	mes "تفاحة تريد المراهنة بها؟";
+	mes "تذكر، يمكنك المراهنة";
+	mes "بحد أقصى 50 تفاحة. وللإلغاء،";
+	mes "أدخل '0'.";
+	next;
+	while(1) {
+		input .@amount;
+		if (.@amount == 0) {
+			mes "["+ .@npc_name_display$ +"]";
+			mes "هل غيرت رأيك؟";
+			mes "أتفهم ذلك. حسنا،";
+			mes "آمل أن نلعب لاحقا.";
+			close;
+		}
+		else if (.@amount < 1 || .@amount > 50) {
+			mes "["+ .@npc_name_display$ +"]";
+			mes "لا يمكنك المراهنة بأكثر من";
+			mes "50 تفاحة. يجب أن";
+			mes "تبقى الرهانات";
+			mes "معقولة. أدخل";
+			mes "عددا لا يتجاوز 50.";
+			next;
+			continue;
+		}
+		mes "["+ .@npc_name_display$ +"]";
+		mes "إذن ستراهن";
+		mes "بـ ^FF0000"+.@amount+"^000000 تفاحة.";
+		mes "هل هذا صحيح؟";
+		next;
+		if (select("نعم:لا") == 2) {
+			mes "["+ .@npc_name_display$ +"]";
+			mes "هل أخطأت في العدد؟";
+			mes "حسنا، أدخل";
+			mes "عدد التفاحات التي";
+			mes "تريد وضعها في الرهان.";
+			next;
+			continue;
+		}
+		if (countitem(512) <.@amount) {
+			mes "عذرا، يبدو";
+			mes "أنك لا تملك";
+			mes "تفاحا كافيا لهذا";
+			mes "الرهان... لا يمكنك المقامرة";
+			mes "من دون ما تراهن به.";
+			next;
+			continue;
+		}
+		delitem 512,.@amount;
+		mes "["+ .@npc_name_display$ +"]";
+		mes "رائع!";
+		mes "لنبدأ";
+		mes "اللعبة! سأرمي أولا~";
+		break;
+	}
+	mes "^3355FF*تدحرج وقرقعة*^000000";
+	next;
+	set .@giveapple, .@amount*2;
+	set .@table1, rand(1,6);
+	set .@table2, rand(1,6);
+	set .@tablesub, .@table1 + .@table2;
+	set .@tabletotal, .@tablesub;
+	mes "["+ .@npc_name_display$ +"]";
+	mes "حصلت على ^0000FF" + .@table1 + "^000000 و ^0000FF" + .@table2 + "^000000.";
+	mes "وهذا مجموع ^0000FF" + .@tablesub + "^000000.";
+	mes "^FF0000" + strcharinfo(0) + "^000000، الآن دورك.";
+	next;
+	select("ارم النرد");
+	mes "^3355FF*تدحرج وقرقعة*^000000";
+	set .@player1, rand(1,6);
+	set .@player2, rand(1,6);
+	set .@playersub, .@player1 + .@player2;
+	if (.@playersub > 9 && .@amount > 39) {
+		set .@player1, rand(1,6);
+		set .@player2, rand(1,6);
+		set .@playersub, .@player1 + .@player2;
+	}
+	set .@playertotal, .@playersub;
+	next;
+	mes "["+ .@npc_name_display$ +"]";
+	mes "^FF0000" + strcharinfo(0) + "^000000، لديك ^FF0000" + .@player1 + "^000000 و ^FF0000" + .@player2 + "^000000. المجموع هو ^FF0000" + .@playersub + "^000000 .";
+	next;
+	mes "["+ .@npc_name_display$ +"]";
+	if(.@playersub == .@tablesub) {
+		mes "مجموعي الآن ^0000FF" + .@tablesub + "^000000، ومجموعك يا ^FF0000" + strcharinfo(0) + "^000000 هو ^FF0000" + .@playersub + "^000000. نحن متعادلان. هل تريد رمي نرد ثالث؟";
+	} else if (.@playersub > .@tablesub) {
+		mes "مجموعي الآن ^0000FF" + .@tablesub + "^000000، ومجموعك يا ^FF0000" + strcharinfo(0) + "^000000 هو ^FF0000" + .@playersub + "^000000. أنت متقدم حاليا يا ^FF0000" + strcharinfo(0) + "^000000. هل تريد رمي نرد ثالث؟";
+	} else if(.@tablesub > .@playersub) {
+		mes "مجموعي الآن ^0000FF" + .@tablesub + "^000000، ومجموعك يا ^FF0000" + strcharinfo(0) + "^000000 هو ^FF0000" + .@playersub + "^000000. أنا متقدمة حاليا. هل تريد رمي نرد ثالث؟";
+	}
+	next;
+	switch (select("ارم النرد:توقف")) {
+	case 1:
+		mes "^3355FF*تدحرج وقرقعة*^000000";
+		set .@player3, rand(1,6);
+		set .@playertotal, .@playertotal + .@player3;
+		next;
+		mes "["+ .@npc_name_display$ +"]";
+		if (.@playertotal > 12) {
+			mes "^FF0000" + strcharinfo(0) + "^000000، حصلت على ^FF0000" + .@player3 + "^000000 وأصبح المجموع الآن ^FF0000" + .@playertotal + "^000000. لقد خسرت هذه اللعبة. آسفة، يرجى المحاولة مرة أخرى.";
+			close;
+		}
+		else if (.@playertotal < .@tablesub) {
+			mes "^FF0000" + strcharinfo(0) + "^000000، حصلت على ^FF0000" + .@player3 + "^000000 وأصبح المجموع الآن ^FF0000" + .@playertotal + "^000000. رغم أنك رميت النرد مرة أخرى، لا يزال مجموعك أقل من مجموعي. لقد خسرت اللعبة. آسفة، يرجى المحاولة مرة أخرى.";
+			close;
+		}
+		else if (.@playertotal == .@tablesub) {
+			if (.@tablesub > 8) {
+				mes "^FF0000" + strcharinfo(0) + "^000000، حصلت على ^FF0000" + .@player3 + "^000000 وأصبح المجموع الآن ^FF0000" + .@playertotal + "^000000. لا أريد المخاطرة، فلننه هذه اللعبة بالتعادل. لنلعب مرة أخرى في وقت آخر~";
+				close2;
+				getitem 512,.@amount; //Apple
+				end;
+			}
+			mes "حسنا.";
+			mes "دعني أرمي النرد مرة أخرى.";
+		}
+		else {
+			mes "^FF0000" + strcharinfo(0) + "^000000، حصلت على ^FF0000" + .@player3 + "^000000 وأصبح المجموع الآن ^FF0000" + .@playertotal + "^000000. الآن دوري.";
+		}
+		break;
+	case 2:
+		mes "["+ .@npc_name_display$ +"]";
+		if (.@playersub > .@tablesub) {
+			mes "فهمت، لا تريد المخاطرة بالخسارة. حسنا، سأرمي النرد مرة أخرى.";
+		}
+		else if (.@playersub == .@tablesub) {
+			if (.@tablesub > 8) {
+				mes "فهمت، لا تريد المخاطرة بالخسارة. وأنا أيضا، لذا فلننه الجولة بالتعادل. لنلعب مجددا في وقت آخر~";
+				close2;
+				getitem 512,.@amount; //Apple
+				end;
+			}
+			mes "حسنا.";
+			mes "دعني أرمي النرد مرة أخرى.";
+		}
+		else {
+			mes "كان يجدر بك المحاولة.";
+			mes "حسنا، فزت هذه المرة.";
+			mes "لا بأس، لنلعب";
+			mes "مجددا في وقت آخر.";
+			close;
+		}
+		break;
+	}
+	next;
+	mes "^3355FF*تدحرج وقرقعة*^000000";
+	set .@table3, rand(1,6);
+	set .@tabletotal, .@tabletotal + .@table3;
+	next;
+	mes "["+ .@npc_name_display$ +"]";
+	if (.@tabletotal > 12) {
+		mes "حصلت على ^0000FF" + .@table3 + "^000000 وأصبح المجموع الآن ^0000FF" + .@tabletotal + "^000000. لقد خسرت هذه اللعبة لأن مجموعي تجاوز 12. دعني أعطيك تفاحي. تهانينا، كانت لعبة رائعة.";
+		close2;
+		getitem 512,.@giveapple; //Apple
+		end;
+	}
+	else if (.@playertotal > .@tabletotal) {
+		mes "حصلت على ^0000FF" + .@table3 + "^000000 وأصبح المجموع الآن ^0000FF" + .@tabletotal + "^000000. بمجموع ^FF0000" + .@playertotal + "^000000 فزت بهذه اللعبة، ^FF0000" + strcharinfo(0) + "^000000. دعني أعطيك تفاحي. كانت لعبة رائعة وآمل أن نلعب مرة أخرى في وقت آخر.";
+		close2;
+		getitem 512,.@giveapple; //Apple
+		end;
+	}
+	else if (.@playertotal == .@tabletotal) {
+		mes "حصلت على ^0000FF" + .@table3 + "^000000 وأصبح المجموع الآن ^0000FF" + .@tabletotal + "^000000. بمجموع ^FF0000" + .@playertotal + "^000000 انتهت هذه اللعبة بالتعادل، ^FF0000" + strcharinfo(0) + "^000000. دعني أعيد لك تفاحك. كانت لعبة رائعة وآمل أن نلعب مرة أخرى في وقت آخر.";
+		close2;
+		getitem 512,.@amount; //Apple
+		end;
+	}
+	else if (.@playertotal < .@tabletotal) {
+		mes "حصلت على ^0000FF" + .@table3 + "^000000 وأصبح المجموع الآن ^0000FF" + .@tabletotal + "^000000. بمجموع ^FF0000" + .@playertotal + "^000000 خسرت هذه اللعبة، ^FF0000" + strcharinfo(0) + "^000000. آسفة، يرجى المحاولة مرة أخرى.";
+		close;
+	}
+}

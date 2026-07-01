@@ -1,0 +1,131 @@
+//===== rAthena Script =======================================
+//= War of Emperium (Geffen) - Mersetzdeitz
+//===== By: ==================================================
+//= L0ne_W0lf
+//===== Current Version: =====================================
+//= 1.2
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= NPCs that relate to Geffen Guild Castle 5
+//===== Additional Comments: =================================
+//= 1.0 First Version. No longer uses functions. [L0ne_W0lf]
+//= 1.1 Removed dialog from interior flags. [L0ne_W0lf]
+//= 1.2 Partially rewrote Script. [Masao]
+//============================================================
+
+// Guild Flag (Outside Castle)
+//============================================================
+-	script	ميرسيتزدايتز#1::OutsideFlagsG5	722,{
+
+	set .@GID, GetCastleData("gefg_cas05",1);
+
+	if (.@GID == 0) {
+		mes "[ مرسوم مملكة رون-ميدغارتس الإلهية ]";
+		mes " ";
+		mes "1. بناء على مرسوم مملكة رون-ميدغارتس الإلهية، ";
+		mes "نعلن أنه";
+		mes "ليس لهذه القلعة مالك رسمي.";
+		mes " ";
+		mes "2. من يستطيع ";
+		mes "تجاوز كل المحن";
+		mes "وتدمير الإمبريوم،";
+		mes "سيمنحه الملك";
+		mes "ملكية هذه القلعة.";
+		close;
+	}
+	if (getcharid(2) == .@GID) {
+		mes "[ صوت يتردد ]";
+		mes "أيها الشجعان...";
+		mes "هل ترغبون في العودة إلى قلعة نقابتكم؟";
+		next;
+		if(select("العودة إلى قلعة النقابة.:إلغاء.") == 1) {
+			close2;
+			if (getcharid(2) == GetCastleData("gefg_cas05",1)) {
+				warp "gefg_cas05",168,31;
+				end;
+			}
+			end;
+		}
+		close;
+	}
+	mes "[ مرسوم مملكة رون-ميدغارتس الإلهية ]";
+	mes " ";
+	mes "1. بناء على مرسوم مملكة رون-ميدغارتس الإلهية، ";
+	mes "نقر بأن هذه القلعة";
+	mes "ملك خاص لنقابة ^ff0000"+GetGuildName(.@GID)+"^000000.";
+	mes " ";
+	mes "2. سيد نقابة ^ff0000"+GetGuildName(.@GID)+"^000000 هو:";
+	mes "^ff0000"+GetGuildMaster(.@GID)+"^000000";
+	mes "إذا كان هناك من يعترض على هذا،";
+	mes "فليثبت قوته وشرفه بنصل فولاذي.";
+	close;
+
+OnRecvCastleG05:
+	FlagEmblem GetCastleData("gefg_cas05",1);
+	end;
+}
+
+gef_fild13,302,87,7	duplicate(OutsideFlagsG5)	ميرسيتزدايتز#1-2::Mersetzdeitz#1-2	722
+gef_fild13,313,83,0	duplicate(OutsideFlagsG5)	ميرسيتزدايتز#2::Mersetzdeitz#2	722
+gef_fild13,252,51,2	duplicate(OutsideFlagsG5)	ميرسيتزدايتز#3::Mersetzdeitz#3	722
+gef_fild13,26,147,2	duplicate(OutsideFlagsG5)	ميرسيتزدايتز#4::Mersetzdeitz#4	722
+
+// Guild Flag (Inside Castle)
+//============================================================
+-	script	ميرسيتزدايتز#5::InsideFlagsG5	722,{
+	end;
+
+OnRecvCastleG05:
+	FlagEmblem GetCastleData("gefg_cas05",1);
+	end;
+}
+
+gefg_cas05,77,185,7	duplicate(InsideFlagsG5)	ميرسيتزدايتز#5-2::Mersetzdeitz#5-2	722
+gefg_cas05,92,181,0	duplicate(InsideFlagsG5)	ميرسيتزدايتز#6::Mersetzdeitz#6	722
+gefg_cas05,83,158,1	duplicate(InsideFlagsG5)	ميرسيتزدايتز#7::Mersetzdeitz#7	722
+gefg_cas05,62,144,7	duplicate(InsideFlagsG5)	ميرسيتزدايتز#8::Mersetzdeitz#8	722
+gefg_cas05,62,66,4	duplicate(InsideFlagsG5)	ميرسيتزدايتز#9::Mersetzdeitz#9	722
+gefg_cas05,69,66,4	duplicate(InsideFlagsG5)	ميرسيتزدايتز#10::Mersetzdeitz#10	722
+
+// Guild Flag (Town)
+//============================================================
+geffen,131,123,6	duplicate(InsideFlagsG5)	ميرسيتزدايتز#11::Mersetzdeitz#11	722
+
+// Kafra Employee
+//============================================================
+gefg_cas05,61,52,5	duplicate(guildkafra)	موظفة كافرا#gefg_cas05::Kafra Staff#gefg_cas05	117
+
+// Steward
+//============================================================
+gefg_cas05,70,52,3	duplicate(cm)	بيوهري#gefg_cas05::Byohre#gefg_cas05	55
+
+// Treasure Room Exit
+//============================================================
+gefg_cas05,149,107,0	script	#lever_G05	111,{
+	mes " ";
+	mes "توجد رافعة صغيرة. هل تريد سحبها؟";
+	next;
+	if(select("اسحبها.:اتركها.") == 1) {
+		close2;
+		warp "gefg_cas05",70,53;
+		end;
+	}
+	close;
+}
+
+// Guild Dungeon Switch
+//============================================================
+gefg_cas05,65,22,0	duplicate(gdlever)	#gefg_cas05	111
+
+// Guild Treasure Spawns
+//============================================================
+gefg_cas05,144,110,0	duplicate(Gld_Trea_Spawn)	كنز#gefg_cas05::Treasure#gefg_cas05	-1
+
+// AGIT Manager
+//============================================================
+gefg_cas05,194,184,0	duplicate(Gld_Agit_Manager)	أجيت#gefg_cas05::Agit#gefg_cas05	-1
+
+// Guardians
+//============================================================
+gefg_cas05,70,52,3	duplicate(Gld_Guard_Template)	حارس#gefg_cas05::Guardian#gefg_cas05	-1

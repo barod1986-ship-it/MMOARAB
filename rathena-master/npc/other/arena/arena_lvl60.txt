@@ -1,0 +1,1027 @@
+//===== rAthena Script =======================================
+//= Izlude Arena Level 60
+//===== By: ==================================================
+//= SinSloth
+//===== Current Version: =====================================
+//= 1.4
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= Izlude Battle Arena Level 60
+//===== Additional Comments: =================================
+//= 1.0 First version.
+//= 1.1 Fixed coordinate typo. (bugreport:1663) [L0ne_W0lf]
+//= 1.2 Replaced effect numerics with constants. [Samuray22]
+//= 1.3 Label standardization. [Euphy]
+//= 1.4 Script updates. [Euphy]
+//============================================================
+
+arena_room,38,88,5	script	غرفة انتظار المستوى 60::Lv60 Waiting Room	124,{
+	end;
+
+OnInit:
+	waitingroom "التحدي الفردي - المستوى 60 إلى 79",50,"Lv60 Waiting Room::OnStartArena",1,1000,60,79;
+	enablewaitingroomevent;
+	end;
+
+OnStartArena:
+	warpwaitingpc "force_2-1",99,12;
+	donpcevent "arena#60::OnStart";
+	disablewaitingroomevent;
+	end;
+
+OnStart:
+	enablewaitingroomevent;
+	end;
+}
+
+force_2-1,99,20,4	script	ميني لوفر#arena::Minilover#arena	124,{
+	end;
+
+OnStart:
+	initnpctimer;
+	set $arena_min60st,gettime(DT_MINUTE);
+	set $arena_sec60st,gettime(DT_SECOND);
+	end;
+
+OnTimer3000:
+	mapannounce "force_2-1","أهلا بك! أنا ميني لوفر، دليل معركة قوة الزمن للمستوى 60!",0;
+	end;
+
+OnTimer4000:
+	mapannounce "force_2-1","الاختيار الصحيح يوفر الكثير من الوقت!",0;
+	end;
+
+OnTimer5000:
+	mapannounce "force_2-1","أمامك 6 دقائق لإكمال مسار المعركة. البداية من أقصى يسار الغرفة، ثم متابعة المراحل باتجاه عقارب الساعة.",0;
+	end;
+
+OnTimer60000:
+	if (getmapusers("force_2-1") == 0) {
+		donpcevent "Minilover#arena::OnFailClearStage";
+	}
+	mapannounce "force_2-1","الوقت المتبقي: 5 دقائق.",0;
+	end;
+
+OnTimer120000:
+	if (getmapusers("force_2-1") == 0) {
+		donpcevent "Minilover#arena::OnFailClearStage";
+	}
+	mapannounce "force_2-1","الوقت المتبقي: 4 دقائق.",0;
+	end;
+
+OnTimer180000:
+	if (getmapusers("force_2-1") == 0) {
+		donpcevent "Minilover#arena::OnFailClearStage";
+	}
+	mapannounce "force_2-1","الوقت المتبقي: 3 دقائق.",0;
+	end;
+
+OnTimer240000:
+	if (getmapusers("force_2-1") == 0) {
+		donpcevent "Minilover#arena::OnFailClearStage";
+	}
+	mapannounce "force_2-1","الوقت المتبقي: دقيقتان.",0;
+	end;
+
+OnTimer300000:
+	if (getmapusers("force_2-1") == 0) {
+		donpcevent "Minilover#arena::OnFailClearStage";
+	}
+	mapannounce "force_2-1","الوقت المتبقي: دقيقة واحدة.",0;
+	end;
+
+OnTimer360000:
+	mapannounce "force_2-1","انتهت المهلة. آمل أن يكون التحدي ممتعا!",0;
+	end;
+
+OnTimer365000:
+OnTimer366000:
+OnTimer367000:
+OnTimer368000:
+OnTimer369000:
+OnTimer370000:
+OnTimer371000:
+OnTimer372000:
+OnTimer373000:
+OnTimer374000:
+	mapwarp "force_2-1","prt_are_in",126,139,0,0;
+	end;
+
+OnTimer375000:
+	mapwarp "force_2-1","prt_are_in",126,139,0,0;
+	donpcevent "Minilover#arena::OnFailClearStage";
+	end;
+
+OnTimerOff:
+	stopnpctimer;
+	end;
+
+OnFailClearStage:
+ 	donpcevent "cast#60::OnTimeOver1";
+	mapwarp "force_2-1","prt_are_in",126,139,0,0;
+	donpcevent "Minilover#arena::OnTimerOff";
+	donpcevent "arena#60::OnReset_All";
+	donpcevent "alloff#60::OnEnable";
+	donpcevent "Lv60 Waiting Room::OnStart";
+	end;
+
+On01_Start:
+	mapannounce "force_2-1","لإنهاء المرحلة، يجب القضاء على 5 وحوش غوبلن على الأقل مع تفادي روتار زايرو!",0;
+	end;
+
+On01_End:
+	mapannounce "force_2-1","فتح باب الغرفة الشمالية!",0;
+	end;
+
+On02_Start:
+	mapannounce "force_2-1","المطلوب: تجنب الوحوش والوصول إلى المخرج الشمالي!",0;
+	end;
+
+On02_End:
+	mapannounce "force_2-1","فتح باب الغرفة الشمالية!",0;
+	end;
+
+On03_Start:
+	mapannounce "force_2-1","لإنهاء المرحلة، يجب القضاء على جميع وحوش فرس النبي!",0;
+	end;
+
+On03_End:
+	mapannounce "force_2-1","اكتملت المرحلة! فتح باب الغرفة الشرقية!",0;
+	end;
+
+On04_Start:
+	mapannounce "force_2-1","لإنهاء المرحلة، يجب القضاء على جميع الوحوش غير العدوانية مع تفادي الوحوش العدوانية!",0;
+	end;
+
+On04_End:
+	mapannounce "force_2-1","فتح باب الغرفة الشرقية!",0;
+	end;
+
+On05_Start:
+	mapannounce "force_2-1","لإنهاء المرحلة، يجب القضاء على جميع الوحوش باستثناء هيدرا وكابها!",0;
+	end;
+
+On05_End:
+	mapannounce "force_2-1","اكتملت المرحلة! فتح باب الغرفة الجنوبية!",0;
+	end;
+
+On06_Start:
+	mapannounce "force_2-1","لإنهاء المرحلة، يجب القضاء على جميع دمى ميابي ثم التوجه إلى المخرج الجنوبي!",0;
+	end;
+
+On06_End:
+	mapannounce "force_2-1","فتح باب الغرفة الجنوبية!",0;
+	end;
+
+On07_Start:
+	mapannounce "force_2-1","لإنهاء المرحلة، يجب القضاء على جميع الوحوش!",0;
+	end;
+
+On07_End:
+	mapannounce "force_2-1","اكتملت المرحلة! فتح باب الغرفة الغربية!",0;
+	end;
+
+On08_Start:
+	mapannounce "force_2-1","الوجهة التالية: المخرج الشمالي!",0;
+	end;
+
+On09_Start:
+	mapannounce "force_2-1","لإنهاء المرحلة، يجب هزيمة قائد الغوبلن!",0;
+	end;
+
+On09_End:
+	mapannounce "force_2-1","هزم الزعيم! فتح المخرج الشمالي. شكرا!",0;
+	end;
+}
+
+-	script	arena#60	-1,{
+OnReset_01:
+	donpcevent "force_01ex#60::OnReset";
+	donpcevent "force_01mob#60::OnReset";
+	donpcevent "force_02start#60::OnEnable";
+	enablenpc "force_01_02#60";
+	enablenpc "force_02_03#60";
+	end;
+
+OnReset_02:
+	donpcevent "force_02mob#60::OnReset";
+	donpcevent "force_03start#60::OnEnable";
+	end;
+
+OnReset_03:
+	enablenpc "force_03_04#60";
+	donpcevent "force_04start#60::OnEnable";
+	donpcevent "force_03ex#60::OnReset";
+	end;
+
+OnReset_04:
+	enablenpc "force_04_05#60";
+	donpcevent "force_05start#60::OnEnable";
+	donpcevent "force_04ex#60::OnReset";
+	end;
+
+OnReset_05:
+	enablenpc "force_05_06#60";
+	donpcevent "force_06start#60::OnEnable";
+	donpcevent "force_05ex#60::OnReset";
+	donpcevent "force_05mob#60::OnReset";
+	end;
+
+OnReset_06:
+	enablenpc "force_06_07#60";
+	donpcevent "force_07start#60::OnEnable";
+	donpcevent "force_06ex#60::OnReset";
+	donpcevent "force_06mob#60::OnReset";
+	end;
+
+OnReset_07:
+	enablenpc "force_07_08#60";
+	donpcevent "force_08start#60::OnEnable";
+	end;
+
+OnReset_08:
+	donpcevent "force_09start#60::OnEnable";
+	enablenpc "force_08_09#60";
+	end;
+
+OnReset_09:
+	enablenpc "force_exit#60";
+	end;
+
+OnStart:
+	disablenpc "force_01_02#60";
+	disablenpc "force_02_03#60";
+	disablenpc "force_03_04#60";
+	disablenpc "force_04_05#60";
+	disablenpc "force_05_06#60";
+	disablenpc "force_06_07#60";
+	disablenpc "force_07_08#60";
+	disablenpc "force_08_09#60";
+	disablenpc "force_exit#60";
+	donpcevent "Minilover#arena::OnTimerOff";
+	donpcevent "force_01mob#60::OnReset";
+	donpcevent "force_02mob#60::OnReset";
+	donpcevent "force_03mob#60::OnReset";
+	donpcevent "force_04mob#60::OnReset";
+	donpcevent "force_05mob#60::OnReset";
+	donpcevent "force_06mob#60::OnReset";
+	donpcevent "force_07mob#60::OnReset";
+	//donpcevent "force_08mob#60::OnReset";
+	donpcevent "force_09mob#60::OnReset";
+	donpcevent "force_01ex#60::OnReset";
+	donpcevent "force_03ex#60::OnReset";
+	donpcevent "force_04ex#60::OnReset";
+	donpcevent "force_05ex#60::OnReset";
+	donpcevent "force_06ex#60::OnReset";
+	//donpcevent "force_08ex#60::OnReset";
+	donpcevent "force_09ex#60::OnReset";
+	enablenpc "force_08_01#60";
+	donpcevent "force_01start#60::OnEnable";
+	donpcevent "Minilover#arena::OnStart";
+	end;
+
+OnReset_All:
+	donpcevent "force_01mob#60::OnReset";
+	donpcevent "force_02mob#60::OnReset";
+	donpcevent "force_03mob#60::OnReset";
+	donpcevent "force_04mob#60::OnReset";
+	donpcevent "force_05mob#60::OnReset";
+	donpcevent "force_06mob#60::OnReset";
+	donpcevent "force_07mob#60::OnReset";
+	//donpcevent "force_08mob#60::OnReset";
+	donpcevent "force_09mob#60::OnReset";
+	donpcevent "force_01ex#60::OnReset";
+	donpcevent "force_03ex#60::OnReset";
+	donpcevent "force_04ex#60::OnReset";
+	donpcevent "force_05ex#60::OnReset";
+	donpcevent "force_06ex#60::OnReset";
+	//donpcevent "force_08ex#60::OnReset";
+	donpcevent "force_09ex#60::OnReset";
+	end;
+}
+
+force_2-1,62,26,1	script	force_08_01#60	45,1,1,{
+OnTouch_:
+	donpcevent "Minilover#arena::On01_Start";
+	warp "force_2-1",40,26;
+	end;
+}
+
+force_2-1,25,44,1	script	force_01_02#60	45,1,1,{
+OnTouch_:
+	donpcevent "Minilover#arena::On02_Start";
+	warp "force_2-1",25,69;
+	end;
+}
+
+force_2-1,25,134,1	script	force_02_03#60	45,1,1,{
+OnTouch_:
+	donpcevent "arena#60::OnReset_02";
+	donpcevent "Minilover#arena::On03_Start";
+	warp "force_2-1",25,159;
+	end;
+}
+
+force_2-1,44,174,1	script	force_03_04#60	45,1,1,{
+OnTouch_:
+	donpcevent "Minilover#arena::On04_Start";
+	warp "force_2-1",69,174;
+	end;
+}
+
+force_2-1,134,174,1	script	force_04_05#60	45,1,1,{
+OnTouch_:
+	donpcevent "Minilover#arena::On05_Start";
+	warp "force_2-1",159,174;
+	end;
+}
+
+force_2-1,174,155,1	script	force_05_06#60	45,1,1,{
+OnTouch_:
+	donpcevent "Minilover#arena::On06_Start";
+	warp "force_2-1",174,130;
+	end;
+}
+
+force_2-1,174,65,1	script	force_06_07#60	45,1,1,{
+OnTouch_:
+	donpcevent "Minilover#arena::On07_Start";
+	warp "force_2-1",174,40;
+	end;
+}
+
+force_2-1,155,26,1	script	force_07_08#60	45,1,1,{
+OnTouch_:
+	donpcevent "Minilover#arena::On08_Start";
+	warp "force_2-1",132,26;
+	enablenpc "force_08_09#60";
+	end;
+}
+
+force_2-1,99,54,1	script	force_08_09#60	45,1,1,{
+OnTouch_:
+	donpcevent "Minilover#arena::On09_Start";
+	warp "force_2-1",99,82;
+	end;
+}
+
+force_2-1,99,124,1	script	force_exit#60	45,1,1,{
+OnTouch_:
+	donpcevent "Minilover#arena::OnTimerOff";
+	donpcevent "#arn_timer_60::OnEnable";
+	mapwarp "force_2-1","prt_are_in",22,139,0,0;
+	end;
+}
+
+-	script	force_01start#60	-1,{
+OnEnable:
+	donpcevent "force_01mob#60::OnEnable";
+	end;
+}
+
+-	script	force_01ex#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_01ex#60::OnMyMobDead";
+	end;
+
+OnEnable:
+	monster "force_2-1",25,25,"روتار زايرو",1392,1,"force_01ex#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_01mob#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_01mob#60::OnMyMobDead";
+	end;
+
+OnEnable:
+	donpcevent "force_01ex#60::OnEnable";
+	monster "force_2-1",25,32,"رامي غوبلن",1577,1,"force_01mob#60::OnMyMobDead";
+	monster "force_2-1",21,26,"غوبلن",1534,1,"force_01mob#60::OnMyMobDead";
+	monster "force_2-1",25,36,"غوبلن",1536,1,"force_01mob#60::OnMyMobDead";
+	monster "force_2-1",25,15,"غوبلن",1534,1,"force_01mob#60::OnMyMobDead";
+	monster "force_2-1",40,30,"غوبلن",1536,1,"force_01mob#60::OnMyMobDead";
+	monster "force_2-1",25,24,"غوبلن",1534,1,"force_01mob#60::OnMyMobDead";
+	monster "force_2-1",25,9,"غوبلن",1536,1,"force_01mob#60::OnMyMobDead";
+	monster "force_2-1",28,15,"رامي غوبلن",1577,1,"force_01mob#60::OnMyMobDead";
+	monster "force_2-1",12,33,"غوبلن",1536,1,"force_01mob#60::OnMyMobDead";
+	monster "force_2-1",24,20,"غوبلن",1535,1,"force_01mob#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_2-1","force_01mob#60::OnMyMobDead") < 6) {
+		donpcevent "Minilover#arena::On01_End";
+		donpcevent "arena#60::OnReset_01";
+	}
+	end;
+}
+
+-	script	force_02start#60	-1,{
+OnEnable:
+	donpcevent "force_02mob#60::OnEnable";
+	end;
+}
+
+-	script	force_02mob#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_02mob#60::OnMyMobDead";
+	end;
+OnEnable:
+	monster "force_2-1",24,76,"درينليار",1434,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,76,"درينليار",1434,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",24,86,"درينليار",1434,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",24,76,"درينليار",1434,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,76,"درينليار",1434,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",24,86,"درينليار",1434,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",24,76,"درينليار",1434,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,76,"درينليار",1434,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",23,76,"ريكوييم",1468,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",27,76,"ريكوييم",1468,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",25,86,"ريكوييم",1468,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",26,86,"غول",1423,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",25,100,"غول",1423,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",26,118,"غول",1423,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",25,100,"غول",1423,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",26,118,"غول",1423,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,79,"زيروم",1470,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",23,87,"زيروم",1470,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,99,"زيروم",1470,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",23,112,"زيروم",1470,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,128,"ماتير",1460,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,128,"ماتير",1460,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,128,"ماتير",1460,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,128,"زومبي أورك",1463,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,128,"زومبي أورك",1463,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,128,"زومبي أورك",1463,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,128,"زومبي أورك",1463,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,128,"زومبي أورك",1463,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,128,"ماتير",1460,1,"force_02mob#60::OnMyMobDead";
+	monster "force_2-1",28,128,"ماتير",1460,1,"force_02mob#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_03start#60	-1,{
+OnEnable:
+	donpcevent "force_03mob#60::OnEnable";
+	end;
+}
+
+-	script	force_03ex#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_03ex#60::OnMyMobDead";
+	end;
+
+OnEnable:
+	monster "force_2-1",26,173,"هيدرا",1579,1,"force_03ex#60::OnMyMobDead";
+	monster "force_2-1",21,173,"هيدرا",1579,1,"force_03ex#60::OnMyMobDead";
+	monster "force_2-1",31,173,"هيدرا",1579,1,"force_03ex#60::OnMyMobDead";
+	monster "force_2-1",26,178,"هيدرا",1579,1,"force_03ex#60::OnMyMobDead";
+	monster "force_2-1",21,178,"هيدرا",1579,1,"force_03ex#60::OnMyMobDead";
+	monster "force_2-1",31,178,"هيدرا",1579,1,"force_03ex#60::OnMyMobDead";
+	monster "force_2-1",19,174,"أوبيون",1425,1,"force_03ex#60::OnMyMobDead";
+	monster "force_2-1",26,161,"أوبيون",1425,1,"force_03ex#60::OnMyMobDead";
+	monster "force_2-1",13,173,"أوبيون",1425,1,"force_03ex#60::OnMyMobDead";
+	monster "force_2-1",38,173,"أوبيون",1425,1,"force_03ex#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_03mob#60	-1,{
+OnEnable:
+	donpcevent "force_03ex#60::OnEnable";
+	monster "force_2-1",23,174,"فرس النبي",1457,1,"force_03mob#60::OnMyMobDead";
+	monster "force_2-1",18,173,"فرس النبي",1457,1,"force_03mob#60::OnMyMobDead";
+	monster "force_2-1",33,173,"فرس النبي",1457,1,"force_03mob#60::OnMyMobDead";
+	monster "force_2-1",26,181,"فرس النبي",1457,1,"force_03mob#60::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_2-1","force_mob01#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_2-1","force_03mob#60::OnMyMobDead") < 1) {
+		donpcevent "Minilover#arena::On03_End";
+		donpcevent "arena#60::OnReset_03";
+	}
+	end;
+}
+
+-	script	force_04start#60	-1,{
+OnEnable:
+	donpcevent "force_04mob#60::OnEnable";
+	end;
+}
+
+-	script	force_04ex#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_04ex#60::OnMyMobDead";
+	end;
+
+OnEnable:
+	monster "force_2-1",84,177,"ساسكواتش",1442,1,"force_04ex#60::OnMyMobDead";
+	monster "force_2-1",125,170,"ساسكواتش",1442,1,"force_04ex#60::OnMyMobDead";
+	monster "force_2-1",109,172,"فهد صغير",1524,1,"force_04ex#60::OnMyMobDead";
+	monster "force_2-1",121,172,"فهد صغير",1524,1,"force_04ex#60::OnMyMobDead";
+	monster "force_2-1",104,173,"تشيبيت",1444,1,"force_04ex#60::OnMyMobDead";
+	monster "force_2-1",75,174,"دوكيبي",1491,1,"force_04ex#60::OnMyMobDead";
+	monster "force_2-1",102,176,"دوكيبي",1491,1,"force_04ex#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_04mob#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_04mob#60::OnMyMobDead";
+	end;
+
+OnEnable:
+	donpcevent "force_04ex#60::OnEnable";
+	monster "force_2-1",79,174,"غولم",1540,1,"force_04mob#60::OnMyMobDead";
+	monster "force_2-1",131,178,"مارس",1551,1,"force_04mob#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_2-1","force_04mob#60::OnMyMobDead") < 1) {
+		donpcevent "force_04ex#60::OnReset";
+		donpcevent "Minilover#arena::On04_End";
+		donpcevent "arena#60::OnReset_04";
+	}
+	end;
+}
+
+-	script	force_05start#60	-1,{
+OnEnable:
+	donpcevent "force_05mob#60::OnEnable";
+	end;
+}
+
+-	script	force_05ex#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_05ex#60::OnMyMobDead";
+	end;
+
+OnSummonMob_05:
+	monster "force_2-1",168,177,"هيدرا",1579,1,"force_05ex#60::OnMyMobDead";
+	monster "force_2-1",170,179,"هيدرا",1579,1,"force_05ex#60::OnMyMobDead";
+	monster "force_2-1",177,179,"هيدرا",1579,1,"force_05ex#60::OnMyMobDead";
+	monster "force_2-1",179,178,"هيدرا",1579,1,"force_05ex#60::OnMyMobDead";
+	monster "force_2-1",179,170,"هيدرا",1579,1,"force_05ex#60::OnMyMobDead";
+	monster "force_2-1",177,168,"هيدرا",1579,1,"force_05ex#60::OnMyMobDead";
+	monster "force_2-1",170,168,"هيدرا",1579,1,"force_05ex#60::OnMyMobDead";
+	monster "force_2-1",173,174,"هيدرا",1579,1,"force_05ex#60::OnMyMobDead";
+	monster "force_2-1",174,174,"هيدرا",1579,1,"force_05ex#60::OnMyMobDead";
+	monster "force_2-1",173,173,"هيدرا",1579,1,"force_05ex#60::OnMyMobDead";
+	monster "force_2-1",174,173,"هيدرا",1579,1,"force_05ex#60::OnMyMobDead";
+	monster "force_2-1",173,181,"كابها",1543,1,"force_05ex#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_05mob#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_05mob#60::OnMyMobDead";
+	end;
+
+OnEnable:
+	donpcevent "force_05ex#60::OnSummonMob_05";
+	monster "force_2-1",163,173,"درينليار",1434,1,"force_05mob#60::OnMyMobDead";
+	monster "force_2-1",173,173,"ميست",1553,1,"force_05mob#60::OnMyMobDead";
+	monster "force_2-1",181,173,"هيكل أورك",1462,1,"force_05mob#60::OnMyMobDead";
+	monster "force_2-1",171,177,"هيكل أورك",1462,1,"force_05mob#60::OnMyMobDead";
+	monster "force_2-1",173,181,"راغلر",1445,1,"force_05mob#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_2-1","force_05mob#60::OnMyMobDead") < 1) {
+		donpcevent "Minilover#arena::On05_End";
+		donpcevent "arena#60::OnReset_05";
+	}
+	end;
+}
+
+-	script	force_06start#60	-1,{
+OnEnable:
+	donpcevent "force_06mob#60::OnEnable";
+	end;
+}
+
+-	script	force_06ex#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_06ex#60::OnMyMobDead";
+	end;
+
+OnEnable:
+	monster "force_2-1",169,130,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,130,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",169,125,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,125,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",169,120,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,120,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",169,115,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,115,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",169,110,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,110,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",169,105,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,105,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",169,100,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,100,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",169,95,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,95,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",169,90,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,90,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",169,85,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,85,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",169,80,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,80,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",169,75,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	monster "force_2-1",178,75,"جنرال أعظم",1541,1,"force_06ex#60::OnMyMobDead";
+	end;
+
+OnSubOn:
+	switch(rand(1,3)) {
+	case 1:
+		monster "force_2-1",rand(170,177),rand(70,120),"سايدويندر",1424,1,"force_06ex#60::OnMyMobDead";
+		break;
+	case 2:
+		monster "force_2-1",rand(170,177),rand(70,120),"نبتة الناسك",1565,1,"force_06ex#60::OnMyMobDead";
+		break;
+	case 3:
+		monster "force_2-1",rand(170,177),rand(70,120),"كروزر",1443,1,"force_06ex#60::OnMyMobDead";
+		break;
+	}
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_06mob#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_06mob#60::OnMyMobDead";
+	end;
+
+OnEnable:
+	donpcevent "force_06ex#60::OnEnable";
+	monster "force_2-1",174,100,"دمية ميابي",1552,1,"force_06mob#60::OnMyMobDead";
+	monster "force_2-1",174,80,"دمية ميابي",1552,1,"force_06mob#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_2-1","force_06mob#60::OnMyMobDead") < 1) {
+		donpcevent "Minilover#arena::On06_End";
+		donpcevent "arena#60::OnReset_06";
+	}
+	else donpcevent "force_06ex#60::OnSubOn";
+	end;
+}
+
+-	script	force_07start#60	-1,{
+OnEnable:
+	donpcevent "force_07mob#60::OnEnable";
+	end;
+}
+
+-	script	force_07mob#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_07mob#60::OnMyMobDead";
+	end;
+
+OnEnable:
+	monster "force_2-1",170,25,"جاك",1436,1,"force_07mob#60::OnMyMobDead";
+	monster "force_2-1",170,25,"جاك",1436,1,"force_07mob#60::OnMyMobDead";
+	monster "force_2-1",175,25,"ميست",1553,1,"force_07mob#60::OnMyMobDead";
+	monster "force_2-1",179,25,"إيزيس",1421,1,"force_07mob#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_2-1","force_07mob#60::OnMyMobDead") < 1) {
+		donpcevent "Minilover#arena::On07_End";
+		donpcevent "arena#60::OnReset_07";
+	}
+	end;
+}
+
+-	script	force_08start#60	-1,{
+OnEnable:
+	donpcevent "force_08ex#60::OnEnable";
+	end;
+}
+
+-	script	force_08ex#60	-1,{
+OnEnable:
+	donpcevent "arena#60::OnReset_08";
+	end;
+}
+
+-	script	force_09start#60	-1,{
+OnEnable:
+	donpcevent "force_09mob#60::OnEnable";
+	end;
+}
+
+-	script	force_09ex#60	-1,{
+OnReset:
+	killmonster "force_2-1","force_09ex#60::OnMyMobDead";
+	end;
+
+OnSummonMob_09:
+	monster "force_2-1",90,100,"هورونغ",1578,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",92,100,"هورونغ",1578,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",99,100,"هورونغ",1578,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",105,100,"هورونغ",1578,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",91,108,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",91,104,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",91,100,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",91,96,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",91,92,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",95,108,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",99,108,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",100,108,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",104,108,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",108,108,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",108,104,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",108,100,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",108,96,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",108,92,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",104,102,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",196,102,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",114,100,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",121,100,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",85,100,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",78,100,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",96,118,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	monster "force_2-1",103,118,"جنرال أعظم",1541,1,"force_09ex#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+-	script	force_09mob#60	-1,{
+OnEnable:
+	donpcevent "force_09ex#60::OnSummonMob_09";
+	monster "force_2-1",99,99,"قائد الغوبلن",1539,1,"force_09mob#60::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_2-1","force_09mob#60::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_2-1","force_09mob#60::OnMyMobDead") < 1) {
+		donpcevent "Minilover#arena::On09_End";
+		donpcevent "arena#60::OnReset_09";
+		donpcevent "arena#60::OnReset_All";
+		set $arena_min60end,gettime(DT_MINUTE);
+		set $arena_sec60end,gettime(DT_SECOND);
+	}
+	end;
+}
+
+prt_are_in,129,135,3	script	موظف الحلبة#60-1::Staff#60-1	67,{
+	mes "[موظف الحلبة]";
+	mes "أداء جيد.";
+	mes "حتى دون إكمال معركة قوة الزمن، ستحصل على عدد قليل من نقاط الحلبة.";
+	next;
+	if (arena_point == 30000) {
+		mes "[موظف الحلبة]";
+		mes "لحظة!";
+		mes "بلغ رصيد نقاط الحلبة الحد الأقصى.";
+		mes "يجب إنفاق بعض نقاط الحلبة أولا، وستضاف مكافأة المحاولة التالية عند العودة.";
+		next;
+	}
+	else set arena_point, arena_point + 1;
+	mes "[موظف الحلبة]";
+	mes "سأرشدك إلى الخارج. آمل أن يكون التحدي ممتعا.";
+	close2;
+	specialeffect2 EF_EXIT;
+	warp "arena_room",100,75;
+	end;
+}
+
+prt_are_in,25,135,3	script	موظف الحلبة#60-2::Staff#60-2	67,{
+	if($arena_min60end < $arena_min60st) {
+		if($arena_sec60end < $arena_sec60st) {
+			set @record_min60,60 - $arena_min60st + $arena_min60end -1;
+			set @record_sec60,60 - $arena_sec60st + $arena_sec60end;
+		} else {
+			set @record_min60,60 - $arena_min60st + $arena_min60end;
+			set @record_sec60,$arena_sec60end - $arena_sec60st;
+		}
+	} else {
+		if($arena_sec60end < $arena_sec60st) {
+			set @record_min60,$arena_min60end - $arena_min60st -1;
+			set @record_sec60,60 - $arena_sec60st + $arena_sec60end;
+		} else {
+			set @record_min60,$arena_min60end - $arena_min60st;
+			set @record_sec60,$arena_sec60end - $arena_sec60st;
+		}
+	}
+	set @gap60,(60 * $top_60min + $top_60sec) - (60 * @record_min60 + @record_sec60);
+	mes "[موظف الحلبة]";
+	mes "رائع! اكتمل التحدي بنجاح.";
+	mes "اسم الشخصية: ^3131FF" + strcharinfo(0) +"^000000، صحيح؟";
+	mes "بلغ إجمالي زمن ^3131FF"+ strcharinfo(0) +"^000000 في اجتياز المعركة:";
+	next;
+	mes "[موظف الحلبة]";
+	mes ""+@record_min60+" دقيقة و"+@record_sec60+" ثانية.";
+	mes "تهانينا!";
+	next;
+	mes "[موظف الحلبة]";
+	mes "أسرع زمن في معركة قوة الزمن للمستوى 60 مسجل باسم ^3131FF"+$arena_60topn$+"^000000.";
+	next;
+	mes "[موظف الحلبة]";
+	mes "الزمن القياسي المسجل باسم ^3131FF"+$arena_60topn$+"^000000: ^3131FF"+$top_60min+"^000000 دقيقة و^3131FF"+$top_60sec+"^000000 ثانية.";
+	next;
+	if (@gap60 < 0) {
+		mes "[موظف الحلبة]";
+		mes "لم يسجل هذا الزمن رقما قياسيا جديدا. حظا أوفر في المحاولة التالية!";
+		next;
+		if (arena_point > 29980) {
+			mes "[موظف الحلبة]";
+			mes "سأضيف مكافأة نقاط الحلبة... لحظة!";
+			mes "بلغ رصيد نقاط الحلبة الحد الأقصى، ولا يمكن إضافة المزيد قبل إنفاق بعض النقاط.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "يمكن مراجعة رصيد نقاط الحلبة في غرفة انتظار الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "آمل أن يكون التحدي ممتعا. سأعيدك إلى مدخل الحلبة.";
+			mes "شكرا!";
+			close2;
+		} else {
+			set arena_point, arena_point + 20;
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "يمكن مراجعة رصيد نقاط الحلبة لدى ^3131FFفينديغوس^000000 عند مدخل الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "سأعيدك إلى مدخل الحلبة.";
+			mes "إلى اللقاء!";
+			close2;
+		}
+		specialeffect2 EF_EXIT;
+ 		donpcevent "cast#60::OnNomal1";
+		warp "arena_room",100,75;
+		donpcevent "#arn_timer_60::OnStop";
+		donpcevent "alloff#60::OnEnable";
+		donpcevent "Lv60 Waiting Room::OnStart";
+		end;
+	} else {
+		emotion ET_HUK;
+		mes "[موظف الحلبة]";
+		mes "رائع! تم تسجيل رقم قياسي جديد!";
+		mes "إنجاز ممتاز!";
+		next;
+		mes "[موظف الحلبة]";
+		mes "سجل الرقم القياسي الجديد باسم ^3131FF"+strcharinfo(0)+"^000000 في ^FF0000معركة قوة الزمن للمستوى 60^000000.";
+		set $top_60min, @record_min60;
+		set $top_60sec, @record_sec60;
+		set $arena_60topn$,strcharinfo(0);
+		donpcevent "Vendigos::OnLineRec_60";
+		next;
+		if (arena_point > 29950) {
+			mes "[موظف الحلبة]";
+			mes "سأضيف مكافأة نقاط الحلبة... لحظة!";
+			mes "بلغ رصيد نقاط الحلبة الحد الأقصى، ولا يمكن إضافة المزيد قبل إنفاق بعض النقاط.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "يمكن مراجعة رصيد نقاط الحلبة في غرفة انتظار الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "آمل أن يكون التحدي ممتعا. سأعيدك إلى مدخل الحلبة.";
+			mes "شكرا!";
+			close2;
+		} else {
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "وبسبب الرقم القياسي الجديد، ستضاف مكافأة نقاط إضافية هذه المرة.";
+			next;
+			set arena_point, arena_point + 50;
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "يمكن مراجعة رصيد نقاط الحلبة لدى ^3131FFفينديغوس^000000 عند مدخل الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "سأعيدك إلى مدخل الحلبة.";
+			mes "إلى اللقاء!";
+			close2;
+		}
+		specialeffect2 EF_HIT5;
+ 		donpcevent "cast#60::OnNomal2";
+		warp "arena_room",100,75;
+		donpcevent "#arn_timer_60::OnStop";
+		donpcevent "alloff#60::OnEnable";
+		donpcevent "Lv60 Waiting Room::OnStart";
+		end;
+	}
+}
+
+-	script	#arn_timer_60	-1,{
+OnEnable:
+	initnpctimer;
+	end;
+
+OnTimer2000:
+	mapannounce "prt_are_in","تنبيه بشأن المهلة الزمنية لحلبة المستوى 60.",0,0xFFCE00;
+	end;
+
+OnTimer3000:
+	mapannounce "prt_are_in","ستتفعل بوابة الخروج خلال دقيقة لضمان انسيابية الحلبة.",0,0xFFCE00;
+	end;
+
+OnTimer4000:
+	mapannounce "prt_are_in","يرجى إكمال المعركة بأسرع ما يمكن لتجنب انتهاء المهلة. شكرا لتعاونك.",0,0xFFCE00;
+	end;
+
+OnTimer60000:
+ 	donpcevent "cast#60::OnTimeOver2";
+	donpcevent "arn_warp_60::OnOut";
+	donpcevent "#arn_timer_60::OnStop";
+	donpcevent "alloff#60::OnEnable";
+	donpcevent "Lv60 Waiting Room::OnStart";
+	end;
+
+OnStop:
+	stopnpctimer;
+	end; 
+}
+
+-	script	arn_warp_60	-1,{
+OnOut:
+	areawarp "prt_are_in",14,143,29,126,"arena_room",100,75;
+	end;
+}
+
+-	script	cast#60	-1,{
+OnTimeOver1:
+	mapannounce "force_2-1","ستعاد تهيئة الحلبة بسبب خطأ حدث أثناء المعركة.",0,0xFFCE00;
+	end;
+
+OnNomal1:
+	mapannounce "force_2-1","أعيدت تهيئة الحلبة.",0,0xFFCE00;
+	end;
+
+OnNomal2:
+	mapannounce "force_2-1","أعيدت تهيئة الحلبة.",0,0xFFCE00;
+	end;
+
+OnTimeOver2:
+	mapannounce "force_2-1","ستعاد تهيئة الحلبة بسبب خطأ حدث في غرفة الانتظار.",0,0xFFCE00;
+	end;
+}
+
+-	script	alloff#60	-1,{
+OnEnable:
+	mapwarp "force_2-1","prt_are_in",126,139,0,0;
+	donpcevent "force_01mob#60::OnReset";
+	donpcevent "force_02mob#60::OnReset";
+	donpcevent "force_03mob#60::OnReset";
+	donpcevent "force_04mob#60::OnReset";
+	donpcevent "force_05mob#60::OnReset";
+	donpcevent "force_06mob#60::OnReset";
+	donpcevent "force_07mob#60::OnReset";
+	//donpcevent "force_08mob#60::OnReset";
+	donpcevent "force_09mob#60::OnReset";
+	donpcevent "force_01ex#60::OnReset";
+	donpcevent "force_03ex#60::OnReset";
+	donpcevent "force_04ex#60::OnReset";
+	donpcevent "force_05ex#60::OnReset";
+	donpcevent "force_06ex#60::OnReset";
+	//donpcevent "force_08ex#60::OnReset";
+	donpcevent "force_09ex#60::OnReset";
+	donpcevent "Minilover#arena::OnTimerOff";
+	disablenpc "Minilover#arena";
+	disablenpc "force_01_02#60";
+	disablenpc "force_02_03#60";
+	disablenpc "force_03_04#60";
+	disablenpc "force_04_05#60";
+	disablenpc "force_05_06#60";
+	disablenpc "force_06_07#60";
+	disablenpc "force_07_08#60";
+	disablenpc "force_08_09#60";
+	disablenpc "force_exit#60";
+	disablenpc "arena#60";
+	donpcevent "#arn_timer_60::OnStop";
+	enablenpc "Minilover#arena";
+	enablenpc "arena#60";
+	end;
+
+OnInit:
+	if(!$top_60min && !$top_60sec) set $top_60min,6;
+	end;
+}

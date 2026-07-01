@@ -1,0 +1,1000 @@
+//===== rAthena Script ======================================= 
+//= Player Marriage
+//===== By: ================================================== 
+//= L0ne_W0lf
+//===== Current Version: ===================================== 
+//= 1.5
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Official Marriage script.
+//= Added isloggedin() check, even though Aegis doesn't do it.
+//= Currently does not support same-Sex marriages.
+//= Old script located in: npc/custom/marriage.txt
+//= - Variable in use: wedding_sign (max 1)
+//= - Variable in use: $@wedding (max 1) 
+//= - Variable in use: $@wed_groom$ $@wed_bride$
+//===== Additional Comments: ================================= 
+//= 1.0 First version. [L0ne_W0lf]
+//= 1.1 Fixed a missing ")" [L0ne_W0lf]
+//= 1.2 Corrected duration of Wedding status. [L0ne_W0lf]
+//= 1.3 Changed permanent global variables to temporary ones. [Euphy]
+//=     Added GM NPCs (commented).
+//= 1.4 Added GM management function. [Euphy]
+//= 1.5 Added Marriage Covenant item and VIP features. [Euphy]
+//============================================================
+
+prt_church,97,100,4	script	موظف الزفاف#w::Wedding Staff#w	71,{
+	cutin "wedding_marry01",2;
+	if (countitem(6026) == 0) {
+
+		// If the VIP system is enabled:
+		// - Non-VIP players must use a Marriage Covenant to get married.
+		// - VIP players may either pay the Zeny fee or use a Marriage Covenant.
+		if (VIP_SCRIPT && !vip_status(VIP_STATUS_ACTIVE)) {
+			mes "[ماري هابي]";
+			mes "آسفة، لكن لا يمكنك الزواج الآن.";
+			mes "الزفاف متاح فقط للاعبين المشتركين.";
+			mes "لكن إذا كان لديك ^FF0000عهد الزواج^000000، فستتمكن من الزواج!";
+			goto L_End;
+		}
+
+	} else
+		set .@covenant,1;
+	if (Upper == 2) {
+		mes "[ماري هابي]";
+		mes "مرحبا~";
+		mes "اسمي ماري هابي";
+		mes "وأنا هنا لأقدم لك";
+		mes "معلومات متعلقة";
+		mes "بالزواج. والآن، هل";
+		mes "لديك أي أسئلة؟";
+		next;
+		if (select("أريد أن أتزوج.:لا أحتاج إلى مساعدتك!") == 1) {
+			mes "[ماري هابي]";
+			mes "آه، أنا آسفة، لكن";
+			mes "الشخصيات المتبناة";
+			mes "لا يسمح لها";
+			mes "بالزواج. في الوقت الحالي،";
+			mes "لم لا تستمتع بمتع";
+			mes "الطفولة البسيطة؟";
+			goto L_End;
+		}
+		mes "[ماري هابي]";
+		mes "آه، بالطبع أنت";
+		mes "لا تحتاجها! الأطفال الصغار";
+		mes "لا يمكنهم الزواج-- هناك";
+		mes "قوانين كثيرة تمنع";
+		mes "ذلك~ ألست ألطف";
+		mes "شيء صغير؟";
+		goto L_End;
+	}
+	mes "[ماري هابي]";
+	mes "الزواج هو اتحاد جميل";
+	mes "بين روحين اختارتا";
+	mes "أن تكونا معا إلى الأبد،";
+	mes "وأن تتشاركا الفرح والحياة.";
+	mes "هل يوجد شخص مميز";
+	mes "كهذا في حياتك؟";
+	next;
+	switch(select("اسأل عن مراسم الزفاف:اسأل عن الإجراءات:التقدم للزواج:نحن جيش العزاب الذي لا يقهر!")) {
+	case 1:
+		mes "[ماري هابي]";
+		mes "كان الملك حكيم";
+		mes "والعطوف تريسترام الثالث";
+		mes "يقيم مراسم الزفاف،";
+		mes "لكنه لم يعد قادرا على ذلك";
+		mes "بسبب واجباته الملكية";
+		mes "وجدوله المزدحم جدا.";
+		next;
+		mes "[ماري هابي]";
+		mes "أسقف فومارس، أسقف";
+		mes "الحب، هو الآن مسؤول";
+		mes "عن مراسم الزواج.";
+		mes "إنه حقا كنز";
+		mes "لمملكة رون-ميدغارتس.";
+		next;
+		mes "[ماري هابي]";
+		mes "عندما تتزوج شخصا،";
+		mes "فهذا لبقية حياتك، لذا فكر جيدا قبل تقديم";
+		mes "طلب الزواج أو قبوله.";
+		mes "تذكر أن الرجل لا يستطيع";
+		mes "إلا الزواج من امرأة والعكس صحيح.";
+		next;
+		mes "[ماري هابي]";
+		mes "إذا كنت محظوظا بما يكفي";
+		mes "لتجد شخصا تريد حقا";
+		mes "قضاء بقية حياتك";
+		mes "معه، فقد ترغب في طرح السؤال. آمل أن يجد الجميع";
+		mes "نصفهم المثالي~";
+		break;
+	case 2:
+		mes "[ماري هابي]";
+		mes "الجزء الأول من";
+		mes "إجراءات الزفاف هو";
+		mes "إكمال طلب التسجيل.";
+		mes "بعد أن ينهي العروس والعريس";
+		mes "تقديم الطلب، يجب عليهما";
+		mes "تكوين فريق من شخصين.";
+		next;
+		mes "[ماري هابي]";
+		mes "بعد تكوين فريق من شخصين،";
+		mes "يجب على الزوجين بعد ذلك";
+		mes "التحدث إلى أسقف فومارس. يتحدث العريس";
+		mes "أولا ويجب أن يخبر أسقف";
+		mes "بالاسم الدقيق لعروسه. وإلا ستتوقف المراسم.";
+		next;
+		mes "[ماري هابي]";
+		mes "بعد ذلك، ستتحدث العروس";
+		mes "إلى أسقف وتخبره";
+		mes "باسم عريسها.";
+		mes "إذا قيلت هذه الأسماء";
+		mes "بشكل صحيح للأسقف، فسيتمكنان";
+		mes "من تبادل الخواتم.";
+		next;
+		mes "[ماري هابي]";
+		mes "بمجرد تبادل خواتم";
+		mes "الزفاف، يصبح الزوجان مرتبطين إلى الأبد في الزواج. بالطبع،";
+		mes "قبل هذه النقطة، توجد فرص كثيرة لتغيير رأيك، لذا...";
+		next;
+		mes "[ماري هابي]";
+		mes "إذا كان هناك عدد كبير";
+		mes "من الأزواج الذين يريدون";
+		mes "الزواج في نفس الوقت، يرجى";
+		mes "تكوين صف والتحدث إلى أسقف";
+		mes "فومارس بالترتيب، إذ لا يمكن تزويج إلا زوج واحد في كل مرة.";
+		next;
+		mes "[ماري هابي]";
+		mes "أخيرا، تأكد من إخبار";
+		mes "أسقف فومارس باسم شريكك";
+		mes "الدقيق دون إضاعة الكثير من الوقت. إذا استغرقت وقتا طويلا،";
+		mes "ستتوقف المراسم تلقائيا وسيتعين عليك المحاولة مرة أخرى.";
+		next;
+		mes "[ماري هابي]";
+		mes "على العرائس أن يتذكرن";
+		mes "أن لديهن 3 دقائق فقط";
+		mes "لإنهاء التحدث إلى أسقف";
+		mes "فومارس بعد أن ينتهي";
+		mes "العرسان من التحدث إليه.";
+		next;
+		if (select("شكرا، هذا يساعد كثيرا!:أسهل طريقة لكتابة اسم شريكي؟") == 1) {
+			mes "[ماري هابي]";
+			mes "حسنا، أنا هنا للمساعدة";
+			mes "في سير حفلات الزفاف";
+			mes "بأكبر قدر ممكن من السلاسة.";
+			mes "إذا كان هناك شيء";
+			mes "لم تفهمه،";
+			mes "فلا تتردد في سؤالي مرة أخرى.";
+			goto L_End;
+		}
+		mes "[ماري هابي]";
+		mes "أسهل طريقة لكتابة";
+		mes "اسم شريكك للأسقف";
+		mes "هي إرسال رسالة خاصة";
+		mes "إلى شريكك، ثم";
+		mes "النقر بالزر الأيسر على قسم الاسم الموجود يسار خانة المحادثة.";
+		next;
+		mes "[ماري هابي]";
+		mes "اضغط على مفتاحي ''Ctrl'' و ''C''";
+		mes "لنسخ الاسم. ثم،";
+		mes "يمكنك لصق الاسم في";
+		mes "خانة الإدخال بالضغط على";
+		mes "مفتاحي ''Insert'' و ''Shift''. يبدو هذا سهلا، أليس كذلك؟";
+		next;
+		mes "[ماري هابي]";
+		mes "حسنا، فلنجرب";
+		mes "ذلك الآن. تدرب على إعطائي";
+		mes "اسم شريكك باستخدام";
+		mes "الطريقة التي وصفتها للتو.";
+		next;
+		input .@partner$;
+		mes "[ماري هابي]";
+		mes "حسنا، بعد أن";
+		mes "تقرر الزواج،";
+		mes "عد إلي";
+		mes "وقدم طلبك.";
+		mes "أراك لاحقا، أيها مغامر~";
+		break;
+	case 3:
+		cutin "wedding_marry02",2;
+		if (VIP_SCRIPT) {
+			mes "[ماري هابي]";
+			mes "^FF0000انتظر!^000000";
+			mes "^FF0000إذا لم يكن حسابك مميزا، فيجب أن يكون لديك عهد الزواج لتتمكن من الزواج.^000000";
+			mes "^FF0000يرجى التحقق من حالة حسابك الحالية، وحالة حساب حبيبك، قبل التسجيل للزفاف.^000000";
+			next;
+		}
+		if (Sex == SEX_MALE) {
+			mes "[ماري هابي]";
+			mes "إذن ترغب في الزواج؟";
+			mes "بصفتك عريسا، عليك تجهيز";
+			if (.@covenant) {
+				mes "^3377FFبدلة رسمية واحدة^000000 وتسليمي ^3377FFعهد زواج واحد^000000.";
+				mes "على العرائس توفير فساتين الزفاف الخاصة بهن ودفع رسوم";
+				mes "قدرها 1,200,000 زيني أو إحضار عهد الزواج أيضا.";
+			} else {
+				mes "^3377FFبدلة رسمية واحدة^000000 ودفع ^3377FF1,300,000 زيني^000000.";
+				mes "على العرائس توفير فساتين الزفاف الخاصة بهن ودفع رسوم";
+				mes "قدرها 1,200,000 زيني.";
+			}
+		} else {
+			mes "[ماري هابي]";
+			mes "إذن ترغبين في الزواج؟";
+			mes "بصفتك عروسا، عليك تجهيز";
+			if (.@covenant) {
+				mes "^3377FFفستان زفاف واحد^000000 وتسليمي ^3377FFعهد الزواج^000000.";
+				mes "على العرسان إحضار بدلة رسمية ودفع";
+				mes "1,300,000 زيني أو إحضار عهد الزواج أيضا.";
+			} else {
+				mes "^3377FFفستان زفاف واحد^000000 ودفع رسوم قدرها 1,200,000 زيني. على العرسان";
+				mes "إحضار بدلة رسمية ودفع 1,300,000 زيني للزواج.";
+			}
+		}
+		next;
+		mes "[ماري هابي]";
+		mes "يحتاج العرائس والعرسان أيضا";
+		mes "إلى امتلاك ^3377FFخاتم ألماس واحد^000000";
+		mes "ليتم تبادله مع شركائهم.";
+		mes "ستحتاج إلى تجهيز كل هذه العناصر";
+		mes "عند تقديم طلب";
+		mes "مراسم الزفاف.";
+		next;
+		mes "[ماري هابي]";
+		mes "يجب على العروس";
+		mes "والعريس المرتقبين إكمال";
+		mes "عملية التقديم قبل";
+		mes "أن يتم الزفاف.";
+		mes "والآن، هل ترغب";
+		mes "في التقدم للزواج؟";
+		next;
+		if (select("نعم:لا") == 1) {
+			if (getpartnerid()) {
+				cutin "wedding_marry02",2;
+				mes "[ماري هابي]";
+				mes "أنا آسفة، لكن لا يمكنك";
+				mes "التقدم لزواج آخر!";
+				mes "لا أستطيع السماح لك بخيانة";
+				mes "زوجك بهذه الطريقة، و";
+				mes "إلى جانب ذلك، تعدد الزوجات";
+				mes "غير قانوني هنا في رون-ميدغارتس.";
+				break;
+			}
+			else if (wedding_sign == 1) {
+				mes "[ماري هابي]";
+				mes "ألم تكمل";
+				mes "الطلب من قبل؟";
+				mes "همم، تأكد من أن";
+				mes "شريكك أنهى أيضا";
+				mes "عملية التقديم، ثم";
+				mes "تحدث إلى أسقف فومارس.";
+				break;
+			}
+			else if (BaseLevel < 45) {
+				mes "[ماري هابي]";
+				mes "همم، عليك أن تكون";
+				mes "قويا بما يكفي لحماية";
+				mes "الشخص الذي تحبه قبل";
+				mes "أن تفكر في الزواج.";
+				mes "بعد أن تصبح أقوى،";
+				mes "تعال وتحدث إلي مرة أخرى.";
+				goto L_End;
+			}
+			else if (countitem(2613) < 1) {
+				mes "[ماري هابي]";
+				mes "مم؟ هل نسيت";
+				mes "إحضار خاتم الألماس";
+				mes "لتبادله مع شريكك";
+				mes "أثناء مراسم الزفاف؟";
+				mes "ابحث عنه جيدا وعد";
+				mes "بعد أن تجده، حسنا؟";
+				goto L_End;
+			}
+			else if (Sex == SEX_FEMALE) {
+				if (countitem(6026) == 0 && Zeny < 1200000) {
+					mes "[ماري هابي]";
+					mes "أنا آسفة، لكن على كل العرائس";
+					mes "دفع رسوم قدرها 1,200,000";
+					mes "زيني أو إحضار عهد الزواج";
+					mes "للمضي قدما في";
+					mes "مراسم الزفاف. ربما";
+					mes "يمكنك أن تطلبي من شريكك";
+					mes "مساعدتك في المال؟";
+					goto L_End;
+				}
+				else if (countitem(2338) < 1) {
+					mes "[ماري هابي]";
+					mes "يا إلهي، هل نسيت";
+					mes "فستان الزفاف الخاص بك؟";
+					mes "أسرعي واعثري عليه، ثم";
+					mes "أحضريه إلي-- أنت";
+					mes "تحتاجينه حتما";
+					mes "للزفاف!";
+					goto L_End;
+				}
+			}
+			else if (Sex == SEX_MALE) {
+				if (countitem(6026) == 0 && Zeny < 1300000) {
+					mes "[ماري هابي]";
+					mes "أنا آسفة، لكنك لا تملك";
+					mes "1,300,000 زيني";
+					mes "أو عهد الزواج";
+					mes "الذي يجب على كل العرسان دفعه";
+					mes "لمراسم الزفاف.";
+					mes "هل أضعت مالك؟";
+					goto L_End;
+				}
+				else if (countitem(7170) < 1) {
+					mes "[ماري هابي]";
+					mes "أين بدلتك الرسمية؟";
+					mes "يجب عليك حتما";
+					mes "ارتداؤها أثناء مراسم";
+					mes "الزفاف! اعثر عليها، وأحضرها";
+					mes "إلي، ثم يمكننا أخيرا";
+					mes "بدء الزفاف، حسنا؟";
+					goto L_End;
+				}
+			}
+			mes "[ماري هابي]";
+			mes "حسنا، يبدو أنك";
+			mes "جهزت كل شيء.";
+			mes "رغم أنني لست متأكدة من";
+			mes "من يكون شريكك، دعني أكون";
+			mes "أول من يهنئك";
+			mes "على زفافك القادم~";
+			next;
+			mes "[ماري هابي]";
+			mes "والآن، لنبدأ";
+			mes "الطلب. يرجى كتابة";
+			mes "اسمك الدقيق هنا.";
+			next;
+			while(1) {
+				input .@name$;
+				if (.@name$ != strcharinfo(0)) {
+					mes "[ماري هابي]";
+					mes "هممم، عليك كتابة";
+					mes "اسمك تماما كما";
+					mes "هو معروض. ربما";
+					mes "تحتاج إلى نسخه ولصقه؟";
+					mes "على أي حال، فلنجرب مرة أخرى.";
+					next;
+				}
+				else 
+					break;
+			}
+			mes "[ماري هابي]";
+			mes "رائع، يبدو أننا";
+			mes "أنهينا طلبك.";
+			mes "تذكر أنك ستحتاج";
+			mes "إلى إخبار أسقف فومارس";
+			mes "باسم شريكك الدقيق عندما";
+			mes "تتحدث إليه لاحقا، حسنا؟";
+			next;
+			mes "[ماري هابي]";
+			mes "عندما ينتهي شريكك";
+			mes "من عملية التقديم،";
+			mes "يجب أن يتحدث كلاكما";
+			mes "إلى أسقف لبدء";
+			mes "مراسم الزفاف.";
+			emotion ET_THROB;
+			next;
+			mes "[ماري هابي]";
+			if (Sex == SEX_FEMALE) {
+				mes "بما أنك العروس،";
+				mes "عليك انتظار";
+				mes "العريس ليتحدث إلى أسقف";
+				mes "فومارس أولا. عندما";
+				mes "ينتهي، سيكون دورك";
+				mes "للتحدث إلى أسقف فومارس.";
+				if (.@covenant)
+					delitem 6026,1; //Marriage_Covenant
+				else
+					set Zeny, Zeny-1200000;
+				delitem 2338,1; //Wedding_Dress
+			}
+			else {
+				mes "بما أنك العريس،";
+				mes "عليك التحدث إلى";
+				mes "أسقف أولا. عندما";
+				mes "تنتهي، سيكون دور";
+				mes "عروسك للتحدث إلى";
+				mes "أسقف فومارس.";
+				if (.@covenant)
+					delitem 6026,1; //Marriage_Covenant
+				else
+					set Zeny, Zeny-1300000;
+				delitem 7170,1; //Tuxedo
+			}
+			delitem 2613,1; //Diamond_Ring
+			set wedding_sign,1;
+			goto L_End;
+		}
+		mes "[ماري هابي]";
+		mes "لا...؟";
+		mes "حسنا، عندما تكون";
+		mes "مستعدا للزواج،";
+		mes "لا تتردد في العودة";
+		mes "إلي حتى تتمكن من تقديم الطلب،";
+		mes "حسنا؟ أتمنى لك يوما سعيدا~";
+		break;
+	case 4:
+		cutin "wedding_marry02",2;
+		donpcevent "Single Army#Prontera::OnEnable";
+		donpcevent "Single Army#Geffen::OnEnable";
+		donpcevent "Single Army#Morocc::OnEnable";
+		donpcevent "Single Army#Payon::OnEnable";
+		donpcevent "Single Army#Amatsu::OnEnable";
+		donpcevent "Single Army#Kunlun::OnEnable";
+		emotion ET_HUK;
+		mes "[جيش منفرد]";
+		mes "^CC9933عليك تحسين";
+		mes "العناصر بنفسك";
+		mes "لصنع معدات عظيمة!^000000";
+		emotion ET_ROCK, getnpcid(0, "Single Army#Prontera");
+		next;
+		mes "[جيش منفرد]";
+		mes "^330099إن تكوين فرق";
+		mes "في الزنزانات";
+		mes "مضيعة للوقت! أستطيع";
+		mes "النجاح بمفردي!^000000";
+		emotion ET_ROCK, getnpcid(0, "Single Army#Geffen");
+		next;
+		mes "[جيش منفرد]";
+		mes "^666666تبا، لقد تدربت";
+		mes "بمفردي منذ";
+		mes "ولادتي، حتى";
+		mes "تغيير وظيفتي!^000000";
+		emotion ET_ROCK, getnpcid(0, "Single Army#Morocc");
+		next;
+		mes "[جيش منفرد]";
+		mes "^666600أنا أختار قضاء";
+		mes "عيد الميلاد وحيدا...";
+		mes "ألعب سوليتير وأحل";
+		mes "الكلمات المتقاطعة!^000000";
+		emotion ET_ROCK, getnpcid(0, "Single Army#Payon");
+		next;
+		mes "[جيش منفرد]";
+		mes "^CC9966قد تحطم النساء";
+		mes "معنوياتي، لكنهن لن";
+		mes "يسلبن أبدا... حريتي!^000000";
+		emotion ET_ROCK, getnpcid(0, "Single Army#Amatsu");
+		next;
+		mes "[جيش منفرد]";
+		mes "^669900...نحن الأحرار! نحن";
+		mes "جيش العزاب الذي لا يقهر!^000000";
+		emotion ET_ROCK, getnpcid(0, "Single Army#Kunlun");
+		close2;
+		cutin "wedding_marry01",255;
+		emotion ET_SWEAT;
+		donpcevent "Single Army#Prontera::OnInit";
+		donpcevent "Single Army#Geffen::OnInit";
+		donpcevent "Single Army#Morocc::OnInit";
+		donpcevent "Single Army#Payon::OnInit";
+		donpcevent "Single Army#Amatsu::OnInit";
+		donpcevent "Single Army#Kunlun::OnInit";
+		end;
+	}
+	close2;
+	cutin "wedding_marry01",255;
+	end;
+
+L_End:
+	close2;
+	cutin "",255;
+	end;
+}
+
+prt_church,97,102,0	script	جيش منفرد#Prontera::Single Army#Prontera	105,{
+	mes "[جيش منفرد]";
+	mes "^CC9933عليك تحسين";
+	mes "العناصر بنفسك";
+	mes "لصنع معدات عظيمة!^000000";
+	close;
+
+OnInit:
+	hideonnpc "Single Army#Prontera";
+	end;
+
+OnEnable:
+	hideoffnpc "Single Army#Prontera";
+	emotion ET_GO;
+	end;
+}
+
+prt_church,98,102,0	script	جيش منفرد#Geffen::Single Army#Geffen	705,{
+	mes "[جيش منفرد]";
+	mes "^330099إن تكوين فرق";
+	mes "في الزنزانات";
+	mes "مضيعة للوقت! أستطيع";
+	mes "النجاح بمفردي!^000000";
+	close;
+
+OnInit:
+	hideonnpc "Single Army#Geffen";
+	end;
+
+OnEnable:
+	hideoffnpc "Single Army#Geffen";
+	emotion ET_GO;
+	end;
+}
+
+prt_church,99,102,0	script	جيش منفرد#Morocc::Single Army#Morocc	707,{
+	mes "[جيش منفرد]";
+	mes "^666666تبا، لقد تدربت";
+	mes "بمفردي منذ";
+	mes "ولادتي، حتى";
+	mes "تغيير وظيفتي!^000000";
+	close;
+
+OnInit:
+	hideonnpc "Single Army#Morocc";
+	end;
+
+OnEnable:
+	hideoffnpc "Single Army#Morocc";
+	emotion ET_GO;
+	end;
+}
+
+prt_church,100,102,0	script	جيش منفرد#Payon::Single Army#Payon	708,{
+	mes "[جيش منفرد]";
+	mes "^666600أنا أختار قضاء";
+	mes "عيد الميلاد وحيدا...";
+	mes "ألعب سوليتير وأحل";
+	mes "الكلمات المتقاطعة!^000000";
+	close;
+
+OnInit:
+	hideonnpc "Single Army#Payon";
+	end;
+
+OnEnable:
+	hideoffnpc "Single Army#Payon";
+	emotion ET_GO;
+	end;
+}
+
+prt_church,101,102,0	script	جيش منفرد#Amatsu::Single Army#Amatsu	767,{
+	mes "[جيش منفرد]";
+	mes "^CC9966قد تحطم النساء";
+	mes "معنوياتي، لكنهن لن";
+	mes "يسلبن أبدا... حريتي!^000000";
+	close;
+
+OnInit:
+	hideonnpc "Single Army#Amatsu";
+	end;
+
+OnEnable:
+	hideoffnpc "Single Army#Amatsu";
+	emotion ET_GO;
+	end;
+}
+
+prt_church,102,102,0	script	جيش منفرد#Kunlun::Single Army#Kunlun	780,{
+	mes "[جيش منفرد]";
+	mes "^669900...نحن الأحرار! نحن";
+	mes "جيش العزاب الذي لا يقهر!^000000";
+	close;
+
+OnInit:
+	hideonnpc "Single Army#Kunlun";
+	end;
+
+OnEnable:
+	hideoffnpc "Single Army#Kunlun";
+	emotion ET_GO;
+	end;
+}
+
+prt_church,100,128,4	script	أسقف#w::Bishop#w	60,{
+	cutin "wedding_bomars01",2;
+	if (Upper == 2) {
+		mes "[فومارس]";
+		mes "تحياتي أيها الطفل.";
+		mes "هل أنت تائه؟ هممم.";
+		mes "هل تعرف أين";
+		mes "أمك وأبوك؟";
+		close2;
+		cutin "wedding_bomars01",255;
+		end;
+	}
+
+	if (!getpartnerid()) {
+		if (!$@wedding) {
+			if (wedding_sign == 1) {
+				getpartymember(getcharid(1));
+				set .@partymembercount,$@partymembercount;
+				if (.@partymembercount == 2) {
+					if (Sex == SEX_MALE) {
+						set $@wedding,1;
+						initnpctimer;
+						mes "[فومارس]";
+						mes "أيها العاشقان الشابان، يرجى";
+						mes "تذكر هذه اللحظة";
+						mes "لبقية حياتكما. ليكن مستقبلكما مباركا بالسلام";
+						mes "والفرح. وليكبر الحب الذي تتشاركانه";
+						mes "مع مرور كل يوم.";
+						next;
+						mapannounce "prt_church","إنه طلب الزواج من العريس، سيد " + strcharinfo(0) + "...",bc_map;
+						mes "[فومارس]";
+						mes "حتى نهاية";
+						mes "العالم، عسى أن تقف";
+						mes "إلى جانب من";
+						mes "تحبها، لتدعمها";
+						mes "وتحميها. والآن، هل يمكنني";
+						mes "معرفة اسم عروسك؟";
+						next;
+						input $@wed_bride$;
+						mes "[فومارس]";
+						mes "سيد " + strcharinfo(0) + "...";
+						mes "هل تقسم بحياتك";
+						mes "أنك ستعتز دائما";
+						mes "بعروسك وتعتني بها،";
+						mes "الآنسة " + $@wed_bride$ + "?";
+						next;
+						select("أقسم.");
+						set $@wed_groom$,strcharinfo(0);
+						mes "[فومارس]";
+						mes "والآن، حان وقت";
+						mes "أن تقدم عروسك";
+						mes "عهود زفافها.";
+						mes "فلتتقدم إن شاءت...";
+						close2;
+						mapannounce "prt_church","العريس، سيد " + strcharinfo(0) + "، قدم عهوده للآنسة " + $@wed_bride$ + "...",bc_map;
+						cutin "",255;
+						end;
+					}
+					mes "[فومارس]";
+					mes "أنا آسف، لكن يجب";
+					mes "أن يتحدث العريس إلي أولا";
+					mes "لبدء الزفاف.";
+					mes "إنه بروتوكول قديم الطراز،";
+					mes "لكنني أعترف بأنه";
+					mes "يبقي الأمور تسير بسلاسة.";
+					goto L_End;
+				}
+				mes "[فومارس]";
+				mes "قبل أن تتمكنا";
+				mes "من الزواج، يجب";
+				mes "أولا تكوين فريق";
+				mes "من شخصين مع شريكك.";
+				mes "ثم يمكننا المتابعة";
+				mes "بالمراسم.";
+				goto L_End;
+			}
+			mes "[فومارس]";
+			mes "يجب أن تتقدم بطلب";
+			mes "الزواج لدى هابي ماري";
+			mes "قبل أن تتمكن من الزواج.";
+			mes "ستخبرك هابي ماري";
+			mes "بما تحتاج إليه أيضا";
+			mes "للاستعداد للزواج.";
+			goto L_End;
+		}
+		else if ($@wedding == 1) {
+			if (wedding_sign == 1) {
+				getpartymember(getcharid(1));
+				set .@partymembercount,$@partymembercount;
+				if (.@partymembercount == 2) {
+					if (Sex == SEX_FEMALE) {
+						if (strcharinfo(0) == $@wed_bride$) {
+							mes "[فومارس]";
+							mes "أيها العاشقان الشابان، يرجى";
+							mes "تذكر هذه اللحظة";
+							mes "لبقية حياتكما. ليكن مستقبلكما مباركا بالسلام";
+							mes "والفرح. وليكبر الحب الذي تتشاركانه";
+							mes "مع مرور كل يوم.";
+							next;
+							mapannounce "prt_church","لنسمع ما تريد العروس، الآنسة "+$@wed_bride$+"، قوله...",bc_map;
+							mes "[فومارس]";
+							mes "آنسة "+$@wed_bride$+"...";
+							mes "هل تقسمين أن تبقي";
+							mes "وفية لـ "+$@wed_groom$+"،";
+							mes "وأن تكوني بجانبه، مهما";
+							mes "كانت الأخطار؟";
+							next;
+							if (select("^FF0000لا.^000000:أقسم.") == 1) {
+								cutin "wedding_bomars03",2;
+								mapannounce "prt_church","الزوجان التاليان، يرجى التقدم...",bc_map;
+								mes "[فومارس]";
+								mes "إذن "+$@wed_groom$;
+								mes "ليس الشخص الذي";
+								mes "تريدين الزواج منه؟ همم.";
+								mes "أنا آسف حقا على";
+								mes "سوء الفهم هذا...";
+								set $@wedding,0;
+								close2;
+								stopnpctimer;
+								cutin "",255;
+								end;
+							}
+							mes "[فومارس]";
+							mes "هل تقسمين حقا";
+							mes "بالوفاء والصبر؟";
+							mes "هل تقبلين الزواج من "+$@wed_groom$+"?";
+							next;
+							if (select("نعم، أقبل.:^FF0000لا.^000000") == 1) {
+								if (isloggedin(getcharid(3,$@wed_groom$))) {
+									if (marriage($@wed_groom$)) {
+										//Call Wedding effect
+										wedding;
+										//Give ring to Bride, and change to wedding sprite.
+										sc_start SC_Wedding,3600000,1;
+										getitem 2635,1; //Bride_Ring
+										//Give ring to Groom, and change to wedding sprite.
+										attachrid(getcharid(3,$@wed_groom$));
+										sc_start SC_Wedding,3600000,1;
+										getitem 2634,1; //Bridegroom_Ring
+										detachrid;
+										//Switch Script progression back to Bride
+										attachrid(getcharid(3,$@wed_bride$));
+										cutin "wedding_bomars02",2;
+										mapannounce "prt_church","أعلنكما الآن، "+$@wed_groom$+" و "+$@wed_bride$+"، زوجا وزوجة.",bc_map;
+										mes "[فومارس]";
+										mes "بالسلطة الممنوحة";
+										mes "لي بصفتي أسقف الملكي";
+										mes "لمملكة رون-ميدغارتس،";
+										mes "أعلنكما الآن زوجا";
+										mes "وزوجة. ليكن مستقبلكما";
+										mes "مباركا بأفراح عظيمة كثيرة.";
+										next;
+										mes "[فومارس]";
+										mes "وأخيرا...";
+										mes "كوني سعيدة دائما،";
+										mes "عزيزتي "+$@wed_bride$+"...";
+										set $@wed_groom$,"";
+										set $@wed_bride$,"";
+										set $@wedding,0;
+										close2;
+										stopnpctimer;
+										cutin "",255;
+										detachrid;
+										end;
+									}
+								}
+								cutin "wedding_bomars03",2;
+								mes "[فومارس]";
+								mes "همم. يبدو أن";
+								mes "عريسك غادر قبل";
+								mes "أن تنتهي المراسم.";
+								mes "يرجى المحاولة مرة أخرى";
+								mes "بعد عودته.";
+								goto L_End;
+							}
+							else {
+								cutin "wedding_bomars03",2;
+								mapannounce "prt_church","واحسرتاه! "+$@wed_bride$+" رفضت طلب زواج "+$@wed_groom$+"!",bc_map;
+								mes "[فومارس]";
+								mes "همم. يبدو أنك";
+								mes "غيرت رأيك.";
+								mes "رغم أنني أشعر";
+								mes "بالأسف من أجل العريس،";
+								mes "يجب أن تفعلي ما يخبرك";
+								mes "قلبك أنه الصواب. والآن، اهربي!";
+							}
+							set $@wed_groom$,"";
+							set $@wed_bride$,"";
+							set $@wedding,0;
+							close2;
+							stopnpctimer;
+							cutin "",255;
+							end;
+						}
+						callsub S_Busy;
+					}
+					callsub S_Busy;
+				}
+				callsub S_Busy;
+			}
+			if (strcharinfo(0) == $@wed_bride$) {
+				mes "[فومارس]";
+				mes "هم؟ يبدو أن";
+				mes "هابي ماري لم تستلم";
+				mes "طلب زواجك";
+				mes "بعد. يرجى التحدث";
+				mes "إليها حتى نتمكن من بدء";
+				mes "مراسم الزفاف.";
+				goto L_End;
+			}
+			callsub S_Busy;
+		}
+		callsub S_Busy;
+	}
+	mes "[فومارس]";
+	mes "أتمنى لك سعادة";
+	mes "أبدية. مهما";
+	mes "كان الحاضر مظلما،";
+	mes "قف دائما إلى جانب";
+	mes "من تحب، وانظر";
+	mes "إلى المستقبل بأمل.";
+
+L_End:
+	close2;
+	cutin  "",255;
+	end;
+
+S_Busy:
+	if ($@wed_groom$ != "" && $@wed_bride$ != "") {
+		mes "[فومارس]";
+		mes "زفاف";
+		mes "الآنسة "+ $@wed_bride$ +" و";
+		mes "سيد "+ $@wed_groom$;
+		mes "جار حاليا.";
+		mes "يرجى خفض صوتك.";
+		goto L_End;
+	}
+	mes "[فومارس]";
+	mes "أنا أقيم زفافا";
+	mes "لزوجين آخرين الآن، لذا";
+	mes "يرجى الانتظار بصبر";
+	mes "حتى يحين دورك. شكرا لتفهمك...";
+	goto L_End;
+
+OnStop:
+	stopnpctimer;
+	end;
+
+OnReset:
+	set $@wed_groom$,"";
+	set $@wed_bride$,"";
+	set $@wedding,0;
+	end;
+
+OnTimer180000:
+	mapannounce "prt_church","لقد تأخرت كثيرا في الرد... الزوجان التاليان، يرجى التقدم.",bc_map;
+	donpcevent "Bishop#w::OnReset";
+	stopnpctimer;
+	end;
+}
+
+prt_church,28,178,4	script	ملك رون-ميدغارتس::The King of Rune-Midgarts	108,{
+	callfunc "F_GM_NPC";
+	mes "[فومارس]";
+	mes "م-من أنت؟";
+	mes "يجب أن تعرف";
+	mes "كلمة المرور لاستدعاء";
+	mes "قواي العظيمة.";
+	next;
+	if (callfunc("F_GM_NPC",1854,0) < 1) {
+		mes "[فومارس]";
+		mes "هذا";
+		mes "ليس مكانا";
+		mes "للمزاح.";
+		close2;
+		warp "prt_church",101,102;
+		end;
+	}
+	mes "[مفتاح الزفاف]";
+	mes "هل هناك مشكلة في";
+	mes "مراسم الزفاف؟";
+	mes "يمكنني إعادة ضبط NPC";
+	mes "أسقف فومارس إذا أردت.";
+	next;
+	switch(select("لا، شكرا:إعادة ضبط")) {
+	case 1:
+		mes "[مفتاح الزفاف]";
+		mes "حسنا إذن.";
+		mes "ومع ذلك، إذا كان";
+		mes "NPC أسقف فومارس";
+		mes "عالقا، فقد يكون";
+		mes "من الأفضل إعادة ضبطه.";
+		close;
+	case 2:
+		donpcevent "Bishop#w::OnStop";
+		donpcevent "Bishop#w::OnReset";
+		mapannounce "prt_church","لقد تأخرت كثيرا في الرد... الزوجان التاليان، يرجى التقدم.",bc_map;
+		mes "[مفتاح الزفاف]";
+		mes "تم الآن إعادة تفعيل";
+		mes "NPC أسقف فومارس.";
+		mes "ينبغي الآن أن يكون ممكنا";
+		mes "المتابعة في حفلات الزفاف.";
+		close;
+	}
+}
+
+prt_church,20,179,4	script	موظف الطلاق::Divorce Staff	71,{
+	callfunc "F_GM_NPC";
+	mes "[نهاية سيئة]";
+	mes "أوه لا...";
+	mes "أنت تعرف أنني لا أستطيع";
+	mes "فعل أي شيء من أجلك.";
+	next;
+	if (callfunc("F_GM_NPC",1854,0) < 1) {
+		mes "[نهاية سيئة]";
+		mes "همم...";
+		mes "حقا لا";
+		mes "ينبغي أن تكون";
+		mes "في هذا المكان...";
+		close;
+	}
+	mes "[نهاية سيئة]";
+	mes "رائع، أنت تعرف";
+	mes "كلمة المرور! والآن، هل";
+	mes "تريدني أن أزيل";
+	mes "خاتم الزفاف من";
+	mes "مخزونك؟";
+	next;
+	switch(select("أسقط خاتم زفاف واحد.:احتفظ به.")) {
+	case 1:
+		set .@ring, (Sex == SEX_MALE)?2634:2635; //Bridegroom_Ring, Bride_Ring
+		if (countitem(.@ring)) {
+			delitem .@ring,1;
+			mes "[نهاية سيئة]";
+			mes "تم الأمر!";
+		} else {
+			mes "[نهاية سيئة]";
+			mes "لم أتمكن من العثور";
+			mes "على خاتم الزفاف...";
+			mes "يرجى التأكد";
+			mes "من أنه غير مجهز.";
+		}
+		close;
+	case 2:
+		mes "[نهاية سيئة]";
+		mes "هل أنت متأكد أنك تريد";
+		mes "الاحتفاظ بذلك الخاتم؟";
+		mes "حسنا، لكن إذا أصبح";
+		mes "مشكلة، فتعال إلي.";
+		close;
+	}
+}
+
+prt_church,22,179,4	script	موظف إعادة الزواج::Remarry Staff	71,{
+	callfunc "F_GM_NPC";
+	mes "[زفاف من جديد]";
+	mes "همم...؟";
+	mes "ما الذي تفعله";
+	mes "هنا بالضبط؟";
+	next;
+	if (callfunc("F_GM_NPC",1854,0) < 1) {
+		mes "[زفاف من جديد]";
+		mes "آخ!";
+		mes "مغامر";
+		mes "مثلك لا ينبغي";
+		mes "أن يكون في هذا المكان!";
+		close;
+	}
+	if (getpartnerid()) {
+		mes "[زفاف من جديد]";
+		mes "همم...";
+		mes "لا يمكنني صنع";
+		mes "خاتم زفاف إلا إذا";
+		mes "كانت شخصية متزوجة.";
+		close;
+	}
+	mes "[زفاف من جديد]";
+	mes "آه، أرى أنك";
+	mes "تعرف كلمة المرور.";
+	mes "حسنا، إذا فقدت";
+	mes "خاتم زفافك بطريقة ما،";
+	mes "يمكنني صنع واحد جديد لك.";
+	next;
+	switch(select("اصنع خاتم زفاف جديد.:إلغاء.")) {
+	case 1:
+		set .@ring, (Sex == SEX_MALE)?2634:2635; //Bridegroom_Ring, Bride_Ring
+		if (countitem(.@ring) || isequipped(.@ring)) {
+			mes "[زفاف من جديد]";
+			mes "انتظر، انتظر...";
+			mes "أنت ترتدي";
+			mes "خاتم زفافك. من الأفضل";
+			mes "ألا أصنع لك خاتما آخر بما أنك";
+			mes "لا تحتاج إلى أكثر من واحد.";
+		} else {
+			getitem .@ring,1;
+			mes "[زفاف من جديد]";
+			mes "تفضل~";
+			mes "إنه خاتم زفافك";
+			mes "الجديد تماما!";
+		}
+		close;
+	case 2:
+		mes "[زفاف من جديد]";
+		mes "حسنا. إذا فقدت";
+		mes "خاتم زفافك يوما،";
+		mes "تعال إلي إذا حدث";
+		mes "أن احتجت إلى واحد جديد، حسنا؟";
+		close;
+	}
+}
