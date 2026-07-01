@@ -1,0 +1,19 @@
+name: Package stage 261
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened]
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stage-261-complete-package
+          path: .
+          include-hidden-files: false
+          retention-days: 7
