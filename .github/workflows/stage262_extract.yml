@@ -1,0 +1,24 @@
+name: Stage 262 text extraction
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize]
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python tools/extract_stage262.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stage-262-text-pairs
+          path: stage262_pairs
+          retention-days: 7
