@@ -1,16 +1,3 @@
-    # Create tracker workbook before package comparison.
-    xlsx_path = p(XLSX_REL)
-    make_xlsx(xlsx_path, checks)
-    with zipfile.ZipFile(xlsx_path) as zf:
-        if "[Content_Types].xml" not in zf.namelist():
-            raise AssertionError("Invalid XLSX")
-
-    # Full package comparison.
-    after = snapshot_repo()
-    all_paths = sorted(set(before) | set(after))
-    comparison_rows = [["المسار", "الحالة", "SHA256 قبل", "SHA256 بعد"]]
-    changed_existing, new_files, deleted_files = [], [], []
-    status_counts = {"معدل": 0, "دون تغيير": 0, "جديد": 0, "محذوف": 0}
     for rel in all_paths:
         b = before.get(rel, "")
         a = after.get(rel, "")
