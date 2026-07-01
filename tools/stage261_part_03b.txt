@@ -1,0 +1,70 @@
+    write_text_preserve(completed_path, completed, c_bom, c_nl)
+
+    # Remaining list.
+    remaining_text, r_bom, r_nl = read_text_preserve(remaining_path)
+    remaining_lines = remaining_text.replace("\r\n", "\n").replace("\r", "\n").splitlines()
+    original_count = len(remaining_lines)
+    remaining_lines = [line for line in remaining_lines if not line.startswith(MAIN_REL + ",")]
+    if len(remaining_lines) != original_count - 1:
+        raise AssertionError("Failed to remove exactly one gympass row")
+    if len(remaining_lines) < 2 or not remaining_lines[1].startswith(NEXT_FILE + ","):
+        raise AssertionError("Unexpected next file")
+    write_text_preserve(remaining_path, "\n".join(remaining_lines) + "\n", r_bom, r_nl)
+
+    # Changes CSV from line-level replacements.
+    old_lines = original_text.splitlines()
+    new_lines = final_text.splitlines()
+    changes = []
+    for i, (old, new) in enumerate(zip(old_lines, new_lines), 1):
+        if old != new:
+            changes.append([len(changes)+1, MAIN_REL, i, "تنقيح لغوي", old, new, "تغيير نصي فقط؛ منطق السكربت محفوظ"])
+    if len(changes) != STAGE_CHANGES:
+        raise AssertionError(f"Expected {STAGE_CHANGES} changed lines, got {len(changes)}")
+    with (STAGE_DIR / "تقرير_المرحلة_261_التعديلات.csv").open("w", encoding="utf-8-sig", newline="") as f:
+        writer = csv.writer(f, lineterminator="\n")
+        writer.writerow(["رقم", "الملف", "السطر", "النوع", "النص قبل", "النص بعد", "ملاحظة"])
+        writer.writerows(changes)
+
+    sources = [
+        {"source": "المرجع الإنجليزي داخل الحزمة", "type": "داخلي", "purpose": "مطابقة الحوار والبنية والأوامر", "location": EN_REL},
+        {"source": "rAthena gympass.txt", "type": "رسمي", "purpose": "التحقق من النسخة الرسمية وتسلسل التدريب", "location": "https://github.com/rathena/rathena/blob/master/npc/other/gympass.txt"},
+        {"source": "Git blob SHA للمرجع الرسمي", "type": "رسمي", "purpose": "إثبات التطابق البايتي", "location": OFFICIAL_BLOB},
+        {"source": "مرجع rAthena الرسمي المحفوظ", "type": "خارجي محفوظ", "purpose": "نسخة بايتية من المرجع الرسمي", "location": official_rel},
+        {"source": "ملف الملاحة", "type": "داخلي مرتبط", "purpose": "التحقق من اسم كابوس مفتول العضلات", "location": NAVI_REL},
+        {"source": "قاموس المهارات", "type": "داخلي مرتبط", "purpose": "التحقق من المصطلح المعتمد زيادة حد الوزن", "location": SKILL_REL},
+        {"source": "الملف التالي", "type": "داخلي", "purpose": "استمرار تسلسل المراجعة", "location": NEXT_FILE},
+    ]
+    write_utf8_lf(
+        STAGE_DIR / "تقرير_المرحلة_261_المصادر.md",
+        "# مصادر المرحلة 261\n\n" + "\n".join(
+            f"- **{s['source']}** ({s['type']}): {s['purpose']} — `{s['location']}`" for s in sources
+        ) + "\n",
+    )
+    with (STAGE_DIR / "تقرير_المرحلة_261_المصادر.csv").open("w", encoding="utf-8-sig", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["source", "type", "purpose", "location"], lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(sources)
+    write_utf8_lf(STAGE_DIR / "تقرير_المرحلة_261_المصادر.json", json.dumps(sources, ensure_ascii=False, indent=2) + "\n")
+
+    # Technical validation.
+    final_bytes = main_path.read_bytes()
+    final_now = final_bytes.decode("utf-8")
+    navi_text = navi_path.read_text(encoding="utf-8")
+    skill_text = skill_path.read_text(encoding="utf-8")
+    checks: list[dict[str, str]] = []
+    add_check(checks, "وجود الملف الأساسي", main_path.exists(), MAIN_REL)
+    add_check(checks, "وجود المرجع الإنجليزي الداخلي", en_path.exists(), EN_REL)
+    add_check(checks, "ترميز الملف UTF-8 دون BOM", not final_bytes.startswith(b"\xef\xbb\xbf"), "UTF-8 دون BOM")
+    add_check(checks, "الحفاظ على LF", b"\r\n" not in final_bytes, f"{final_bytes.count(bytes([10]))} LF")
+    add_check(checks, "حفظ عدد الأسطر", len(final_now.splitlines()) == len(original_text.splitlines()), str(len(final_now.splitlines())))
+    add_check(checks, "مطابقة المرجع الرسمي ببصمة Git", git_blob_sha(english) == OFFICIAL_BLOB, OFFICIAL_BLOB)
+    add_check(checks, "حفظ المرجع الرسمي", p(official_rel).read_bytes() == english, "byte-identical")
+    add_check(checks, "حفظ النسخة الاحتياطية", p(backup_rel).read_bytes() == original, "byte-identical")
+    add_check(checks, "مطابقة بصمة الملف النهائي", sha256(final_bytes) == FINAL_SHA256, FINAL_SHA256)
+    add_check(checks, "مطابقة عدد التعديلات", len(changes) == STAGE_CHANGES, str(len(changes)))
+    add_check(checks, "حفظ الخريطة والإحداثيات", "payon,173,141,4" in final_now, "payon 173,141")
+    add_check(checks, "حفظ صورة NPC", "\t899,{" in final_now, "899")
+    add_check(checks, "حفظ الاسم الداخلي", "::Ripped Cabus#GymPass" in final_now, "Ripped Cabus#GymPass")
+    add_check(checks, "حفظ الاسم الظاهر", "كابوس مفتول العضلات#GymPass::" in final_now, "كابوس مفتول العضلات")
+    add_check(checks, "مطابقة الاسم مع الملاحة", "كابوس مفتول العضلات" in navi_text, "متوافق")
+    add_check(checks, "عدم تعديل ملف الملاحة", sha256(navi_path.read_bytes()) == before[NAVI_REL], "byte-identical")
