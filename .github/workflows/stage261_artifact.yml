@@ -1,0 +1,35 @@
+name: Package stage 261
+
+on:
+  push:
+    branches:
+      - stage-261-gympass
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          show-progress: false
+      - name: Record run and clean workflow
+        run: |
+          printf '%s' "${{ github.run_id }}" > "تقارير_المراجعة_الحوارية/المرحلة_261/stage261_run_id.txt"
+          rm -f .github/workflows/stage261_artifact.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "تجهيز حزمة المرحلة 261"
+          git push
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stage-261-complete-package
+          path: .
+          include-hidden-files: false
+          retention-days: 7
