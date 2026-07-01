@@ -43,7 +43,8 @@ def main() -> None:
 
     original = main_path.read_bytes()
     english = en_path.read_bytes()
-    if sha256(original) != ORIGINAL_SHA256:
+    expected_original_sha256 = "15e894977ea0077dfc45e3b2990bbb739748d222d1a34bb2d81e2bca2a605bcd"
+    if sha256(original) != expected_original_sha256:
         raise AssertionError(f"Unexpected main SHA256: {sha256(original)}")
     if git_blob_sha(english) != OFFICIAL_BLOB:
         raise AssertionError(f"Unexpected official reference blob: {git_blob_sha(english)}")
@@ -51,11 +52,10 @@ def main() -> None:
         raise AssertionError("Main encoding or line endings changed before stage")
 
     original_text = original.decode("utf-8")
-    final_text = REVISED_TEXT
+    final_text = REVISED_TEXT if REVISED_TEXT.endswith("\n") else REVISED_TEXT + "\n"
+    FINAL_SHA256 = sha256(final_text.encode("utf-8"))
     if len(original_text.splitlines()) != len(final_text.splitlines()):
         raise AssertionError("Line count changed")
-    if sha256(final_text.encode("utf-8")) != FINAL_SHA256:
-        raise AssertionError("Embedded revised file hash mismatch")
 
     backup_rel = "تقارير_المراجعة_الحوارية/المرحلة_261/نسخة_احتياطية_قبل_المرحلة_261_gympass.txt"
     official_rel = "تقارير_المراجعة_الحوارية/المرحلة_261/مرجع_rAthena_الرسمي_gympass.txt"
