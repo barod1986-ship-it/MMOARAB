@@ -1,0 +1,69 @@
+            ["الملفات المتبقية", 265],
+            ["ملفات المهام", "88 من 88"],
+            ["الملف المنجز", MAIN_REL],
+            ["الملف التالي", NEXT_FILE],
+            ["تعديلات المرحلة", 77],
+            ["التحقق الفني", "PASS"],
+        ]),
+        ("المراحل_الأخيرة", [
+            ["المرحلة", "الملف", "التعديلات", "الحالة"],
+            [252, "rathena-master/npc/other/auction.txt", 34, "مكتمل"],
+            [253, "rathena-master/npc/other/books.txt", 742, "مكتمل"],
+            [254, "rathena-master/npc/other/bulletin_boards.txt", 128, "مكتمل"],
+            [255, "rathena-master/npc/other/card_trader.txt", 43, "مكتمل"],
+            [256, "rathena-master/npc/other/comodo_gambling.txt", 84, "مكتمل"],
+            [257, "rathena-master/npc/other/divorce.txt", 91, "مكتمل"],
+            [258, "rathena-master/npc/other/fortune.txt", 894, "مكتمل"],
+            [259, "rathena-master/npc/other/gm_npcs.txt", 38, "مكتمل"],
+            [260, "rathena-master/npc/other/guildpvp.txt", 18, "مكتمل"],
+            [261, MAIN_REL, 77, "مكتمل"],
+        ]),
+        ("التحقق", [["الاختبار", "الحالة", "التفاصيل"]] + [
+            [c["test"], c["status"], c["details"]] for c in checks
+        ]),
+    ]
+    content_types = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+        '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+        '<Default Extension="xml" ContentType="application/xml"/>'
+        '<Override PartName="/xl/workbook.xml" '
+        'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'
+        '<Override PartName="/xl/styles.xml" '
+        'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'
+        + "".join(
+            f'<Override PartName="/xl/worksheets/sheet{i}.xml" '
+            'ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
+            for i in range(1, len(sheets) + 1)
+        )
+        + '</Types>'
+    )
+    root_rels = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        '<Relationship Id="rId1" '
+        'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" '
+        'Target="xl/workbook.xml"/></Relationships>'
+    )
+    workbook = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '
+        'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>'
+        + "".join(
+            f'<sheet name="{escape(name)}" sheetId="{i}" r:id="rId{i}"/>'
+            for i, (name, _) in enumerate(sheets, 1)
+        )
+        + '</sheets></workbook>'
+    )
+    workbook_rels = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        + "".join(
+            f'<Relationship Id="rId{i}" '
+            'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" '
+            f'Target="worksheets/sheet{i}.xml"/>'
+            for i in range(1, len(sheets) + 1)
+        )
+        + f'<Relationship Id="rId{len(sheets)+1}" '
+        'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" '
+        'Target="styles.xml"/></Relationships>'
