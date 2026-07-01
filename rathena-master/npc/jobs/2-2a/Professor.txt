@@ -1,0 +1,93 @@
+//===== rAthena Script ======================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== By: ==================================================
+//= Nana
+//= finished, optimized and tested by Lupus
+//===== Current Version: ===================================== 
+//= 1.3
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== Additional Comments: ================================= 
+//= 1.1 Made all into functions, additional checks, etc. [Lupus]
+//= 1.2 Made numbers into constants. [Vicious]
+//= 1.3 Now saves/restores all the quest skills [Lupus]
+//============================================================ 
+
+valkyrie,53,47,3	script	أستاذ#Valkyrie::Scholar#Valkyrie	743,{
+	if (ADVJOB == 0 || Upper != 1) {
+		set .@karma_d,rand(1,10);
+		if (.@karma_d > 4) {
+			mes "[أستاذ]";
+			mes "تهانينا.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		mes "[أستاذ]";
+		mes "يستلزم جمع المعرفة";
+		mes "التي تحتاج إليها لتصبح";
+		mes "أستاذا عمرا كاملا...";
+		mes "نعم، عمرا كاملا";
+		mes "بكل معنى الكلمة.";
+		next;
+		mes "[أستاذ]";
+		mes "إنه أمر يبعث على الرهبة.";
+		mes "فكلما ازددت علما،";
+		mes "اكتشفت كم من الأمور";
+		mes "ما زلت تجهلها.";
+		mes "وطريق التعلم";
+		mes "لا نهاية له...";
+		close;
+	}
+	else if (ADVJOB == Job_Professor && Class == Job_Mage_High && JobLevel > 39) {
+		mes "[أستاذ]";
+		mes "لا يوجد في ميدغارد";
+		mes "عدد كاف من الأساتذة";
+		mes "لقيادة العالم نحو";
+		mes "عصر جديد من الازدهار.";
+		mes "العالم بحاجة إليك...";
+		next;
+		mes "[أستاذ]";
+		mes "هل أنت مستعد لتحمل";
+		mes "هذه المسؤولية الجسيمة؟";
+		mes "هل ستخدم ميدغارد";
+		mes "بصفتك أستاذا؟";
+		next;
+		if (select("لا.:نعم.") == 1) {
+			mes "[أستاذ]";
+			mes "عد إلي حين يكتمل استعدادك.";
+			mes "سأكون في انتظارك.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		if (SkillPoint) {
+			mes "[أستاذ]";
+			mes "ما زالت لديك نقاط مهارة غير مستخدمة.";
+			mes "استخدمها جميعا قبل أن تعود إلي.";
+			close;
+		}
+		jobchange Job_Professor;
+		set ADVJOB,0;
+		mes "[أستاذ]";
+		mes "تهانينا!";
+		mes "بصفتك أستاذا، آمل";
+		mes "أن تؤدي دورا فاعلا";
+		mes "في إيصال نور المعرفة";
+		mes "إلى كل موضع";
+		mes "يخيم عليه الظلام.";
+		close;
+	}
+	mes "[أستاذ]";
+	mes "أهلا بك";
+	mes "في فالهالا،";
+	mes "قاعة الشرف.";
+	next;
+	mes "[أستاذ]";
+	mes "أتمنى لك";
+	mes "الراحة والطمأنينة";
+	mes "طوال إقامتك هنا.";
+	mes "المجد للمحاربين.";
+	close;
+}
+

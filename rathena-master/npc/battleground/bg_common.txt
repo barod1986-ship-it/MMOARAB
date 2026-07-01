@@ -1,0 +1,627 @@
+//===== rAthena Script ======================================= 
+//= BattleGround System - Common NPCs
+//===== By: ================================================== 
+//= ????, L0ne_W0lf
+//===== Current Version: ===================================== 
+//= 1.5
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= [Official Conversion]
+//= Battleground NPCs:
+//= - Generals and Aides
+//= - Battleground Warper
+//= - Kafra and Repairman.
+//= - GM Management NPC
+//= - Badge Exchanger (Tierra and Flavius)
+//===== Additional Comments: ================================= 
+//= 1.0 First Version.
+//= 1.1 Updated several NPCs to Official.
+//= 1.2 Updated Repairman NPC
+//= 1.3 Optimized "Erundek" NPC. [Euphy]
+//= 1.4 Added GM management function. [Euphy]
+//= 1.5 Added VIP features and created a reward function. [Euphy]
+//============================================================
+
+// Generals
+//============================================================
+bat_room,161,158,3	script	مساعد الجنرال غيوم#01::Gen. Guillaume's Aide#01	419,{ end; }
+bat_room,161,160,3	script	مساعد الجنرال غيوم#03::Gen. Guillaume's Aide#03	419,{ end; }
+
+bat_room,160,141,3	script	الأمير كروا::Prince Croix	416,{
+	cutin "bat_crua1",2;
+	mes "[الأمير كروا]";
+	mes "أيها المغامر الحكيم، ألا تعيرنا قوتك لنحقق النصر؟";
+	next;
+	switch(select("ما سبب هذه المعركة؟:أخبرني عن الجنرال غيوم")) {
+	case 1:
+		cutin "bat_crua2",2;
+		mes "[الأمير كروا]";
+		mes "ملك مارول العظيم، مارسيل مارولو السابع، يعاني مرضا شديدا في الآونة الأخيرة.";
+		mes "أعلن جلالته أنه سيعهد بمستقبل مارول إلي أو إلى الأمير الثالث، الجنرال غيوم.";
+		next;
+		mes "[الأمير كروا]";
+		mes "يتمتع الجنرال غيوم بأفضلية في هذه المعركة، فهو القائد الأعلى لمارول، لكن ذلك لا يضمن فوزه.";
+		mes "أريد الانتصار لأحقق الرخاء لشعب مارول، فقد عانى ويلات الحرب بما يكفي...";
+		next;
+		switch(select("سأنضم إليك:إنهاء الحديث")) {
+		case 1:
+			cutin "bat_crua1",2;
+			mes "[الأمير كروا]";
+			mes "شكرا لك. بمساندة مغامرين مثلك، أشعر أن النصر بات ممكنا.";
+			mes "انزل الآن إلى الطابق السفلي، وانضم إلى رفاقك في الاستعداد لمواجهة العدو!";
+			break;
+		case 2:
+			mes "[الأمير كروا]";
+			mes "من أجل مارول!";
+			break;
+		}
+		break;
+	case 2:
+		cutin "bat_crua2",2;
+		mes "[الأمير كروا]";
+		mes "الأمير الثالث غيوم هو القائد الأعلى لجيوش مارول.";
+		mes "لا حاجة إلى إطالة الحديث عن براعته قائدا ومحاربا؛ فهو يقود القوة العسكرية الكبرى لمارول.";
+		next;
+		mes "[الأمير كروا]";
+		mes "لكن هناك أمرا لا يدركه هو وأتباعه:";
+		mes "هل يريد شعب مارول حقا إنفاق كل هذه الأموال على القوة العسكرية؟";
+		mes "لقد عانينا من الحروب بما يكفي.";
+		mes "أؤمن بأن السلاح ليس السبيل الأمثل لتحقيق رخاء الأمة.";
+		next;
+		mes "[الأمير كروا]";
+		mes "لا أرغب في سفك الدماء، لكنني مضطر إلى القتال أملا في السلام وحماية لشعبي.";
+		next;
+		switch(select("سأنضم إليك:إنهاء الحديث")) {
+		case 1:
+			cutin "bat_crua1",2;
+			mes "[الأمير كروا]";
+			mes "شكرا لك. بمساندة مغامرين مثلك، أشعر أن النصر بات ممكنا.";
+			mes "انزل الآن إلى الطابق السفلي، وانضم إلى رفاقك في الاستعداد لمواجهة العدو!";
+			break;
+		case 2:
+			mes "[الأمير كروا]";
+			mes "من أجل مارول!";
+			break;
+		}
+		break;
+	}
+	close2;
+	cutin "bat_crua1",255;
+	cutin "bat_crua2",255;
+	end;
+}
+
+bat_room,161,140,3	script	مساعد الأمير كروا#01::Prince Croix's Aide#01	415,{ end; }
+bat_room,161,142,3	script	مساعد الأمير كروا#02::Prince Croix's Aide#02	415,{ end; }
+
+bat_room,160,159,3	script	الجنرال غيوم::General Guillaume	420,{
+	cutin "bat_kiyom2",2;
+	mes "[الجنرال غيوم]";
+	mes "يا صاحب الحماسة، نحتاج إلى قدراتك كي ننتصر في هذه المعركة.";
+	next;
+	switch(select("ما سبب هذه المعركة؟:أخبرني عن الأمير كروا")) {
+	case 1:
+		cutin "bat_kiyom1",2;
+		mes "[الجنرال غيوم]";
+		mes "ملكنا العظيم، مارسيل مارولو السابع، يعاني مرضا شديدا في الآونة الأخيرة.";
+		mes "أعلن جلالته أنه اختارني أو الأمير كروا، من بين أبنائه التسعة، وريثا للعرش.";
+		next;
+		mes "[الجنرال غيوم]";
+		mes "لا يحكم ملكان بلدا واحدا! من ينتصر في المعركة التي أمر بها جلالته هو وحده من سيعتلي العرش.";
+		next;
+		mes "[الجنرال غيوم]";
+		mes "لكنها ليست مجرد مواجهة بيننا؛ فنتيجتها ستحدد مستقبل البلاد.";
+		mes "أقسم بشرفي أن أثبت أنني الأقدر على حماية مارول من الأخطار الخارجية.";
+		next;
+		switch(select("سأنضم إلى جيشك:إنهاء الحديث")) {
+		case 1:
+			cutin "bat_kiyom2",2;
+			mes "[الجنرال غيوم]";
+			mes "أهلا بك في جيشي، يا رفيق السلاح.";
+			mes "أرى في عينيك جنديا جديرا بالثقة.";
+			next;
+			mes "[الجنرال غيوم]";
+			mes "اصعد الآن وسجل للمشاركة في المعركة إلى جانب رفاقك.";
+			mes "أنا واثق بأنهم سيرحبون بك بحرارة!";
+			break;
+		case 2:
+			mes "[الجنرال غيوم]";
+			mes "سأستولي على الراية بنفسي!";
+			break;
+		}
+		break;
+	case 2:
+		cutin "bat_kiyom1",2;
+		mes "[الجنرال غيوم]";
+		mes "الأمير الخامس كروا يشغل حاليا منصب رئيس وزراء مارول.";
+		mes "يظن أن شؤون الدولة كلها يمكن بحثها وحسمها من وراء مكتب،";
+		mes "ويؤمن بإمكان التعايش السلمي مع الدول الأخرى.";
+		next;
+		mes "[الجنرال غيوم]";
+		mes "إنه يرفض الاعتراف بأن ما يسمى بالسلام قام على أرواح لا تحصى أزهقتها الحروب، بينما يعيش عامة الناس والنبلاء غافلين عن الأهوال التي أتاحت لهم ذلك.";
+		next;
+		mes "[الجنرال غيوم]";
+		mes "إنه أشد سذاجة من أن يدرك الواقع...";
+		mes "لا يمكنني تسليم مارول إلى رجل يعيش في الأوهام!";
+		next;
+		mes "[الجنرال غيوم]";
+		mes "ستغرق أفكاره الحالمة البلاد في الفقر وتوهن الشعب. وإن أصبح ملكا، فلن تسلم مارول من اعتداءات الدول الأخرى.";
+		mes "سأعلمه ما يمنح هذا البلد الصغير قوته وازدهاره: القوة العسكرية!";
+		next;
+		switch(select("سأنضم إلى جيشك:إنهاء الحديث")) {
+		case 1:
+			cutin "bat_kiyom2",2;
+			mes "[الجنرال غيوم]";
+			mes "أهلا بك في جيشي، يا رفيق السلاح.";
+			mes "أرى في عينيك جنديا جديرا بالثقة.";
+			next;
+			mes "[الجنرال غيوم]";
+			mes "اصعد الآن وسجل للمشاركة في المعركة لدى رفاقك.";
+			mes "أنا واثق بأنهم سيرحبون بك بحرارة!";
+			break;
+		case 2:
+			mes "[الجنرال غيوم]";
+			mes "سأستولي على الراية بنفسي!";
+			break;
+		}
+		break;
+	}
+	close2;
+	cutin "bat_kiyom1",255;
+	cutin "bat_kiyom2",255;
+	end;
+}
+
+// Flags
+//============================================================
+//bat_room,140,160,3	script	قاعدة غيوم#roomflag1::Guillaume Base#roomflag1	973,{ end; }
+//bat_room,167,160,3	script	قاعدة غيوم#roomflag2::Guillaume Base#roomflag2	973,{ end; }
+//bat_room,140,139,3	script	قاعدة كروا#roomflag1::Croix Base#roomflag1	974,{ end; }
+//bat_room,167,139,3	script	قاعدة كروا#roomflag2::Croix Base#roomflag2	974,{ end; }
+
+// BattleGround Warper
+//============================================================
+bat_room,148,150,5	script	ناقل#Battlefield::Teleporter#Battlefield	124,{
+	mes "[ناقل]";
+	mes "هل تريد مغادرة ساحة المعركة؟ يمكنني إعادتك إلى المدينة.";
+	next;
+	switch(select("المغادرة:البقاء")) {
+	case 1:
+		mes "[ناقل]";
+		switch(bat_return) {
+		default:
+		case 1:
+			setarray .@mapname$[0],"برونتيرا.","prontera";
+			setarray .@xy[0],116,72;
+			break;
+		case 2:
+			setarray .@mapname$[0],"أطلال موروك.","moc_ruins";
+			setarray .@xy[0],152,48;
+			break;
+		case 3:
+			setarray .@mapname$[0],"ألديباران.","aldebaran";
+			setarray .@xy[0],168,112;
+			break;
+		case 4:
+			setarray .@mapname$[0],"غيفن.","geffen";
+			setarray .@xy[0],120,39;
+			break;
+		case 5:
+			setarray .@mapname$[0],"بايون.","payon";
+			setarray .@xy[0],161,58;
+			break;
+		case 6:
+			setarray .@mapname$[0],"لايت هالزن.","lighthalzen";
+			setarray .@xy[0],159,93;
+			break;
+		case 7:
+			setarray .@mapname$[0],"راشيل.","rachel";
+			setarray .@xy[0],115,124;
+			break;
+		case 8:
+			setarray .@mapname$[0],"موروك.","morocc";
+			setarray .@xy[0],156,46;
+			break;
+		}
+		mes "ستعود إلى "+.@mapname$[0]+".";
+		close2;
+		warp .@mapname$[1],.@xy[0],.@xy[1];
+		break;
+	case 2:
+		mes "[ناقل]";
+		mes "سأبقى هنا متى احتجت إلى خدماتي.";
+		close;
+	}
+	end;
+}
+
+-	script	مجند معارك مارول::BatRecruit	728,{
+	mes "[مجند معارك مارول]";
+	mes "تحياتي، أيها المغامر.";
+	mes "أنا فارس من بلد بعيد يدعى مملكة مارول.";
+	next;
+	mes "[مجند معارك مارول]";
+	mes "يتنازع أميران من الأسرة المالكة على عرش مارول، وهما بحاجة إلى جنود متمرسين مثلك.";
+	mes "هل تود تسخير قوتك لنصرة أحد أميري مملكة مارول؟";
+	next;
+	switch(select("الانضمام:عدم الانضمام")) {
+	case 1:
+		mes "[مجند معارك مارول]";
+		mes "لتكن بركة إله الحرب معك.";
+		close2;
+		getmapxy(.@mapname$,.@x,.@y,BL_NPC);
+		if (.@mapname$ == "prontera")
+			set bat_return,1;
+		else if (.@mapname$ == "moc_ruins")
+			set bat_return,2;
+		else if (.@mapname$ == "aldebaran")
+			set bat_return,3;
+		else if (.@mapname$ == "geffen")
+			set bat_return,4;
+		else if (.@mapname$ == "payon")
+			set bat_return,5;
+		else if (.@mapname$ == "lighthalzen")
+			set bat_return,6;
+		else if (.@mapname$ == "rachel")
+			set bat_return,7;
+		else if (.@mapname$ == "morocc")
+			set bat_return,8;
+		else
+			set bat_return,1;
+		warp "bat_room",154,150;
+		break;
+	case 2:
+		mes "[مجند معارك مارول]";
+		mes "سأبقى هنا لتجنيد مزيد من الجنود. عد متى رغبت في المشاركة.";
+		close;
+	}
+	end;
+}
+
+prontera,123,83,3	duplicate(BatRecruit)	مجند معارك مارول::BatRecruit1	728
+moc_ruins,75,162,3	duplicate(BatRecruit)	مجند معارك مارول::BatRecruit2	728
+aldebaran,146,109,3	duplicate(BatRecruit)	مجند معارك مارول::BatRecruit3	728
+geffen,109,66,3	duplicate(BatRecruit)	مجند معارك مارول::BatRecruit4	728
+payon,189,105,3	duplicate(BatRecruit)	مجند معارك مارول::BatRecruit5	728
+lighthalzen,153,86,5	duplicate(BatRecruit)	مجند معارك مارول::BatRecruit6	728
+rachel,149,138,3	duplicate(BatRecruit)	مجند معارك مارول::BatRecruit7	728
+
+// Additional warps
+// Empty
+bat_room,57,81,0	warp	bat1	1,1,bat_room,154,149
+bat_room,57,90,0	warp	bat2	1,1,bat_room,154,149
+// Empty
+bat_room,85,81,0	warp	bat5	1,1,bat_room,154,149
+bat_room,85,90,0	warp	bat6	1,1,bat_room,154,149
+// Free BG
+bat_room,113,81,0	warp	bat9	1,1,bat_room,154,149
+bat_room,113,90,0	warp	bat10	1,1,bat_room,154,149
+// Free BG
+bat_room,141,81,0	warp	bat13	1,1,bat_room,154,149
+bat_room,141,90,0	warp	bat14	1,1,bat_room,154,149
+// Free BG
+bat_room,169,81,0	warp	bat17	1,1,bat_room,154,149
+bat_room,169,90,0	warp	bat18	1,1,bat_room,154,149
+// Free BG
+bat_room,197,81,0	warp	bat21	1,1,bat_room,154,149
+bat_room,197,90,0	warp	bat22	1,1,bat_room,154,149
+// Free BG
+bat_room,225,81,0	warp	bat25	1,1,bat_room,154,149
+bat_room,225,90,0	warp	bat26	1,1,bat_room,154,149
+// Empty
+bat_room,253,81,0	warp	bat29	1,1,bat_room,154,149
+bat_room,253,90,0	warp	bat30	1,1,bat_room,154,149
+// Empty
+bat_room,253,220,0	warp	bat31	1,1,bat_room,154,149
+bat_room,253,211,0	warp	bat32	1,1,bat_room,154,149
+
+// Kafra
+//============================================================
+bat_room,148,147,4	script	موظفة كافرا::kaf_bat	861,{
+	cutin "kafra_09",2;
+	callfunc "F_Kafra",0,2,1,150,0;
+}
+
+// Repairman
+//============================================================
+bat_room,138,144,4	script	عامل إصلاح#bg::Repairman#bg	86,{
+	callfunc "repairmain","عامل إصلاح";
+	end;
+}
+
+// GM Management NPC
+//============================================================
+bat_room,1,151,3	script	مفتاح الإدارة#batgnd::Switch#batgnd	81,{
+	set .@i, callfunc("F_GM_NPC",1854,0);
+	if (.@i == -1) {
+		mes "أُلغي الأمر.";
+		close;
+	} else if (.@i == 0) {
+		end;
+	} else {
+		mes "كيف يمكنني مساعدتك؟";
+		next;
+		switch(select("إغلاق ساحات القتال:فتح ساحات القتال:إعادة ضبط a01:إعادة ضبط b01:إعادة ضبط a02:إعادة ضبط b02")) {
+		case 1:
+			disablenpc "Tierra Gorge Officer#01a";
+			disablenpc "Tierra Gorge Officer#02a";
+			disablenpc "Tierra Gorge Officer#01b";
+			disablenpc "Tierra Gorge Officer#02b";
+			disablenpc "Flavius Officer#01a";
+			disablenpc "Flavius Officer#01b";
+			disablenpc "Flavius Officer#02a";
+			disablenpc "Flavius Officer#02b";
+			break;
+		case 2:
+			enablenpc "Tierra Gorge Officer#01a";
+			enablenpc "Tierra Gorge Officer#02a";
+			enablenpc "Tierra Gorge Officer#01b";
+			enablenpc "Tierra Gorge Officer#02b";
+			enablenpc "Flavius Officer#01a";
+			enablenpc "Flavius Officer#01b";
+			enablenpc "Flavius Officer#02a";
+			enablenpc "Flavius Officer#02b";
+			break;
+		case 3:
+			donpcevent "start#bat_a01::OnEnable";
+			break;
+		case 4:
+			donpcevent "start#bat_b01::OnEnable";
+			break;
+		case 5:
+			donpcevent "start#bat_a02::OnEnable";
+			break;
+		case 6:
+			donpcevent "start#bat_b02::OnEnable";
+			break;
+		}
+		mes "اكتمل الأمر.";
+		close;
+	}
+}
+
+// Badges Exchange
+//============================================================
+bat_room,160,150,3	script	إيرونديك::Erundek	109,{
+	if (checkweight(1201,1) == 0) {
+		mes "- انتظر لحظة! -";
+		mes "- تحمل حاليا -";
+		mes "- عددا كبيرا من العناصر. -";
+		mes "- خفف حمولتك -";
+		mes "- ثم حاول مرة أخرى. -";
+		close;
+	}
+	mes "[إيرونديك]";
+	mes "هل معك شارات من ساحات القتال؟";
+	mes "يمكنني استبدال شارات الشجاعة وشارات البسالة بعناصر مكافآت.";
+	next;
+	switch(select("استبدال الشارات:عرض الكتالوج")) {
+	case 1:
+		mes "[إيرونديك]";
+		mes "ما فئة العناصر التي تريد استبدال شاراتك بها؟";
+		mes "لمعرفة تفاصيل عناصر المكافآت، راجع ^3131FFالكتالوج^000000.";
+		next;
+		switch(select("أسلحة:دروع:إكسسوارات:عناصر مستهلكة")) {
+		case 1:
+			mes "[إيرونديك]";
+			mes "اخترت فئة ^3131FFالأسلحة^000000.";
+			mes "يمكن استبدال الشارات بالأسلحة التالية.";
+			mes "يرمز إلى العناصر التي تتطلب ^3131FFشارة الشجاعة بالرمز (BB)^000000، وإلى التي تتطلب ^3131FFشارة البسالة بالرمز (VB)^000000.";
+			next;
+			switch(select("خناجر/سيوف بيد واحدة/سيوف بيدين/رماح بيدين:عصي/صولجانات/فؤوس بيدين/شوريكن هوما:أقواس/كاتار/آلات موسيقية/سياط:كتب/قبضات:مسدسات دوارة/بنادق/مدافع غاتلينغ/بنادق رش/قاذفات")) {
+			case 1:
+				mes "[إيرونديك]";
+				mes "تضم هذه الفئة ^3131FFالخناجر والسيوف بيد واحدة والسيوف بيدين والرماح بيدين^000000.";
+				next;
+				setarray .@Weapons[0],13036,7828,13037,7829,13411,7828,13410,7829,1183,7828,1184,7829,1425,7828,1482,7829;
+				break;
+			case 2:
+				mes "[إيرونديك]";
+				mes "تضم هذه الفئة ^3131FFالعصي والصولجانات والفؤوس بيدين وشوريكن هوما^000000.";
+				next;
+				setarray .@Weapons[0],1632,7828,1633,7829,1634,7828,1635,7829,1543,7828,1542,7829,1380,7828,1379,7829,13305,7828,13306,7829;
+				break;
+			case 3:
+				mes "[إيرونديك]";
+				mes "تضم هذه الفئة ^3131FFالأقواس والكاتار والآلات الموسيقية والسياط^000000.";
+				next;
+				setarray .@Weapons[0],1739,7828,1738,7829,1279,7828,1280,7829,1924,7828,1923,7829,1978,7828,1977,7829;
+				break;
+			case 4:
+				mes "[إيرونديك]";
+				mes "تضم هذه الفئة ^3131FFالكتب والقبضات^000000.";
+				next;
+				setarray .@Weapons[0],1574,7828,1575,7829,1824,7828,1823,7829;
+				break;
+			case 5:
+				mes "[إيرونديك]";
+				mes "تضم هذه الفئة ^3131FFالمسدسات الدوارة والبنادق ومدافع غاتلينغ وبنادق الرش وقاذفات القنابل^000000.";
+				next;
+				setarray .@Weapons[0],13108,7828,13171,7829,13172,7828,13173,7829,13174,7829;
+				break;
+			}
+			set .@menu$,"";
+			for(set .@i,0; .@i<getarraysize(.@Weapons); set .@i,.@i+2)
+				set .@menu$, .@menu$+getitemname(.@Weapons[.@i])+((.@Weapons[.@i+1]==7828)?"(BB)":"(VB)")+":";
+			set .@i, (select(.@menu$)-1)*2;
+			set .@type$, ((.@Weapons[.@i+1]==7828)?"(BB)":"(VB)");
+			mes "[إيرونديك]";
+			mes "اخترت ^3131FF"+getitemname(.@Weapons[.@i])+.@type$+"^000000.";
+			mes "يمكنك الحصول على هذا العنصر مقابل ^FF0000100 "+getitemname(.@Weapons[.@i+1])+"^000000.";
+			mes "هل تريد إتمام الاستبدال؟";
+			next;
+			switch(select("تراجع:استبدال")) {
+			case 1:
+				break;
+			case 2:
+				mes "[إيرونديك]";
+				mes "هل تريد دفع ^FF0000100 "+getitemname(.@Weapons[.@i+1])+"^000000 والحصول على ^3131FF"+getitemname(.@Weapons[.@i])+.@type$+"^000000؟";
+				next;
+				mes "[إيرونديك]";
+				mes "تذكر أن عناصر مكافآت ساحات القتال ^FF0000مرتبطة بالشخصية^000000. هل تريد هذا العنصر بالتأكيد؟";
+				next;
+				switch(select("نعم:لا")) {
+				case 1:
+					mes "[إيرونديك]";
+					if (countitem(.@Weapons[.@i+1]) >= 100) {
+						mes "تم الاستبدال بنجاح.";
+						delitem .@Weapons[.@i+1],100;
+						getitem .@Weapons[.@i],1;
+					}
+					else mes "عذرا، لا تملك عددا كافيا من الشارات.";
+					close;
+				case 2:
+					break;
+				}
+				break;
+			}
+			mes "[إيرونديك]";
+			mes "هل تحتاج إلى مزيد من الوقت لمراجعة العناصر؟";
+			close;
+		case 2:
+			mes "[إيرونديك]";
+			mes "اخترت فئة ^3131FFالدروع^000000.";
+			mes "يمكن استبدال الشارات بقطع التجهيز التالية.";
+			next;
+			switch(select("أردية / أحذية:دروع / ملابس")) {
+			case 1:
+				setarray .@Items[0],2538,50,2539,50,2540,50,2435,50,2436,50,2437,50;
+				break;
+			case 2:
+				setarray .@Items[0],2376,80,2377,80,2378,80,2379,80,2380,80,2381,80,2382,80;
+				break;
+			}
+			break;
+		case 3:
+			mes "[إيرونديك]";
+			mes "اخترت فئة ^3131FFالإكسسوارات^000000.";
+			mes "يمكنك استبدال شاراتك بميداليات الشرف المخصصة لكل وظيفة كما يلي:";
+			next;
+			setarray .@Items[0],2733,500,2720,500,2721,500,2722,500,2723,500,2724,500,2725,500;
+			set .@menu1$,"رامي مسدسات:سياف/سيد التايكون:لص:مريد:ساحر:رامي:تاجر";
+			break;
+		case 4:
+			mes "[إيرونديك]";
+			mes "اخترت فئة ^3131FFالعناصر المستهلكة^000000.";
+			mes "يمكن استبدال الشارات بالعناصر المستهلكة التالية:";
+			next;
+			setarray .@Items[0],12269,10,12270,10,12271,5,12272,10,12273,10;
+			break;
+		}
+		break;
+	case 2:
+		mes "[إيرونديك]";
+		mes "لدينا عناصر كثيرة؛ تصفحها واختر ما يناسبك بعناية.";
+		close2;
+		readbook 11010,1;
+		end;
+	}
+	set .@menu$,"";
+	if (.@menu1$ != "") set .@menu$, .@menu1$;
+	else for(set .@i,0; .@i<getarraysize(.@Items); set .@i,.@i+2)
+		set .@menu$, .@menu$+getitemname(.@Items[.@i])+":";
+	set .@i, (select(.@menu$)-1)*2;
+	mes "[إيرونديك]";
+	mes "اخترت ^3131FF"+getitemname(.@Items[.@i])+"^000000.";
+	switch(.@Items[.@i]) {
+		case 2720: mes "هذا العنصر مخصص للسياف وسيد التايكون فقط."; break;
+		case 2721: mes "هذا العنصر مخصص للص فقط."; break;
+		case 2722: mes "هذا العنصر مخصص للمريد فقط."; break;
+		case 2723: mes "هذا العنصر مخصص للساحر فقط."; break;
+		case 2724: mes "هذا العنصر مخصص للرامي فقط."; break;
+		case 2725: mes "هذا العنصر مخصص للتاجر فقط."; break;
+		case 2733: mes "هذا العنصر مخصص لرامي المسدسات فقط."; break;
+		default: break;
+	}
+	mes "يمكنك الحصول على هذا العنصر مقابل ^FF0000"+.@Items[.@i+1]+" "+getitemname(7828)+" أو "+.@Items[.@i+1]+" "+getitemname(7829)+"^000000.";
+	mes "هل تريد إتمام الاستبدال؟";
+	next;
+	switch(select("تراجع:استبدال")) {
+	case 1:
+		mes "[إيرونديك]";
+		mes "خذ وقتك في مراجعة العناصر.";
+		break;
+	case 2:
+		mes "[إيرونديك]";
+		mes "أي نوع من الشارات تريد استخدامه؟";
+		mes "تحتاج إلى ^3131FF"+.@Items[.@i+1]+" شارة^000000 لإتمام الاستبدال.";
+		next;
+		if (.@item[0] < 12269 || .@item[0] > 12273 ) {
+			mes "[إيرونديك]";
+			mes "تذكر أن عناصر مكافآت ساحات القتال ^FF0000مرتبطة بالشخصية^000000. هل تريد هذا العنصر بالتأكيد؟";
+			next;
+		}
+		set .@j, select("شارة الشجاعة:شارة البسالة:إلغاء");
+		mes "[إيرونديك]";
+		if (.@j == 3) {
+			mes "ألغيت عملية الاستبدال.";
+			break;
+		}
+		set .@cost, ((.@j==1)?7828:7829);
+		if (countitem(.@cost) >= .@Items[.@i+1]) {
+			mes "تم الاستبدال بنجاح.";
+			delitem .@cost, .@Items[.@i+1];
+			getitem .@Items[.@i],1;
+		}
+		else mes "لا تملك ما يكفي من "+getitemname(.@cost)+".";
+		break;
+	}
+	close;
+}
+
+// Badge Reward Function
+//============================================================
+function	script	F_BG_Badge	{
+	.@team$ = getarg(1);
+	.@bg_type$ = getarg(2);
+
+	if (.@bg_type$ == "Tierra") {
+		set .@badge,7828; //BF_Badge1
+		set .@amount_win,3;
+		set .@amount_lose,1;
+	} else if (.@bg_type$ == "Flavius") {
+		set .@badge,7829; //BF_Badge2
+		set .@amount_win,9;
+		set .@amount_lose,3;
+	} else
+		return;
+
+	if (getarg(0) == 1) {
+		set .@amount, .@amount_win;
+		if (.@team$ == "Guillaume") {
+			mes "[أكسل روز]";
+			mes "المجد لغيوم!";
+		} else if (.@team$ == "Croix") {
+			mes "[سواندري]";
+			mes "المجد لكروا!";
+		}
+		mes "لنحتفل بنصرنا المجيد!";
+		mes strcharinfo(0)+"، هذه الشارة رمز لانتصارك.";
+	} else {
+		set .@amount, .@amount_lose;
+		if (.@team$ == "Guillaume") {
+			mes "[أكسل روز]";
+			mes "رغم الهزيمة، أثبت إخلاصك في هذه المعركة.";
+			mes "هذه مكافأة من غيوم مارولو تقديرا لتفانيك العظيم!";
+			mes "اجعل من هذه الهزيمة درسا، وستنتصر حتما في المرة القادمة.";
+		} else if (.@team$ == "Croix") {
+			mes "[سواندري]";
+			mes "يا "+strcharinfo(0)+"، لا تحزن.";
+			mes "لم ننتصر، لكننا بذلنا كل ما في وسعنا.";
+			mes "هذه هدية ملكية من كروا. لا تنس هذه المعركة؛ سننتصر في المرة القادمة.";
+		}
+	}
+	close2;
+
+	// If the VIP system is enabled, VIP players receive an extra 2 badges.
+	if (VIP_SCRIPT && vip_status(VIP_STATUS_ACTIVE))
+		set .@amount, .@amount+2;
+
+	set .@medal_gap, 500 - countitem(.@badge);
+	if (.@medal_gap >= .@amount)
+		getitem .@badge,.@amount;
+	else
+		getitem .@badge,.@medal_gap;
+	return;
+}

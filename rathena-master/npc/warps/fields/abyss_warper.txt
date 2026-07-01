@@ -1,0 +1,168 @@
+//===== rAthena Script =======================================
+//= Abyss Cave Warper
+//===== By: ==================================================
+//= erKURITA
+//===== Current Version: =====================================
+//= 1.4
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= Warper to Abyss Cave. and warper out
+//===== Additional Comments: =================================
+//= 1.0 Added by Nexon [Nexon]
+//= 1.1 Removed Duplicates [Silent]
+//= 1.2 Fixed tab - missing pillar's appeared [Lupus]
+//= 1.3 Updated Abyss Lake entrance based on official [SinSloth]
+//= 1.3a Removed .GATs [Lupus]
+//= 1.4 Corrected NPC names to fall within proper restrictions. [L0ne_W0lf]
+//============================================================
+
+hu_fild05,168,304,0	script	Column#abyss1	111,{
+
+	mes "^3355FFتوجد 3 تجاويف غريبة";
+	mes "الشكل على";
+	mes "سطح هذا";
+	mes "العمود. يبدو أن";
+	mes "أجزاء معينة من جسد التنين";
+	mes "ستلائم تماما";
+	mes "تجاويف العمود.^000000";
+	if((countitem(1035)) && (countitem(1036)) && (countitem(1037)))
+	{
+		next;
+		switch( select( "إدخال أجزاء جسد التنين","أكل أجزاء جسد التنين" ) )
+		{
+			case 1:
+				mes "^3355FFتضع بحذر";
+				mes "ناب تنين في أحد";
+				mes "التجاويف، ثم";
+				mes "تسمع دويا قويا";
+				mes "من داخل العمود.^000000";
+				specialeffect EF_WINDHIT;
+				next;
+				mes "^3355FFتدخل ببطء";
+				mes "حرشفة تنين في تجويف آخر";
+				mes "من تجاويف العمود،";
+				mes "مما يسبب هزة صغيرة";
+				mes "أخرى في العمود.^000000";
+				specialeffect EF_WINDHIT;
+				next;
+				mes "^3355FFتدخل بحذر";
+				mes "ذيل التنين في";
+				mes "التجويف الأخير. ينبعث الضوء";
+				mes "من الشقوق الموجودة على";
+				mes "سطح العمود...^000000";
+				specialeffect EF_WINDHIT;
+				next;
+				mes "^3355FFتبدأ الأرض تحت";
+				mes "قدميك";
+				mes "بالاهتزاز بعنف.^000000";
+				specialeffect EF_BOWLINGBASH;
+				donpcevent "AbyssWarp::OnWarp";
+				specialeffect2 EF_PORTAL;
+				delitem 1035,1;
+				delitem 1036,1;
+				delitem 1037,1;
+				close2;
+				warp "hu_fild05",184,204;
+				end;
+
+			case 2:
+				mes "^3355FFتضع بحذر";
+				mes "ناب تنين وحرشفة";
+				mes "تنين وذيل تنين في";
+				mes "فمك، وتبدأ ببطء";
+				mes "بالمضغ. لا يحدث شيء";
+				mes "وطعم هذه العناصر";
+				mes "متعفن على نحو مفاجئ.^000000";
+				next;
+				emotion ET_HUNGRY, playerattached();
+				delitem 1035,1;
+				delitem 1036,1;
+				delitem 1037,1;
+				percentheal -10,0;
+				close;
+		}
+	}
+	close;
+}
+
+hu_fild05,171,211,0	script	Column#abyss2	111,1,1,{
+
+	mes "^3355FFيبدو هذا العمود";
+	mes "مشابها جدا للعمود";
+	mes "الذي رأيته في";
+	mes "البحيرة. يوجد";
+	mes "تجويف أزرق بارز";
+	mes "على سطحه.^000000";
+	next;
+	switch( select( "لمس التجويف","إزالة العنصر من التجويف" ) )
+	{
+		case 1:
+			mes "^3355FF*قرقعة قرقعة*^000000";
+			next;
+			mes "^3355FFيتشوه الضوء المنبعث من";
+			mes "التجويف، ويبدأ";
+			mes "العمود بالاهتزاز.";
+			mes "تسمع دويا خافتا";
+			mes "من داخل العمود.^000000";
+			specialeffect EF_WINDHIT;
+			next;
+			mes "*غرررررر!*";
+			mes "*بوووم!*";
+			next;
+			mes "^3355FFيزداد الضوء المنبعث من";
+			mes "تجويف العمود";
+			mes "سطوعا بينما تشعر أن";
+			mes "الأرض تحت قدميك";
+			mes "تبدأ بالهبوط ببطء...^000000";
+			next;
+			specialeffect EF_BOWLINGBASH;
+			specialeffect2 EF_PORTAL;
+			close2;
+			warp "hu_fild05",169,305;
+			end;
+
+		case 2:
+			mes "^3355FF*فشششش!*";
+			mes "لقد كسرت";
+			mes "العنصر عن طريق الخطأ.^000000";
+			specialeffect EF_WINDHIT;
+			next;
+			mes "^3355FF*غرررررررررررر!*^000000";
+			next;
+			mes "^3355FFيتشوه الضوء المنبعث من";
+			mes "التجويف، ويبدأ";
+			mes "العمود بالاهتزاز.";
+			mes "تجعل اهتزازات الأرض";
+			mes "الوقوف بثبات";
+			mes "أمرا صعبا، لكنك فجأة";
+			mes "تنتقل إلى مكان آخر...^000000";
+			next;
+			specialeffect EF_BOWLINGBASH;
+			specialeffect2 EF_PORTAL;
+			close2;
+			warp "hu_fild05",157,284;
+			end;
+	}
+}
+
+hu_fild05,196,210,1	script	انتقال الهاوية::AbyssWarp	45,2,2,{
+
+OnInit:
+	disablenpc "AbyssWarp";
+	end;
+
+OnTouch_:
+	warp "abyss_01",260,268;
+	end;
+
+OnWarp:
+	initnpctimer;
+	enablenpc "AbyssWarp";
+	end;
+
+OnTimer30000:
+	stopnpctimer;
+	disablenpc "AbyssWarp";
+	end;
+}

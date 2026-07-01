@@ -1,0 +1,109 @@
+//===== rAthena Script =======================================
+//= Al De Baran Guides
+//===== By: ==================================================
+//= kobra_k88; L0ne_W0lf
+//===== Current Version: =====================================
+//= 1.7
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official conversion]
+//= Guides for the City of Al De Baran
+//===== Additional Comments: =================================
+//= Corrected building locations and descriptions
+//= 1.2 Optimized, updated common guide names [Lupus]
+//= 1.3 Updated the guide according to how it is on iRO, thanks [MasterOfMuppets]
+//=     to Muad_Dib
+//= 1.4 Fitted the many lines into 1 or 2, and corrected some typos [erKURITA]
+//= 1.5 Removed Duplicates [Silent]
+//= 1.6 Rescripted to official 10.3 standards. [L0ne_W0lf]
+//= 1.6a Changed some "close"s to "close2"s. (bugreport:1597) [Samuray22]
+//= 1.7 Fixed viewpoint coordinates [Playtester]
+//============================================================
+
+aldebaran,139,63,4	script	جندي#alde::Soldier#alde	105,{
+	cutin "prt_soldier",2;
+	mes "[حارس ألديباران]";
+	mes "أنا مجرد حارس عادي";
+	mes "يمكنك أن تجده في أي مدينة أخرى. لا أظن أن لدي اسما حتى...";
+	next;
+	mes "[حارس ألديباران]";
+	mes "أنا مسؤول عن مرشدي الخدمة من حامية ألديباران. دعني أرشدك";
+	mes "في أنحاء بلدتنا!";
+	next;
+	if (select("الحصول على دليل المواقع.:إنهاء المحادثة.") == 1) {
+		viewpoint 1,61,229,0,0xFF6633;
+		viewpoint 1,72,197,1,0x0000FF;
+		viewpoint 1,223,222,2,0x00FFFF;
+		viewpoint 1,233,105,3,0x515151;
+		viewpoint 1,197,70,4,0x3355FF;
+		viewpoint 1,60,60,5,0xFF5555;
+		mes "^FF6633+^000000 -> مكتب كافرا الرئيسي ";
+		mes "^0000FF+^000000 -> متجر الأسلحة ";
+		mes "^00FFFF+^000000 -> نقابة السحرة (مغلقة)";
+		mes "^515151+^000000 -> الحانة";
+		mes "^3355FF+^000000 -> متجر العناصر";
+		mes "^FF5555+^000000 -> نقابة الخيميائيين";
+		close2;
+		cutin "prt_soldier",255;
+		end;
+	}
+	mes "[حارس ألديباران]";
+	mes "لقد أقسمنا على حماية ألديباران! لعل قوى الشر تسحق دائما بواسطة";
+	mes "قبضة الخير الصالحة!";
+	close2;
+	cutin "prt_soldier",255;
+	end;
+}
+
+aldebaran,133,108,4	script	جندي#2alde::Soldier#2alde	105,{
+	cutin "prt_soldier",2;
+	mes "[حارس ألديباران]";
+	mes "أنا مجرد";
+	mes "حارس عادي،";
+	mes "من النوع الذي يمكنك";
+	mes "أن تجده في أي مدينة أخرى.";
+	next;
+	mes "[حارس ألديباران]";
+	mes "عندما لا أكون مشغولا جدا";
+	mes "بحماية سكان";
+	mes "ألديباران، أكون هنا لأرشد المغامرين";
+	mes "أمثالك.";
+	next;
+	switch(select("مكتب كافرا الرئيسي :متجر الأسلحة :نقابة السحرة :الحانة :متجر العناصر :نقابة الخيميائيين :إنهاء المحادثة ")) {
+	case 1:
+		viewpoint 1,61,229,0,0xFF6633;
+		mes "^FF6633+^000000 -> مكتب كافرا الرئيسي ";
+		break;
+	case 2:
+		viewpoint 1,72,197,1,0x0000FF;
+		mes "^0000FF+^000000 -> متجر الأسلحة ";
+		break;
+	case 3:
+		viewpoint 1,223,222,2,0x00FFFF;
+		mes "^00FFFF+^000000 -> نقابة السحرة (مغلقة)";
+		break;
+	case 4:
+		viewpoint 1,233,105,3,0x515151;
+		mes "^515151+^000000 -> الحانة ";
+		break;
+	case 5:
+		viewpoint 1,197,70,4,0x3355FF;
+		mes "^3355FF+^000000 -> متجر العناصر ";
+		break;
+	case 6:
+		viewpoint 1,60,60,5,0xFF5555;
+		mes "^FF5555+^000000 -> نقابة الخيميائيين";
+		break;
+	case 7:
+		mes "[حارس ألديباران]";
+		mes "لقد أقسمنا على";
+		mes "حماية ألديباران!";
+		mes "لعل قوى الخير";
+		mes "تنتصر دائما على الشر~";
+		break;
+	}
+	close2;
+	cutin "prt_soldier",255;
+	end;
+}

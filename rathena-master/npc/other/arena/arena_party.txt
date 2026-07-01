@@ -1,0 +1,1244 @@
+//===== rAthena Script =======================================
+//= Izlude Party Arena 
+//===== By: ==================================================
+//= SinSloth
+//===== Current Version: =====================================
+//= 1.5
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= Izlude Party Battle Arena
+//===== Additional Comments: =================================
+//= 1.0 First version.
+//= 1.0a Fixed a typo.
+//= 1.1 Replaced effect numerics with constants. [Samuray22]
+//= 1.2 Fixed "OnMyMobDead" doesn't work sometime. [Inkfish]
+//= 1.3 Corrected donpcevent typo. (bugreport:4374) [L0ne_w0lf]
+//= 1.4 Label standardization and bug fixes. [Euphy]
+//= 1.5 Script updates, and removed a level restriction. [Euphy]
+//============================================================
+
+arena_room,162,88,3	script	بونوكس::Ponox	124,{
+	end;
+
+OnInit:
+	waitingroom "تحدي الفريق - فرق من 5 أعضاء",11,"Ponox::OnStartArena",5,0,10;
+	enablewaitingroomevent;
+	end;
+
+OnStartArena:
+	donpcevent "toarena#party::OnInit";
+	donpcevent "toout#party::OnInit";
+	warpwaitingpc "prt_are_in",73,78;
+	donpcevent "toout#party::OnTimer";
+	donpcevent "Helper#party::OnEnter";
+	disablewaitingroomevent;
+	end;
+
+OnStart:
+	enablewaitingroomevent;
+	end;
+}
+
+prt_are_in,76,87,3	script	المساعد إيريف#party::Helper#party	67,4,4,{
+	if($arn_partywait == 0) {
+		set $arn_partywait,1;
+		emotion ET_SURPRISE;
+		mes "[المساعد إيريف]";
+		mes "أهلا بالمتحدين!";
+		mes "هذه غرفة انتظار حلبة الفريق.";
+		next;
+		mes "[المساعد إيريف]";
+		mes "يسمح لشخص واحد فقط بالبقاء في غرفة الانتظار في كل مرة.";
+		mes "هل نبدأ المعركة الآن؟";
+		next;
+		switch( select( "لا","نعم" ) ) {
+		case 1:
+			set $arn_partywait,0;
+			mes "[المساعد إيريف]";
+			mes "حسنا.";
+			mes "وقت التحدي محدود، لذا يجب الانتباه للمهلة.";
+			close;
+		case 2:
+			mes "[المساعد إيريف]";
+			mes "شكرا! سأبدأ المعركة.";
+			mes "ستفتح بوابة انتقال إلى غرفة الحلبة.";
+			mes "آمل أن يصمد الفريق حتى نهاية المعركة ويسجل اسمه في قائمة الشرف...";
+			close2;
+			donpcevent "toarena#party::OnEnter";
+			donpcevent "Helper#party::OnStop";
+			donpcevent "arena_p::OnStart";
+			end;
+		}
+	}
+	end;
+
+OnEnter:
+	enablenpc "Helper#party";
+	end;
+
+OnStop:
+	disablenpc "Helper#party";
+	end;
+
+OnInit:
+	set $arn_partywait,0;
+	end;
+}
+
+prt_are_in,73,78,0	script	toarena#party	-1,20,20,{
+OnInit:
+	disablenpc "toarena#party";
+	end;
+
+OnTouch_:
+	if(Zeny < 1000)
+		warp "arena_room",100,75;
+	else {
+		set Zeny,Zeny -1000;
+		set $arn_partywait,0;
+		donpcevent "toout#party::OnStop";
+		warp "force_1-2",99,26;
+	}
+
+OnEnter:
+	enablenpc "toarena#party";
+	end;
+}
+
+prt_are_in,73,79,0	script	toout#party	-1,20,20,{
+OnInit:
+	disablenpc "toout#party";
+	end;
+
+OnTimer:
+	initnpctimer;
+	end;
+
+OnTimer60000:
+	set $arn_partywait,0;
+	enablenpc "toout#party";
+	end;
+
+OnTimer70000:
+	donpcevent "toout#party::OnStop";
+	donpcevent "Ponox::OnStart";
+	disablenpc "toout#party";
+
+OnTouch_:
+	set $arn_partywait,0;
+	warp "arena_room",100,75;
+
+OnEnter:
+	enablenpc "toout#party";
+	end;
+
+OnStop:
+// 	broadcastinmap "toout turns off the timer."
+	stopnpctimer;
+	end;
+}
+
+prt_are_in,73,74,0	script	arena_out	-1,1,1,{
+OnTouch_:
+	set $arn_partywait,0;
+	warp "arena_room",100,75;
+	end;
+}
+
+force_1-2,99,31,4	script	سليبسلو ران#party::Slipslowrun#party	124,{
+OnStart:
+	initnpctimer;
+	set $arena_minptst,gettime(DT_MINUTE);
+	set $arena_secptst,gettime(DT_SECOND);
+	end;
+
+OnTimer2000:
+	mapannounce "force_1-2","أهلا! أنا سليبسلو ران، وسأساعدكم في معارك حلبة الفريق!",bc_all;
+	//Official "arena_compass" script is extremely buggy, so we aren't using it.
+	//donpcevent "arena_compass::OnStart";
+	end;
+
+OnTimer3000:
+	mapannounce "force_1-2","هدف حلبة الفريق هو القضاء على جميع الوحوش في كل غرفة.",bc_all;
+	end;
+
+OnTimer4000:
+	mapannounce "force_1-2","يمكن دخول الغرف الثلاث بأي ترتيب، لكن يجب القضاء على جميع وحوش كل غرفة للانتقال إلى المرحلة التالية.",bc_all;
+	end;
+
+OnTimer5000:
+	mapannounce "force_1-2","أمامكم 10 دقائق. ابذلوا أقصى جهد!",bc_all;
+	end;
+
+OnTimer60000:
+	if (getmapusers("force_1-2") == 0)
+		donpcevent "Slipslowrun#party::OnFail";
+	mapannounce "force_1-2","الوقت المتبقي: 9 دقائق.",bc_all;
+	end;
+
+OnTimer120000:
+	if (getmapusers("force_1-2") == 0)
+		donpcevent "Slipslowrun#party::OnFail";
+	mapannounce "force_1-2","الوقت المتبقي: 8 دقائق.",bc_all;
+	end;
+
+OnTimer180000:
+	if (getmapusers("force_1-2") == 0)
+		donpcevent "Slipslowrun#party::OnFail";
+	mapannounce "force_1-2","الوقت المتبقي: 7 دقائق.",bc_all;
+	end;
+
+OnTimer240000:
+	if (getmapusers("force_1-2") == 0)
+		donpcevent "Slipslowrun#party::OnFail";
+	mapannounce "force_1-2","الوقت المتبقي: 6 دقائق.",bc_all;
+	end;
+
+OnTimer300000:
+	if (getmapusers("force_1-2") == 0)
+		donpcevent "Slipslowrun#party::OnFail";
+	mapannounce "force_1-2","الوقت المتبقي: 5 دقائق.",bc_all;
+	end;
+
+OnTimer360000:
+	if (getmapusers("force_1-2") == 0)
+		donpcevent "Slipslowrun#party::OnFail";
+	mapannounce "force_1-2","الوقت المتبقي: 4 دقائق.",bc_all;
+	end;
+
+OnTimer420000:
+	if (getmapusers("force_1-2") == 0)
+		donpcevent "Slipslowrun#party::OnFail";
+	mapannounce "force_1-2","الوقت المتبقي: 3 دقائق.",bc_all;
+	end;
+
+OnTimer480000:
+	if (getmapusers("force_1-2") == 0)
+		donpcevent "Slipslowrun#party::OnFail";
+	mapannounce "force_1-2","الوقت المتبقي: دقيقتان.",bc_all;
+	end;
+
+OnTimer540000:
+	if (getmapusers("force_1-2") == 0)
+		donpcevent "Slipslowrun#party::OnFail";
+	mapannounce "force_1-2","الوقت المتبقي: دقيقة واحدة.",bc_all;
+	end;
+
+OnTimer600000:
+	mapannounce "force_1-2","انتهت المهلة! تأكدوا من عدم ترك أي شيء قبل المغادرة.",bc_all;
+	end;
+
+OnTimer605000:
+	donpcevent "arena_p::OnReset";
+	mapwarp "force_1-2","prt_are_in",177,138;
+	end;
+
+OnTimer606000:
+OnTimer607000:
+OnTimer608000:
+OnTimer609000:
+OnTimer610000:
+OnTimer611000:
+OnTimer612000:
+OnTimer613000:
+	mapwarp "force_1-2","prt_are_in",177,138;
+	end;
+
+OnTimer614000:
+	mapwarp "force_1-2","prt_are_in",177,138;
+	donpcevent "Slipslowrun#party::OnFail";
+	end;
+
+OnFail:
+	donpcevent "Slipslowrun#party::OnTimerOff";
+	mapwarp "force_1-2","prt_are_in",177,138;
+	donpcevent "arena_p::OnReset";
+	donpcevent "alloff#party::OnInit";
+	donpcevent "Ponox::OnStart";
+	end;
+
+OnTimerOff:
+	stopnpctimer;
+	end;
+
+On01_End:
+	mapannounce "force_1-2","فتح باب الغرفة الشرقية!",bc_all;
+	end;
+
+On02_End:
+	mapannounce "force_1-2","فتح باب الغرفة الغربية!",bc_all;
+	end;
+
+On03_End:
+	mapannounce "force_1-2","فتح باب الغرفة الجنوبية!",bc_all;
+	end;
+
+On04_Start:
+	mapannounce "force_1-2","فتح باب الغرفة الرابعة في الجهة الشرقية!",bc_all;
+	end;
+
+On04_End1:
+	mapannounce "force_1-2","فتحت بوابة الانتقال الغربية! يجب إخلاء الغرفة الخامسة في نهاية الممر الغربي.",bc_all;
+	end;
+
+On04_End2:
+	mapannounce "force_1-2","فتحت بوابة الانتقال في الغرفة الشمالية الغربية!",bc_all;
+	end;
+
+On05_End1:
+	mapannounce "force_1-2","فتح باب الغرفة الشرقية!",bc_all;
+	end;
+
+On05_End2:
+	mapannounce "force_1-2","فتح باب الغرفة الشمالية!",bc_all;
+	end;
+
+On06_End:
+	mapannounce "force_1-2","فتح باب الغرفة الشرقية!",bc_all;
+	end;
+
+On07_End:
+	mapannounce "force_1-2","فتح باب الشمال!",bc_all;
+	end;
+
+On08_End:
+	mapannounce "force_1-2","فتح باب الممر الغربي!",bc_all;
+	end;
+
+On09_End:
+	mapannounce "force_1-2","فتح المخرج الغربي!",bc_all;
+	end;
+
+On10_End:
+	mapannounce "force_1-2","اكتملت مرحلة الزعيم! فتح المخرج الشرقي. شكرا!",bc_all;
+	end;
+}
+
+-	script	arena_p	-1,{
+OnStart:
+	mapwarp "force_1-2","prt_are_in",177,138;
+	disablenpc "force_01_00";
+	disablenpc "force_02_00";
+	disablenpc "force_03_00";
+	disablenpc "force_03_05";
+	disablenpc "force_03_04";
+	disablenpc "force_04_03";
+	disablenpc "force_05_03";
+	disablenpc "force_05_06";
+	disablenpc "force_06_07";
+	disablenpc "force_07_08";
+	disablenpc "force_08_09";
+	disablenpc "force_09_10";
+	disablenpc "force_10_09";
+	disablenpc "force_09_exit";
+	enablenpc "force_01start#party";
+	enablenpc "force_02start#party";
+	enablenpc "force_03start#party";
+	disablenpc "force_04start#party";
+	disablenpc "force_05start#party";
+	disablenpc "force_06start#party";
+	disablenpc "force_07start#party";
+	disablenpc "force_08start#party";
+	disablenpc "force_09start#party";
+	disablenpc "force_10start#party";
+	disablenpc "force_exit#party";
+	donpcevent "force_01mob#party::OnReset";
+	donpcevent "force_02mob#party::OnReset";
+	donpcevent "force_03mob#party::OnReset";
+	donpcevent "force_04mob#party::OnReset";
+	donpcevent "force_05mob#party::OnReset";
+	donpcevent "force_06mob#party::OnReset";
+	donpcevent "force_07mob#party::OnReset";
+	donpcevent "force_08mob#party::OnReset";
+	donpcevent "force_09mob#party::OnReset";
+	donpcevent "force_10mob-1#party::OnReset";
+	donpcevent "force_10mob-2#party::OnReset";
+	donpcevent "force_exitmob#party::OnReset";
+	donpcevent "Slipslowrun#party::OnStart";
+	set $arn_partyc,0;
+	set $arn_partywait,0;
+	end;
+
+On04_Start:
+	enablenpc "force_03_04";
+	enablenpc "force_04start#party";
+	end;
+
+On06_Start:
+	enablenpc "force_05_06";
+	enablenpc "force_06start#party";
+	end;
+
+On07_Start:
+	enablenpc "force_06_07";
+	enablenpc "force_07start#party";
+	end;
+
+On08_Start:
+	enablenpc "force_07_08";
+	enablenpc "force_08start#party";
+	end;
+
+On09_Start:
+	enablenpc "force_08_09";
+	enablenpc "force_09start#party";
+	end;
+
+On10_Start:
+	enablenpc "force_09_10";
+	enablenpc "force_10start#party";
+	end;
+
+OnExit:
+	enablenpc "force_10_09";
+	enablenpc "force_09_exit";
+	enablenpc "force_exit#party";
+	end;
+
+OnReset:
+	donpcevent "force_01mob#party::OnReset";
+	donpcevent "force_02mob#party::OnReset";
+	donpcevent "force_03mob#party::OnReset";
+	donpcevent "force_04mob#party::OnReset";
+	donpcevent "force_05mob#party::OnReset";
+	donpcevent "force_06mob#party::OnReset";
+	donpcevent "force_07mob#party::OnReset";
+	donpcevent "force_08mob#party::OnReset";
+	donpcevent "force_09mob#party::OnReset";
+	donpcevent "force_10mob-1#party::OnReset";
+	donpcevent "force_10mob-2#party::OnReset";
+	donpcevent "force_exitmob#party::OnReset";
+	end;
+}
+
+force_1-2,95,187,0	script	force_09_exit	45,1,1,{
+OnTouch_:
+	set $arena_minptend,gettime(DT_MINUTE);
+	set $arena_secptend,gettime(DT_SECOND);
+	warp "prt_are_in",73,139;
+	donpcevent "#arn_timer_pt::OnEnter";
+	donpcevent "arena_p::OnReset";
+	donpcevent "Slipslowrun#party::OnTimerOff";
+	end;
+}
+
+force_1-2,36,26,0	script	force_01start#party	-1,1,1,{
+OnTouch_:
+	donpcevent "force_01mob#party::OnEnable";
+	disablenpc "force_01start#party";
+	end;
+}
+
+-	script	force_01mob#party	-1,{
+OnEnable:
+	monster "force_1-2",15,35,"بينومينا",1441,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",35,35,"بينومينا",1441,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",15,15,"بينومينا",1441,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",35,15,"بينومينا",1441,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",15,25,"ساعة",1528,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",17,25,"ساعة",1528,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",19,25,"ساعة",1528,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",21,25,"ساعة",1528,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",15,25,"ساعة",1528,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",17,25,"ساعة",1528,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",19,25,"ساعة",1528,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",21,25,"ساعة",1528,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",15,30,"ألارم",1476,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",17,22,"ألارم",1476,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",19,32,"ألارم",1476,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",21,22,"ألارم",1476,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",26,33,"مدير الساعة",1527,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",26,33,"مدير الساعة",1527,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",26,14,"دودة قديمة",1567,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",30,27,"دودة قديمة",1567,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",29,25,"دودة قديمة",1567,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",26,14,"دودة قديمة",1567,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",33,26,"إنكيوبوس",1580,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",29,28,"إنكيوبوس",1580,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",33,20,"إنكيوبوس",1580,1,"force_01mob#party::OnMyMobDead";
+	monster "force_1-2",33,30,"إنكيوبوس",1580,1,"force_01mob#party::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_01mob#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_1-2","force_01mob#party::OnMyMobDead") < 1) {
+		enablenpc "force_01_00";
+		donpcevent "Slipslowrun#party::On01_End";
+		set $arn_partyc,$arn_partyc +1;
+		if($arn_partyc == 3) {
+			donpcevent "Slipslowrun#party::On04_Start";
+			enablenpc "force_03_04";
+			enablenpc "force_04start#party";
+		}
+	}
+	end;
+}
+
+force_1-2,162,26,0	script	force_02start#party	-1,1,1,{
+OnTouch_:
+	donpcevent "force_02mob#party::OnEnable";
+	disablenpc "force_02start#party";
+	end;
+}
+
+-	script	force_02mob#party	-1,{
+OnEnable:
+	monster "force_1-2",163,36,"بينومينا",1441,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",184,36,"بينومينا",1441,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",184,16,"بينومينا",1441,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",163,16,"بينومينا",1441,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",171,37,"جوكر",1437,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",177,37,"جوكر",1437,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",184,29,"جوكر",1437,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",184,22,"جوكر",1437,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",177,16,"جوكر",1437,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",170,16,"جوكر",1437,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",169,28,"باثوري",1525,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",171,28,"باثوري",1525,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",173,28,"باثوري",1525,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",175,28,"باثوري",1525,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",177,28,"باثوري",1525,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",177,23,"باثوري",1525,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",175,23,"باثوري",1525,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",173,23,"باثوري",1525,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",171,23,"باثوري",1525,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",169,23,"باثوري",1525,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",187,30,"أركلوز",1477,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",187,30,"أركلوز",1477,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",187,30,"أركلوز",1477,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",187,22,"أركلوز",1477,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",187,22,"أركلوز",1477,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",187,22,"أركلوز",1477,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",173,40,"أركلوز",1477,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",173,40,"أركلوز",1477,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",181,25,"أركلوز",1477,1,"force_02mob#party::OnMyMobDead";
+	monster "force_1-2",181,25,"أركلوز",1477,1,"force_02mob#party::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_02mob#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_1-2","force_02mob#party::OnMyMobDead") < 1) {
+		enablenpc "force_02_00";
+		donpcevent "Slipslowrun#party::On02_End";
+		set $arn_partyc,$arn_partyc +1;
+		if($arn_partyc == 3) {
+			donpcevent "Slipslowrun#party::On04_Start";
+			enablenpc "force_03_04";
+			enablenpc "force_04start#party";
+		}
+	}
+	end;
+}
+
+force_1-2,99,66,0	script	force_03start#party	-1,1,1,{
+OnTouch_:
+	donpcevent "force_03mob#party::OnEnable";
+	disablenpc "force_03start#party";
+	end;
+}
+
+-	script	force_03mob#party	-1,{
+OnEnable:
+	monster "force_1-2",89,81,"رجل البحر",1451,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",90,81,"رجل البحر",1451,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",91,81,"رجل البحر",1451,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",92,81,"رجل البحر",1451,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",93,81,"رجل البحر",1451,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",96,85,"شبح الرياح",1450,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",98,85,"شبح الرياح",1450,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",100,85,"شبح الرياح",1450,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",102,85,"شبح الرياح",1450,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",104,85,"شبح الرياح",1450,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",88,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",90,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",92,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",94,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",96,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",98,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",100,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",102,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",104,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",106,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",108,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",110,79,"ديفيروتشي",1433,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",91,86,"متجول",1490,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",108,86,"متجول",1490,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",91,69,"متجول",1490,1,"force_03mob#party::OnMyMobDead";
+	monster "force_1-2",108,69,"متجول",1490,1,"force_03mob#party::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_03mob#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_1-2","force_03mob#party::OnMyMobDead") < 1) {
+		enablenpc "force_03_00";
+		donpcevent "Slipslowrun#party::On03_End";
+		set $arn_partyc,$arn_partyc +1;
+		if($arn_partyc == 3) {
+			donpcevent "Slipslowrun#party::On04_Start";
+			enablenpc "force_03_04";
+			enablenpc "force_04start#party";
+		}
+	}
+	end;
+}
+
+force_1-2,162,78,0	script	force_04start#party	-1,3,3,{
+OnTouch_:
+	donpcevent "force_04mob#party::OnEnable";
+	disablenpc "force_04start#party";
+	end;
+}
+
+-	script	force_04mob#party	-1,{
+OnEnable:
+	monster "force_1-2",174,78,"بينومينا",1441,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",184,78,"بينومينا",1441,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",184,68,"بينومينا",1441,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",174,68,"بينومينا",1441,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",169,87,"ريد وورد",1478,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",170,87,"ريد وورد",1478,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",171,87,"ريد وورد",1478,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",172,87,"ريد وورد",1478,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",169,77,"ريد وورد",1478,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",170,77,"ريد وورد",1478,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",171,77,"ريد وورد",1478,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",172,77,"ريد وورد",1478,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",183,83,"شبح ميت",1566,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",183,80,"شبح ميت",1566,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",183,73,"شبح ميت",1566,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",183,70,"شبح ميت",1566,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",179,77,"شبح ميت",1566,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",169,72,"مهاجم",1364,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",171,72,"مهاجم",1364,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",173,72,"مهاجم",1364,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",175,72,"مهاجم",1364,1,"force_04mob#party::OnMyMobDead";
+	monster "force_1-2",177,72,"مهاجم",1364,1,"force_04mob#party::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_04mob#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_1-2","force_04mob#party::OnMyMobDead") < 1) {
+		enablenpc "force_04_03";
+		enablenpc "force_03_05";
+		enablenpc "force_05start#party";
+		donpcevent "Slipslowrun#party::On04_End1";
+	}
+	end;
+}
+
+force_1-2,36,77,0	script	force_05start#party	-1,1,1,{
+OnTouch_:
+	donpcevent "force_05mob#party::OnEnable";
+	disablenpc "force_05start#party";
+	end;
+}
+
+-	script	force_05mob#party	-1,{
+OnEnable:
+	monster "force_1-2",25,68,"بينومينا",1441,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",36,68,"بينومينا",1441,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",16,88,"بينومينا",1441,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",15,78,"بينومينا",1441,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",33,88,"ستينغ",1489,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",29,87,"ستينغ",1489,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",25,81,"ستينغ",1489,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",25,78,"ستينغ",1489,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",25,72,"ستينغ",1489,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",29,70,"ستينغ",1489,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",21,70,"ستينغ",1489,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",19,76,"ستينغ",1489,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",19,83,"ستينغ",1489,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",23,89,"ستينغ",1489,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",22,85,"كرامب",1570,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",23,85,"كرامب",1570,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",24,85,"كرامب",1570,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",23,86,"كرامب",1570,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",22,86,"كرامب",1570,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",22,71,"كرامب",1570,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",22,72,"كرامب",1570,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",23,71,"كرامب",1570,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",23,72,"كرامب",1570,1,"force_05mob#party::OnMyMobDead";
+	monster "force_1-2",24,71,"كرامب",1570,1,"force_05mob#party::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_05mob#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_1-2","force_05mob#party::OnMyMobDead") < 1) {
+		donpcevent "arena_p::On06_Start";
+		donpcevent "Slipslowrun#party::On05_End2";
+	}
+	end;
+}
+
+force_1-2,26,118,0	script	force_06start#party	-1,1,1,{
+OnTouch_:
+	donpcevent "force_06mob#party::OnEnable";
+	disablenpc "force_06start#party";
+	end;
+}
+
+-	script	force_06mob#party	-1,{
+OnEnable:
+	monster "force_1-2",19,135,"ناسك طاوي",1531,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",24,135,"ناسك طاوي",1531,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",28,135,"ناسك طاوي",1531,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",32,135,"ناسك طاوي",1531,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",24,127,"شينوبي",1560,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",27,127,"شينوبي",1560,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",24,128,"شينوبي",1560,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",27,128,"شينوبي",1560,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",24,129,"شينوبي",1560,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",27,129,"شينوبي",1560,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,140,"تنغو",1563,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,136,"تنغو",1563,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,132,"تنغو",1563,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,128,"تنغو",1563,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,124,"تنغو",1563,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,120,"تنغو",1563,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,140,"حورية شريرة",1564,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,136,"حورية شريرة",1564,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,132,"حورية شريرة",1564,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,128,"حورية شريرة",1564,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,124,"حورية شريرة",1564,1,"force_06mob#party::OnMyMobDead";
+	monster "force_1-2",16,120,"حورية شريرة",1564,1,"force_06mob#party::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_06mob#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_1-2","force_06mob#party::OnMyMobDead") < 1) {
+		donpcevent "arena_p::On07_Start";
+		donpcevent "Slipslowrun#party::On06_End";
+		set $arn_partyc,$arn_partyc +1;
+	}
+	end;
+}
+
+force_1-2,92,124,0	script	force_07start#party	-1,1,1,{
+OnTouch_:
+	donpcevent "force_07mob#party::OnEnable";
+	disablenpc "force_07start#party";
+	end;
+}
+
+-	script	force_07mob#party	-1,{
+OnEnable:
+	monster "force_1-2",104,134,"جنرال أعظم",1541,1,"force_07mob#party::OnMyMobDead";
+	monster "force_1-2",104,136,"جنرال أعظم",1541,1,"force_07mob#party::OnMyMobDead";
+	monster "force_1-2",104,137,"جنرال أعظم",1541,1,"force_07mob#party::OnMyMobDead";
+	monster "force_1-2",104,139,"جنرال أعظم",1541,1,"force_07mob#party::OnMyMobDead";
+	monster "force_1-2",111,134,"جنرال أعظم",1541,1,"force_07mob#party::OnMyMobDead";
+	monster "force_1-2",111,136,"جنرال أعظم",1541,1,"force_07mob#party::OnMyMobDead";
+	monster "force_1-2",111,137,"جنرال أعظم",1541,1,"force_07mob#party::OnMyMobDead";
+	monster "force_1-2",111,139,"جنرال أعظم",1541,1,"force_07mob#party::OnMyMobDead";
+	monster "force_1-2",98,122,"خاليتزبورغ",1438,1,"force_07mob#party::OnMyMobDead";
+	monster "force_1-2",90,119,"خاليتزبورغ",1438,1,"force_07mob#party::OnMyMobDead";
+	monster "force_1-2",98,122,"الجلاد",1487,1,"force_07mob#party::OnMyMobDead";
+	monster "force_1-2",108,140,"كيميرا",1456,1,"force_07mob#party::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_07mob#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_1-2","force_07mob#party::OnMyMobDead") < 1) {
+		donpcevent "arena_p::On08_Start";
+		donpcevent "Slipslowrun#party::On07_End";
+		set $arn_partyc,$arn_partyc +1;
+	}
+	end;
+}
+
+force_1-2,173,118,0	script	force_08start#party	-1,1,1,{
+OnTouch_:
+	donpcevent "force_08mob#party::OnEnable";
+	disablenpc "force_08start#party";
+	end;
+}
+
+-	script	force_08mob#party	-1,{
+OnEnable:
+	monster "force_1-2",172,154,"خاليتزبورغ",1438,1,"force_08mob#party::OnMyMobDead";
+	monster "force_1-2",174,145,"غوسترينغ",1576,1,"force_08mob#party::OnMyMobDead";
+	monster "force_1-2",174,145,"كيميرا",1456,1,"force_08mob#party::OnMyMobDead";
+	for(set .@i,0; .@i<5; set .@i,.@i+1) {
+		monster "force_1-2",rand(162,184),rand(122,185),"إنجستس",1446,1,"force_08mob#party::OnMyMobDead";
+	}
+	monster "force_1-2",rand(162,184),rand(122,185),"رامي رايدريك",1453,1,"force_08mob#party::OnMyMobDead";
+	for(set .@i,0; .@i<5; set .@i,.@i+1) {
+		monster "force_1-2",rand(162,184),rand(122,185),"رعب الكابوس",1554,1,"force_08mob#party::OnMyMobDead";
+	}
+	for(set .@i,0; .@i<6; set .@i,.@i+1) {
+		monster "force_1-2",rand(162,184),rand(122,185),"مومياء قديمة",1522,1,"force_08mob#party::OnMyMobDead";
+	}
+	for(set .@i,0; .@i<10; set .@i,.@i+1) {
+		monster "force_1-2",rand(162,184),rand(122,185),"سجين هيكل",1479,1,"force_08mob#party::OnMyMobDead";
+	}
+	for(set .@i,0; .@i<5; set .@i,.@i+1) {
+		monster "force_1-2",rand(162,184),rand(122,185),"ذبابة الصياد",1422,1,"force_08mob#party::OnMyMobDead";
+	}
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_08mob#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_1-2","force_08mob#party::OnMyMobDead") < 1) {
+		donpcevent "arena_p::On09_Start";
+		donpcevent "Slipslowrun#party::On08_End";
+		set $arn_partyc,$arn_partyc +1;
+	}
+	end;
+}
+
+force_1-2,133,178,0	script	force_09start#party	-1,1,1,{
+OnTouch_:
+	donpcevent "force_09mob#party::OnEnable";
+	disablenpc "force_09start#party";
+	end;
+}
+
+-	script	force_09mob#party	-1,{
+OnEnable:
+	monster "force_1-2",86,180,"إلدر",1573,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",86,176,"إلدر",1573,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",95,183,"إلدر",1573,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",94,175,"إلدر",1573,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",76,178,"إلدر",1573,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",84,179,"انفجار",1532,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",74,181,"انفجار",1532,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",73,176,"انفجار",1532,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",62,178,"انفجار",1532,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",68,177,"انفجار",1532,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",122,177,"غولم الحمم",1549,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",112,179,"غولم الحمم",1549,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",122,178,"أنوليان",1488,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",121,177,"أنوليان",1488,1,"force_09mob#party::OnMyMobDead";
+	monster "force_1-2",122,177,"أنوليان",1488,1,"force_09mob#party::OnMyMobDead";
+	set $force_09_pt,15;
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_09mob#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_1-2","force_09mob#party::OnMyMobDead") < 1) {
+		donpcevent "arena_p::On10_Start";
+		donpcevent "Slipslowrun#party::On09_End";
+		set $arn_partyc,$arn_partyc +1;
+	}
+	end;
+}
+
+force_1-2,29,178,0	script	force_10start#party	-1,1,1,{
+OnTouch_:
+	donpcevent "force_10mob-1#party::OnEnable";
+	disablenpc "force_10start#party";
+	end;
+}
+
+-	script	force_10mob-1#party	-1,{
+OnEnable:
+	switch(rand(1,2)) {
+	case 1:
+		monster "force_1-2",16,179,"سيد الأفاعي",1529,1,"force_10mob-1#party::OnMyMobDead";
+		break;
+	case 2:
+		monster "force_1-2",24,179,"دراكولا",1530,1,"force_10mob-1#party::OnMyMobDead";
+		break;
+	}
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_10mob-1#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_1-2","force_10mob-1#party::OnMyMobDead") < 1)
+		donpcevent "force_10mob-2#party::OnEnable";
+	end;
+}
+
+-	script	force_10mob-2#party	-1,{
+OnEnable:
+	monster "force_1-2",16,179,"ساموراي ساحر",1542,1,"force_10mob-2#party::OnMyMobDead";
+	monster "force_1-2",16,179,"شينوبي",1560,1,"force_10mob-2#party::OnMyMobDead";
+	monster "force_1-2",16,179,"شينوبي",1560,1,"force_10mob-2#party::OnMyMobDead";
+	monster "force_1-2",16,179,"شينوبي",1560,1,"force_10mob-2#party::OnMyMobDead";
+	monster "force_1-2",16,179,"شينوبي",1560,1,"force_10mob-2#party::OnMyMobDead";
+	monster "force_1-2",16,179,"شينوبي",1560,1,"force_10mob-2#party::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_10mob-2#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	if (mobcount("force_1-2","force_10mob-2#party::OnMyMobDead") < 1) {
+		donpcevent "arena_p::OnExit";
+		donpcevent "Slipslowrun#party::On10_End";
+		set $arn_partyc,0;
+	}
+	end;
+}
+
+force_1-2,59,178,0	script	force_exit#party	-1,1,1,{
+OnTouch_:
+	donpcevent "force_exitmob#party::OnEnable";
+	disablenpc "force_exit#party";
+	end;
+}
+
+-	script	force_exitmob#party	-1,{
+OnEnable:
+	monster "force_1-2",95,177,"وداعا",1393,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"أنا أكرهك",1543,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"أحب الشوكولاتة",1472,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"أعجبك، أليس كذلك؟",1472,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"عذرا",1420,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"تريسترام الثاني",1562,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"أنا جائع",1468,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"إلى اللقاء",1419,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"اعتن بنفسك",1394,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"جسد جذاب",1578,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"ضغط",1471,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"هون عليك",1491,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"هل ستؤذيني؟",1555,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"تاجر",1428,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"السيدة كيم",1472,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"فنون قتالية",1472,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"عامل بدوام جزئي",1420,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"زعيم",1562,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"صندوق أصفر قديم",1474,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"خفاش",1419,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"إضافي",1394,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"تاجر الحليب",1578,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"حبيبي",1471,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"يا ويلي!",1491,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"لست شبحا ميتا",1566,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"أم الشبح",1566,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"أبو الشبح",1566,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"كتاب[3]",1478,1,"force_exitmob#party::OnMyMobDead";
+	monster "force_1-2",95,177,"دفتر التبادل",1478,1,"force_exitmob#party::OnMyMobDead";
+	end;
+
+OnReset:
+	killmonster "force_1-2","force_exitmob#party::OnMyMobDead";
+	end;
+
+OnMyMobDead:
+	end;
+}
+
+prt_are_in,181,135,3	script	موظف الحلبة#party-1::Staff#party-1	67,{
+	mes "[موظف الحلبة]";
+	mes "أداء جيد.";
+	mes "حتى دون إكمال معركة قوة الزمن، ستحصل على عدد قليل من نقاط الحلبة.";
+	next;
+	if (arena_point == 30000) {
+		mes "[موظف الحلبة]";
+		mes "لحظة!";
+		mes "بلغ رصيد نقاط الحلبة الحد الأقصى.";
+		mes "يجب إنفاق بعض نقاط الحلبة أولا، وستضاف مكافأة المحاولة التالية عند العودة.";
+		next;
+	}
+	else set arena_point, arena_point + 1;
+	mes "[موظف الحلبة]";
+	mes "سأرشدك إلى الخارج. آمل أن يكون التحدي ممتعا.";
+	close2;
+	specialeffect2 EF_HIT5;
+	warp "arena_room",100,75;
+	end;
+}
+
+prt_are_in,77,135,3	script	موظف الحلبة#party-2::Staff#party-2	67,{
+	if($arena_minptend < $arena_minptst) {
+		if($arena_secptend < $arena_secptst) {
+			set @record_minpt,60 - $arena_minptst + $arena_minptend -1;
+			set @record_secpt,60 - $arena_secptst + $arena_secptend;
+		} else {
+			set @record_minpt,60 - $arena_minptst + $arena_minptend;
+			set @record_secpt,$arena_secptend - $arena_secptst;
+		}
+	} else {
+		if($arena_secptend < $arena_secptst) {
+			set @record_minpt,$arena_minptend - $arena_minptst -1;
+			set @record_secpt,60 - $arena_secptst + $arena_secptend;
+		} else {
+			set @record_minpt,$arena_minptend - $arena_minptst;
+			set @record_secpt,$arena_secptend - $arena_secptst;
+		}
+	}
+	set @gappt,(60 * $top_ptmin + $top_ptsec) - (60 * @record_minpt + @record_secpt);
+	mes "[موظف الحلبة]";
+	mes "رائع! أكمل الفريق التحدي بنجاح.";
+	mes "اسم الشخصية: ^3131FF" + strcharinfo(0) +"^000000، صحيح؟";
+	mes "بلغ إجمالي زمن ^3131FF"+ strcharinfo(0) +"^000000 في اجتياز المعركة:";
+	next;
+	mes "[موظف الحلبة]";
+	mes ""+@record_minpt+" دقيقة و"+@record_secpt+" ثانية.";
+	mes "تهانينا!";
+	next;
+	mes "[موظف الحلبة]";
+	mes "الفريق صاحب أسرع زمن في معركة قوة الزمن بحلبة الفريق: ^3131FF"+$arena_pttopn$+"^000000.";
+	next;
+	mes "[موظف الحلبة]";
+	mes "الزمن القياسي لفريق ^3131FF"+$arena_pttopn$+"^000000: ^3131FF"+$top_ptmin+"^000000 دقيقة و^3131FF"+$top_ptsec+"^000000 ثانية.";
+	next;
+	if (@gappt < 0) {
+		mes "[موظف الحلبة]";
+		mes "لم يسجل هذا الزمن رقما قياسيا جديدا. حظا أوفر في المحاولة التالية!";
+		next;
+		if (arena_point > 29980) {
+			mes "[موظف الحلبة]";
+			mes "سأضيف مكافأة نقاط الحلبة... لحظة!";
+			mes "بلغ رصيد نقاط الحلبة الحد الأقصى، ولا يمكن إضافة المزيد قبل إنفاق بعض النقاط.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "يمكن مراجعة رصيد نقاط الحلبة في غرفة انتظار الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "آمل أن يكون التحدي ممتعا. سأعيدك إلى مدخل الحلبة.";
+			mes "شكرا!";
+			close2;
+		} else {
+			set arena_point, arena_point + 40;
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "يمكن مراجعة رصيد نقاط الحلبة لدى ^3131FFفينديغوس^000000 عند مدخل الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "سأعيدك إلى مدخل الحلبة.";
+			mes "إلى اللقاء!";
+			close2;
+		}
+		if (is_party_leader() == true) {
+			donpcevent "#arn_timer_pt::OnStop";
+			donpcevent "alloff#pt::OnEnable";
+			donpcevent "Ponox::OnStart";
+		}
+		specialeffect2 EH_HIT5;
+ 		donpcevent "cast#pt::OnNomal1";
+		warp "arena_room",100,75;
+		end;
+	} else {
+		emotion ET_HUK;
+		mes "[موظف الحلبة]";
+		mes "رائع! تم تسجيل رقم قياسي جديد!";
+		mes "إنجاز ممتاز!";
+		next;
+		if (is_party_leader() == true) {
+			mes "[موظف الحلبة]";
+			mes "يمكن تسجيل اسم الفريق في ^FF0000قاعة أبطال معركة قوة الزمن بحلبة الفريق^000000.";
+			mes "سيبقى الاسم في الصدارة حتى يسجل فريق آخر رقما قياسيا جديدا.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "يجب إدخال اسم لا يتجاوز 10 أحرف ليمثل الفريق.";
+			next;
+			switch( select( "حسنا.","سأفكر." ) )  {
+			case 1:
+				input .@arnparty$;
+				mes "[موظف الحلبة]";
+				mes "الاسم المدخل: ^3131FF"+.@arnparty$+"^000000. هل هو صحيح؟";
+				next;
+				switch( select( "نعم","لا" ) ) {
+				case 1:
+					set $top_ptmin, @record_minpt;
+					set $top_ptsec, @record_secpt;
+					set $arena_pttopn$,.@arnparty$;
+					donpcevent "Vendigos::OnLineRec_pt";
+					mes "[موظف الحلبة]";
+					mes "تم تسجيل اسم الفريق.";
+					next;
+					break;
+				case 2:
+					mes "[موظف الحلبة]";
+					mes "يمكن التفكير واختيار اسم مناسب لاحقا.";
+					close;
+				}
+				break;
+			case 2:
+				mes "[موظف الحلبة]";
+				mes "يمكن التفكير واختيار اسم مناسب لاحقا.";
+				close;
+			}
+		}
+		if (arena_point > 29900) {
+			mes "[موظف الحلبة]";
+			mes "سأضيف مكافأة نقاط الحلبة... لحظة!";
+			mes "بلغ رصيد نقاط الحلبة الحد الأقصى، ولا يمكن إضافة المزيد قبل إنفاق بعض النقاط.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "يمكن مراجعة رصيد نقاط الحلبة في غرفة انتظار الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "آمل أن يكون التحدي ممتعا. سأعيدك إلى مدخل الحلبة.";
+			mes "شكرا!";
+			close2;
+		} else {
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "وبسبب الرقم القياسي الجديد، ستضاف مكافأة نقاط إضافية هذه المرة.";
+			next;
+			set arena_point, arena_point + 100;
+			mes "[موظف الحلبة]";
+			mes "ستضاف مكافأة من نقاط الحلبة.";
+			mes "يمكن مراجعة رصيد نقاط الحلبة لدى ^3131FFفينديغوس^000000 عند مدخل الحلبة.";
+			next;
+			mes "[موظف الحلبة]";
+			mes "سأعيدك إلى مدخل الحلبة.";
+			mes "إلى اللقاء!";
+			close2;
+		}
+		if (is_party_leader() == true) {
+			donpcevent "#arn_timer_pt::OnStop";
+			donpcevent "alloff#pt::OnEnable";
+			donpcevent "Ponox::OnStart";
+		}
+		specialeffect2 EF_HIT5;
+		warp "arena_room",100,75;
+		end;
+	}
+}
+
+-	script	#arn_timer_pt	-1,{
+OnEnter:
+	initnpctimer;
+	end;
+
+OnTimer2000:
+	mapannounce "prt_are_in","تنبيه بشأن المهلة الزمنية لحلبة الفريق.",0,0xFFCE00;
+	end;
+
+OnTimer3000:
+	mapannounce "prt_are_in","ستتفعل بوابة الخروج خلال دقيقة لضمان انسيابية الحلبة.",0,0xFFCE00;
+	end;
+
+OnTimer4000:
+	mapannounce "prt_are_in","يرجى إكمال المعركة بأسرع ما يمكن لتجنب انتهاء المهلة. شكرا لتعاونك.",0,0xFFCE00;
+	end;
+
+OnTimer60000:
+ 	donpcevent "cast#pt::OnTimeOver2";
+	donpcevent "arn_warp_pt::OnOut";
+	donpcevent "#arn_timer_pt::OnStop";
+	donpcevent "alloff#pt::OnEnable";
+	donpcevent "Ponox::OnStart";
+	end;
+
+OnStop:
+	stopnpctimer;
+	end; 
+}
+
+-	script	arn_warp_pt	-1,{
+OnOut:
+	areawarp "prt_are_in",66,143,81,126,"arena_room",100,75;
+	end;
+}
+
+-	script	cast#pt	-1,{
+OnTimeOver1:
+	mapannounce "force_2-1","ستعاد تهيئة الحلبة بسبب خطأ حدث أثناء المعركة.",0,0xFFCE00;
+	end;
+
+OnNomal1:
+	mapannounce "force_2-1","أعيدت تهيئة الحلبة.",0,0xFFCE00;
+	end;
+
+OnNomal2:
+	mapannounce "force_2-1","أعيدت تهيئة الحلبة.",0,0xFFCE00;
+	end;
+
+OnTimeOver2:
+	mapannounce "force_2-1","ستعاد تهيئة الحلبة بسبب خطأ حدث في غرفة الانتظار.",0,0xFFCE00;
+	end;
+}
+
+-	script	alloff#pt	-1,{
+OnEnable:
+	mapwarp "force_1-2","prt_are_in",126,139,0,0;
+	donpcevent "force_01mob#party::OnReset";
+	donpcevent "force_02mob#party::OnReset";
+	donpcevent "force_03mob#party::OnReset";
+	donpcevent "force_04mob#party::OnReset";
+	donpcevent "force_05mob#party::OnReset";
+	donpcevent "force_06mob#party::OnReset";
+	donpcevent "force_07mob#party::OnReset";
+	donpcevent "force_08mob#party::OnReset";
+	donpcevent "force_09mob#party::OnReset";
+	donpcevent "force_10mob-1#party::OnReset";
+	donpcevent "force_10mob-2#party::OnReset";
+	donpcevent "force_exitmob#party::OnReset";
+	//disablenpc "force_01mob#party";
+	//disablenpc "force_02mob#party";
+	//disablenpc "force_03mob#party";
+	//disablenpc "force_04mob#party";
+	//disablenpc "force_05mob#party";
+	//disablenpc "force_06mob#party";
+	//disablenpc "force_07mob#party";
+	//disablenpc "force_08mob#party";
+	//disablenpc "force_09mob#party";
+	//disablenpc "force_10mob-1#party";
+	//disablenpc "force_10mob-2#party";
+	enablenpc "force_01start#party";
+	enablenpc "force_02start#party";
+	enablenpc "force_03start#party";
+	disablenpc "force_04start#party";
+	disablenpc "force_05start#party";
+	disablenpc "force_06start#party";
+	disablenpc "force_07start#party";
+	disablenpc "force_08start#party";
+	disablenpc "force_09start#party";
+	disablenpc "force_10start#party";
+	disablenpc "force_exit#party";
+	disablenpc "force_01_00";
+	disablenpc "force_02_00";
+	disablenpc "force_03_00";
+	disablenpc "force_03_05";
+	disablenpc "force_03_04";
+	disablenpc "force_04_03";
+	disablenpc "force_05_03";
+	disablenpc "force_05_06";
+	disablenpc "force_06_07";
+	disablenpc "force_07_08";
+	disablenpc "force_08_09";
+	disablenpc "force_09_10";
+	disablenpc "force_10_09";
+	disablenpc "force_09_exit";
+	disablenpc "arena_p";
+	donpcevent "Slipslowrun#party::OnTimerOff";
+	disablenpc "Slipslowrun#party";
+	disablenpc "arn_warp_pt";
+	set $arn_partywait,0;
+	set $arn_partyc,0;
+	donpcevent "#arn_timer_pt::OnStop";
+	enablenpc "Slipslowrun#party";
+	enablenpc "arena_p";
+	end;
+
+OnInit:
+	if(!$top_ptmin && !$top_ptsec) set $top_ptmin,10;
+	end;
+}

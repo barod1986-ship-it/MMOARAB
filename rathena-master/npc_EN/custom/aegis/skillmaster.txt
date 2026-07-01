@@ -1,0 +1,116 @@
+//===== rAthena Script =======================================
+//= Skill Master NPC
+//===== By: ======================================================
+//= wrywndp (https://www.youtube.com/@wrywndp)
+//===== Description: =========================================
+//= Skill Master NPC (Pre-Renewal).
+//= Learn all skills.
+//===== Additional Comments: =====================================
+//= This script is made for Ragnarok Offline Pre-Renewal Pack
+//= https://www.youtube.com/watch?v=aN5OCJdj2qA
+//============================================================
+
+aegis_guild,27,19,4	script	Skill Master	654,{
+	set @eac, eaclass();
+
+	mes .npcName$;
+	mes "Hello! I can instantly grant you all skills available for your current class.";
+	mes "Please note, my service fee depends on your first job's level when you changed class.";
+	next;
+	mes .npcName$;
+	mes "^1A66FFJob Level 50^000000: ^FF3355" + callfunc("F_InsertComma", .baseFee) + "^000000 ^727272Zeny^000000";
+	mes "^1A66FFBelow Job Level 50^000000: ^FF3355" + callfunc("F_InsertComma", .baseFee * 2) + "^000000 ^727272Zeny^000000";
+	mes "^1A66FFNote^000000: ^FF3355Super Novice^000000, ^FF3355TaeKwon Kid^000000, ^FF3355Gunslinger^000000, and ^FF3355Ninja^000000 are always charged the ^1A66FF50 job level^000000 rate.^000000";
+	next;
+
+	switch(select("^1A66FFYes^000000:What is this?:^727272No^000000")) {
+		case 1:
+			if ((@eac&EAJ_UPPERMASK) == EAJ_SUPER_NOVICE) {
+				.@maxJob = 99;
+			} else if ((@eac&EAJL_UPPER && @eac&EAJL_2) || BaseClass == Job_Gunslinger || BaseClass == Job_Ninja) {
+				.@maxJob = 70;
+			} else if ((@eac&EAJL_2) || BaseClass == Job_Taekwon) {
+				.@maxJob = 50;
+			} else {
+				mes "Come back to me when you are stronger.";
+				close;
+			}
+
+			if (BaseLevel < 99 || JobLevel < .@maxJob) {
+				mes "Come back to me when your Base Level ^1A66FF99^000000 and Job Level ^1A66FF" + .@maxJob + "^000000.";
+				close;
+			}
+
+			.@jobFeeMod = (jobchange_level > 10 && jobchange_level < 50) ? 2 : 1;
+			.@finalFee = .baseFee * .@jobFeeMod;
+
+			if (!skillmastery && Zeny < .@finalFee) {
+				mes "You don't have enough zeny.";
+				close;
+			}
+
+			if (skillmastery == 2 || (skillmastery == 1 && jobchange_level == 50)) {
+				// Already granted full skill mastery
+				specialeffect2 EF_ANGEL;
+				atcommand "@skillall " + strcharinfo(0);
+				mes .npcName$;
+				mes "You have already used my service and met the required job level.";
+				mes "There is no need to pay again.";
+				close;
+			}
+
+			if (skillmastery) {
+				// Re-purchase upgrade
+				if (Zeny < .baseFee) {
+					mes "You don't have enough zeny.";
+					close;
+				}
+				skillmastery = 2;
+				Zeny -= .baseFee;
+			} else {
+				// First-time purchase
+				if (jobchange_level == 10) {
+					skillmastery = 2;
+				} else {
+					skillmastery = .@jobFeeMod;
+				}
+				Zeny -= .@finalFee;
+			}
+
+			specialeffect2 EF_ANGEL;
+			atcommand "@skillall " + strcharinfo(0);
+			mes .npcName$;
+			mes "All done!";
+			mes "You've now mastered all the skills available to your class.";
+			close;
+
+		case 2:
+			mes .npcName$;
+			mes "With my service, you can instantly learn all the skills available to your current class.";
+			next;
+			switch(select("^1A66FFView Eligibility Requirements^000000:^727272Thanks for the info!^000000")) {
+				case 1:
+					mes .npcName$;
+					mes "To use my service, you must meet the following base/job level conditions:";
+					mes "^00A000Second Class (Non-Transcendent)^000000: ^1A66FF99/50^000000";
+					mes "^00A000Second Class (Transcendent)^000000: ^1A66FF99/70^000000";
+					mes "^00A000Gunslinger / Ninja^000000: ^1A66FF99/70^000000";
+					mes "^00A000TaeKwon, TaeKwon Master, Soul Linker^000000: ^1A66FF99/50^000000";
+					mes "^00A000Super Novice^000000: ^1A66FF99/99^000000";
+					close;
+				case 2:
+					mes .npcName$;
+					mes "You're welcome. Come back anytime.";
+					close;
+			}
+		case 3:
+			mes .npcName$;
+			mes "Okay then.";
+			close;
+	}
+	close;
+
+OnInit:
+	.npcName$ = "[Skill Master]";
+	.baseFee = 10000000; // Fee (In Zeny)
+}

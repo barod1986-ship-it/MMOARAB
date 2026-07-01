@@ -1,0 +1,100 @@
+//===== rAthena Script ======================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== By: ==================================================
+//= Nana
+//= finished, optimized and tested by Lupus
+//===== Current Version: ===================================== 
+//= 1.3
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== Additional Comments: ================================= 
+//= 1.1 Made all into functions, additional checks, etc. [Lupus]
+//= 1.2 Made numbers into constants. [Vicious]
+//= 1.3 Now saves/restores all the quest skills [Lupus]
+//============================================================ 
+
+valkyrie,44,58,5	script	سيد المغتالين#Valkyrie::Assassin Cross#Valkyrie	725,{
+	if (ADVJOB == 0 || Upper != 1) {
+		set .@karma_d,rand(1,10);
+		if (.@karma_d > 4) {
+			mes "[سيد المغتالين]";
+			mes "تهانينا...";
+			next;
+			mes "[سيد المغتالين]";
+			mes "...";
+			next;
+			mes "[سيد المغتالين]";
+			mes "...";
+			mes "......";
+			next;
+			mes "[سيد المغتالين]";
+			mes "...";
+			mes "......";
+			mes "المجد";
+			mes "للمحاربين.";
+			close;
+		}
+		mes "[سيد المغتالين]";
+		mes "نحن محاربو";
+		mes "الصحراء. لا أحد";
+		mes "يستخف بنا.";
+		mes "لا أحد...";
+		close;
+	}
+	else if (ADVJOB == Job_Assassin_Cross && Class == Job_Thief_High && JobLevel > 39) {
+		mes "[سيد المغتالين]";
+		mes "لقد حان الوقت.";
+		mes "العالم يحتاج إليك...";
+		mes "أكثر من أي وقت مضى.";
+		next;
+		mes "[سيد المغتالين]";
+		mes "أطلب منك مواصلة السير في الظلال، ولكن بقوة أعظم وهيئة جديدة.";
+		next;
+		mes "[سيد المغتالين]";
+		mes "هل ستصبح";
+		mes "سيد المغتالين؟";
+		next;
+		if (select("لا.:نعم.") == 1) {
+			mes "[سيد المغتالين]";
+			mes "عد عندما تكون";
+			mes "على أتم الاستعداد.";
+			next;
+			mes "[سيد المغتالين]";
+			mes "المجد";
+			mes "للمحاربين.";
+			close;
+		}
+		if (SkillPoint) {
+			mes "[سيد المغتالين]";
+			mes "ما زالت لديك";
+			mes "نقاط مهارة";
+			mes "غير مستخدمة.";
+			next;
+			mes "[سيد المغتالين]";
+			mes "استخدم جميع";
+			mes "نقاط مهارتك";
+			mes "ثم عد إلي.";
+			close;
+		}
+		jobchange Job_Assassin_Cross;
+		set ADVJOB,0;
+		mes "[سيد المغتالين]";
+		mes "تهانينا.";
+		mes "الآن وقد أصبحت سيد المغتالين،";
+		mes "آمل أن تقاتل من أجل مستقبل أكثر إشراقا من قلب الظلام.";
+		close;
+	}
+	mes "[سيد المغتالين]";
+	mes "مرحبا بك";
+	mes "في فالهالا،";
+	mes "قاعة الشرف.";
+	next;
+	mes "[سيد المغتالين]";
+	mes "أرجو أن تشعر";
+	mes "بالراحة";
+	mes "ما دمت هنا.";
+	mes "المجد للمحاربين.";
+	close;
+}

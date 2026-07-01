@@ -1,0 +1,128 @@
+//===== rAthena Script =======================================
+//= Magazine Dealers
+//===== Description: =========================================
+//= Turns bullets into magazines/packs.
+//===== Changelogs: ==========================================
+//= 1.0 First version. [SinSloth]
+//= 1.1 Optimized version - Reduced to only one function [SinSloth]
+//= 1.2 Optimized^2, corrected npc's name [ultramage]
+//= 1.2a Optimized. Please, ommit extra NPC names [Lupus]
+//= 1.3 Updated to match AEGIS script. [Kisuka]
+//= 1.4 Updated to match AEGIS script again. [Masao]
+//= 1.5 Moved Izlude duplicate to pre-re/re paths. [Euphy]
+//= 2.0 Clean-up. [Capuche]
+//= 2.1 Fixes Issue #1482, where Rebellion jobs cannot use this npc. [Limestone]
+//============================================================
+
+que_ng,187,149,3	script	كيني بائع المجلات::mdk	4_M_01,{
+	mes "[كيني]";
+	if (BaseClass == Job_Gunslinger) {
+		mes "مرحبا بك في متجر المخازن الخاص بي.";
+		mes "كما قد تعرف، يمكن حمل أعداد كبيرة";
+		mes "من الرصاص بسهولة أكبر";
+		mes "عندما تكون داخل مخازن. والآن، هل يهمك";
+		mes "شيء معين؟";
+		next;
+		switch(select("حزمة كرات الرياح:حزمة كرات الظل:حزمة كرات السم:حزمة كرات الماء:حزمة كرات النار:خرطوشة:خرطوشة الدم:خرطوشة فضية:إلغاء")) {
+		case 1: callsub S_Casing,13204,12144;// <bullet id>, <pack id>
+		case 2: callsub S_Casing,13206,12145;
+		case 3: callsub S_Casing,13205,12146;
+		case 4: callsub S_Casing,13207,12147;
+		case 5: callsub S_Casing,13203,12148;
+		case 6: callsub S_Casing,13200,12149;
+		case 7: callsub S_Casing,13202,12150;
+		case 8: callsub S_Casing,13201,12151;
+		case 9:
+			mes "[كيني]";
+			mes "حسنا، إذا وجدت يوما";
+			mes "أن لديك الكثير";
+			mes "من الرصاص، فتعال لرؤيتي.";
+			mes "إنها فكرة ذكية أن تخزن";
+			mes "الرصاص داخل مخازني.";
+			close;
+		}
+	}
+	mes "مرحبا بك في متجري.";
+	mes "هنا، أوفر المخازن";
+	mes "والخراطيش لرامي المسدسات.";
+	mes "آسف، لكن لا يبدو أن";
+	mes "خدماتي ستكون ذات";
+	mes "فائدة لك، أيها مغامر.";
+	next;
+	mes "[كيني]";
+	mes "إيه، لكن إذا كنت تعرف";
+	mes "أي رامي مسدسات، فأرسله";
+	mes "إلي. لا يمكن أن يكون لديك";
+	mes "الكثير من الرصاص أبدا.";
+	close;
+
+S_Casing:
+	.@bullet_id = getarg(0);
+	.@pack_id = getarg(1);
+
+	mes "[كيني]";
+	mes "الآن، يمكنك مبادلة";
+	mes callfunc("F_InsertPlural",500,getitemname(.@bullet_id));
+	mes "و500 زيني مقابل 1 "+getitemname(.@pack_id)+"، لذا تأكد";
+	mes "من أن لديك ما يكفي من الرصاص";
+	mes "والزيني لهذه المبادلة.";
+	next;
+	mes "[كيني]";
+	mes "يمكنك مبادلة "+callfunc("F_InsertPlural",500,getitemname(.@bullet_id))+" و500 زيني";
+	mes "مقابل 1 "+getitemname(.@pack_id)+".";
+	next;
+	mes "[كيني]";
+	mes "تذكر أنني لا أستطيع إعطاءك";
+	mes "أكثر من 50 مخزنا";
+	mes "في كل مرة. الآن يرجى إدخال";
+	mes "عدد المخازن التي";
+	mes "تريد الحصول عليها. إذا أردت الإلغاء، فأدخل ''0.'' فقط";
+	next;
+	input .@amount;
+	mes "[كيني]";
+	if (.@amount > 50 || .@amount == 0) {
+		mes "مهلا، لا أستطيع إعطاءك";
+		mes "هذا العدد من المخازن.";
+		mes "يرجى المحاولة مرة أخرى،";
+		mes "وإدخال رقم لا";
+		mes "يزيد عن 50.";
+	}
+	else if (countitem(.@bullet_id) >= (500*.@amount)) {
+		if (Zeny >= (500*.@amount)) {
+			if (checkweight(.@pack_id,.@amount) == 0) {
+				mes "مهلا، لديك الكثير";
+				mes "من الأشياء المحشورة في";
+				mes "حقيبتك. وفر بعض";
+				mes "المساحة، ثم عد";
+				mes "وبادل رصاصك";
+				mes "ببعض المخازن لاحقا، حسنا؟";
+			} else {
+				mes "حسنا، هذه هي";
+				mes "مخازنك. شكرا";
+				mes "لزيارتك متجري، و";
+				mes "آمل أن تستخدم كل";
+				mes "ذخيرتك بحكمة.";
+				Zeny = Zeny -500*.@amount;
+				delitem .@bullet_id,(500*.@amount);
+				getitem .@pack_id,.@amount;
+			}
+		} else {
+			mes "آسف، لكنك لا";
+			mes "تملك زيني كافيا";
+			mes "لهذه مبادلة المخازن.";
+			mes "عد إلى متجري";
+			mes "بعد أن توفر";
+			mes "بعض المال الإضافي.";
+		}
+	} else {
+		mes "آسف، لكنك لا";
+		mes "تملك رصاصا كافيا";
+		mes "لهذه مبادلة المخازن.";
+		mes "ربما عليك أن تتحقق";
+		mes "من حقيبتك مرة أخرى، ثم";
+		mes "تعود إلي لاحقا.";
+	}
+	close;
+}
+
+izlude,171,127,3	duplicate(mdk)	كيني بائع المجلات#iz::Magazine Dealer Kenny#iz	4_M_01

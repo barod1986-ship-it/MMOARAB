@@ -1,0 +1,23 @@
+//===== rAthena Script =======================================
+//= Online Users Counter NPC
+//===== By: ======================================================
+//= wrywndp (https://www.youtube.com/@wrywndp)
+//===== Description: =========================================
+//= Online Users Counter NPC script.
+//===== Additional Comments: =====================================
+//= This script is made for Ragnarok Offline Pre-Renewal Pack
+//= https://www.youtube.com/watch?v=aN5OCJdj2qA
+//============================================================
+
+aegis,78,84,6	script	Online Users	111,{
+OnTimer5000:
+	delwaitingroom;
+	waitingroom "Online Users: " + getusers(1), 0;
+	initnpctimer;
+	end;
+
+OnInit:
+	waitingroom "Online Users: " + getusers(1), 0;
+	initnpctimer;
+	end;
+}

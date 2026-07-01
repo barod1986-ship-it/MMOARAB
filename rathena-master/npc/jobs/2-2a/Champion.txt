@@ -1,0 +1,87 @@
+//===== rAthena Script ======================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== By: ==================================================
+//= Nana
+//= finished, optimized and tested by Lupus
+//===== Current Version: ===================================== 
+//= 1.3
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== Additional Comments: ================================= 
+//= 1.1 Made all into functions, additional checks, etc. [Lupus]
+//= 1.2 Made numbers into constants. [Vicious]
+//= 1.3 Now saves/restores all the quest skills [Lupus]
+//============================================================ 
+
+valkyrie,53,42,3	script	بطل#Valkyrie::Champion#Valkyrie	52,{
+	if (ADVJOB == 0 || Upper != 1) {
+		set .@karma_d,rand(1,10);
+		if (.@karma_d > 4) {
+			mes "[بطل]";
+			mes "تهانينا.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		mes "[بطل]";
+		mes "المهارة.";
+		mes "السرعة.";
+		mes "القوة.";
+		mes "الرشاقة.";
+		next;
+		mes "[بطل]";
+		mes "يستفيد البطل";
+		mes "من هذه الصفات";
+		mes "كلها. لكن المرء";
+		mes "لا يستطيع إتقان";
+		mes "سوى قدر محدود في الحياة...";
+		close;
+	}
+	else if (ADVJOB == Job_Champion && Class == Job_Acolyte_High && JobLevel > 39) {
+		mes "[بطل]";
+		mes "لقد حان الوقت.";
+		mes "آن للأبطال العظماء";
+		mes "أن ينهضوا في وجه";
+		mes "قوى الشر التي تنشر";
+		mes "البلاء في عالم ميدغارد!";
+		next;
+		mes "[بطل]";
+		mes "هل ترغب";
+		mes "في الارتقاء إلى رتبة بطل؟";
+		next;
+		if (select("لا.:نعم.") == 1) {
+			mes "[بطل]";
+			mes "عد إلي متى اكتمل";
+			mes "استعدادك.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		if (SkillPoint) {
+			mes "[بطل]";
+			mes "ما زالت لديك نقاط مهارة غير مستخدمة.";
+			mes "استخدمها جميعا قبل العودة إلي.";
+			close;
+		}
+		jobchange Job_Champion;
+		set ADVJOB,0;
+		mes "[بطل]";
+		mes "تهانينا.";
+		mes "الآن وقد أصبحت بطلا،";
+		mes "آمل أن تنشر النور";
+		mes "في أرجاء العالم";
+		mes "بقوة قبضتيك.";
+		close;
+	}
+	mes "[بطل]";
+	mes "مرحبا بك";
+	mes "في فالهالا،";
+	mes "قاعة الشرف.";
+	next;
+	mes "[بطل]";
+	mes "أتمنى لك";
+	mes "الراحة والطمأنينة";
+	mes "ما دمت هنا.";
+	mes "المجد للمحاربين.";
+	close;
+}
