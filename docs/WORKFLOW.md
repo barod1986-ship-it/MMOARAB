@@ -1,9 +1,10 @@
 # Workflow
 
-هذا الملف محفوظ للتوافق مع الروابط القديمة. سير العمل المعتمد موجود في:
+سير العمل المعتمد موجود في:
 
-- `docs/AI_WORKFLOW.md`
 - `AGENTS.md`
+- `docs/AI_WORKFLOW.md`
+- `docs/SYNC_SCOPE.md`
 - `tracking/PROJECT_STATE.json`
 
-الحالة الحالية: المرحلة 292 مكتملة، والملف التالي هو `rathena-master/npc/pre-re/guides/guides_lighthalzen.txt`.
+بدأت دورة المراجعة الثانية من المرحلة 1. لا نكمل من المرحلة 293 القديمة.
