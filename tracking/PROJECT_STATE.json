@@ -1,0 +1,22 @@
+{
+  "project": "MMOARAB Ragnarok Online Arabic Translation",
+  "repository": "barod1986-ship-it/MMOARAB",
+  "stable_branch": "main",
+  "last_completed_stage": 292,
+  "last_completed_file": "rathena-master/npc/pre-re/guides/guides_juno.txt",
+  "next_stage": 293,
+  "next_file": "rathena-master/npc/pre-re/guides/guides_lighthalzen.txt",
+  "reviewed_npc_files": 293,
+  "total_npc_files": 555,
+  "remaining_npc_files": 262,
+  "completed_quest_files": 88,
+  "total_quest_files": 88,
+  "excluded_files": 28,
+  "cumulative_changes": 65775,
+  "baseline_files": 1939,
+  "baseline_bytes": 70076125,
+  "runtime_test": false,
+  "validation": "static and structural",
+  "encoding_policy": "preserve original bytes and line endings",
+  "updated_at": "2026-07-03"
+}

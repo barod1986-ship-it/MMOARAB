@@ -1,0 +1,26 @@
+# Archives and manual backups
+*.zip
+*.7z
+*.rar
+*.bak
+*.backup
+*.old
+*~
+**/نسخة_احتياطية_قبل_المرحلة_*/
+**/*_before_stage*
+تقارير_المراجعة_الحوارية/
+
+# Generated/runtime files
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Generated reports and spreadsheets
+*.xlsx
+*.xls
+reports/generated/
