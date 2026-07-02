@@ -1,1 +1,1 @@
-Reference note.
+External reference record: official rAthena repository, official game files, and reliable databases. The pull request includes the consulted source and date.
