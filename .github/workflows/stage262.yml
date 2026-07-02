@@ -1,0 +1,36 @@
+name: Stage 262 validation
+
+on:
+  push:
+    branches:
+      - stage-262-hugel-bingo-review
+    paths:
+      - .github/workflows/stage262.yml
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: stage-262-hugel-bingo-review
+      - name: Apply review and generate reports
+        run: python3 tools/apply_stage_262.py
+      - name: Upload generated deliverables
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage-262-deliverables
+          path: |
+            rathena-master/npc/other/hugel_bingo.txt
+            تقارير_المراجعة_الحوارية/00_الملفات_المتبقية.csv
+            تقارير_المراجعة_الحوارية/00_الملفات_المكتملة.csv
+            تقارير_المراجعة_الحوارية/00_متابعة_المراجعة_الحوارية.csv
+            تقارير_المراجعة_الحوارية/00_متابعة_المراجعة_الحوارية.md
+            تقارير_المراجعة_الحوارية/المرحلة_262
+            تقارير_المراجعة_الحوارية/ملف_تتبع_المراجعة_الحوارية_حتى_المرحلة_262.xlsx
+          if-no-files-found: warn
