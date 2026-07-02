@@ -48,12 +48,14 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const branch = 'stage-262-hugel-bingo-review';
+            const workflowPath = '.github/workflows/stage262.yml';
             const output = cp.execFileSync('git', ['status', '--porcelain=v1', '-z'], { encoding: 'utf8' });
             const records = output.split('\0').filter(Boolean);
             const entries = [];
             for (const record of records) {
               const status = record.slice(0, 2);
               const filePath = record.slice(3);
+              if (filePath === workflowPath) continue;
               if (status.includes('D')) {
                 entries.push({ path: filePath, mode: '100644', type: 'blob', sha: null });
                 continue;
