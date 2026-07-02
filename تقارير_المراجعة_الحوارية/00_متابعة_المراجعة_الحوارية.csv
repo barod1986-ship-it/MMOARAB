@@ -260,3 +260,4 @@
 259,الأنظمة والخدمات,دالة حماية شخصيات إدارة GM والتحقق من الصلاحية وكلمات المرور وسجل المحاولات,rathena-master/npc/other/gm_npcs.txt,تحقق دون تعديل: المرجع الرسمي,مكتمل,38,المرحلة_259
 260,الأنظمة والخدمات,مرشد معارك النقابات ونقل الفرق إلى خمس خرائط PvP,rathena-master/npc/other/guildpvp.txt,تحقق دون تعديل: navi_npc_krpri.lub والمرجع الرسمي,مكتمل,18,المرحلة_260
 261,الأنظمة والخدمات,بطاقة النادي الرياضي وتدريب زيادة سعة حمل العناصر واستعادة أثر التدريب,rathena-master/npc/other/gympass.txt,تحقق دون تعديل: navi_npc_krpri.lub وskillinfolist.lub والمرجع الرسمي,مكتمل,77,المرحلة_261
+262,الألعاب والفعاليات,لعبة بينغو هويغل,rathena-master/npc/other/hugel_bingo.txt,rathena-master/npc/quests/quests_hugel.txt | rathena-master/npc/quests/quests_airship.txt | data/luafiles514/lua files/navigation/navi_npc_krpri.lub | System/LuaFiles514/itemInfo.lua,مكتمل,105,المرحلة_262

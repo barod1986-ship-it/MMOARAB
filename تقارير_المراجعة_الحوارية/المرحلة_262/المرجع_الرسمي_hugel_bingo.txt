@@ -22,11 +22,11 @@
 //= 1.9 Some optimization/standardization. [Euphy]
 //============================================================
 
-que_bingo,48,84,5	script	غرفة انتظار بينغو::Bingo Waiting Room	124,{
+que_bingo,48,84,5	script	Bingo Waiting Room	124,{
 	end;
 
 OnInit:
-	waitingroom "غرفة انتظار بينغو - 5 لاعبين",50,"Bingo Waiting Room::OnWarp",5,1000;
+	waitingroom "Bingo Waiting Room - 5 People",50,"Bingo Waiting Room::OnWarp",5,1000;
 	end;
 
 OnWarp:
@@ -45,7 +45,7 @@ OnStart:
 	end;
 }
 
-que_bingo,49,125,0	script	لوحة بينغو 1#bingo::plate1#bingo	139,1,1,{
+que_bingo,49,125,0	script	plate1#bingo	139,1,1,{
 
 OnInit:
 	disablenpc "plate1#bingo";
@@ -85,10 +85,10 @@ OnTouch:
 L_Fill:
 	set @bingo_fill,callfunc("Func_Bingo",@bingo_case);
 	if (!@bingo_fill) {
-		mes "أحد الأرقام التي أدخلتها";
-  		mes "خارج النطاق المسموح، أو";
-		mes "أنك أدخلت رقما مكررا.";
-		mes "يرجى إدخال الأرقام من جديد.";
+		mes "The numbers you have entered";
+  		mes "exceed the limit, or you have";
+		mes "already entered these numbers.";
+		mes "Please enter your numbers again.";
 		next;
 	} else if (@bingo_fill) {
 		if(@bingoplate[25] < 10) set @bingo_e5$,"0"+@bingoplate[25]+""; else set @bingo_e5$,@bingoplate[25];
@@ -104,12 +104,12 @@ L_Fill:
 	goto L_Fill;
 }
 
-que_bingo,53,121,0	duplicate(plate1#bingo)	لوحة بينغو 2#bingo::plate2#bingo	139,1,1
-que_bingo,51,116,0	duplicate(plate1#bingo)	لوحة بينغو 3#bingo::plate3#bingo	139,1,1
-que_bingo,46,116,0	duplicate(plate1#bingo)	لوحة بينغو 4#bingo::plate4#bingo	139,1,1
-que_bingo,45,121,0	duplicate(plate1#bingo)	لوحة بينغو 5#bingo::plate5#bingo	139,1,1
+que_bingo,53,121,0	duplicate(plate1#bingo)	plate2#bingo	139,1,1
+que_bingo,51,116,0	duplicate(plate1#bingo)	plate3#bingo	139,1,1
+que_bingo,46,116,0	duplicate(plate1#bingo)	plate4#bingo	139,1,1
+que_bingo,45,121,0	duplicate(plate1#bingo)	plate5#bingo	139,1,1
 
-que_bingo,51,51,0	script	بدء#bingo::start#bingo	139,{
+que_bingo,51,51,0	script	start#bingo	139,{
 
 OnStart:
 	initnpctimer;
@@ -126,23 +126,23 @@ OnEnter:
 	end;
 
 OnTimer1000:
-	mapannounce "que_bingo","يوكران: مرحبا بالجميع! أنا يوكران، مرشد لعبة بينغو~",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: Hello, everyone! I'm Eukran, your Bingo Guide~",1,0xFFAB54;
 	end;
 
 OnTimer6000:
-	mapannounce "que_bingo","يوكران: على المشاركين دخول بوابة الانتقال أسفل الساحة، ثم اختيار لوحة بينغو بإدخال رقم.",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: Game participants, please enter the Warp Portal at the bottom of your screen and choose a Bingo Plate by entering a number.",1,0xFFAB54;
 	end;
 
 OnTimer11000:
-	mapannounce "que_bingo","يوكران: يجب اختيار لوحات بينغو خلال 3 دقائق، وإلا ستلغى اللعبة.",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: All participants must choose their Bingo Plates within 3 minutes, or the game will be canceled.",1,0xFFAB54;
 	end;
 
 OnTimer192000:
-	mapannounce "que_bingo","يوكران: أدخل رقما خلال 5 ثوان، وإلا ستلغى اللعبة.",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: Please enter a number in 5 seconds, or the game will be canceled.",1,0xFFAB54;
 	end;
 
 OnTimer200000:
-	mapannounce "que_bingo","يوكران: عذرا، ألغيت اللعبة. عد لاحقا للاستمتاع بجولة أخرى من بينغو!",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: I'm sorry, but the game has been canceled. Please come again and enjoy a game of Bingo with us!",1,0xFFAB54;
 	end;
 
 OnTimer202000:
@@ -178,7 +178,7 @@ OnStart:
 	end;
 
 OnTimer2000:
-	mapannounce "que_bingo","يوكران: رائع، يبدو أن الجميع مستعدون~",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: Great, everyone seems to be ready~",1,0xFFAB54;
 	disablenpc "plate1#bingo";
 	disablenpc "plate2#bingo";
 	disablenpc "plate3#bingo";
@@ -187,7 +187,7 @@ OnTimer2000:
 	end;
 
 OnTimer5000:
-	mapannounce "que_bingo","يوكران: والآن، فلتبدأ اللعبة!",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: Now, let the game begin!",1,0xFFAB54;
 	setarray $@bingoarray[0],1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25;
 	set .@max_index, 24;
 	for(set .@i,0; .@i < 25; set .@i,.@i +1) {
@@ -199,7 +199,7 @@ OnTimer5000:
 	end;
 
 OnTimer8000:
-	mapannounce "que_bingo","يوكران: سأعلن أرقام بينغو تباعا. إذا أكملت 5 خطوط مستقيمة، في كل منها 5 أرقام مطابقة على لوحتك، فاكتب ''Bingo'' للفوز~",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: I'll announce the Bingo Numbers. If you get 5 lines by matching 5 Bingo Numbers in a straight line on your Bingo Plate, yell out ''Bingo'' to win~",1,0xFFAB54;
 	end;
 
 OnTimer10000:
@@ -262,15 +262,15 @@ OnTimer340000:
 	end;
 
 OnTimer440000:
-	mapannounce "que_bingo","يوكران: أعلنت جميع الأرقام المختارة، لكن لم يعلن أحد ''Bingo''.",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: I've announced all of the selected numbers, but I haven't heard anyone yell ''Bingo.''",1,0xFFAB54;
 	end;
 
 OnTimer445000:
-	mapannounce "que_bingo","يوكران: أمامكم 10 ثوان للتحقق من اللوحات. إذا لم يعلن أحد ''Bingo'' خلالها، فستنتهي اللعبة دون فائز.",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: I'll give you all 10 seconds to check if any of you have won. If no one can yell ''Bingo'' in 10 seconds, this game will end without a winner.",1,0xFFAB54;
 	end;
 
 OnTimer460000:
-	mapannounce "que_bingo","يوكران: عذرا، انتهت اللعبة دون فائز. شكرا لمشاركتكم جميعا~",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: I'm sorry, but this game has ended without a winner. Thanks for playing, everyone~",1,0xFFAB54;
 	donpcevent "1a#bingo::OnInit";
 	areawarp "que_bingo",44,115,54,126,"que_bingo",40,121;
 	set $@hu_bingoa,0;
@@ -448,26 +448,26 @@ OnTouch:
 	if(@bingoplate[5] == @bingoplate[10] && @bingoplate[5] == @bingoplate[15] && @bingoplate[5] == @bingoplate[20] && @bingoplate[5] == @bingoplate[25]) set @bingowin,@bingowin +1;
 	if(@bingoplate[1] == @bingoplate[7] && @bingoplate[1] == @bingoplate[13] && @bingoplate[1] == @bingoplate[19] && @bingoplate[1] == @bingoplate[25]) set @bingowin,@bingowin +1;
 	if(@bingoplate[5] == @bingoplate[9] && @bingoplate[5] == @bingoplate[13] && @bingoplate[5] == @bingoplate[17] && @bingoplate[5] == @bingoplate[21]) set @bingowin,@bingowin +1;
-	if($@bingoresult == 1 || $@bingoresult == 21) mes "[ السحب "+$@bingoresult+" - الرقم "+$bingo[$@bingoresult -1]+" ]";
-	else if($@bingoresult == 2 || $@bingoresult == 22) mes "[ السحب "+$@bingoresult+" - الرقم "+$bingo[$@bingoresult -1]+" ]";
-	else if($@bingoresult == 3 || $@bingoresult == 23) mes "[ السحب "+$@bingoresult+" - الرقم "+$bingo[$@bingoresult -1]+" ]";
-	else mes "[ السحب "+$@bingoresult+" - الرقم "+$bingo[$@bingoresult -1]+" ]"; 
+	if($@bingoresult == 1 || $@bingoresult == 21) mes "[ "+$@bingoresult+"st Number - "+$bingo[$@bingoresult -1]+" ]";
+	else if($@bingoresult == 2 || $@bingoresult == 22) mes "[ "+$@bingoresult+"nd Number - "+$bingo[$@bingoresult -1]+" ]";
+	else if($@bingoresult == 3 || $@bingoresult == 23) mes "[ "+$@bingoresult+"rd Number - "+$bingo[$@bingoresult -1]+" ]";
+	else mes "[ "+$@bingoresult+"th Number - "+$bingo[$@bingoresult -1]+" ]"; 
 	mes "["+@bingo_a1$+"] ["+@bingo_a2$+"] ["+@bingo_a3$+"] ["+@bingo_a4$+"] ["+@bingo_a5$+"]";
 	mes "["+@bingo_b1$+"] ["+@bingo_b2$+"] ["+@bingo_b3$+"] ["+@bingo_b4$+"] ["+@bingo_b5$+"]";
 	mes "["+@bingo_c1$+"] ["+@bingo_c2$+"] ["+@bingo_c3$+"] ["+@bingo_c4$+"] ["+@bingo_c5$+"]";
 	mes "["+@bingo_d1$+"] ["+@bingo_d2$+"] ["+@bingo_d3$+"] ["+@bingo_d4$+"] ["+@bingo_d5$+"]";
 	mes "["+@bingo_e1$+"] ["+@bingo_e2$+"] ["+@bingo_e3$+"] ["+@bingo_e4$+"] ["+@bingo_e5$+"]";
-	mes "[عدد الخطوط المكتملة: "+@bingowin+" ]";
+	mes "[Currently Finished Lines - "+@bingowin+" ]";
 	if ($@bingoresult > 15) {
 		if (@bingowin > 4) {
 			next;
-			mes "اكتملت خمسة خطوط على لوحتنا!";
-			mes "اكتب ^ff0000Bingo^000000!";
-			mes "ل-لقد اكتملت لدينا";
-			mes "خمسة خطوط بالفعل!";
-			mes "أسرع واكتب ''^FF0000Bingo^000000!''";
-			mes "تذكر، لديك";
-			mes "محاولة واحدة فقط لكتابتها!";
+			mes "We just have made 5 lines!";
+			mes "Say ^ff0000Bingo^000000!";
+			mes "W-we just matched";
+			mes "5 numbers in a row!";
+			mes "Quickly, say ''^FF0000Bingo^000000!''";
+			mes "Remember, you'll only";
+			mes "have one chance to say it!";
 			input @bingoyell$;
 			if (@bingoyell$ == "Bingo") {
 				if ($@hu_bingoa == 5) {
@@ -479,20 +479,20 @@ OnTouch:
 
 				} else if ($@hu_bingoa == 6) {
 					next;
-					mes "عذرا، لكن";
-					mes "أحدهم أعلن";
-					mes "''Bingo'' قبلك.";
-					mes "لقد فاتتك";
-					mes "الفرصة. حظا أوفر";
-					mes "في الجولة القادمة!";
+					mes "Oh no! I'm sorry, but";
+					mes "someone already yelled";
+					mes "''bingo'' before you did.";
+					mes "I'm sorry, but you missed";
+					mes "your chance! Better luck,";
+					mes "next time, alright?";
 					close;
 				}
 			} else {
 				next;
-				mes "عذرا،";
-				mes "لم تكتبها بالشكل الصحيح. في المرة القادمة،";
-				mes "تأكد من كتابة";
-				mes "الكلمة ''^FF0000Bingo^000000'' كما هي.";
+				mes "I'm sorry, but you";
+				mes "said it wrong. Next time,";
+				mes "make sure that you yell";
+				mes "out the word, ''^FF0000Bingo^000000,'' okay?";
 				close;
 			}
 		}
@@ -643,7 +643,7 @@ OnTimer1000:
 	end;
 }
 
-que_bingo,49,125,0	script	الفوز2a#bingo::win2a#bingo	139,1,1,{
+que_bingo,49,125,0	script	win2a#bingo	139,1,1,{
 	end;
 
 OnInit:
@@ -664,22 +664,22 @@ OnTouch:
 	end;
 
 OnTimer1000:
-	mapannounce "que_bingo","يوكران: رائع، Bingo! لدينا فائز!",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: Wow, Bingo! It's Bingo!",1,0xFFAB54;
 	end;
 
 OnTimer5000:
-	mapannounce "que_bingo","يوكران: "+$@bingowinner$+" أعلن Bingo!",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: "+$@bingowinner$+" has said Bingo!",1,0xFFAB54;
 	end;
 
 OnTimer10000:
 	if ($@bingoresult == 16)
-		mapannounce "que_bingo","يوكران: تهانينا، "+$@bingowinner$+"! ستحصل على 50 ميدالية مارفلوس.",1,0xFFAB54;
+		mapannounce "que_bingo","Eukran: Congratulations, "+$@bingowinner$+"! You will be rewarded with 50 Marvelous Medals.",1,0xFFAB54;
 	else
-		mapannounce "que_bingo","يوكران: تهانينا، "+$@bingowinner$+"! ستحصل على ميدالية مارفلوس واحدة.",1,0xFFAB54;
+		mapannounce "que_bingo","Eukran: Congratulations, "+$@bingowinner$+"! You will be rewarded with 1 Marvelous Medal.",1,0xFFAB54;
 	end;
 
 OnTimer15000:
-	mapannounce "que_bingo","يوكران: شكرا للجميع على المشاركة. نراكم في الجولة القادمة!",1,0xFFAB54;
+	mapannounce "que_bingo","Eukran: Thank you all for participating in the game. See you next time!",1,0xFFAB54;
 	end;
 
 OnTimer20000:
@@ -688,10 +688,10 @@ OnTimer20000:
 	end;
 }
 
-que_bingo,53,121,0	duplicate(win2a#bingo)	الفوز2b#bingo::win2b#bingo	139,1,1
-que_bingo,51,116,0	duplicate(win2a#bingo)	الفوز2c#bingo::win2c#bingo	139,1,1
-que_bingo,46,116,0	duplicate(win2a#bingo)	الفوز2d#bingo::win2d#bingo	139,1,1
-que_bingo,45,121,0	duplicate(win2a#bingo)	الفوز2e#bingo::win2e#bingo	139,1,1
+que_bingo,53,121,0	duplicate(win2a#bingo)	win2b#bingo	139,1,1
+que_bingo,51,116,0	duplicate(win2a#bingo)	win2c#bingo	139,1,1
+que_bingo,46,116,0	duplicate(win2a#bingo)	win2d#bingo	139,1,1
+que_bingo,45,121,0	duplicate(win2a#bingo)	win2e#bingo	139,1,1
 
 que_bingo,89,59,0	script	end#bingo	139,4,4,{
 	end;
@@ -720,7 +720,7 @@ OnTimer5000:
 	end;
 }
 
-que_bingo,49,125,0	script	النهاية1a#bingo::end1a#bingo	139,1,1,{
+que_bingo,49,125,0	script	end1a#bingo	139,1,1,{
 
 OnInit:
 	disablenpc "end1a#bingo";
@@ -736,12 +736,12 @@ OnTouch:
 	end;
 }
 
-que_bingo,53,121,0	duplicate(end1a#bingo)	النهاية1b#bingo::end1b#bingo	139,1,1
-que_bingo,51,116,0	duplicate(end1a#bingo)	النهاية1c#bingo::end1c#bingo	139,1,1
-que_bingo,46,116,0	duplicate(end1a#bingo)	النهاية1d#bingo::end1d#bingo	139,1,1
-que_bingo,45,121,0	duplicate(end1a#bingo)	النهاية1e#bingo::end1e#bingo	139,1,1
+que_bingo,53,121,0	duplicate(end1a#bingo)	end1b#bingo	139,1,1
+que_bingo,51,116,0	duplicate(end1a#bingo)	end1c#bingo	139,1,1
+que_bingo,46,116,0	duplicate(end1a#bingo)	end1d#bingo	139,1,1
+que_bingo,45,121,0	duplicate(end1a#bingo)	end1e#bingo	139,1,1
 
-que_bingo,50,138,1	script	الخروج3#bingo::out3#bingo	139,5,8,{
+que_bingo,50,138,1	script	out3#bingo	139,5,8,{
 
 OnInit:
 	disablenpc "out3#bingo";
@@ -752,7 +752,7 @@ OnTouch_:
 	end;
 }
 
-que_bingo,49,136,0	script	الدخول3#bingo::go3#bingo	45,1,1,{
+que_bingo,49,136,0	script	go3#bingo	45,1,1,{
 
 OnTouch_:
 	switch($@hu_bingob) {
@@ -861,7 +861,7 @@ function	script	Func_Bingo	{
 
 function	script	Func_BingoResult	{
 	.@num = getarg(0);
-	mapannounce "que_bingo","يوكران: السحب "+ callfunc("F_GetNumSuffix",.@num) +" هو الرقم "+ $bingo[.@num - 1] +". تحقق من لوحة بينغو.",4,0xFFAB54;
+	mapannounce "que_bingo","Eukran: The "+ callfunc("F_GetNumSuffix",.@num) +" number is "+ $bingo[.@num - 1] +". Please check your Bingo Plate.",4,0xFFAB54;
 	enablenpc .@num +"a#bingo";
 	enablenpc .@num +"b#bingo";
 	enablenpc .@num +"c#bingo";
@@ -871,100 +871,100 @@ function	script	Func_BingoResult	{
 	end;
 }
 
-que_bingo,49,31,4	script	مساعد صالة الألعاب#1::Arcade Helper#1	47,{
-	mes "[مساعد]";
-	mes "إذا أردت المشاركة في";
-	mes "لعبة بينغو،";
-	mes "فتقدم من هذا الطريق.";
+que_bingo,49,31,4	script	Arcade Helper#1	47,{
+	mes "[Helper]";
+	mes "If you'd like to play";
+	mes "a game of bingo, then";
+	mes "please proceed this way.";
 	close;
 }
-que_bingo,42,31,4	duplicate(Arcade Helper#1)	مساعد صالة الألعاب#2::Arcade Helper#2	66
+que_bingo,42,31,4	duplicate(Arcade Helper#1)	Arcade Helper#2	66
 
-que_bingo,54,17,5	script	مالك صالة الألعاب::Arcade Owner	712,{
-	mes "[مالك صالة الألعاب]";
-	mes "مرحبا بك في";
-	mes "صالة ألعاب بينغو.";
-	mes "هل ترغب في المشاركة في";
-	mes "جولة بينغو؟ إذا كانت لديك";
-	mes "أي أسئلة، فلا تتردد في السؤال.";
+que_bingo,54,17,5	script	Arcade Owner	712,{
+	mes "[Arcade Owner]";
+	mes "Welcome to the";
+	mes "Bingo Game Arcade.";
+	mes "Care to play a game of";
+	mes "bingo? If you have any";
+	mes "questions, feel free to ask.";
 	next;
-	switch(select("قواعد بينغو:غرفة اللعب:ميداليات مارفلوس")) {
+	switch(select("Rules for Bingo:Bingo Room:Marvelous Medals")) {
 	case 1:
-		mes "[مالك صالة الألعاب]";
-		mes "قواعد بينغو";
-		mes "بسيطة. أولا، ستحصل على لوحة";
-		mes "تتكون من 25 خانة مرتبة في";
-		mes "خمسة صفوف وخمسة";
-		mes "أعمدة. بعد ذلك، رقم";
-		mes "الخانات بأي ترتيب تختاره.";
+		mes "[Arcade Owner]";
+		mes "The rules for playing bingo";
+		mes "are simple. First, take a board";
+		mes "with 25 boxes organized so that";
+		mes "there are five rows and five";
+		mes "columns. Then, number the";
+		mes "boxes in any order you like.";
 		next;
-		mes "[مالك صالة الألعاب]";
-		mes "يجب استخدام";
-		mes "الأرقام من 1 إلى 25.";
-		mes "عندما تصبح لوحات بينغو";
-		mes "جاهزة، ستبدأ اللعبة.";
-		mes "سيعلن منسق اللعبة رقما عشوائيا من 1 إلى 25.";
+		mes "[Arcade Owner]";
+		mes "Of course, you must use";
+		mes "the numbers 1 through 25.";
+		mes "When everyone's bingo board";
+		mes "is ready, the game will begin.";
+		mes "Our game coordinator will call out a number from 1 to 25 at random.";
 		next;
-		mes "[مالك صالة الألعاب]";
-		mes "في كل مرة يعلن فيها المنسق";
-		mes "رقما، تحقق";
-		mes "من تحديد الخانة التي تحمل";
-		mes "الرقم المطابق على لوحة";
-		mes "بينغو. وهذه هي";
-		mes "شروط الفوز...";
+		mes "[Arcade Owner]";
+		mes "Each time the coordinator";
+		mes "calls out a number, make sure";
+		mes "that you mark the corresponding";
+		mes "numbered square on your bingo";
+		mes "board. Now, these are the";
+		mes "conditions for winning...";
 		next;
-		mes "[مالك صالة الألعاب]";
-		mes "إذا استطعت إكمال خمسة خطوط";
-		mes "من 5 خانات متتالية أفقيا أو عموديا أو قطريا، باستخدام";
-		mes "الأرقام التي أعلنها";
-		mes "المنسق، فأسرع واكتب";
-		mes "الكلمة ''Bingo''.";
+		mes "[Arcade Owner]";
+		mes "If you can make a line of";
+		mes "5 squares in a row, horizontally, vertically, or diagonally, using";
+		mes "the numbers called out by the";
+		mes "coordinator, you quickly yell";
+		mes "the word, ''Bingo.''";
 		next;
-		mes "[مالك صالة الألعاب]";
-		mes "إذا كنت أول من يكتب";
-		mes "الكلمة ''Bingo'' فستفوز!";
-		mes "أما إذا سبقك أحد";
-		mes "إلى ذلك، فستضيع الفرصة.";
-		mes "تكلفة المشاركة في كل";
-		mes "جولة بينغو هي 1,000 زيني~";
+		mes "[Arcade Owner]";
+		mes "If you are the first to yell";
+		mes "the word, ''Bingo,'' you'll";
+		mes "win! But if someone beats you";
+		mes "to it, then it can't be helped.";
+		mes "Anyway, it costs 1,000 zeny";
+		mes "to play each bingo game~";
 		close;
 	case 2:
-		mes "[مالك صالة الألعاب]";
-		mes "للانضمام إلى";
-		mes "جولة بينغو، ادخل من الباب";
-		mes "الأيمن. يلزم وجود";
-		mes "5 لاعبين على الأقل، لذلك";
-		mes "قد تضطر إلى الانتظار حتى";
-		mes "يكتمل العدد.";
+		mes "[Arcade Owner]";
+		mes "Ah, if you want to join a";
+		mes "bingo game, enter the right";
+		mes "door. There must be at least";
+		mes "5 people to play a game, so";
+		mes "you may need to wait until";
+		mes "that requirement is fulfilled.";
 		next;
-		mes "[مالك صالة الألعاب]";
-		mes "أما إذا أردت فقط";
-		mes "مشاهدة جولة بينغو،";
-		mes "فادخل من";
-		mes "الباب الأيسر بصفة متفرج";
-		mes "إلى غرفة بينغو.";
+		mes "[Arcade Owner]";
+		mes "If you just want to";
+		mes "watch the bingo game,";
+		mes "then you may enter the";
+		mes "left door as a spectator";
+		mes "in the Bingo Room.";
 		close;
 	case 3:
-		mes "[مالك صالة الألعاب]";
-		mes "عند الفوز في جولة";
-		mes "بينغو، ستحصل";
-		mes "على ''ميداليات مارفلوس''،";
-		mes "ولا يمكن استخدامها إلا داخل";
-		mes "هذه الصالة، ولا يمكن مبادلتها مع اللاعبين الآخرين.";
+		mes "[Arcade Owner]";
+		mes "When you win a bingo";
+		mes "game, you will be rewarded";
+		mes "with ''Marvelous Medals,''";
+		mes "which can only be used within";
+		mes "this arcade. You also can't trade medals with other players.";
 		next;
-		mes "[مالك صالة الألعاب]";
-		mes "ستحصل عادة على ميدالية";
-		mes "مارفلوس واحدة عند الفوز بجولة بينغو،";
-		mes "لكن يمكن الفوز بـ 50 ميدالية دفعة واحدة";
-		mes "في ظروف خاصة. ويمكنك";
-		mes "أيضا المشاركة في سباقات الوحوش";
-		mes "لكسب المزيد من الميداليات.";
+		mes "[Arcade Owner]";
+		mes "You usually get 1 Marvelous";
+		mes "Medal for winning a bingo game,";
+		mes "but you can win 50 at one time";
+		mes "under special conditions. You";
+		mes "can also play Monster Racing";
+		mes "games to win more medals.";
 		next;
-		mes "[مالك صالة الألعاب]";
-		mes "اجمع أكبر عدد ممكن من";
-		mes "ميداليات مارفلوس، ثم";
-		mes "استبدلها بجوائز في حلبة سباق الوحوش. سمعت أن هناك أيضا";
-		mes "مكانا في إينبروخ يمكن استخدامها فيه، لكنني لا أعرف التفاصيل.";
+		mes "[Arcade Owner]";
+		mes "Collect as many Marvelous";
+		mes "Medals as you can, and trade";
+		mes "them for products in the Monster Racing Arena. I hear there's also";
+		mes "a place in Einbroch where you can use them, but I wouldn't know.";
 		close;
 	}
 }

@@ -22,11 +22,11 @@
 //= 1.9 Some optimization/standardization. [Euphy]
 //============================================================
 
-que_bingo,48,84,5	script	غرفة انتظار بينغو::Bingo Waiting Room	124,{
+que_bingo,48,84,5	script	غرفة انتظار البينغو::Bingo Waiting Room	124,{
 	end;
 
 OnInit:
-	waitingroom "غرفة انتظار بينغو - 5 لاعبين",50,"Bingo Waiting Room::OnWarp",5,1000;
+	waitingroom "غرفة انتظار البينغو - 5 أشخاص",50,"Bingo Waiting Room::OnWarp",5,1000;
 	end;
 
 OnWarp:
@@ -45,7 +45,7 @@ OnStart:
 	end;
 }
 
-que_bingo,49,125,0	script	لوحة بينغو 1#bingo::plate1#bingo	139,1,1,{
+que_bingo,49,125,0	script	اللوحة1#bingo::plate1#bingo	139,1,1,{
 
 OnInit:
 	disablenpc "plate1#bingo";
@@ -85,10 +85,10 @@ OnTouch:
 L_Fill:
 	set @bingo_fill,callfunc("Func_Bingo",@bingo_case);
 	if (!@bingo_fill) {
-		mes "أحد الأرقام التي أدخلتها";
-  		mes "خارج النطاق المسموح، أو";
-		mes "أنك أدخلت رقما مكررا.";
-		mes "يرجى إدخال الأرقام من جديد.";
+		mes "الأرقام التي أدخلتها";
+  		mes "تتجاوز الحد، أو أنك";
+		mes "أدخلت هذه الأرقام من قبل.";
+		mes "يرجى إدخال أرقامك مرة أخرى.";
 		next;
 	} else if (@bingo_fill) {
 		if(@bingoplate[25] < 10) set @bingo_e5$,"0"+@bingoplate[25]+""; else set @bingo_e5$,@bingoplate[25];
@@ -104,10 +104,10 @@ L_Fill:
 	goto L_Fill;
 }
 
-que_bingo,53,121,0	duplicate(plate1#bingo)	لوحة بينغو 2#bingo::plate2#bingo	139,1,1
-que_bingo,51,116,0	duplicate(plate1#bingo)	لوحة بينغو 3#bingo::plate3#bingo	139,1,1
-que_bingo,46,116,0	duplicate(plate1#bingo)	لوحة بينغو 4#bingo::plate4#bingo	139,1,1
-que_bingo,45,121,0	duplicate(plate1#bingo)	لوحة بينغو 5#bingo::plate5#bingo	139,1,1
+que_bingo,53,121,0	duplicate(plate1#bingo)	اللوحة2#bingo::plate2#bingo	139,1,1
+que_bingo,51,116,0	duplicate(plate1#bingo)	اللوحة3#bingo::plate3#bingo	139,1,1
+que_bingo,46,116,0	duplicate(plate1#bingo)	اللوحة4#bingo::plate4#bingo	139,1,1
+que_bingo,45,121,0	duplicate(plate1#bingo)	اللوحة5#bingo::plate5#bingo	139,1,1
 
 que_bingo,51,51,0	script	بدء#bingo::start#bingo	139,{
 
@@ -126,23 +126,23 @@ OnEnter:
 	end;
 
 OnTimer1000:
-	mapannounce "que_bingo","يوكران: مرحبا بالجميع! أنا يوكران، مرشد لعبة بينغو~",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: مرحبا بالجميع! أنا يوكران، دليلكم في بينغو~",1,0xFFAB54;
 	end;
 
 OnTimer6000:
-	mapannounce "que_bingo","يوكران: على المشاركين دخول بوابة الانتقال أسفل الساحة، ثم اختيار لوحة بينغو بإدخال رقم.",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: أيها المشاركون في اللعبة، يرجى دخول بوابة الانتقال في أسفل الشاشة واختيار لوحة بينغو بإدخال رقم.",1,0xFFAB54;
 	end;
 
 OnTimer11000:
-	mapannounce "que_bingo","يوكران: يجب اختيار لوحات بينغو خلال 3 دقائق، وإلا ستلغى اللعبة.",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: يجب على جميع المشاركين اختيار لوحات بينغو الخاصة بهم خلال 3 دقائق، وإلا سيتم إلغاء اللعبة.",1,0xFFAB54;
 	end;
 
 OnTimer192000:
-	mapannounce "que_bingo","يوكران: أدخل رقما خلال 5 ثوان، وإلا ستلغى اللعبة.",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: يرجى إدخال رقم خلال 5 ثوان، وإلا سيتم إلغاء اللعبة.",1,0xFFAB54;
 	end;
 
 OnTimer200000:
-	mapannounce "que_bingo","يوكران: عذرا، ألغيت اللعبة. عد لاحقا للاستمتاع بجولة أخرى من بينغو!",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: أنا آسف، لكن اللعبة قد ألغيت. يرجى الحضور مرة أخرى والاستمتاع بلعبة بينغو معنا!",1,0xFFAB54;
 	end;
 
 OnTimer202000:
@@ -187,7 +187,7 @@ OnTimer2000:
 	end;
 
 OnTimer5000:
-	mapannounce "que_bingo","يوكران: والآن، فلتبدأ اللعبة!",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: والآن، لتبدأ اللعبة!",1,0xFFAB54;
 	setarray $@bingoarray[0],1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25;
 	set .@max_index, 24;
 	for(set .@i,0; .@i < 25; set .@i,.@i +1) {
@@ -199,7 +199,7 @@ OnTimer5000:
 	end;
 
 OnTimer8000:
-	mapannounce "que_bingo","يوكران: سأعلن أرقام بينغو تباعا. إذا أكملت 5 خطوط مستقيمة، في كل منها 5 أرقام مطابقة على لوحتك، فاكتب ''Bingo'' للفوز~",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: سأعلن أرقام بينغو. إذا حصلت على 5 خطوط بمطابقة 5 أرقام بينغو في خط مستقيم على لوحة بينغو الخاصة بك، فاصرخ ''بينغو'' للفوز~",1,0xFFAB54;
 	end;
 
 OnTimer10000:
@@ -262,15 +262,15 @@ OnTimer340000:
 	end;
 
 OnTimer440000:
-	mapannounce "que_bingo","يوكران: أعلنت جميع الأرقام المختارة، لكن لم يعلن أحد ''Bingo''.",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: لقد أعلنت كل الأرقام المختارة، لكنني لم أسمع أحدا يصرخ ''بينغو.''",1,0xFFAB54;
 	end;
 
 OnTimer445000:
-	mapannounce "que_bingo","يوكران: أمامكم 10 ثوان للتحقق من اللوحات. إذا لم يعلن أحد ''Bingo'' خلالها، فستنتهي اللعبة دون فائز.",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: سأمنحكم جميعا 10 ثوان للتحقق مما إذا كان أحدكم قد فاز. إذا لم يستطع أحد أن يصرخ ''بينغو'' خلال 10 ثوان، فستنتهي هذه اللعبة دون فائز.",1,0xFFAB54;
 	end;
 
 OnTimer460000:
-	mapannounce "que_bingo","يوكران: عذرا، انتهت اللعبة دون فائز. شكرا لمشاركتكم جميعا~",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: أنا آسف، لكن هذه اللعبة انتهت دون فائز. شكرا للعبكم جميعا~",1,0xFFAB54;
 	donpcevent "1a#bingo::OnInit";
 	areawarp "que_bingo",44,115,54,126,"que_bingo",40,121;
 	set $@hu_bingoa,0;
@@ -448,26 +448,26 @@ OnTouch:
 	if(@bingoplate[5] == @bingoplate[10] && @bingoplate[5] == @bingoplate[15] && @bingoplate[5] == @bingoplate[20] && @bingoplate[5] == @bingoplate[25]) set @bingowin,@bingowin +1;
 	if(@bingoplate[1] == @bingoplate[7] && @bingoplate[1] == @bingoplate[13] && @bingoplate[1] == @bingoplate[19] && @bingoplate[1] == @bingoplate[25]) set @bingowin,@bingowin +1;
 	if(@bingoplate[5] == @bingoplate[9] && @bingoplate[5] == @bingoplate[13] && @bingoplate[5] == @bingoplate[17] && @bingoplate[5] == @bingoplate[21]) set @bingowin,@bingowin +1;
-	if($@bingoresult == 1 || $@bingoresult == 21) mes "[ السحب "+$@bingoresult+" - الرقم "+$bingo[$@bingoresult -1]+" ]";
-	else if($@bingoresult == 2 || $@bingoresult == 22) mes "[ السحب "+$@bingoresult+" - الرقم "+$bingo[$@bingoresult -1]+" ]";
-	else if($@bingoresult == 3 || $@bingoresult == 23) mes "[ السحب "+$@bingoresult+" - الرقم "+$bingo[$@bingoresult -1]+" ]";
-	else mes "[ السحب "+$@bingoresult+" - الرقم "+$bingo[$@bingoresult -1]+" ]"; 
+	if($@bingoresult == 1 || $@bingoresult == 21) mes "[ الرقم "+$@bingoresult+" - "+$bingo[$@bingoresult -1]+" ]";
+	else if($@bingoresult == 2 || $@bingoresult == 22) mes "[ الرقم "+$@bingoresult+" - "+$bingo[$@bingoresult -1]+" ]";
+	else if($@bingoresult == 3 || $@bingoresult == 23) mes "[ الرقم "+$@bingoresult+" - "+$bingo[$@bingoresult -1]+" ]";
+	else mes "[ الرقم "+$@bingoresult+": "+$bingo[$@bingoresult -1]+" ]"; 
 	mes "["+@bingo_a1$+"] ["+@bingo_a2$+"] ["+@bingo_a3$+"] ["+@bingo_a4$+"] ["+@bingo_a5$+"]";
 	mes "["+@bingo_b1$+"] ["+@bingo_b2$+"] ["+@bingo_b3$+"] ["+@bingo_b4$+"] ["+@bingo_b5$+"]";
 	mes "["+@bingo_c1$+"] ["+@bingo_c2$+"] ["+@bingo_c3$+"] ["+@bingo_c4$+"] ["+@bingo_c5$+"]";
 	mes "["+@bingo_d1$+"] ["+@bingo_d2$+"] ["+@bingo_d3$+"] ["+@bingo_d4$+"] ["+@bingo_d5$+"]";
 	mes "["+@bingo_e1$+"] ["+@bingo_e2$+"] ["+@bingo_e3$+"] ["+@bingo_e4$+"] ["+@bingo_e5$+"]";
-	mes "[عدد الخطوط المكتملة: "+@bingowin+" ]";
+	mes "[الخطوط المكتملة حاليا: "+@bingowin+" ]";
 	if ($@bingoresult > 15) {
 		if (@bingowin > 4) {
 			next;
-			mes "اكتملت خمسة خطوط على لوحتنا!";
-			mes "اكتب ^ff0000Bingo^000000!";
-			mes "ل-لقد اكتملت لدينا";
-			mes "خمسة خطوط بالفعل!";
-			mes "أسرع واكتب ''^FF0000Bingo^000000!''";
-			mes "تذكر، لديك";
-			mes "محاولة واحدة فقط لكتابتها!";
+			mes "لقد أكملنا للتو 5 خطوط!";
+			mes "قل ^ff0000Bingo^000000!";
+			mes "ل-لقد طابقنا للتو";
+			mes "5 أرقام في صف واحد!";
+			mes "بسرعة، قل ''^FF0000Bingo^000000!''";
+			mes "تذكر، ستكون لديك";
+			mes "فرصة واحدة فقط لقولها!";
 			input @bingoyell$;
 			if (@bingoyell$ == "Bingo") {
 				if ($@hu_bingoa == 5) {
@@ -479,20 +479,20 @@ OnTouch:
 
 				} else if ($@hu_bingoa == 6) {
 					next;
-					mes "عذرا، لكن";
-					mes "أحدهم أعلن";
+					mes "يا للأسف! أنا آسف، لكن";
+					mes "شخصا ما صرخ";
 					mes "''Bingo'' قبلك.";
-					mes "لقد فاتتك";
-					mes "الفرصة. حظا أوفر";
-					mes "في الجولة القادمة!";
+					mes "أنا آسف، لكنك أضعت";
+					mes "فرصتك! حظا أوفر";
+					mes "في المرة القادمة، حسنا؟";
 					close;
 				}
 			} else {
 				next;
-				mes "عذرا،";
-				mes "لم تكتبها بالشكل الصحيح. في المرة القادمة،";
-				mes "تأكد من كتابة";
-				mes "الكلمة ''^FF0000Bingo^000000'' كما هي.";
+				mes "أنا آسف، لكنك";
+				mes "قلتها بشكل خاطئ. في المرة القادمة،";
+				mes "تأكد من أن تصرخ";
+				mes "بالكلمة، ''^FF0000Bingo^000000،'' حسنا؟";
 				close;
 			}
 		}
@@ -664,22 +664,22 @@ OnTouch:
 	end;
 
 OnTimer1000:
-	mapannounce "que_bingo","يوكران: رائع، Bingo! لدينا فائز!",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: واو، بينغو! إنها بينغو!",1,0xFFAB54;
 	end;
 
 OnTimer5000:
-	mapannounce "que_bingo","يوكران: "+$@bingowinner$+" أعلن Bingo!",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: "+$@bingowinner$+" قال بينغو!",1,0xFFAB54;
 	end;
 
 OnTimer10000:
 	if ($@bingoresult == 16)
-		mapannounce "que_bingo","يوكران: تهانينا، "+$@bingowinner$+"! ستحصل على 50 ميدالية مارفلوس.",1,0xFFAB54;
+		mapannounce "que_bingo","يوكران: تهانينا، "+$@bingowinner$+"! ستتم مكافأتك بـ 50 ميدالية مارفلوس.",1,0xFFAB54;
 	else
-		mapannounce "que_bingo","يوكران: تهانينا، "+$@bingowinner$+"! ستحصل على ميدالية مارفلوس واحدة.",1,0xFFAB54;
+		mapannounce "que_bingo","يوكران: تهانينا، "+$@bingowinner$+"! ستتم مكافأتك بميدالية مارفلوس واحدة.",1,0xFFAB54;
 	end;
 
 OnTimer15000:
-	mapannounce "que_bingo","يوكران: شكرا للجميع على المشاركة. نراكم في الجولة القادمة!",1,0xFFAB54;
+	mapannounce "que_bingo","يوكران: شكرا لكم جميعا على المشاركة في اللعبة. أراكم في المرة القادمة!",1,0xFFAB54;
 	end;
 
 OnTimer20000:
@@ -861,7 +861,7 @@ function	script	Func_Bingo	{
 
 function	script	Func_BingoResult	{
 	.@num = getarg(0);
-	mapannounce "que_bingo","يوكران: السحب "+ callfunc("F_GetNumSuffix",.@num) +" هو الرقم "+ $bingo[.@num - 1] +". تحقق من لوحة بينغو.",4,0xFFAB54;
+	mapannounce "que_bingo","يوكران: الرقم "+ callfunc("F_GetNumSuffix",.@num) +" هو "+ $bingo[.@num - 1] +". يرجى التحقق من لوحة بينغو الخاصة بك.",4,0xFFAB54;
 	enablenpc .@num +"a#bingo";
 	enablenpc .@num +"b#bingo";
 	enablenpc .@num +"c#bingo";
@@ -873,9 +873,9 @@ function	script	Func_BingoResult	{
 
 que_bingo,49,31,4	script	مساعد صالة الألعاب#1::Arcade Helper#1	47,{
 	mes "[مساعد]";
-	mes "إذا أردت المشاركة في";
+	mes "إذا أردت لعب";
 	mes "لعبة بينغو،";
-	mes "فتقدم من هذا الطريق.";
+	mes "فيرجى التقدم من هذا الطريق.";
 	close;
 }
 que_bingo,42,31,4	duplicate(Arcade Helper#1)	مساعد صالة الألعاب#2::Arcade Helper#2	66
@@ -883,88 +883,88 @@ que_bingo,42,31,4	duplicate(Arcade Helper#1)	مساعد صالة الألعاب#
 que_bingo,54,17,5	script	مالك صالة الألعاب::Arcade Owner	712,{
 	mes "[مالك صالة الألعاب]";
 	mes "مرحبا بك في";
-	mes "صالة ألعاب بينغو.";
-	mes "هل ترغب في المشاركة في";
-	mes "جولة بينغو؟ إذا كانت لديك";
+	mes "صالة لعبة بينغو.";
+	mes "هل ترغب في لعب";
+	mes "لعبة بينغو؟ إذا كانت لديك";
 	mes "أي أسئلة، فلا تتردد في السؤال.";
 	next;
-	switch(select("قواعد بينغو:غرفة اللعب:ميداليات مارفلوس")) {
+	switch(select("قواعد بينغو:غرفة بينغو:ميداليات مارفلوس")) {
 	case 1:
 		mes "[مالك صالة الألعاب]";
-		mes "قواعد بينغو";
-		mes "بسيطة. أولا، ستحصل على لوحة";
-		mes "تتكون من 25 خانة مرتبة في";
-		mes "خمسة صفوف وخمسة";
-		mes "أعمدة. بعد ذلك، رقم";
-		mes "الخانات بأي ترتيب تختاره.";
+		mes "قواعد لعب بينغو";
+		mes "بسيطة. أولا، خذ لوحة";
+		mes "تحتوي على 25 خانة منظمة بحيث";
+		mes "تكون هناك خمسة صفوف وخمسة";
+		mes "أعمدة. ثم، رقم";
+		mes "الخانات بأي ترتيب تريده.";
 		next;
 		mes "[مالك صالة الألعاب]";
-		mes "يجب استخدام";
+		mes "بالطبع، يجب أن تستخدم";
 		mes "الأرقام من 1 إلى 25.";
-		mes "عندما تصبح لوحات بينغو";
-		mes "جاهزة، ستبدأ اللعبة.";
-		mes "سيعلن منسق اللعبة رقما عشوائيا من 1 إلى 25.";
+		mes "عندما تكون لوحة بينغو";
+		mes "الخاصة بكل شخص جاهزة، ستبدأ اللعبة.";
+		mes "سينادي منسق اللعبة لدينا رقما عشوائيا من 1 إلى 25.";
 		next;
 		mes "[مالك صالة الألعاب]";
-		mes "في كل مرة يعلن فيها المنسق";
-		mes "رقما، تحقق";
-		mes "من تحديد الخانة التي تحمل";
-		mes "الرقم المطابق على لوحة";
-		mes "بينغو. وهذه هي";
+		mes "في كل مرة ينادي فيها المنسق";
+		mes "رقما، تأكد";
+		mes "من تحديد الخانة المرقمة";
+		mes "المطابقة على لوحة";
+		mes "بينغو الخاصة بك. والآن، هذه هي";
 		mes "شروط الفوز...";
 		next;
 		mes "[مالك صالة الألعاب]";
-		mes "إذا استطعت إكمال خمسة خطوط";
-		mes "من 5 خانات متتالية أفقيا أو عموديا أو قطريا، باستخدام";
-		mes "الأرقام التي أعلنها";
-		mes "المنسق، فأسرع واكتب";
-		mes "الكلمة ''Bingo''.";
+		mes "إذا استطعت تكوين خط";
+		mes "من 5 خانات متتالية، أفقيا أو عموديا أو قطريا، باستخدام";
+		mes "الأرقام التي نادى بها";
+		mes "المنسق، فاسرع واصرخ";
+		mes "بالكلمة، ''Bingo.''";
 		next;
 		mes "[مالك صالة الألعاب]";
-		mes "إذا كنت أول من يكتب";
-		mes "الكلمة ''Bingo'' فستفوز!";
-		mes "أما إذا سبقك أحد";
-		mes "إلى ذلك، فستضيع الفرصة.";
-		mes "تكلفة المشاركة في كل";
-		mes "جولة بينغو هي 1,000 زيني~";
+		mes "إذا كنت أول من يصرخ";
+		mes "بالكلمة، ''Bingo،'' فستفوز!";
+		mes "لكن إذا سبقك أحدهم";
+		mes "إلى ذلك، فلا حيلة في الأمر.";
+		mes "على أي حال، تكلفة لعب كل";
+		mes "لعبة بينغو هي 1,000 زيني~";
 		close;
 	case 2:
 		mes "[مالك صالة الألعاب]";
-		mes "للانضمام إلى";
-		mes "جولة بينغو، ادخل من الباب";
-		mes "الأيمن. يلزم وجود";
-		mes "5 لاعبين على الأقل، لذلك";
-		mes "قد تضطر إلى الانتظار حتى";
-		mes "يكتمل العدد.";
+		mes "آه، إذا أردت الانضمام إلى";
+		mes "لعبة بينغو، فادخل من الباب";
+		mes "الأيمن. يجب أن يكون هناك على الأقل";
+		mes "5 أشخاص للعب، لذلك";
+		mes "قد تحتاج إلى الانتظار حتى";
+		mes "يكتمل هذا الشرط.";
 		next;
 		mes "[مالك صالة الألعاب]";
-		mes "أما إذا أردت فقط";
-		mes "مشاهدة جولة بينغو،";
-		mes "فادخل من";
-		mes "الباب الأيسر بصفة متفرج";
-		mes "إلى غرفة بينغو.";
+		mes "إذا كنت تريد فقط";
+		mes "مشاهدة لعبة بينغو،";
+		mes "فيمكنك دخول";
+		mes "الباب الأيسر كمتفرج";
+		mes "في غرفة بينغو.";
 		close;
 	case 3:
 		mes "[مالك صالة الألعاب]";
-		mes "عند الفوز في جولة";
-		mes "بينغو، ستحصل";
-		mes "على ''ميداليات مارفلوس''،";
-		mes "ولا يمكن استخدامها إلا داخل";
-		mes "هذه الصالة، ولا يمكن مبادلتها مع اللاعبين الآخرين.";
+		mes "عندما تفوز في لعبة";
+		mes "بينغو، ستتم مكافأتك";
+		mes "بـ ''ميداليات مارفلوس،''";
+		mes "والتي لا يمكن استخدامها إلا داخل";
+		mes "هذه الصالة. كما لا يمكنك تبادل الميداليات مع اللاعبين الآخرين.";
 		next;
 		mes "[مالك صالة الألعاب]";
-		mes "ستحصل عادة على ميدالية";
-		mes "مارفلوس واحدة عند الفوز بجولة بينغو،";
-		mes "لكن يمكن الفوز بـ 50 ميدالية دفعة واحدة";
-		mes "في ظروف خاصة. ويمكنك";
-		mes "أيضا المشاركة في سباقات الوحوش";
-		mes "لكسب المزيد من الميداليات.";
+		mes "عادة تحصل على ميدالية";
+		mes "مارفلوس واحدة عند الفوز بلعبة بينغو،";
+		mes "لكن يمكنك الفوز بـ 50 ميدالية دفعة واحدة";
+		mes "في ظروف خاصة. يمكنك";
+		mes "أيضا لعب ألعاب سباق الوحوش";
+		mes "للفوز بمزيد من الميداليات.";
 		next;
 		mes "[مالك صالة الألعاب]";
 		mes "اجمع أكبر عدد ممكن من";
-		mes "ميداليات مارفلوس، ثم";
-		mes "استبدلها بجوائز في حلبة سباق الوحوش. سمعت أن هناك أيضا";
-		mes "مكانا في إينبروخ يمكن استخدامها فيه، لكنني لا أعرف التفاصيل.";
+		mes "ميداليات مارفلوس، وقم";
+		mes "بمبادلتها بمنتجات في حلبة سباق الوحوش. سمعت أن هناك أيضا";
+		mes "مكانا في أينبروخ يمكنك استخدامها فيه، لكنني لا أعرف.";
 		close;
 	}
 }
