@@ -1,0 +1,14 @@
+{
+  "baseline_stage": 292,
+  "cumulative_changes": 65775,
+  "npc_reviewed": 293,
+  "npc_total": 555,
+  "quests_completed": 88,
+  "quests_total": 88,
+  "next_file": "rathena-master/npc/pre-re/guides/guides_lighthalzen.txt",
+  "files": 1939,
+  "bytes": 70076125,
+  "glossary_terms": 378,
+  "glossary_conflicts_resolved": 3,
+  "historical_reports_imported": false
+}

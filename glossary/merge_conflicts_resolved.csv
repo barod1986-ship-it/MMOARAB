@@ -1,0 +1,4 @@
+english,canonical_arabic,category_or_context,source_stages,arabic_aliases,status,decision_note
+Airship,منطاد,وسيلة نقل بحسب سياق المركبة أو الخط,8;9;13,منطاد / خط المناطيد,resolved_initial_merge,الاسم القياسي منطاد وتستخدم عبارة خط المناطيد عند الإشارة إلى شبكة النقل.
+Blessing,بركة,مهارة أو بركة عامة,1;16,مهارة البركة,resolved_initial_merge,تستخدم مهارة البركة فقط عندما يقتضي السياق تمييز اسم المهارة.
+Squid Ink,حبر الحبار,عنصر ومتطلب تعلم لغة ووتان,23;28,حبر حبار,resolved_initial_merge,الصيغة الاسمية القياسية للعنصر هي حبر الحبار.
