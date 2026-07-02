@@ -15,6 +15,9 @@
   "total_npc_files": 555,
   "cycle_cumulative_changes": 0,
   "glossary_update_required_every_stage": true,
+  "fixed_terms_required": true,
+  "protected_tokens_required": true,
+  "style_guide_required": true,
   "cross_file_sync_required": true,
   "translation_correction_required": true,
   "baseline_import_complete": false,
@@ -26,7 +29,7 @@
     "completed_quest_files": 88,
     "total_quest_files": 88
   },
-  "validation": "static, structural, linguistic and cross-file synchronization",
+  "validation": "static, structural, linguistic, fixed terminology, protected tokens and cross-file synchronization",
   "encoding_policy": "preserve original bytes and line endings",
   "updated_at": "2026-07-03"
 }
