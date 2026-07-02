@@ -1,7 +1,0 @@
-﻿النوع,المسار/المصدر,النتيجة,البصمة
-المرجع الإنجليزي الداخلي,rathena-master/npc_EN/other/hugel_bingo.txt,مطابق للمرجع الرسمي,4a3d2cf741aa20a536b1e4369c560f84baf33dae
-المرجع الرسمي الحالي,rathena/rathena:npc/other/hugel_bingo.txt,تمت المطابقة البايتية,4a3d2cf741aa20a536b1e4369c560f84baf33dae
-ملف مرتبط,rathena-master/npc/quests/quests_hugel.txt,فُحص اسم يوكران دون تعديل,
-ملف مرتبط,rathena-master/npc/quests/quests_airship.txt,فُحص اسم يوكران دون تعديل,
-ملف مرتبط,data/luafiles514/lua files/navigation/navi_npc_krpri.lub,فُحصت تسمية يوكران دون تعديل,
-ملف مرتبط,System/LuaFiles514/itemInfo.lua,فُحص المعرف 7515 وميدالية مارفلوس دون تعديل,
