@@ -1,7 +1,7 @@
 {
   "project": "MMOARAB Ragnarok Online Arabic Translation",
   "repository": "barod1986-ship-it/MMOARAB",
-  "source_branch": "translation-project-setup",
+  "source_branch": "main",
   "last_completed_stage": 267,
   "last_completed_file": "rathena-master/npc/other/monster_race.txt",
   "next_stage": 268,
