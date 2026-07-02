@@ -1,10 +1,6 @@
 {
-  "snapshot": "clean stage 292 content used as the source baseline for review cycle 2",
-  "legacy_stage": 292,
-  "legacy_cumulative_changes": 65775,
-  "legacy_npc_reviewed": 293,
+  "snapshot": "clean baseline content used as the source for review cycle 2",
   "npc_total": 555,
-  "legacy_quests_completed": 88,
   "quests_total": 88,
   "game_source_files": 1923,
   "game_source_bytes": 69619019,
