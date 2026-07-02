@@ -1,0 +1,22 @@
+{
+  "project": "MMOARAB Ragnarok Online Arabic Translation",
+  "repository": "barod1986-ship-it/MMOARAB",
+  "source_branch": "translation-project-setup",
+  "last_completed_stage": 267,
+  "last_completed_file": "rathena-master/npc/other/monster_race.txt",
+  "next_stage": 268,
+  "next_file": "rathena-master/npc/other/msg_boards.txt",
+  "reviewed_npc_files": 268,
+  "total_npc_files": 555,
+  "remaining_npc_files": 259,
+  "completed_quest_files": 88,
+  "total_quest_files": 88,
+  "excluded_files": 28,
+  "cumulative_changes": 64155,
+  "latest_delivery_sha256": "31b880dcbf7c8adb2b350cad6ba348d7d4ca243dfcbc0140b848a427b0a3fb0e",
+  "latest_delivery_name": "ترجمة_موحدة_المراجعة_الحوارية_المرحلة_267_مع_ملف_التتبع.zip",
+  "runtime_test": false,
+  "validation": "static and structural",
+  "encoding_policy": "preserve original bytes and line endings",
+  "updated_at": "2026-07-02"
+}

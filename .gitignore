@@ -1,0 +1,35 @@
+# Full delivery packages and backups
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+
+# Generated spreadsheet trackers are stored outside Git or in Releases
+*.xlsx
+*.xls
+
+# Historical stage reports are not part of the working source
+تقارير_المراجعة_الحوارية/المرحلة_*/
+reports/stages/
+
+# Temporary and backup files
+*.bak
+*.tmp
+*.temp
+*.old
+*~
+Thumbs.db
+.DS_Store
+__pycache__/
+*.pyc
+
+# Editor folders
+.vscode/
+.idea/
+
+# Local export and verification output
+git-export/
+build/
+dist/
+verification/
