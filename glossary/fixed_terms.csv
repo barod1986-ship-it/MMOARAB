@@ -1,0 +1,77 @@
+english,canonical_arabic,category
+Novice,مبتدئ,job
+High Novice,مبتدئ متقدم,job
+Super Novice,مبتدئ خارق,job
+Swordsman,سياف,job
+Mage,ساحر,job
+Wizard,ساحر عظيم,job
+High Wizard,ساحر متقدم,job
+Acolyte,مريد,job
+Priest,كاهن,job
+High Priest,كاهن متقدم,job
+Monk,راهب,job
+Champion,بطل,job
+Archer,رامي,job
+Hunter,صياد,job
+Sniper,قناص,job
+Bard,شاعر,job
+Clown,مهرج,job
+Dancer,راقصة,job
+Gypsy,غجرية,job
+Merchant,تاجر,job
+Blacksmith,حداد,job
+Whitesmith,سيد الحدادين,job
+Alchemist,خيميائي,job
+Creator,مبتكر,job
+Thief,لص,job
+Rogue,مارق,job
+Stalker,متعقب,job
+Assassin,مغتال,job
+Assassin Cross,سيد المغتالين,job
+Knight,فارس,job
+Lord Knight,سيد الفرسان,job
+Crusader,فارس صليبي,job
+Paladin,فارس مقدس,job
+Sage,حكيم,job
+Professor,أستاذ,job
+Soul Linker,رابط الأرواح,job
+Gunslinger,رامي مسدسات,job
+Ninja,نينجا,job
+TaeKwon Kid,فتى التايكون,job
+Taekwon Master,سيد التايكون,job
+Zeny,زيني,general
+Kafra,كافرا,general
+Class / Job,الوظيفة,general
+Jobs,الوظائف,general
+Level,المستوى,general
+Base Level,مستوى القاعدة,general
+Job Level,مستوى الوظيفة,general
+Weight,الوزن,general
+Skill,مهارة,general
+Item,عنصر,general
+Monster,وحش,general
+Boss,زعيم,general
+Plant,نباتي,monster_type
+Dragon,تنين,monster_type
+Undead,غير ميت,monster_type
+Demi-Human / Demihuman,شبه بشري,monster_type
+Demon,شيطاني,monster_type
+Shadow,ظل,monster_type
+Angel,ملاك,monster_type
+Brute,وحشي,monster_type
+Fish,سمكي,monster_type
+Insect,حشرة,monster_type
+Formless,بلا شكل,monster_type
+Turn Undead,طرد الموتى,skill_or_status
+Stun,صعق,skill_or_status
+Blind,عمى,skill_or_status
+Poison,تسمم,skill_or_status
+Frozen,تجمد,skill_or_status
+Divine Protection,الحماية الإلهية,skill_or_status
+Demon Bane,قهر الشياطين,skill_or_status
+Decrease AGI,خفض AGI,skill_or_status
+Increase AGI,زيادة AGI,skill_or_status
+Signum Crucis,علامة الصليب,skill_or_status
+Pneuma,نيوما,skill_or_status
+Ruwach,رواخ,skill_or_status
+Teleport,انتقال,skill_or_status
