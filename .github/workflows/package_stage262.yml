@@ -1,0 +1,44 @@
+name: Package stage 262
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out merged main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Build complete package
+        shell: bash
+        run: |
+          set -euo pipefail
+          PACKAGE="$RUNNER_TEMP/ترجمة_موحدة_المراجعة_الحوارية_المرحلة_262_مع_ملف_التتبع.zip"
+          EXCEL="$RUNNER_TEMP/ملف_تتبع_المراجعة_الحوارية_حتى_المرحلة_262.xlsx"
+          HASH="$RUNNER_TEMP/SHA256_المرحلة_262.txt"
+          git archive --format=zip --output="$PACKAGE" HEAD
+          cp "تقارير_المراجعة_الحوارية/ملف_تتبع_المراجعة_الحوارية_حتى_المرحلة_262.xlsx" "$EXCEL"
+          cd "$RUNNER_TEMP"
+          sha256sum "ترجمة_موحدة_المراجعة_الحوارية_المرحلة_262_مع_ملف_التتبع.zip" > "SHA256_المرحلة_262.txt"
+          test -s "$PACKAGE"
+          test -s "$EXCEL"
+          test -s "$HASH"
+
+      - name: Upload package and tracker
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage-262-final-package
+          path: |
+            ${{ runner.temp }}/ترجمة_موحدة_المراجعة_الحوارية_المرحلة_262_مع_ملف_التتبع.zip
+            ${{ runner.temp }}/ملف_تتبع_المراجعة_الحوارية_حتى_المرحلة_262.xlsx
+            ${{ runner.temp }}/SHA256_المرحلة_262.txt
+          if-no-files-found: error
