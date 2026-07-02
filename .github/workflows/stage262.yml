@@ -23,6 +23,8 @@ jobs:
           ref: stage-262-hugel-bingo-review
       - name: Apply review and generate reports
         run: python3 tools/apply_stage_262.py
+      - name: Correct package comparison metadata
+        run: python3 tools/fix_stage262_reports.py
       - name: Upload generated deliverables
         if: always()
         uses: actions/upload-artifact@v4
@@ -36,4 +38,4 @@ jobs:
             تقارير_المراجعة_الحوارية/00_متابعة_المراجعة_الحوارية.md
             تقارير_المراجعة_الحوارية/المرحلة_262
             تقارير_المراجعة_الحوارية/ملف_تتبع_المراجعة_الحوارية_حتى_المرحلة_262.xlsx
-          if-no-files-found: warn
+          if-no-files-found: error
