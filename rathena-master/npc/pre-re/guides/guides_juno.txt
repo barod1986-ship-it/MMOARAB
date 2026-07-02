@@ -1,0 +1,118 @@
+//===== rAthena Script =======================================
+//= Juno Guides
+//===== By: ==================================================
+//= KitsuneStarwind, usul, kobra_k88; L0ne_W0lf
+//===== Current Version: =====================================
+//= 1.7
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Guides for the City of Juno
+//===== Additional Comments: =================================
+//= Edited Miss Yoon text. Added town soldiers by usul. Edited town soldiers
+//= and added map location option for them. [kobra_k88]
+//= 1.1 Changed sprites and cutins to Schwarzwald Republic ones
+//= 1.2 Optimized, updated common guide names [Lupus]
+//= 1.3 Updated the mini map localization function. [Musashiden]
+//= 1.4 Juno Guides are now up to date according to iRO. [Musashiden]
+//= 1.5 Removed Duplicates [Silent].
+//= 1.6 Changed one of the Juno soldier's sprite. [Musashiden]
+//= 1.7 Rescripted to official 10.3 standards. [L0ne_W0lf]
+//============================================================
+
+yuno,153,47,4	script	مرشد يونو#yuno::Juno Guide#yuno	700,{
+	mes "[الآنسة يون]";
+	mes "مكان يستشرف المستقبل";
+	mes "ويجسده في الحاضر. مرحبا بك في مدينة يونو!";
+	next;
+	switch(select("مستودع الأسلحة:متجر الأدوات:قلعة الحكماء (مكان تغيير الوظيفة إلى حكيم):شارع المكتبات:ساحة جوفيرو:مكتبة الجمهورية:أكاديمية شويخربيل للسحر:متحف الوحوش:ورشة الحدادة:مطار يونو:إنهاء المحادثة")) {
+	case 1:
+		viewpoint 1,120,138,0,0xFF3355;
+		mes "[الآنسة يون]";
+		mes "ستجد مستودع الأسلحة";
+		mes "محددا على الخريطة المصغرة.";
+		mes "^FF3355+^000000 -> مستودع الأسلحة";
+		mes "أتمنى لك";
+		mes "يوما طيبا.";
+		close;
+	case 2:
+		viewpoint 1,193,142,1,0x3355FF;
+		mes "[الآنسة يون]";
+		mes "ستجد متجر الأدوات";
+		mes "محددا على الخريطة المصغرة.";
+		mes "^3355FF+^000000 -> متجر الأدوات";
+		mes "أتمنى لك";
+		mes "يوما طيبا.";
+		close;
+	case 3:
+		viewpoint 1,90,318,2,0x33FF55;
+		mes "[الآنسة يون]";
+		mes "ستجد قلعة الحكماء";
+		mes "محددة على الخريطة المصغرة.";
+		mes "^33FF55+^000000 -> قلعة الحكماء";
+		mes "(مكان تغيير الوظيفة إلى حكيم)";
+		mes "أتمنى لك يوما طيبا.";
+		close;
+	case 4:
+		viewpoint 1,257,102,3,0xFF3355;
+		mes "[الآنسة يون]";
+		mes "ستجد شارع المكتبات";
+		mes "محددا على الخريطة المصغرة.";
+		mes "^FF3355+^000000 -> شارع المكتبات";
+		mes "أتمنى لك يوما طيبا.";
+		close;
+	case 5:
+		viewpoint 1,157,170,4,0x3355FF;
+		mes "[الآنسة يون]";
+		mes "ستجد ساحة جوفيرو";
+		mes "محددة على الخريطة المصغرة.";
+		mes "^3355FF+^000000 -> ساحة جوفيرو";
+		mes "أتمنى لك";
+		mes "يوما طيبا.";
+		close;
+	case 6:
+		viewpoint 1,336,204,5,0x33FF55;
+		mes "[الآنسة يون]";
+		mes "ستجد مكتبة الجمهورية";
+		mes "محددة على الخريطة المصغرة.";
+		mes "^33FF55+^000000 -> مكتبة الجمهورية";
+		mes "أتمنى لك يوما طيبا.";
+		close;
+	case 7:
+		viewpoint 1,323,281,6,0xFF3355;
+		mes "[الآنسة يون]";
+		mes "ستجد الأكاديمية محددة على الخريطة المصغرة.";
+		mes "^FF3355+^000000 -> أكاديمية شويخربيل للسحر";
+		mes "أتمنى لك يوما طيبا.";
+		close;
+	case 8:
+		viewpoint 1,278,288,7,0x3355FF;
+		mes "[الآنسة يون]";
+		mes "ستجد متحف الوحوش محددا على الخريطة المصغرة.";
+		mes "^3355FF+^000000 -> متحف الوحوش";
+		mes "أتمنى لك يوما طيبا.";
+		close;
+	case 9:
+		viewpoint 1,120,138,8,0xFF3355;
+		mes "[الآنسة يون]";
+		mes "ستجد ورشة الحدادة محددة على الخريطة المصغرة.";
+		mes "^FF3355+^000000 -> ورشة الحدادة";
+		mes "تقع ورشة الحدادة أسفل مستودع الأسلحة.";
+		mes "أتمنى لك يوما طيبا.";
+		close;
+	case 10:
+		viewpoint 1,53,214,9,0xFF3355;
+		mes "[الآنسة يون]";
+		mes "ستجد مطار يونو محددا على الخريطة المصغرة.";
+		mes "^FF3355+^000000 -> مطار يونو";
+		mes "أتمنى لك يوما طيبا.";
+		close;
+	case 11:
+		mes "[الآنسة يون]";
+		mes "يونو مدينة الحكماء العظيمة،";
+		mes "ومدينة المعرفة.";
+		mes "مرحبا بك في يونو.";
+		close;
+	}
+}

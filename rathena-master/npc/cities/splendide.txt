@@ -1,0 +1,831 @@
+//===== rAthena Script =======================================
+//= Splendide Town
+//===== By: ==================================================
+//= L0ne_W0lf
+//===== Current Version: =====================================
+//= 1.2
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Town-specific NPCs for Splendide.
+//===== Additional Comments: =================================
+//= 1.0 First Version.
+//= 1.1 Added more town NPCs
+//= 1.2 Added more town NPCs
+//============================================================
+
+// cat_enhance
+splendide,218,193,3	script	جنية#ep13_1::Fairy#ep13_1	441,{
+	if (isequipped(2782) == 1) {
+		mes "[جنية مرهقة]";
+		mes "تمهل، لا تقترب أكثر. لا أحتمل رائحتك؛ إنها تصيبني بالدوار.";
+		close;
+	}
+	else {
+		mes "[جنية مرهقة]";
+		mes "OdesKoUor Ko NuffSharUden Ko CyaVenah An NudNuffser An KoRivehAdor Mu LarseorAnu O DorNe";
+		close;
+	}
+}
+
+splendide,180,223,3	script	جنية#ep13_2::Fairy#ep13_2	440,{
+	if (isequipped(2782) == 1) {
+		mes "[كالوا]";
+		mes "لا تبدو راقيا، لكنك أفضل في نظري من أولئك الهمج المنتشرين في السهل الثلجي.";
+		close;
+	}
+	else {
+		mes "[كالوا]";
+		mes "AlahCyamah U MeKoser Ir TimaurRiveh Di LarsRasTi Di AgolKones Or AlahUdenAndu Ee FusRe";
+		close;
+	}
+}
+
+splendide,125,227,3	script	جنية#ep13_3::Fairy#ep13_3	444,{
+	if (isequipped(2782) == 1) {
+		mes "[فلوا]";
+		mes "لا أقصد الإساءة؛ لم أكن أنظر إليك إشفاقا.";
+		mes "إنما كنت أتساءل كيف تستطيع المشي بهذا الجسد الثقيل...";
+		close;
+	}
+	else {
+		mes "[فلوا]";
+		mes "AnuFuloUor Ko CyaWosnes Ha WosAnuAsh O WosDuAno O ";
+		mes "FuloAndueo Ie WosGothLars Ee Tinarmaur Or AlahnahVa Or narAnuFulo So KoCya";
+		close;
+	}
+}
+
+// ep13_2_hiki
+splendide,159,164,3	script	جنية#13_2_1::Fairy#13_2_1	461,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "من المهين أن أضطر";
+		mes "إلى التعامل مع تلك الوحوش البدينة.";
+		mes "فأنا رقيقة أكثر من أن أقاتلهم.";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "RiniHirDieb Ie nahImanMe Di Mush";
+		mes "mahnarAsh So HirAnMod O Ras";
+		mes "neaLoDath Ha KoRivehWha So Thusnea";
+		close;
+	}
+}
+
+splendide,229,54,3	script	جنية#13_2_2::Fairy#13_2_2	439,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "ماذا؟ أنت بشري.";
+		mes "أنت أفضل من أفراد سافا البدناء، لكنك لست جميلا أنت أيضا.";
+		next;
+		mes "[جنية]";
+		mes "كيف وصلت إلى هذا المكان الرائع؟";
+		mes "إنه مكان راق،";
+		mes "ولا أظن أنك جدير بالبقاء معنا.";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "ImanAnuUor Yee NeUorVer Ir RivehAshOsa";
+		mes "AdorserHir er OsaAlahAno Mu RivehDath";
+		next;
+		mes "[جنية]";
+		mes "LarsFuloSar Yu VilGotheor Yu nes";
+		mes "Anuneseor Ie remuSeDieb er ";
+		mes "WosLoNud Ko NuffDuIman Ir ";
+		close;
+	}
+}
+
+splendide,89,235,5	script	جنية#13_2_3::Fairy#13_2_3	446,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "لالالالا~ لالا~ لالالا~";
+		mes "لنغن معا~!";
+		mes "يا له من صوت رائع!";
+		next;
+		mes "[جنية]";
+		mes "لا تفكر حتى في الاقتراب مني!";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "WehVeldHir Or ThusNorAnu";
+		mes "ReImanWos Yu marFuloNor Yee ";
+		mes "SharneaVrum Ir Ruff";
+		next;
+		mes "[جنية]";
+		mes "BurKoWeh Ie nesThusLu Ee ";
+		close;
+	}
+}
+
+splendide,245,243,3	script	جنية#13_2_4::Fairy#13_2_4	462,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "كانت هذه الأرض قاحلة تماما.";
+		mes "وكان البرد فيها قارسا،";
+		mes "فلا يستطيع شيء العيش هنا.";
+		mes "لكنها بدأت تتغير يوما بعد يوم منذ أن استوطنها شعبنا.";
+		next;
+		mes "[جنية]";
+		mes "والآن زالت جميع المشكلات،";
+		mes "باستثناء أفراد سافا البدناء والقبيحين.";
+		mes "كيف نتخلص من أولئك المزعجين؟";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "DiebVohlWeh Ko RasVeldFar Ie AshVohl";
+		mes "neaAmanIman Ie DorDuMe No Hireo";
+		mes "tassermaur Yee DorAdorNud Ee ";
+		mes "NohThorVe O FusImanAman";
+		next;
+		mes "[جنية]";
+		mes "OsaVeldWeh U GothIyazVer Or ";
+		mes "LarsAnDor Yee TurVeldVil";
+		mes "LarsDanaFus An DiebImanmar er Dim";
+		mes "tasLoRini Ir WehAndu";
+		close;
+	}
+}
+
+splendide,230,142,3	script	جنية#13_2_5::Fairy#13_2_5	439,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "آه، كم أنا فاتنة!";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "AgolWhaNe O LoRini";
+		close;
+	}
+}
+
+splendide,274,203,3	script	جنية#13_2_6::Fairy#13_2_6	444,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "مهلا، أيها البشري! كيف عثرت علينا؟";
+		mes "كيف يبدو عالم البشر الذي جئت منه؟";
+		mes "أمن الممتع العيش هناك؟";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "AnnarNor So marFarAno Di NudThusNei Ir Ir ";
+		mes "narVaTi Mu SharDimmaur Or Ano";
+		mes "WhaModKo Or eoNeiNor Di ImanDunah O O ";
+		close;
+	}
+}
+
+splendide,275,141,3	script	جنية#13_2_7::Fairy#13_2_7	447,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "لا تكلمني. ماذا تريد؟";
+		mes "أعرف أنك ستلقي اللوم علي في أمر ما، أليس كذلك؟";
+		next;
+		mes "[جنية]";
+		mes "لا أريد سماع آراء الآخرين...";
+		mes "فأنا مثالية كما أنا!";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "narnahNoh Di WehRiniLars Yee ModAnu";
+		mes "LuAlahNe Or FarAnduOsa No AgolKo";
+		next;
+		mes "[جنية]";
+		mes "LarsVilDim No WhaVilFus Ha Ash";
+		mes "ReLarsShar Mu AnduLoLon Ie Nufftas";
+		close;
+	}
+}
+
+splendide,224,230,3	script	جنية#13_2_8::Fairy#13_2_8	440,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "أنصت جيدا وتعلم!";
+		mes "هيا نغني ونرقص!";
+		mes "قد تصبح واحدا منا!";
+		mes "حرك وركيك!";
+		mes "واو~ وو~ واو~";
+		mes "ارقص~!";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "NuffMushLars Ra WehVilnah Ra DielWeh";
+		mes "RivehnarWos Ra YurSharRe";
+		mes "TalVaThor O VerWhatas";
+		mes "FuloDimIyaz Mu WhaNoreo U ";
+		mes "AlahNeLo Ra UorOsa";
+		mes "SeAnduMush Ur ";
+		close;
+	}
+}
+
+splendide,223,36,3	script	جنية#13_2_9::Fairy#13_2_9	462,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "لا أريد حتى لمسهم.";
+		mes "لكنهم يفسدون توت يغدراسيل الخاص بي.";
+		mes "لم أعد أحتمل!";
+		next;
+		mes "[جنية]";
+		mes "القتال ليس من طبعي...";
+		mes "لكنني سأقاتل من أجل مجد شعبنا!";
+		mes "ينبغي أن يعدوا قتالنا شرفا لهم!";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "AshAmanNei Ir LonVeldremu O ";
+		mes "AnduSarHir No NudAnumaur Ha Veld";
+		mes "Semarmah U VeTingDieb Yu ";
+		mes "mahsertas Ra marAmanAdor Ir ";
+		next;
+		mes "[جنية]";
+		mes "TingAgolLu So MushAndumah U neseor";
+		mes "WhaDuFulo er ImanThusNe Di Tur";
+		mes "DathUornah Ir MemaurDeh Yu Fulo";
+		mes "CyaMeDor Ko VeLarsAgol";
+		close;
+	}
+}
+
+splendide,305,129,3	script	جنية#13_2_10::Fairy#13_2_10	436,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "آه... أشعر بالنعاس.";
+		mes "أشعر بملل شديد؛ فلا شيء لدي أفعله.";
+		mes "حتى صديقاتي يقاتلن أولئك العمالقة، لكن مساعدتهن ليست من شأني.";
+		next;
+		mes "[جنية]";
+		mes "لعلني أتفقد زينتي";
+		mes "في غرفة تبديل الملابس،";
+		mes "أم آخذ قسطا آخر من نوم الجمال؟";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "AnduNothUor O eomaurShar Mu AnduVeld";
+		mes "AdorFulotas Ko NorAlahAsh Ie Ala";
+		mes "KoOsaLon Ha AnuNeiNoh Di Ting";
+		mes "tasKoDiel O IyazGoth";
+		next;
+		mes "[جنية]";
+		mes "OdesmahHir Or mahneaLars So ";
+		mes "HirNudAman O AdorWosDu";
+		mes "DimYurVa So DanaRuYur";
+		close;
+	}
+}
+
+splendide,142,315,3	script	جنية#13_2_11::Fairy#13_2_11	462,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "ليس الطيران في السماء سهلا،";
+		mes "لكنه أفضل من السير على الأرض.";
+		next;
+		mes "[جنية]";
+		mes "هل أنت بشري؟ يا لك من مسكين...";
+		mes "ألا يمكنك أن تحظى بأجنحة جميلة كهذه؟";
+		mes "يا لها من حياة بائسة.";
+		mes "من الواضح أننا وحدنا المباركون.";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "WharemuLars Ur SharUdenWha Yu Agol";
+		mes "LontasSar Ra DathVeAlah Ee Noh";
+		mes "LarsLonnah Ko TalnesIman Ie Diel";
+		next;
+		mes "[جنية]";
+		mes "tasSarNuff Or WehFarDieb Ir FarRu";
+		mes "FusYurnah So MeAshnar O Noth";
+		mes "YurBurDu Yu VeldVaMush So Thor";
+		mes "AgolDiebUor No TurnahAla O ";
+		close;
+	}
+}
+
+splendide,181,107,5	script	جنية#13_2_12::Fairy#13_2_12	462,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جنية]";
+		mes "الأناقة والترتيب والنظافة!";
+		mes "تلك هي الكلمات";
+		mes "التي تصف شعبنا!";
+		mes "أما الآخرون فقذرون وفوضويون جدا!";
+		close;
+	}
+	else {
+		mes "[جنية]";
+		mes "FusYurnah So M ";
+		mes "WehFarDieb Ir FarRu ";
+		mes "FusYurnah ";
+		mes "AgolDiebUor No Tur";
+		close;
+	}
+}
+
+// ep13_2_tre
+splendide,188,76,5	script	جندي لافين#tre1::Splendide Soldier#tre1	461,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جندي لافين]";
+		mes "هذه سبلينديد، قاعدة حامية شعب لافين.";
+		close;
+	}
+	else {
+		mes "[جندي لافين]";
+		mes "SeAshLu Di YurDiebTing Ee VeModTur No NuffLarsVa No ";
+		close;
+	}
+}
+
+splendide,201,76,3	script	جندي لافين#tre2::Splendide Soldier#tre2	461,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[جندي لافين]";
+		mes "هذه سبلينديد، قاعدة حامية شعب لافين.";
+		close;
+	}
+	else {
+		mes "[جندي لافين]";
+		mes "SeAshLu Di YurDiebTing Ee VeModTur No NuffLarsVa No ";
+		close;
+	}
+}
+
+splendide,207,97,5	script	لافين متوسط#1::Middle-Ranked Laphine#1	443,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[لافين متوسط]";
+		mes "هاااه!";
+		mes "أرأيت؟ أضيء مثل مصباح شارع، أليس كذلك؟";
+		specialeffect EF_LEVEL99_4;
+		close;
+	}
+	else {
+		mes "[لافين متوسط]";
+		mes "sehrVa";
+		mes "IyazAnman Di TurHirCya";
+		specialeffect EF_LEVEL99_4;
+		close;
+	}
+}
+
+splendide,210,95,3	script	لافين متوسط#2::Middle-Ranked Laphine#2	442,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[لافين متوسط]";
+		mes "واو، مذهل!";
+		emotion ET_BEST;
+		close;
+	}
+	else {
+		mes "[لافين متوسط]";
+		mes "MushIyazTur Ee YurDana";
+		emotion ET_BEST;
+		close;
+	}
+}
+
+spl_in01,190,314,5	script	ضابط الأمن#tre::Security Officer#tre	461,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[ضابط الأمن]";
+		mes "هذا هو سجن سبلينديد الواقع تحت الأرض.";
+		mes "يحتجز هنا المجرمون وأسرى الحرب.";
+		next;
+		mes "[ضابط الأمن]";
+		mes "إن تصرفت تصرفا مريبا، فقد ينتهي بك الأمر هنا أيضا؛ فكن حذرا!";
+		close;
+	}
+	else {
+		mes "[ضابط الأمن]";
+		mes "GothremuAman Ha DimDielNuff";
+		mes "GothAnAsh er NohVaAgol Yee CyaOsaDor U Aman U ";
+		mes "TurOdesVrum Ir TalDathOsa Ie WosAgolVrum Ha neaNudHir Ha SeAnVil Di narAlahLars Yu";
+		close;
+	}
+}
+
+spl_in01,281,329,3	script	حارس لافين#tre::Splendide Guard#tre	447,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[حارس لافين]";
+		mes "التزم الهدوء دائما؛ فالضجيج قد يثير شغب السجناء.";
+		close;
+	}
+	else {
+		mes "[حارس لافين]";
+		mes "AnduVeldRe Ko VeldReFulo So LomaurDu So	So ";
+		close;
+	}
+}
+
+spl_in01,287,306,3	script	#spl_prs	111,{
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[سجين مانوك]";
+		mes "جسدي... جسدي!!";
+		mes "أعطوني حقنة! أرجوكم، ساعدوني!";
+		close;
+	}
+	else {
+		mes "[سجين مانوك]";
+		mes "Gi ha sd I das ";
+		mes "Yda sod ja si dsa";
+		close;
+	}
+}
+
+spl_in01,265,315,0	script	#spl_prs1	-1,5,5,{
+OnTouch:
+	if ((isequipped(2782) == 1) && (ep13_2_rhea == 100)) {
+		mes "[صوت من الجهة الأخرى]";
+		mes "سيدي، أرجوك!";
+		mes "كيف أستطيع التواصل سرا مع مانوك؟!";
+		mes "أنا بريء... أرجوك.";
+		close;
+	}
+	else {
+		mes "[صوت من الجانب الآخر]";
+		mes "RuffUdeneo Mu VilAsh";
+		mes "YurReDur Ha DielTalNe Ko Lars";
+		mes "HirVerWeh Yu AnuNud";
+		close;
+	}
+}
+
+// ep13_spl_extra
+spl_in01,172,225,3	script	الشاعر نيل#ep13::Wandering Poet#ep13	51,{
+	cutin "god_nelluad02",2;
+	mes "[الشاعر نيل]";
+	mes "مرحبا~ هل تسمع تلك الموسيقى الجميلة الآتية من بعيد؟";
+	next;
+	select("من تكون؟");
+	cutin "god_nelluad01",2;
+	mes "[الشاعر نيل]";
+	mes "أنا؟";
+	mes "مجرد شاعر يستمتع بالأجواء...";
+	next;
+	mes "[الشاعر نيل]";
+	mes "جئت إلى هنا قبل أيام لأدون ملاحظات عن هذا العالم الجديد، وسمحوا لي بمرافقة المغامرين إلى هنا.";
+	next;
+	mes "[الشاعر نيل]";
+	mes "أصبحت معتادا على شعب لافين.";
+	mes "كان التعامل معهم محرجا في البداية، لأنني لم أكن أفهم لغتهم.";
+	mes "لكنهم أحبوا موسيقاي ما إن بدأت العزف.";
+	next;
+	mes "[الشاعر نيل]";
+	mes "إنهن جنيات يعرفن كيف يستمتعن بالحياة...";
+	mes "ويا لهن من سعيدات!";
+	mes "كما أنهن فضوليات للغاية... يشرفني أنني التقيتهن.";
+	next;
+	mes "[الشاعر نيل]";
+	mes "أتود الاستماع إلى عزفي؟";
+	next;
+	switch(select("بكل سرور.:لا، شكرا.")) {
+	case 1:
+		mes "[الشاعر نيل]";
+		mes "أي أغنية ترغب في سماعها؟";
+		next;
+		switch(select("قصيدة براغي:الفوضى الأبدية:المغتال عند الغروب:خاتم النيبلونغ")) {
+		case 1:
+			cutin "god_nelluad02",2;
+			mes "[الشاعر نيل]";
+			mes "قصيدة براغي!";
+			mes "لا بد أن لديك أذنا موسيقية مرهفة.";
+			soundeffect "bragis_poem.wav",0;
+			break;
+		case 2:
+			cutin "god_nelluad02",2;
+			mes "[الشاعر نيل]";
+			mes "الفوضى الأبدية...";
+			mes "مقطوعة رائعة، لكنني لا أنصح بسماعها أثناء تناول الطعام...";
+			soundeffect "chaos_of_eternity.wav",0;
+			break;
+		case 3:
+			cutin "god_nelluad02",2;
+			mes "[الشاعر نيل]";
+			mes "المغتال عند الغروب!";
+			mes "هل تحب المغتالين؟";
+			mes "تحكي هذه الأغنية عن سيد مغتالين أسطوري عاش في الصحراء.";
+			soundeffect "assassin_of_sunset.wav",0;
+			break;
+		case 4:
+			cutin "god_nelluad02",2;
+			mes "[الشاعر نيل]";
+			mes "خاتم النيبلونغ...";
+			mes "لهذه الأغنية حكاية مثيرة~";
+			next;
+			soundeffect "ring_of_nibelungen.wav",0;
+			mes "^4d4dff في نهر الراين ذهب";
+			mes "يلمع كأنه ضوء الشمس.";
+			mes "وظل سره خفيا عن الجميع";
+			mes "منذ زمن يسبق الحكايات...^000000";
+			next;
+			mes "^4d4dff بنى العمالقة فالهالا للآلهة،";
+			mes "وطالبوا بفريا، إلهة الجمال، أجرا.^000000";
+			mes "^4d4dff فخدع لوكي ألبيريش وسرق";
+			mes "الخاتم المصنوع من ذهب الراين.^000000";
+			next;
+			mes "^4d4dff صار كنز ألبيريش فدية";
+			mes "لاستعادة فريا من العمالقة.^000000";
+			next;
+			mes "^4d4dff دفع الآلهة الذهب ثمنا،";
+			mes "لكن الطمع أشعل النزاع عليه.^000000";
+			next;
+			mes "^4d4dff وحين خسر ألبيريش خاتمه، لعن كل من يحمله بالموت.";
+			next;
+			mes "^4d4dff ومنذ ذلك الحين، يلاحق الحسد والهلاك كل من يمتلك الخاتم.";
+			next;
+			mes "^4d4dff وهكذا بدأت مأساة خاتم النيبلونغ.";
+			break;
+		}
+		break;
+	case 2:
+		cutin "god_nelluad03",2;
+		mes "[الشاعر نيل]";
+		mes "لماذا لا؟";
+		mes "لماذا ظللت تحدق بي إن لم تكن تريد سماع عزفي؟";
+		next;
+		select("أنت تشبه شخصا أعرفه.");
+		cutin "god_nelluad04",2;
+		mes "[الشاعر نيل]";
+		mes "ماذا؟";
+		mes "مستحيل!";
+		mes "لا بد أنك مخطئ...!";
+		next;
+		mes "[الشاعر نيل]";
+		mes "صحيح أن ملامحي مألوفة...";
+		mes "لكنني أشك في أننا التقينا من قبل.";
+		next;
+		cutin "god_nelluad01",255;
+		mes "- بدا نيل محرجا، ثم شرع يعزف لحنا بالغ التعقيد -";
+		break;
+	}
+	close2;
+	cutin "god_nelluad01",255;
+	end;
+}
+
+spl_in01,182,213,1	script	لافين مستريح#ep13_1::Resting Laphine#ep13_1	438,{
+	if ((isequipped(2782) > 0) && (ep13_2_rhea > 99)) {
+		mes "[لافين مستريح]";
+		mes "ذلك الشاعر على المسرح غامض.";
+		mes "منذ لحظة وصولك إلى هنا...";
+		mes "وصل هو أيضا وبدأ العزف.";
+		next;
+		mes "[لافين مستريح]";
+		mes "هذه موسيقى من موطنك، أليس كذلك؟";
+		mes "إنها رائعة في رأيي.";
+		close;
+	}
+	else {
+		mes "[لافين مستريح]";
+		mes "IyazLarsSe Or An.";
+		mes "marLoOsa Yee NeiBur";
+		mes "Rinisehrnea Mu...? ";
+		close;
+	}
+}
+
+spl_in01,181,218,5	script	لافين مستريح#ep13_2::Resting Laphine#ep13_2	446,{
+	if ((isequipped(2782) > 0) && (ep13_2_rhea > 99)) {
+		mes "- يهز رأسه على إيقاع الموسيقى -";
+		next;
+		mes "[لافين مستريح]";
+		mes "هل تعرف كيف تعزف لحنا مشابها؟";
+		mes "يا لها من نغمة مذهلة.";
+		close;
+	}
+	else {
+		mes "- يهز رأسه على إيقاع الموسيقى -";
+		next;
+		mes "[لافين مستريح]";
+		mes "GothTingNoth Di~ nar..";
+		mes "DiebIyazNud Yu FarAn";
+		mes "nesFarDor U ~";
+		close;
+	}
+}
+
+spl_in01,161,213,7	script	لافين يتعشى#ep13::Dining Laphine#ep13	447,{
+	if ((isequipped(2782) > 0) && (ep13_2_rhea > 99)) {
+		mes "[لافين يتعشى]";
+		mes "مللت الطعام المنزلي.";
+		mes "وحده حساء الفاكهة يدفعني للعودة إلى هنا...";
+		next;
+		mes "[لافين يتعشى]";
+		mes "مهلا، أنت!";
+		mes "لماذا تحدق بي وأنا أتناول عشائي؟";
+		close;
+	}
+	else {
+		mes "[لافين يتعشى]";
+		mes "NothFarLu Ra...? ";
+		mes "RuffYur..!";
+		next;
+		mes "- يرمقك بنظرة غريبة وهو يتناول عشاءه -";
+		close;
+	}
+}
+
+spl_in01,162,202,5	script	لافين باحث#1::Laphine taking notes#1	436,{
+	if ((isequipped(2782) > 0) && (ep13_2_rhea > 99)) {
+		mes "[لافين باحث]";
+		mes "لقد أثار ذلك الشاعر إعجابنا.";
+		mes "فنحن شعب لافين نحب الموسيقى أيضا.";
+		mes "لم أتخيل يوما أنني سأسمع موسيقى غريبة كهذه.";
+		next;
+		mes "[لافين باحث]";
+		mes "أريد أن أدرس الموسيقى يوما ما.";
+		mes "وأخطط لتدوين دراسة موسعة عن الآلات والألحان.";
+		next;
+		mes "[لافين باحث]";
+		mes "ينبغي أن تستمع يوما إلى موسيقى شعبي.";
+		close;
+	}
+	else {
+		mes "[لافين باحث]";
+		mes "TiTalLars Ur tasThorNoth O AnImanWha.";
+		mes "FusLuRuff..... Mu TingLuAla Yee AnmanAndu";
+		next;
+		mes "- يبدو محبطا لأنك لا تفهم كلامه -";
+		close;
+	}
+}
+
+spl_in01,167,207,7	script	لافين صامت#ep13::Silent Laphine#ep13	445,{
+	mes "- يكاد يغفو، لكنه لا يزال ممسكا بكوب شرابه. لا بد أنه مرهق للغاية -";
+	close;
+}
+
+spl_in01,180,201,3	script	جندي لافين#ep13_1::Laphine Soldier#ep13_1	461,{
+	if ((isequipped(2782) > 0) && (ep13_2_rhea > 99)) {
+		mes "[جندي لافين]";
+		mes "أنت غريب عن هذا المكان، أليس كذلك؟";
+		mes "أنا أراقب ذلك الشاعر كيلا يسبب أي مشكلة.";
+		next;
+		mes "[جندي لافين]";
+		mes "لا بد أن لك علاقة بالأمر.";
+		mes "لقد سمح لك أصحاب الرتب العليا بالدخول إلى هنا...";
+		mes "لكن لا أحد يعرف ما قد يحدث في ساحة القتال هذه.";
+		next;
+		mes "[جندي لافين]";
+		mes "على أي حال، ما تلك الآلة الموسيقية؟";
+		mes "لدينا آلة تشبهها...";
+		mes "لكن صوتها مختلف تماما.";
+		close;
+	}
+	else {
+		mes "[جندي لافين]";
+		mes "FusVohlAnu Ur Lon.";
+		mes "LoUdenFar Ha Dormaur?";
+		mes "...marAmanYur Mu.";
+		next;
+		mes "- يحاول جندي لافين إخبارك بشيء، ثم يصمت حين يرى نظرتك الخالية من الفهم -";
+		close;
+	}
+}
+
+spl_in01,189,207,3	script	موظف لافين#ep13_1::Laphine Staff#ep13_1	439,{
+	if ((isequipped(2782) > 0) && (ep13_2_rhea > 99)) {
+		mes "[موظف لافين]";
+		mes "همم، ماذا تريد؟";
+		mes "عذرا، لا نبيع الطعام للغرباء.";
+		next;
+		mes "[موظف لافين]";
+		mes "وعليكم أن تنتبهوا إلى طعامكم هنا،";
+		mes "فالمؤن شحيحة.";
+		next;
+		mes "[موظف لافين]";
+		mes "لذا سيتعين عليك البحث عن الطعام في مكان آخر.";
+		close;
+	}
+	else {
+		mes "[موظف لافين]";
+		mes "VeldAnoWeh Or ";
+		mes "TurWos";
+		mes "...... آه...";
+		next;
+		mes "- لا تفعل سوى الابتسام؛ من المحبط ألا تفهم لغتهم. -";
+		close;
+	}
+}
+
+spl_in01,154,207,5	script	موظف لافين#ep13_2::Laphine Staff#ep13_2	440,{
+	if ((isequipped(2782) > 0) && (ep13_2_rhea > 99)) {
+		mes "[موظف لافين]";
+		mes "هذا معسكر عسكري، لكن الجنود يحتاجون إلى حانة أيضا.";
+		next;
+		mes "[موظف لافين]";
+		mes "كيف يخفف الجندي توتره إن لم يحتس شرابا؟";
+		next;
+		mes "[موظف لافين]";
+		mes "نحن هنا لدعم جنود لافين بالمشروبات الجيدة وبعض الترفيه.";
+		close;
+	}
+	else {
+		mes "[موظف لافين]";
+		mes "NorVerNuff Ee Re!";
+		mes "remuDurOdes Mu AshFus~!";
+		mes "OdesTalWeh Ur??? ";
+		close;
+	}
+}
+
+spl_in01,122,314,5	script	ضابط لافين#ep13::High-Ranked Soldier#ep13	461,{
+	if ((isequipped(2782) > 0) && (ep13_2_rhea > 99)) {
+		mes "[ضابط لافين]";
+		mes "هل وصلت مؤن جديدة؟";
+		next;
+		mes "[جندي لافين]";
+		mes "وصل هذا السيف للتو...";
+		mes "استلهم تصميمه من النجوم، واختبرناه بقطع خيط طاف فوق سطح الماء.";
+		next;
+		mes "[ضابط لافين]";
+		mes "نادرا ما نستخدم السيوف، لكنه يصلح تحفة جميلة.";
+		next;
+		mes "- يبدو أنهما منشغلان بالحديث عن الأسلحة -";
+		close;
+	}
+	else {
+		mes "[ضابط لافين]";
+		mes "NorVerNuff Ee Re....";
+		next;
+		mes "[جندي لافين]";
+		mes "FusVerAlah Di ";
+		mes "ModNorNor U DimVohlWeh O DimAmannea An WosAnoNoh An AnduMeOdes So TalAdor.";
+		next;
+		mes "[ضابط لافين]";
+		mes "DurNohHir Ha UorVaThus Di AshNuffLon U mahNuffThus U RuAmanAgol Ir NohHir...?";
+		close;
+	}
+}
+
+spl_in01,122,311,1	script	جندي لافين#ep13_2::Laphine Soldier#ep13_2	447,{
+	if ((isequipped(2782) > 0) && (ep13_2_rhea > 99)) {
+		mes "[جندي لافين]";
+		mes "هل أنت من الغرباء؟";
+		mes "هل جئت لرؤية مخزن لافين العسكري؟";
+		next;
+		mes "[ضابط لافين]";
+		mes "دعه وشأنه؛ فهذه الأشياء لا تفيد أمثاله...";
+		mes "كيف لمثل أولئك الهمج أن يستخدموا سيفا بهذه الرقة؟";
+		next;
+		mes "[جندي لافين]";
+		mes "O";
+		close;
+	}
+	else {
+		mes "[ضابط لافين]";
+		mes "NorVerNuff Ee Re....";
+		next;
+		mes "[جندي لافين]";
+		mes "FusVerAlah Di ";
+		mes "ModNorNor U DimVohlWeh O DimAmannea An WosAnoNoh An AnduMeOdes So TalAdor.";
+		next;
+		mes "[ضابط لافين]";
+		mes "DurNohHir Ha UorVaThus Di AshNuffLon U mahNuffThus U RuAmanAgol Ir NohHir...?";
+		close;
+	}
+}
+
+// ep33_2_dailybs
+splendide,121,259,3	script	جنية#ep13bs1::Fairy#ep13bs1	436,{
+	if (isequipped(2782) == 1) {
+		mes "[جنية]";
+		mes "هل ذهبت من قبل إلى الجهة الشرقية؟";
+		mes "هناك جليد في كل مكان~";
+		mes "كم هي باردة...";
+		close;
+	}
+	else {
+		mes "[nes]";
+		mes "VaFuloDor An ";
+		mes "WosNuffremu Ha TurAshTi";
+		mes "VilTiRini O ";
+		close;
+	}
+}
+
+splendide,163,264,3	script	جنية#ep13bs2::Fairy#ep13bs2	438,{
+	if (isequipped(2782) == 1) {
+		mes "[جنية]";
+		mes "إلام تنظر؟!";
+		next;
+		mes "[جنية]";
+		mes "آه، أتنظر إلي؟ إنك تعرف الجمال حين تراه، أليس كذلك~؟!";
+		close;
+	}
+	else {
+		mes "[nes]";
+		mes "UorVeLars No Ador";
+		next;
+		mes "[nes]";
+		mes "SeGothShar An AshDur";
+		close;
+	}
+}

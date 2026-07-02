@@ -1,26 +1,27 @@
 @echo off
-setlocal
+setlocal EnableExtensions
 cd /d "%~dp0\.."
+
 where git >nul 2>nul
 if errorlevel 1 (
   echo Git is not installed. Install Git for Windows or GitHub Desktop first.
   exit /b 1
 )
-if not exist .git git init
-git remote get-url origin >nul 2>nul
-if errorlevel 1 git remote add origin https://github.com/barod1986-ship-it/MMOARAB.git
-git fetch origin main
-git checkout -B setup/stage-292-baseline-import origin/main
+
 where py >nul 2>nul
 if not errorlevel 1 (
-  py -3 tools\validate_repository.py
+  py -3 tools\import_clean_baseline.py
 ) else (
-  python tools\validate_repository.py
+  where python >nul 2>nul
+  if errorlevel 1 (
+    echo Python 3 is not installed or is not available in PATH.
+    exit /b 1
+  )
+  python tools\import_clean_baseline.py
 )
+
 if errorlevel 1 exit /b 1
-git add -A
-git commit -m "chore: import clean stage 292 baseline"
-git push -u origin setup/stage-292-baseline-import
+
 echo.
-echo Baseline branch uploaded. Open a Pull Request into main after reviewing the diff.
+echo Finished. Review the uploaded branch and open the Pull Request link printed above.
 endlocal

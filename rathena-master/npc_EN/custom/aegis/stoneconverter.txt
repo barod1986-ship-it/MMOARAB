@@ -1,0 +1,55 @@
+//===== rAthena Script =======================================
+//= Stone Converter NPC
+//===== By: ======================================================
+//= wrywndp (https://www.youtube.com/@wrywndp)
+//===== Description: =========================================
+//= Stone convert these items:
+//= - 5 Rough Oridecon	-> Oridecon
+//= - 5 Rough Elunium	-> Elunium
+//===== Additional Comments: =====================================
+//= This script is made for Ragnarok Offline Pre-Renewal Pack
+//= https://www.youtube.com/watch?v=aN5OCJdj2qA
+//============================================================
+
+aegis_works,11,16,6	script	Converter	85,{
+
+	setarray .itemInput,756,757;
+	setarray .itemOutput,984,985;
+	setarray .itemAmount,5,5;
+	setarray .itemName$,"Oridecon","Elunium";
+
+	mes "[Converter]";
+	mes "I can purify your ^1A66FFRough Oridecons^000000 or ^1A66FFRough Eluniums^000000.";
+	mes "I'll need 5 ^1A66FFRough Stones^000000 to make 1 pure one for you.";
+	next;
+	
+	switch(select("^1A66FFYes^000000:^727272No^000000")) {
+	case 1:
+		mes "[Converter]";
+		.@converted = 0;
+
+		for (.@i = 0; .@i < getarraysize(.itemInput); .@i++) {
+			.@count = countitem(.itemInput[.@i]) / .itemAmount[.@i];
+			if (.@count) {
+				delitem .itemInput[.@i], .@count * .itemAmount[.@i];
+				getitem .itemOutput[.@i], .@count;
+				.@converted++;
+			}
+		}
+
+		if (.@converted) {
+			specialeffect2 EF_REFINEOK;
+			mes "Conversion complete!";
+		} else {
+			mes "You're kidding me, right?";
+			mes "I just told you that I need 5 ^1A66FFRough Stones^000000 to make a pure one.";
+		}
+		close;
+
+	case 2:
+		mes "[Converter]";
+		mes "Okay then.";
+		mes "You're welcome to come back whenever you want.";
+		close;
+	}
+}

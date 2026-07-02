@@ -1,14 +1,18 @@
 {
-  "baseline_stage": 292,
-  "cumulative_changes": 65775,
-  "npc_reviewed": 293,
+  "snapshot": "clean stage 292 content used as the source baseline for review cycle 2",
+  "legacy_stage": 292,
+  "legacy_cumulative_changes": 65775,
+  "legacy_npc_reviewed": 293,
   "npc_total": 555,
-  "quests_completed": 88,
+  "legacy_quests_completed": 88,
   "quests_total": 88,
-  "next_file": "rathena-master/npc/pre-re/guides/guides_lighthalzen.txt",
-  "files": 1939,
-  "bytes": 70076125,
+  "game_source_files": 1923,
+  "game_source_bytes": 69619019,
   "glossary_terms": 378,
-  "glossary_conflicts_resolved": 3,
-  "historical_reports_imported": false
+  "glossary_conflicts_resolved": 4,
+  "historical_reports_imported": false,
+  "active_review_cycle": 2,
+  "active_next_stage": 1,
+  "repository_files": 1950,
+  "repository_bytes": 69778522
 }

@@ -1,0 +1,82 @@
+//===== rAthena Script ======================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== By: ==================================================
+//= Nana
+//= finished, optimized and tested by Lupus
+//===== Current Version: ===================================== 
+//= 1.3
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== Additional Comments: ================================= 
+//= 1.1 Made all into functions, additional checks, etc. [Lupus]
+//= 1.2 Made numbers into constants. [Vicious]
+//= 1.3 Now saves/restores all the quest skills [Lupus]
+//============================================================ 
+
+valkyrie,44,42,5	script	كاهن متقدم#Valkyrie::High Priest#Valkyrie	60,{
+	if (ADVJOB == 0 || Upper != 1) {
+		set .@karma_d,rand(1,10);
+		if (.@karma_d > 4) {
+			mes "[كاهن متقدم]";
+			mes "تهانينا.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		mes "[كاهن متقدم]";
+		mes "بقوة القداسة،";
+		mes "عسانا نجد";
+		mes "السلام والقوة";
+		mes "والحماية. خلصنا";
+		mes "من قوى الشر...";
+		close;
+	}
+	else if (ADVJOB == Job_High_Priest && Class == Job_Acolyte_High && JobLevel > 39) {
+		mes "[كاهن متقدم]";
+		mes "عالمنا بحاجة";
+		mes "إلى ذوي الموهبة";
+		mes "والإيمان الراسخ.";
+		mes "أرجو أن يستمر";
+		mes "هذا العطاء، وأن يكون";
+		mes "نبراسا للقداسة...";
+		next;
+		mes "[كاهن متقدم]";
+		mes "هل ترغب";
+		mes "في الارتقاء إلى رتبة الكاهن المتقدم؟";
+		next;
+		if (select("لا.:نعم.") == 1) {
+			mes "[كاهن متقدم]";
+			mes "يمكنك العودة";
+			mes "متى اكتمل استعدادك.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		if (SkillPoint) {
+			mes "[كاهن متقدم]";
+			mes "ما زالت لديك نقاط مهارة غير مستخدمة.";
+			mes "استخدمها جميعا قبل العودة إلي.";
+			close;
+		}
+		jobchange Job_High_Priest;
+		set ADVJOB,0;
+		mes "[كاهن متقدم]";
+		mes "تهانينا.";
+		mes "الآن وقد ارتقيت إلى رتبة الكاهن المتقدم،";
+		mes "آمل أن يكون لك";
+		mes "دور في إرشاد الآخرين";
+		mes "على طريق القداسة...";
+		close;
+	}
+	mes "[كاهن متقدم]";
+	mes "مرحبا بك";
+	mes "في فالهالا،";
+	mes "قاعة الشرف.";
+	next;
+	mes "[كاهن متقدم]";
+	mes "أتمنى لك";
+	mes "الراحة والسكينة";
+	mes "ما دمت هنا.";
+	mes "المجد للمحاربين.";
+	close;
+}

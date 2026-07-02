@@ -1,0 +1,232 @@
+//===== rAthena Script ======================================= 
+//= Renters
+//===== By: ================================================== 
+//= kobra_k88, mod by Lupus
+//===== Current Version: ===================================== 
+//= 2.2
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Knight and Crusader Peco Peco Breeders, Falcon Breeder scripts
+//===== Additional Comments: ================================= 
+//= Fully working
+//= Added another Falcon Master into the Hunters Guild [Lupus]
+//= 1.2: replaced checkoption(x) with checkriding,checkfalcon [Lupus]
+//= 1.3: Added support Adv Classes + Baby Class [Lupus]
+//= 1.4: Added different prices for normal, advanced and baby classes
+//= but you could set them to the same [Lupus]
+//= 1.5: Fixed spelling mistakes [Nexon]
+//= 1.5a: Small fix (Falcon Taming -> Falcon Mastery) [Komurka]
+//= 1.6: Moved the Falcon Master to Hugel [Poki#3]
+//= 1.7 Updated to Aegis 10.3 standards. [L0ne_W0lf]
+//= 1.8 Added 3rd Job creature NPCs (Dragon/Gryphon) [L0ne_W0lf]
+//= 1.9 Enabled Gryphon Renter NPC and added Mado Gear NPC. [Masao]
+//= 2.0 Fixed problems with third classes and new mounts. [Euphy]
+//= 2.1 Moved some renters to a separate renewal file. [Daegaladh]
+//= 2.2 Added warg checks. [Euphy]
+//============================================================ 
+
+// PecoPeco Breeder (for Knights) :: breeder
+//============================================================
+prontera,55,350,5	script	مربي بيكو بيكو#knt::Peco Peco Breeder#knt	105,{
+	if(Upper==0) set .@price,2500; //Normal Peco - default price
+	if(Upper==1) set .@price,2500; //Armored Peco
+	if(Upper==2) set .@price,2500; //Baby Peco
+
+	mes "[مربي بيكو بيكو]";
+	if (BaseJob == Job_Knight && Class < Job_Rune_Knight) {
+		mes "أهلا بك.";
+		mes "أيها الفارس النبيل،";
+		mes "هل تود استئجار";
+		mes "بيكو بيكو؟ تبلغ رسوم";
+		mes "الاستئجار "+.@price+" زيني.";
+		next;
+		switch(select("استئجار بيكو بيكو:إلغاء")) {
+		case 1:
+			if (Zeny < .@price) {
+				mes "[مربي بيكو بيكو]";
+				mes "لا تملك";
+				mes "زينيا كافيا.";
+				mes "هل...";
+				mes "أفلست؟";
+				close;
+			}
+			else if(getskilllv("KN_RIDING") == 0) {
+				mes "[مربي بيكو بيكو]";
+				mes "عذرا، لكنك";
+				mes "لا تستوفي شروط هذه";
+				mes "الخدمة. تعلم";
+				mes "مهارة ركوب بيكو بيكو أولا.";
+				close;
+			}
+			else if(checkriding()) {
+				mes "[مربي بيكو بيكو]";
+				mes "أنت تركب";
+				mes "بيكو بيكو";
+				mes "بالفعل.";
+				close;
+			}
+			else if(ismounting()) {
+				mes "[مربي بيكو بيكو]";
+				mes "انزل أولا عن المطية النقدية التي تستخدمها.";
+				close;
+			}
+			set Zeny, Zeny-.@price;
+			setriding;
+			close;
+		case 2:
+			mes "[مربي بيكو بيكو]";
+			mes "حسنا.";
+			mes "إذن،";
+			mes "أتمنى لك يوما طيبا.";
+			close;
+		}
+	} else {
+		mes "عذرا، لا تتاح";
+		mes "بيكو بيكو هذه إلا";
+		mes "للفرسان";
+		mes "وسادة الفرسان.";
+		close;
+	}
+}
+
+// Grand PecoPeco Breeder (for Crusaders)
+//============================================================
+prontera,232,318,3	script	مربي بيكو بيكو#cru::Peco Peco Breeder#cru	105,{
+	if(Upper==0) set .@price,3500; //Normal Peco - default price
+	if(Upper==1) set .@price,3500; //Armored Peco
+	if(Upper==2) set .@price,3500; //Baby Peco
+
+	mes "[مربي بيكو بيكو]";
+	if (BaseJob == Job_Crusader && Class < Job_Rune_Knight) {
+		if(Upper != 1 ) mes "أهلا بك أيها الفارس الصليبي.";
+		else mes "أهلا بك أيها الفارس المقدس.";
+		mes "لدينا بيكو بيكو";
+		mes "مخصصة ومجهزة";
+		mes "من أجلك. تبلغ رسوم";
+		mes "استئجارها "+.@price+" زيني.";
+		next;
+		switch(select("استئجار بيكو بيكو:إلغاء")) {
+		case 1:
+			if (Zeny < .@price) {
+				mes "[مربي بيكو بيكو]";
+				mes "لا تملك";
+				mes "زينيا كافيا.";
+				mes "إن أردت استئجار";
+				mes "بيكو بيكو، فأحضر";
+				mes "معك "+.@price+" زيني.";
+				close;
+			}
+			else if(getskilllv("KN_RIDING") == 0) {
+				mes "[مربي بيكو بيكو]";
+				mes "يجب أن تتعلم مهارة";
+				mes "ركوب بيكو بيكو أولا";
+				mes "قبل أن أؤجرها لك.";
+				close;
+			}
+			else if(checkriding()) {
+				mes "[مربي بيكو بيكو]";
+				mes "أنت تركب";
+				mes "بيكو بيكو بالفعل.";
+				close;
+			}
+			else if(ismounting()) {
+				mes "[مربي بيكو بيكو]";
+				mes "انزل أولا عن المطية النقدية التي تستخدمها.";
+				close;
+			}
+			set Zeny, Zeny-.@price;
+			setriding;
+			close;
+		case 2:
+			mes "[مربي بيكو بيكو]";
+			mes "إلى اللقاء.";
+			close;
+		}
+	} else {
+		mes "كيف يمكنني مساعدتك؟";
+		mes "اعلم أن";
+		mes "خدمة استئجار بيكو بيكو";
+		mes "مخصصة حصرا";
+		mes "للفرسان الصليبيين والفرسان المقدسين.";
+		close;
+	}
+}
+
+// Falcon Master :: breeder
+//============================================================
+hu_in01,381,304,5	script	مربي الصقور#hnt::Falcon Breeder#hnt	105,{
+	if(Upper==0) set .@price,2500; //Normal Falcon - default price
+	if(Upper==1) set .@price,2500; //Scarf Falcon
+	if(Upper==2) set .@price,2500; //Baby Falcon
+
+	mes "[مربي الصقور]";
+	if (BaseJob == Job_Hunter) {
+		if (checkwug()) {
+			mes "همم...";
+			mes "لا يمكنك استئجار صقر";
+			mes "حتى تصرف الوارغ أولا!";
+			close;
+		}
+		mes "هل تحتاج إلى صقر؟";
+		mes "يمكنك استئجار صقر";
+		mes "جارح مدرب مقابل";
+		mes "رسم قدره "+.@price+" زيني فقط.";
+		next;
+		switch(select("استئجار صقر:إلغاء")) {
+		case 1:
+			if (checkwug()) {
+				mes "[مربي الصقور]";
+				mes "همم...";
+				mes "لا يمكنك استئجار صقر";
+				mes "حتى تصرف الوارغ أولا!";
+				close;
+			}
+			if (Zeny < .@price) {
+				mes "[مربي الصقور]";
+				mes "ماذا؟";
+				mes "لا تملك";
+				mes "زينيا كافيا؟!";
+				mes "من الأفضل أن تبدأ";
+				mes "باصطياد المال";
+				mes "بدلا من الوحوش!";
+				close;
+			}
+			else if(getskilllv("HT_FALCON") == 0) {
+				mes "[مربي الصقور]";
+				mes "يا للعجب...";
+				mes "تعلم مهارة";
+				mes "إتقان الصقر";
+				mes "أولا! لن أؤجرك صقرا";
+				mes "إن كنت لا تعرف";
+				mes "كيفية التعامل معه.";
+				close;
+			}
+			else if(checkfalcon()) {
+				mes "[مربي الصقور]";
+				mes "همم...";
+				mes "لديك صقر";
+				mes "بالفعل. إنه";
+				mes "أمامك، ألا تراه؟";
+				close;
+			}
+			set Zeny, Zeny-.@price;
+			setfalcon;
+			close;
+		case 2:
+			mes "[مربي الصقور]";
+			mes "م-مهلا، إلى أين";
+			mes "تذهب؟ هذه";
+			mes "الصقور من أفضل السلالات،";
+			mes "أضمن لك ذلك! هيا~";
+			close;
+		}
+	} else {
+		mes "يا لك من أحمق!";
+		mes "لا يستطيع استخدام الصقور إلا";
+		mes "الصيادون";
+		mes "والقناصون، فهمت؟";
+		mes "...هيه هيه، أتشعر بالغيرة؟";
+		close;
+	}
+}

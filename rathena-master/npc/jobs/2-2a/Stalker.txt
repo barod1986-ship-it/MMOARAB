@@ -1,0 +1,93 @@
+//===== rAthena Script ======================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== By: ==================================================
+//= Nana
+//= finished, optimized and tested by Lupus
+//===== Current Version: ===================================== 
+//= 1.3
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: ========================================= 
+//= Advance Class jobchanger after kRO Normals.
+//===== Additional Comments: ================================= 
+//= 1.1 Made all into functions, additional checks, etc. [Lupus]
+//= 1.2 Made numbers into constants. [Vicious]
+//= 1.3 Now saves/restores all the quest skills [Lupus]
+//============================================================ 
+
+valkyrie,53,58,3	script	متعقب#Valkyrie::Stalker#Valkyrie	747,{
+	if (ADVJOB == 0 || Upper != 1) {
+		set .@karma_d,rand(1,10);
+		if (.@karma_d > 4) {
+			mes "[متعقب]";
+			mes "تهانينا.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		mes "[متعقب]";
+		mes "هه...";
+		mes "ليس من السهل";
+		mes "أن تكون بطلا،";
+		mes "وتعمل في الظلال،";
+		mes "فيشك الآخرون بك،";
+		mes "وتتسلل من خلفهم...";
+		next;
+		mes "[متعقب]";
+		mes "لكن حين";
+		mes "تشتد المحن،";
+		mes "يعرف رفاقي";
+		mes "أنهم يستطيعون الاعتماد علي.";
+		mes "فنحن نحتاج";
+		mes "بعضنا إلى بعض.";
+		close;
+	}
+	else if (ADVJOB == Job_Stalker && Class == Job_Thief_High && JobLevel > 39) {
+		mes "[متعقب]";
+		mes "يحتاج هذا العالم";
+		mes "إلى مزيد من الأبطال";
+		mes "القادرين على السير";
+		mes "على الحد الفاصل بين النظام والفوضى.";
+		next;
+		mes "[متعقب]";
+		mes "هل أنت على استعداد";
+		mes "للانضمام إلى صفوف";
+		mes "أمكر المحاربين؟";
+		mes "وهل أنت على استعداد";
+		mes "للارتقاء إلى متعقب؟";
+		next;
+		if (select("لا.:نعم.") == 1) {
+			mes "[متعقب]";
+			mes "حين يكتمل استعدادك،";
+			mes "ستجدني في انتظارك.";
+			mes "المجد للمحاربين.";
+			close;
+		}
+		if (SkillPoint) {
+			mes "[متعقب]";
+			mes "ما زالت لديك نقاط مهارة غير مستخدمة.";
+			mes "لا بد من استخدامها جميعا قبل العودة إلي.";
+			close;
+		}
+		jobchange Job_Stalker;
+		set ADVJOB,0;
+		mes "[متعقب]";
+		mes "تهانينا!";
+		mes "بعد الارتقاء إلى متعقب،";
+		mes "آمل أن تصيب طعنتك";
+		mes "من يستحقها، وأن تطرد";
+		mes "الأشرار بأساليبهم";
+		mes "الخبيثة نفسها!";
+		close;
+	}
+	mes "[متعقب]";
+	mes "أهلا بك";
+	mes "في فالهالا،";
+	mes "قاعة الشرف.";
+	next;
+	mes "[متعقب]";
+	mes "نتمنى لك الراحة";
+	mes "والسكينة";
+	mes "ما دمت هنا.";
+	mes "المجد للمحاربين.";
+	close;
+}

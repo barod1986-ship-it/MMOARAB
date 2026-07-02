@@ -1,0 +1,355 @@
+//===== rAthena Script =======================================
+//= Niflheim Script
+//===== By: ==================================================
+//= Fyrien, Dizzy, PKGINGO
+//= Official NPCs translated and re-edited by Celest
+//===== Current Version: =====================================
+//= 1.5
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Official NPC's for Niflheim
+//= 1.01 Splitted file(guides, shops). Fixed rand() bugs,
+//=      missing labels bugs, optimization [Lupus]
+//= 1.03 fixed end; -> close;
+//= 1.04-1.05 fixed several bugs with missing CLOSE button, wrong var name
+//=     in Piano Keys quest
+//=     fixed zeny/item, exploit in Sairin, some optimizations [Lupus]
+//= 1.06 some typos in some variables fixed (thx 2 Dr.Evil) [Lupus]
+//= 1.07 Fixed typos [Nexon]
+//= 1.08 Commented "Traveler" out as it is not official & we have correct Bungee quest in.
+//=     Also removed TODO, as they are already done. [Vicious_Pucca]
+//= 1.1 Replaced nif_q_done with MISC_QUEST & 32. nif_t -> @nif_t [Lupus]
+//= 1.2 Removed Duplicates [Silent]
+//= 1.3 Moved Book of Devil and Piano quest to quests/quests_niflheim.txt [Evera]
+//= 1.4 Rescripted to Aegis 10.3 standards. [L0ne_W0lf]
+//=     Removed Cursed Spirits as they were custom.
+//= 1.5 Added dummy "OnMyMobDead" event to Cursed Spirit. [L0ne_W0lf]
+//============================================================
+
+niflheim,52,147,3	script	كيدز#nif::Keedz#nif	796,{
+	mes "[كيدز]";
+	mes "لا أسمح لأي حي";
+	mes "بدخول هذا المكان!";
+	close;
+}
+
+niflheim,195,211,6	script	غيغانتيا#nif::Gigantia#nif	796,3,3,{
+	if (isequipped(5038) || isequipped(2257) || isequipped(2256)) {
+		mes "[" + strcharinfo(0) + "]";
+		mes "ماذا هناك؟";
+		next;
+		mes "[غيغانتيا]";
+		mes "فقط...";
+		mes "اقترب.";
+		mes "لدي شيء";
+		mes "يجب أن أفعله من أجلك.";
+		next;
+		mes "[غيغانتيا]";
+		mes "قرنك مائل.";
+		mes "احرص دائما على ارتدائه";
+		mes "مستقيما ومرتبا.";
+		mes "فسيد الموتى يراقبك";
+		mes "في كل لحظة.";
+		close;
+	}
+	mes "[غيغانتيا]";
+	mes "سيد الموتى يعلم كل شيء";
+	mes "ويرى كل شيء. فلا جدوى";
+	mes "من الاختباء أو محاولة الفرار";
+	mes "من عناق الموت العذب.";
+	close;
+
+OnTouch_:
+	if (isequipped(5038) || isequipped(2257) || isequipped(2256)) {
+		mes "[غيغانتيا]";
+		mes "مهلا! انتظر!";
+		close;
+	}
+	end;
+}
+
+nif_in,16,27,1	script	دجاجة زومبي#nif::Undead Chicken#nif	800,{
+	percentheal -5,0;
+	mes "[دجاجة زومبي]";
+	mes "عشت حياة هادئة كدجاجة عادية، حتى جاء ذلك اليوم المشؤوم حين قتلني البشر وأكلوني. لكن... هيه هيه~! جاء دوري الآن! *قهقهة*";
+	next;
+	mes "["+ strcharinfo(0) +"]";
+	mes "آآخ...!";
+	mes "دجاجة...";
+	mes "عضتني!";
+	next;
+	mes "[دجاجة زومبي]";
+	mes "هو هو~!";
+	mes "أنا لا أتكلم فحسب،";
+	mes "بل ألتهم البشر الأحياء أيضا!";
+	mes "حياة الزومبي رائعة!";
+	mes "*قهقهة*";
+	close;
+}
+
+nif_in,16,30,4	script	تابع زومبي#nif::Undead Familiar#nif	799,{
+	percentheal -5,0;
+	mes "[فاتومان]";
+	mes "أوووه، يا لحسن حظي!";
+	mes "إنسان حي~! لا شيء ألذ";
+	mes "من الدم الطازج... سأكتفي";
+	mes "برشفة صغيييرة.";
+	next;
+	mes "[" + strcharinfo(0) + "]";
+	mes "آخ! وريدي!";
+	mes "هل... هل امتصصت";
+	mes "دمي للتو؟!";
+	next;
+	mes "[فاتومان]";
+	mes "مواهاهاها~";
+	mes "أيها الفاني الأحمق!";
+	mes "احذر قواي!";
+	close;
+}
+
+nif_in,156,93,5	script	طفلة#niflheim::Child#niflheim	793,{
+	mes "[ألاكينا آن]";
+	mes "أين... أين أنا...؟";
+	mes "أتذكر أنني كنت نائمة،";
+	mes "ثم استيقظت فوجدت نفسي هنا...";
+	mes "أين أمي...؟ هل رأيت أمي؟";
+	mes "أريد العودة إلى المنزل... *نحيب*";
+	next;
+	switch(select("عن الساحرة:عن اللعنة:إنهاء الحديث")) {
+	case 1:
+		mes "[ألاكينا آن]";
+		mes "ساحرة...؟ لم أر ساحرة من قبل، لكنني قرأت عن الساحرات في الكتب. لا أعرف إن كن موجودات حقا، لكن وجودهن سيكون مرعبا جدا...";
+		next;
+		mes "[ألاكينا آن]";
+		mes "لماذا الجو بارد جدا هنا...؟";
+		mes "أ-ألا تشعر بالبرد أو الخوف؟ أريد العودة إلى المنزل... فالجو دافئ هناك. هل يمكنك مساعدتي على الرجوع... أرجوك...؟ س-ساعدني...";
+		close;
+	case 2:
+		mes "[ألاكينا آن]";
+		mes "ل-لعنة...؟";
+		mes "تقول جدتي إن في العالم لعنات كثيرة. بعضها يكون واضحا، لكن بعضها الآخر يلازمك طوال حياتك من دون أن تدركه...";
+		next;
+		mes "[ألاكينا آن]";
+		mes "وتقول إن اللعنات قد تتخذ أشكالا مختلفة... فغضب شخص منك ورفضه مسامحتك يمكن أن يكون لعنة أيضا.";
+		next;
+		mes "[ألاكينا آن]";
+		mes "أخبرتني جدتي أن هناك تعويذة واحدة تستطيع كسر لعنة قوية تعجز مهارة البركة عن إزالتها...";
+		next;
+		mes "[ألاكينا آن]";
+		mes "كلااتو...";
+		mes "فيراتا...";
+		mes "ني... ني... أممم...؟";
+		mes "ماذا كان الجزء الأخير؟";
+		mes "لا أستطيع أن أتذكر";
+		mes "آخر كلمة من التعويذة!";
+		next;
+		mes "[ألاكينا آن]";
+		mes "إذا رددت التعويذة بالترتيب الصحيح، فستحررك من غضب الشخص وكراهيته. وإذا ألقيتها قرب روح شريرة، فقد تنتقل اللعنة إليها بدلا منك.";
+		next;
+		mes "[ألاكينا آن]";
+		mes "لماذا تسألني عن أشياء مخيفة كهذه...؟ أنا أريد العودة إلى المنزل فحسب...";
+		close;
+	case 3:
+		mes "[ألاكينا آن]";
+		mes "الجو بارد جدا هنا...";
+		mes "أنا أتجمد...";
+		mes "أريد العودة إلى المنزل";
+		mes "والهرب من هذا المكان المخيف...";
+		next;
+		mes "[ألاكينا آن]";
+		mes "أرجوك... ساعدني.";
+		mes "هل تأخذني معك...؟";
+		close;
+	}
+}
+
+niflheim,350,258,1	script	روح ملعونة#nif::Cursed Spirit#nif	802,{
+	killmonster "niflheim","Cursed Spirit#nif::OnMyMobDead";
+	mes "[آش بروس]";
+	mes "أشعر بأن لعنة";
+	mes "قوية قد أصابتك...";
+	mes "همم... ومن الواضح";
+	mes "ما الذي جئت لتفعله....";
+	next;
+	mes "[آش بروس]";
+	mes "تريد التخلص";
+	mes "من لعنتك....";
+	mes "بإلقائها علي!!";
+	next;
+	mes "[آش بروس]";
+	mes "لمجرد أنني روح ملعونة، يظن المغامرون أن بوسعهم إلقاء لعناتهم علي متى شاؤوا؟!";
+	emotion ET_FRET;
+	next;
+	mes "[آش بروس]";
+	mes "لن أسمح لك";
+	mes "بالبقاء هنا.....";
+	mes "غادر الآن، وإلا";
+	mes "طردتك بالقوة....";
+	next;
+	mes "[آش بروس]";
+	mes "....وهناك أمر آخر...";
+	mes "....مهما فعلت...";
+	mes "....لا تلمس كتبي...";
+	next;
+	switch(select("المس الكتاب الأول:المس الكتاب الثاني:المس الكتاب الثالث:حسنا، سأغادر")) {
+	case 1:
+		monster "niflheim",349,259,"ريد وورد",1478,1,"Cursed Spirit#nif::OnMyMobDead";
+		mes "[آش بروس]";
+		mes "...!...";
+		mes "كيف تجرؤ على لمس كتبي";
+		mes "بعد أن حذرتك بوضوح:";
+		mes "'لا تلمس كتبي!'";
+		next;
+		mes "[آش بروس]";
+		mes "....!... غرررر!";
+		mes "سأمزقك إربا...!";
+		mes "وستكبل بلعنة أبدية...!";
+		close;
+	case 2:
+		mes "[آش بروس]";
+		mes "...!...";
+		mes "تجرؤ على لمس كتبي؟!";
+		mes "بعد أن أمرتك للتو";
+		mes "بألا تلمسها...؟!";
+		mes "أيها الفاني الأحمق!";
+		mes "...ارحل!";
+		close2;
+		warp "niflheim",34,162;
+		end;
+	case 3:
+		mes "[آش بروس]";
+		mes "موهاهاهاها....";
+		mes "أيها الفاني العنيد~!";
+		mes "حسنا! سأمنحك فرصة";
+		mes "للدفاع عن نفسك، وأسمح لك";
+		mes "بإلقاء تعويذة.";
+		next;
+		mes "[آش بروس]";
+		mes "لكن مهارة البركة لن";
+		mes "تنفع مع اللعنة";
+		mes "التي تحملها...";
+		mes "أما التعويذة القادرة على";
+		mes "إزالة لعنتك فقد اندثرت";
+		mes "منذ عصور~!";
+		emotion ET_KIK;
+		next;
+		if (select("كلوفر:كلااتو:كليتوس") == 2)
+			set .@spell,.@spell+1;
+		if (select("فيريت:فيريتاس:فيراتا") == 3)
+			set .@spell,.@spell+1;
+		if (select("ربطة عنق:قلادة:نيرو:^FFFFFFنيكتو!!!^000000") == 4)
+			set .@spell,.@spell+1;
+		if (.@spell == 3) {
+			switch(rand(1,5)) {
+			case 1:
+				if (morison_meat < 15) {
+					set morrison_meat,15;
+					mes "[آش بروس]";
+					mes "أنت... لقد كسرت اللعنة!";
+					mes "كيف عرفت تلك التعويذة؟!";
+					next;
+					mes "[آش بروس]";
+					mes "لا بد أنك تتوقع مني الآن أن";
+					mes "أذوب من شدة الألم، أليس";
+					mes "كذلك؟ حسنا... يؤسفني أن أخيب";
+					mes "ظنك أيها الفاني، فأنا لا أموت أبدا!";
+					close;
+				}
+				mes "[آش بروس]";
+				mes "...! ألقيت التعويذة الصحيحة؟!";
+				mes "...!...";
+				mes "لكن... ما زلت ملعونا...";
+				mes "أمهااااااااااااااا.....!";
+				close;
+			case 2:
+				if (thai_head == 1) {
+					set thai_head,2;
+					mes "[آش بروس]";
+					mes "ما هذا...";
+					mes "الشعور الغريب؟";
+					next;
+					mes "[آش بروس]";
+					mes "لا...!";
+					mes "لااااااااااااااااا!";
+					next;
+					mes "[آش بروس]";
+					mes "لماذا كان لا بد لتعويذتك أن تنجح؟!";
+					close;
+				}
+				mes "[آش بروس]";
+				mes "أنت...";
+				mes "ألقيت التعويذة الصحيحة؟!";
+				next;
+				mes "[آش بروس]";
+				mes "هوهو~";
+				mes "لكنك ما زلت ملعونا...";
+				close;
+			case 3:
+				if (thai_head == 8) {
+					set thai_head,7;
+					mes "[آش بروس]";
+					mes "أنت... لقد كسرت اللعنة!";
+					mes "من علمك تلك التعويذة؟!";
+					next;
+					mes "[آش بروس]";
+					mes "لا بد أنك تتوقع مني الآن أن";
+					mes "أذوب من شدة الألم، أليس";
+					mes "كذلك؟ حسنا... يؤسفني أن أخيب";
+					mes "ظنك أيها الفاني، فأنا لا أموت أبدا!";
+					next;
+					mes "[آش بروس]";
+					mes "ما دمت...";
+					mes "لا أزال...";
+					mes "ملعونا.";
+					next;
+					mes "[آش بروس]";
+					mes "لااااااااااا!";
+					close;
+				}
+				mes "[آش بروس]";
+				mes "...! ألقيت التعويذة الصحيحة؟!";
+				mes "...!...";
+				mes "لكن... ما زلت ملعونا...";
+				mes "أمهااااااااااااااا.....!";
+				close;
+			case 4:
+				mes "[آش بروس]";
+				mes "...! ألقيت التعويذة الصحيحة؟!";
+				mes "...!...";
+				mes "لكنك... ما زلت ملعونا...";
+				mes "مواهاهاهاااا.....!";
+				close;
+			}
+		}
+		monster "niflheim",345,259,"هيكل أورك",1462,1,"Cursed Spirit#nif::OnMyMobDead";
+		monster "niflheim",347,261,"هيكل أورك",1462,1,"Cursed Spirit#nif::OnMyMobDead";
+		monster "niflheim",344,253,"هيكل أورك",1462,1,"Cursed Spirit#nif::OnMyMobDead";
+		monster "niflheim",346,251,"هيكل أورك",1462,1,"Cursed Spirit#nif::OnMyMobDead";
+		monster "niflheim",349,249,"هيكل أورك",1462,1,"Cursed Spirit#nif::OnMyMobDead";
+		monster "niflheim",350,260,"هيكل أورك",1462,1,"Cursed Spirit#nif::OnMyMobDead";
+		monster "niflheim",353,256,"هيكل أورك",1462,1,"Cursed Spirit#nif::OnMyMobDead";
+		mes "[آش بروس]";
+		mes "موهاهاهاهاها!";
+		mes "ليست هذه التعويذة الصحيحة!";
+		mes "والآن ينتظرك الموت!";
+		mes "ستظل مكبلا إلى الأبد";
+		mes "بهذه اللعنة...!";
+		close;
+	case 4:
+		mes "[آش بروس]";
+		mes "...";
+		mes ".....";
+		next;
+		mes "[آش بروس]";
+		mes "حسنا إذن.";
+		mes "حاول ألا تتعثر";
+		mes "بقدميك وأنت تندفع";
+		mes "إلى الخارج.";
+		close;
+	}
+
+OnMyMobDead:
+	end;
+}

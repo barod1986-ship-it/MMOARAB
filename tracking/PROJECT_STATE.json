@@ -1,6 +1,7 @@
 {
   "project": "MMOARAB Ragnarok Online Arabic Translation",
   "repository": "barod1986-ship-it/MMOARAB",
+  "visibility": "public",
   "stable_branch": "main",
   "review_cycle": 2,
   "restart_from_beginning": true,
@@ -18,9 +19,19 @@
   "fixed_terms_required": true,
   "protected_tokens_required": true,
   "style_guide_required": true,
+  "online_research_required_when_needed": true,
+  "primary_sources_first": true,
+  "source_citations_required": true,
+  "pre_renewal_source_check_required": true,
   "cross_file_sync_required": true,
   "translation_correction_required": true,
-  "baseline_import_complete": false,
+  "ci_required": true,
+  "content_validation_required": true,
+  "baseline_import_complete": true,
+  "baseline": {
+    "game_source_files": 1923,
+    "game_source_bytes": 69619019
+  },
   "legacy_checkpoint": {
     "last_completed_stage": 292,
     "last_completed_file": "rathena-master/npc/pre-re/guides/guides_juno.txt",
@@ -29,7 +40,7 @@
     "completed_quest_files": 88,
     "total_quest_files": 88
   },
-  "validation": "static, structural, linguistic, fixed terminology, protected tokens and cross-file synchronization",
-  "encoding_policy": "preserve original bytes and line endings",
+  "validation": "static, structural, linguistic, terminology, source verification, encoding and cross-file synchronization",
+  "encoding_policy": "preserve original bytes, BOM and line endings",
   "updated_at": "2026-07-03"
 }

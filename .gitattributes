@@ -12,7 +12,7 @@ AGENTS.md text eol=lf
 /.github/** text eol=lf
 /tracking/** text eol=lf
 
-# Show textual diffs while still disabling EOL conversion.
+# Show textual diffs while still disabling EOL conversion for game files.
 *.txt -text diff
 *.lua -text diff
 *.lub -text diff

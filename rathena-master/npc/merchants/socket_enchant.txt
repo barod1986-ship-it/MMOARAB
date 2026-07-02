@@ -1,0 +1,368 @@
+//===== rAthena Script =======================================
+//= Episode 11.1 Socket Enchant NPC
+//===== By: ==================================================
+//= rAthena Dev Team
+//===== Current Version: =====================================
+//= 2.0a
+//===== Compatible With: =====================================
+//= rAthena Project
+//===== Description: =========================================
+//= [Official Conversion]
+//= Adds slots to selected weapons and armor.
+//===== Additional Comments: =================================
+//= 0.1a added missing L_No: to 2 funcs [Lupus]
+//= 0.1b Removed duplicates [Toms]
+//= 0.2 Added missing next;'s [Evera]
+//= 0.3 Fixed Zweihander[+] id [Lupus]
+//= 1.0 Fixed ingredients check [Lupus]
+//= 1.1 Updated to official. [SinSloth]
+//= 1.1b Optimized/cleaned [ultramage]
+//= 1.2 Fixed some typos and a nasty bug. [SinSloth]
+//= 1.3 Fixed a wrong item ID with Sphinx Hat. [SinSloth]
+//= 1.4 Corrected NPC names to fall within proper restrictions. [L0ne_W0lf]
+//= 1.5 Removed Ontouch trigger area from NPCs. [L0ne_W0lf]
+//= 1.6 Replaced effect numerics with constants. [Samuray22]
+//= 1.7 Adjusted prices on some armor and weapons. [L0ne_W0lf]
+//= 1.8 Added missing Gae Bolg and Dragon Slayer. [Kisuka]
+//= 1.9 Moved Episode 12 items to separate NPC.
+//=     Some cleanup & optimization. [Gepard]
+//= 2.0 Duplicates now spawn from floating NPCs. [L0ne_W0lf]
+//= 2.0a Added 'disable_items' command. [Euphy]
+//============================================================
+
+-	script	سايابليم#dummy::SocketEnchant	-1,{
+	if (checkweight(1201,1) == 0)
+	{
+		mes "- لحظة من فضلك! -";
+		mes "- أنت تحمل عناصر كثيرة جدا حاليا. -";
+		mes "- ضع بعض الأغراض في مخزن كافرا -";
+		mes "- لتخفيف وزن حقيبتك، -";
+		mes "- ثم حاول مرة أخرى. -";
+		close;
+	}
+	mes "[سايابليم]";
+	mes "أنا مهندس متخصص في إضافة فتحات إلى الأسلحة والدروع.";
+	mes "تختلف رسوم الخدمة والمواد المطلوبة ونسبة النجاح باختلاف القطعة التي سأعمل عليها.";
+	next;
+	mes "[سايابليم]";
+	mes "قد تبدو إضافة الفتحات عملية بسيطة، لكنها أعقد بكثير مما تتصور.";
+	mes "إذا كانت الخدمة تهمك، فاختر ما تحتاج إليه.";
+	next;
+	switch(select("إضافة فتحة إلى سلاح:إضافة فتحة إلى درع:معلومات عن إضافة الفتحات:إلغاء"))
+	{
+		case 1:
+			mes "[سايابليم]";
+			mes "إضافة فتحة إلى سلاح؟";
+			mes "أقسم الأسلحة حسب صعوبة إضافة الفتحة: فئة C هي الأسهل، وفئة S هي الأصعب.";
+			mes "اختر الفئة المطلوبة.";
+			next;
+			switch(select("فئة C:فئة B:فئة A:فئة S"))
+			{
+				case 1:
+					mes "[سايابليم]";
+					mes "هذه فئة C.";
+					mes "لا أستطيع إضافة فتحة إلا إلى أسلحة محددة من هذه الفئة. اختر السلاح المطلوب.";
+					next;
+					switch(select("ترايدنت:حبل:كمان"))
+					{
+						case 1: callfunc "Func_Socket",1460,1461,40,66,200,1010,10;
+						case 2: callfunc "Func_Socket",1950,1951,40,66,200,1010,10;
+						case 3: callfunc "Func_Socket",1901,1902,40,66,200,1010,10;
+					}
+				case 2:
+					mes "[سايابليم]";
+					mes "هذه فئة B.";
+					mes "تضم هذه الفئة أسلحة متوسطة الصعوبة.";
+					mes "اختر السلاح المطلوب لإضافة فتحة إليه.";
+					next;
+					switch(select("سلسلة:غلاديوس:غاكونغ:بايك:هايدونغوم:عود:سوط سلكي:واغناك:اربالست"))
+					{
+						case 1: callfunc "Func_Socket",1519,1520,40,61,300,1010,10;
+						case 2: callfunc "Func_Socket",1219,1220,40,61,300, 984, 1,999,5;
+						case 3: callfunc "Func_Socket",1714,1716,40,61,300, 984, 2,999,5;
+						case 4: callfunc "Func_Socket",1407,1408,40,61,200,1010,10;
+						case 5: callfunc "Func_Socket",1123,1128,40,61,300, 984, 2,999,5;
+						case 6: callfunc "Func_Socket",1905,1906,40,61,300,1011,10;
+						case 7: callfunc "Func_Socket",1954,1955,40,61,300,1011,10;
+						case 8: callfunc "Func_Socket",1801,1802,40,61,300,1010,10;
+						case 9: callfunc "Func_Socket",1713,1715,40,61,300, 984, 2,999,5;
+					}
+				case 3:
+					mes "[سايابليم]";
+					mes "هذه فئة A.";
+					mes "المحاولة في هذه الفئة عالية المخاطر.";
+					mes "اختر السلاح المطلوب لإضافة فتحة إليه.";
+					next;
+					switch(select("قوس الصياد:عصا النجاة (INT):زفايهندر:فلامبيرج:المتسلل:باليستا:صاعق:هياج:كلايمور"))
+					{
+						case 1: callfunc "Func_Socket",1718,1726,40,61,500,984,2,999,10;
+						case 2: callfunc "Func_Socket",1619,1620,40,61,500,984,5,999,10;
+						case 3: callfunc "Func_Socket",1168,1171,40,61,800,984,5,999,10;
+						case 4: callfunc "Func_Socket",1129,1149,40,61,500,984,2,999,10;
+						case 5: callfunc "Func_Socket",1261,1266,40,61,700,984,5,999,10;
+						case 6: callfunc "Func_Socket",1722,1727,40,61,500,984,5,999,10;
+						case 7: callfunc "Func_Socket",1522,1532,40,61,500,984,2,999,10;
+						case 8: callfunc "Func_Socket",1814,1816,40,61,500,984,5,999,10;
+						case 9: callfunc "Func_Socket",1163,1172,40,61,500,984,2,999,10; // NPC says "5 Oridecon" (Aegis) but takes only 2
+					}
+				case 4:
+					mes "[سايابليم]";
+					mes "فئة S...";
+					mes "هذه أصعب فئة على الإطلاق.";
+					mes "نجاح المحاولة فيها يكاد يكون معجزة.";
+					mes "اختر السلاح الذي سنحاول إضافة فتحة إليه.";
+					next;
+					switch(select("غونغنير:سكين السم:معول الثلج:سوكساماد:غينونغاغاب:كاتلس:منجل الهلال:عصا النجاة (DEX)"))
+					{
+						case 1: callfunc "Func_Socket", 1413, 1418,40,51,1000,984,5,999,10;
+						case 2: callfunc "Func_Socket", 1239,13016,40,51,1000,984,5,999,10;
+						case 3: callfunc "Func_Socket", 1230,13017,40,51,2000,984,5,999,10;
+						case 4: callfunc "Func_Socket", 1236,13018,40,51,1000,984,5,999,10;
+						case 5: callfunc "Func_Socket",13002,13019,40,51,1000,984,5,999,10;
+						case 6: callfunc "Func_Socket", 1135,13400,40,51,1000,984,5,999,10;
+						case 7: callfunc "Func_Socket", 1466, 1476,40,51,1000,984,5,999,10;
+						case 8: callfunc "Func_Socket", 1617, 1618,40,51,2000,984,5,999,10;
+					}
+			}
+		case 2:
+			mes "[سايابليم]";
+			mes "إضافة فتحة إلى درع؟";
+			mes "بالتأكيد، يمكنني محاولة ذلك.";
+			mes "تنقسم الدروع إلى أربع فئات بحسب صعوبة العمل.";
+			mes "فئة C هي الأسهل، وفئة S هي الأصعب.";
+			mes "اختر الفئة المطلوبة.";
+			next;
+			switch(select("فئة C:فئة B:فئة A:فئة S"))
+			{
+				case 1:
+					mes "[سايابليم]";
+					mes "هذه فئة C للدروع.";
+					mes "إنها الفئة الأقل خطورة.";
+					mes "اختر الدرع المطلوب لإضافة فتحة إليه.";
+					next;
+					switch(select("عباءة:معطف:طوق:بيريتا"))
+					{
+						case 1: callfunc "Func_Socket",2307,2308,40,66,200,999,3;
+						case 2: callfunc "Func_Socket",2309,2310,40,66,200,999,3;
+						case 3: callfunc "Func_Socket",2232,2233,40,66,200,999,3;
+						case 4: callfunc "Func_Socket",2216,2217,40,66,200,999,3;
+					}
+				case 2:
+					mes "[سايابليم]";
+					mes "اخترت فئة B المتوسطة.";
+					mes "اختر الدرع الموجود لديك.";
+					next;
+					switch(select("ترس مرآة:درع سلسلة:رداء القديس:رداء حريري:حذاء طويل:حذاء:وشاح:واقي:ترس مستدير:ترس:قبعة بونغون"))
+					{
+						case 1:  callfunc "Func_Socket",2107,2108,40,61,250,999,5;
+						case 2:  callfunc "Func_Socket",2314,2315,40,61,250,999,5;
+						case 3:  callfunc "Func_Socket",2325,2326,40,61,300,999,5;
+						case 4:  callfunc "Func_Socket",2321,2322,40,61,300,999,5;
+						case 5:  callfunc "Func_Socket",2405,2406,40,61,300,999,5;
+						case 6:  callfunc "Func_Socket",2403,2404,40,61,300,999,5;
+						case 7:  callfunc "Func_Socket",2503,2504,40,61,300,999,5;
+						case 8:  callfunc "Func_Socket",2101,2102,40,61,300,999,5;
+						case 9:  callfunc "Func_Socket",2103,2104,40,61,300,999,5;
+						case 10: callfunc "Func_Socket",2105,2106,40,61,250,999,5;
+						case 11: callfunc "Func_Socket",5046,5168,40,61,250,999,5;
+					}
+				case 3:
+					mes "[سايابليم]";
+					mes "هذه فئة A.";
+					mes "المحاولة في هذه الفئة عالية المخاطر.";
+					mes "اختر الدرع المطلوب لإضافة فتحة إليه.";
+					next;
+					switch(select("خوذة مرصعة بالجواهر:قبعة الدلو:كتاب الذاكرة:لباس ضيق:درع الفيلق الصفيحي:درع صفيحي كامل:ملابس اللص:حذاء معدني:قلنسوة:مانتو:خوذة كاملة:بدلة النينجا:خوذة الأورك:عباءة اللورد القديم:قبعة الراهب:ترس ذهبي:بروش:قبعة موناك"))
+					{
+						case 1:  callfunc "Func_Socket",2230,2231,40,61,400,985,1;
+						case 2:  callfunc "Func_Socket",5114,5120,40,61,400,985,1;
+						case 3:  callfunc "Func_Socket",2109,2121,40,61,400,985,1;
+						case 4:  callfunc "Func_Socket",2330,2331,40,61,400,985,1;
+						case 5:  callfunc "Func_Socket",2341,2342,40,61,400,985,1;
+						case 6:  callfunc "Func_Socket",2316,2317,40,61,400,985,1;
+						case 7:  callfunc "Func_Socket",2335,2336,40,61,400,985,1;
+						case 8:  callfunc "Func_Socket",2411,2412,40,61,400,985,1;
+						case 9:  callfunc "Func_Socket",5092,5093,40,61,400,985,1;
+						case 10: callfunc "Func_Socket",2505,2506,40,61,400,985,1;
+						case 11: callfunc "Func_Socket",2228,2229,40,61,400,985,1;
+						case 12: callfunc "Func_Socket",2337,2359,40,61,400,985,1;
+						case 13: callfunc "Func_Socket",2299,5157,40,61,400,985,1;
+						case 14: callfunc "Func_Socket",2507,2525,40,61,400,985,1;
+						case 15: callfunc "Func_Socket",2251,5158,40,61,400,985,1;
+						case 16: callfunc "Func_Socket",2246,5159,40,61,400,985,1;
+						case 17: callfunc "Func_Socket",2605,2625,40,61,400,985,1;
+						case 18: callfunc "Func_Socket",2264,5167,40,61,300,985,1;
+					}
+				case 4:
+					mes "[سايابليم]";
+					mes "فئة S للدروع...";
+					mes "هذه المحاولة شديدة الخطورة.";
+					mes "اختر الدرع المطلوب، وسأوضح المواد اللازمة للمحاولة.";
+					next;
+					switch(select("قرون الماعز المهيبة:عصابة شائكة:خوذة العظم:كورسير:تاج:تيارا:قبعة أبو الهول:رداء الإلقاء:قرط:خاتم:كشتبان القوس"))
+					{
+						case 1:  callfunc "Func_Socket",2256,5160,40,51,2000,985,2;
+						case 2:  callfunc "Func_Socket",2258,5161,40,51,2000,985,2;
+						case 3:  callfunc "Func_Socket",5017,5162,40,51,2000,985,2;
+						case 4:  callfunc "Func_Socket",5019,5163,40,51,2000,985,2;
+						case 5:  callfunc "Func_Socket",2235,5165,40,51,2000,985,2;
+						case 6:  callfunc "Func_Socket",2234,5164,40,51,2000,985,2;
+						case 7:  callfunc "Func_Socket",5053,5166,40,51,1000,985,2;
+						case 8:  callfunc "Func_Socket",2343,2360,40,51,1000,985,2;
+						case 9:  callfunc "Func_Socket",2602,2622,40,51,1000,985,2;
+						case 10: callfunc "Func_Socket",2601,2621,40,51,1000,985,2;
+						case 11: callfunc "Func_Socket",2619,2671,40,51,1000,985,2;
+					}
+			}
+		case 3:
+			mes "[سايابليم]";
+			mes "لم أصل بعد إلى إتقان كامل لفن إضافة الفتحات.";
+			mes "فالعملية معقدة جدا، ولا أعرف جميع العوامل التي تؤثر فيها.";
+			mes "لكنني لاحظت بعض الأنماط...";
+			next;
+			mes "[سايابليم]";
+			mes "في بعض المدن ترتفع نسبة النجاح للمعدات ذات مستوى الترقية المنخفض.";
+			mes "وفي مدن أخرى يحدث العكس.";
+			mes "أمر غريب، أليس كذلك؟";
+			next;
+			mes "[سايابليم]";
+			mes "وهناك أمر مهم جدا يجب معرفته.";
+			mes "عند طلب إضافة فتحة إلى قطعة، لا تحمل أكثر من نسخة من القطعة نفسها في الحقيبة.";
+			next;
+			mes "[سايابليم]";
+			mes "مثلا، إذا كانت في الحقيبة عباءة مانتو مطورة إلى +7 وأخرى عادية، فسأختار إحداهما عشوائيا للمحاولة.";
+			mes "لذلك يجب الانتباه جيدا.";
+			next;
+			mes "[سايابليم]";
+			mes "مرة أخرى: ^FF0000احمل نسخة واحدة فقط من القطعة التي تريد إضافة فتحة إليها^000000.";
+			mes "ضع كل النسخ الأخرى التي تحمل الاسم نفسه في مخزن كافرا قبل بدء المحاولة.";
+			close;
+		case 4:
+			mes "[سايابليم]";
+			mes "لا بأس، خذ وقتك.";
+			mes "يمكنك العودة متى رغبت في إضافة فتحة إلى معداتك.";
+			mes "إلى اللقاء.";
+			close;
+	}
+}
+
+function	script	Func_Socket	{
+	.@item_id = getarg(0);
+	.@zeny_req = getarg(4);
+	setarray .@item_req[0], getarg(5), getarg(7,0);
+	setarray .@req_amount[0], getarg(6), getarg(8,0);
+
+	disable_items;
+	mes "[سايابليم]";
+	mes "إضافة فتحة إلى "+ getitemname(.@item_id) +"، صحيح؟";
+	mes "تحتاج إلى ^FF0000"+ .@req_amount[0] +" "+ getitemname(.@item_req[0]) + (.@req_amount[0] > 1 && .@item_req[0] != 999 ? "":"") +"^000000، "+ (.@item_req[1] != 0 && .@req_amount[1] != 0 ? ("^FF0000"+ .@req_amount[1] +" "+ getitemname(.@item_req[1]) + (.@req_amount[1] > 1 && .@item_req[1] != 999 ? "":"") + "^000000، ") : "") + "بالإضافة إلى رسم خدمة قدره ^FF0000" + (.@zeny_req >= 1000 ? (.@zeny_req /1000 +",000") : .@zeny_req) +",000 زيني^000000.";
+	mes "ولا تنس إحضار "+ getitemname(.@item_id) +" نفسه.";
+	next;
+	mes "[سايابليم]";
+	if (getiteminfo(.@item_id, ITEMINFO_LOCATIONS) & EQP_HAND_R) // weapon
+	{
+		mes "إذا كانت العناصر المطلوبة والزيني متوافرة، يمكنني بدء المحاولة الآن.";
+		mes "لكن النجاح غير مضمون.";
+		mes "لذلك يجب توضيح المخاطر أولا...";
+		next;
+		mes "[سايابليم]";
+		mes "إذا فشلت المحاولة، فسيدمر ^FF0000السلاح^000000، وستدمر أيضا ^FF0000كل البطاقات المركبة فيه^000000.";
+	}
+	else // armor
+	{
+		mes "إذا كانت المواد المطلوبة والدرع ورسم الخدمة متوافرة، فيمكننا بدء محاولة إضافة الفتحة.";
+		mes "لكن يجب توضيح المخاطر أولا.";
+		next;
+		mes "[سايابليم]";
+		mes "إذا فشلت المحاولة، فسيدمر ^FF0000الدرع^000000 مع ^FF0000مستوى ترقيته^000000 و^FF0000كل البطاقات المركبة فيه^000000.";
+	}
+	mes "هل تريد متابعة محاولة إضافة الفتحة؟";
+	next;
+	switch(select("بدء محاولة إضافة الفتحة:إلغاء"))
+	{
+		case 1:
+			if ((Zeny >= .@zeny_req*1000) && countitem(.@item_req[0]) >= .@req_amount[0] && countitem(getarg(7,512)) >= .@req_amount[1] && countitem(.@item_id) > 0)// if there's no getarg(7) and getarg(8) provided, check itemcount against 0 (we still need a valid item ID though)
+			{
+				mes "[سايابليم]";
+				mes "حسنا، لنبدأ العمل!";
+				mes "لعل الحظ يحالفك في هذه المحاولة.";
+				next;
+				set .@a, rand(1,100);
+				if ((.@a > getarg(2)) && (.@a < getarg(3)))
+				{
+					specialeffect getarg(3) == 51 ? EF_LORD : EF_SANCTUARY; // only S Class items have Lord of Vermillion effect
+					mes "[سايابليم]";
+					mes "نجحت العملية!";
+					mes "أضيفت الفتحة بإتقان. تهانينا!";
+					delitem .@item_id,1;
+					delitem .@item_req[0],.@req_amount[0];
+					if (.@item_req[1] != 0 && .@req_amount[1] != 0)
+						delitem .@item_req[1],.@req_amount[1];
+					Zeny = Zeny - .@zeny_req *1000;
+					getitem getarg(1),1;
+					next;
+					mes "[سايابليم]";
+					mes "إلى اللقاء، وبالتوفيق.";
+					close;
+				}
+				else
+				{
+					specialeffect EF_SUI_EXPLOSION;
+					mes "[سايابليم]";
+					mes "آه... يؤسفني أن المحاولة فشلت.";
+					mes "لقد نفذت العملية بالطريقة الصحيحة، لكن النجاح يعتمد على الحظ.";
+					mes "هذه هي نتيجة المحاولة هذه.";
+					mes "لا تيأس؛ قد تنجح المحاولة المقبلة.";
+					delitem .@item_id,1;
+					delitem .@item_req[0],.@req_amount[0];
+					if (.@item_req[1] != 0 && .@req_amount[1] != 0)
+						delitem .@item_req[1],.@req_amount[1];
+					Zeny = Zeny - .@zeny_req *1000;
+					next;
+					mes "[سايابليم]";
+					mes "أتمنى لك حظا أفضل في المرة المقبلة.";
+					close;
+				}
+			}
+			else
+			{
+				mes "[سايابليم]";
+				mes "لا يمكنني بدء محاولة إضافة الفتحة لأن بعض المتطلبات ناقصة.";
+				mes "تحقق من وجود القطعة والمواد المطلوبة والزيني.";
+				close;
+			}
+		case 2:
+			mes "[سايابليم]";
+			mes "لا بأس، خذ وقتك في التفكير.";
+			mes "يمكنك العودة عندما تكون مستعدا.";
+			mes "لكن تذكر أن المخاطرة جزء من متعة المغامرة.";
+			close;
+	}
+}
+
+payon,140,151,5	duplicate(SocketEnchant)	سايابليم#pay::Seiyablem#pay	84
+lhz_in02,281,35,5	duplicate(SocketEnchant)	سايابليم#lhz::Seiyablem#lhz	84
+prt_in,33,70,5	duplicate(SocketEnchant)	سايابليم#prt::Seiyablem#prt	84
+morocc,51,41,4	duplicate(SocketEnchant)	سايابليم#moc::Seiyablem#moc	84
+
+-	script	شاب#dummy::SocketMan	-1,{
+	mes "[شاب]";
+	mes "أفكر في العمل مهندسا لإضافة الفتحات.";
+	mes "إنه مجال جديد يسمح بإضافة فتحات إلى المعدات، وقد يصبح مهنة مربحة ومثيرة للاهتمام.";
+	next;
+	mes "[شاب]";
+	mes "بحسب ما فهمت، يعتمد نجاح إضافة الفتحات كثيرا على الحظ.";
+	mes "قد تفشل المحاولة، لكن الحظ الاستثنائي قد يضيف فتحتين.";
+	mes "أمر مذهل، أليس كذلك؟";
+	next;
+	mes "[شاب]";
+	mes "لكن لا تتوقع حدوث ذلك دائما.";
+	mes "فبعض المعدات فقط يمكنها تحمل فتحتين إضافيتين.";
+	mes "ولا يزال أمامي الكثير من التعلم قبل أن أصبح متدربا.";
+	close;
+}
+
+prt_in,31,57,1	duplicate(SocketMan)	شاب#prt::Young Man#prt	97
+payon,143,143,7	duplicate(SocketMan)	شاب#pay::Young Man#pay	97
+morocc,60,42,3	duplicate(SocketMan)	شاب#moc::Young Man#moc	97
+lhz_in02,269,33,5	duplicate(SocketMan)	شاب#lhz::Young Man#lhz	97

@@ -20,7 +20,8 @@ venv/
 .DS_Store
 Thumbs.db
 
-# Generated reports and spreadsheets
-*.xlsx
-*.xls
+# Generated reports only. Spreadsheets are not globally ignored: the validator
+# rejects accidental .xlsx/.xls files explicitly instead of hiding them.
 reports/generated/
+~$*.xlsx
+~$*.xls

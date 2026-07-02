@@ -11,16 +11,22 @@
 ## القاموس والمصطلحات الثابتة
 - [ ] تم فحص `docs/STYLE_GUIDE.md`.
 - [ ] تم فحص `glossary/fixed_terms.csv`.
-- [ ] تم الالتزام بـ`glossary/protected_tokens.txt` وعدم ترجمة الاختصارات المحمية.
+- [ ] تم الالتزام بـ`glossary/protected_tokens.txt`.
 - [ ] تم فحص `glossary/master_glossary.csv`.
-- [ ] تم تحديث القاموس بالمصطلحات والمرادفات الجديدة، أو تم توثيق: `Glossary checked — no update required`.
+- [ ] تم تحديث القاموس، أو تم توثيق: `Glossary checked — no update required`.
 - المصطلحات المضافة أو المصححة:
-- هل تغير مصطلح ثابت؟ إن نعم، اذكر السبب وكل الملفات التي زومنت معه:
+- هل تغير مصطلح ثابت؟ اذكر السبب والملفات المتزامنة:
 
-## سجل المراجع الخارجية
-- [ ] تم فحص `docs/source-note.txt`.
-- [ ] تم تسجيل المصادر المستخدمة أو بيان كفاية الملفات الداخلية.
-- المصدر والرابط وتاريخ الاطلاع والمعلومة والقرار:
+## مصادر الإنترنت
+- [ ] تمت قراءة `docs/ONLINE_SOURCE_POLICY.md`.
+- نتيجة البحث:
+  - `Online sources used and cited`
+  - `Online research not required — internal references were sufficient`
+  - `Online research inconclusive — no unsupported change applied`
+
+| المصدر | النوع | تاريخ الاطلاع | ما الذي أثبته | القرار |
+|---|---|---|---|---|
+| | | | | |
 
 ## المزامنة بين الأنظمة
 ضع لكل فئة: `Updated` أو `Checked — no change required` أو `Not applicable`.
@@ -38,10 +44,16 @@
 - [ ] بقيت `STR AGI VIT INT DEX LUK HP SP ATK MATK DEF MDEF HIT FLEE CRIT ASPD` بالإنجليزية.
 - [ ] الأوامر والمتغيرات والأحداث والمعرفات لم تتغير دون قصد.
 - [ ] الخرائط والإحداثيات والأسماء الداخلية محفوظة.
-- [ ] الترميز ونهايات الأسطر محفوظة.
+- [ ] الترميز وBOM ونهايات الأسطر محفوظة.
 - [ ] نجح `python tools/validate_repository.py`.
 - [ ] نجح `python tools/validate_terminology_policy.py`.
-- [ ] لم تتم إضافة ZIP أو backup أو تقارير متراكمة.
+- [ ] نجح `python tools/validate_translation_content.py --base origin/main`.
+- [ ] نجح GitHub Actions.
+- [ ] لم تتم إضافة ZIP أو backup أو XLS/XLSX.
+
+## التحذيرات البنيوية
+- هل تغيرت مراجع `::` أو event labels أو `duplicate()`؟
+- إن نعم، اشرح السبب والمصدر الرسمي:
 
 ## الملفات المعدلة
 
