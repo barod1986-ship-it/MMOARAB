@@ -19,6 +19,7 @@
    - `docs/STYLE_GUIDE.md`
    - `glossary/fixed_terms.csv`
    - `glossary/protected_tokens.txt`
+   - `docs/source-note.txt`
    - `docs/SYNC_SCOPE.md`
    - `tracking/PROJECT_STATE.json`
    - `glossary/master_glossary.csv`
@@ -49,6 +50,7 @@
 - [ ] المصطلحات الثابتة طُبقت.
 - [ ] بقيت `STR AGI VIT INT DEX LUK HP SP ATK MATK DEF MDEF HIT FLEE CRIT ASPD` بالإنجليزية.
 - [ ] القاموس الرئيسي فُحص وحدّث عند الحاجة.
+- [ ] سجل المراجع الخارجية أو بيان كفاية الملفات الداخلية مرفق.
 - [ ] العناصر فُحصت إن كانت مرتبطة.
 - [ ] الوحوش فُحصت إن كانت مرتبطة.
 - [ ] المهارات والحالات فُحصت إن كانت مرتبطة.
