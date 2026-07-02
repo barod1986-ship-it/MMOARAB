@@ -1,0 +1,7 @@
+Reference record
+
+Primary references: official rAthena repository and official game files.
+Secondary references: reliable databases and established game wikis.
+Scope: Pre-Renewal and the matching client or server version.
+Pull request record: source name, link, access date, verified fact, and resulting decision.
+Internal files sufficient: record that no external reference was needed.
