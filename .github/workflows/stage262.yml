@@ -1,6 +1,9 @@
 name: Stage 262 validation
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - stage-262-hugel-bingo-review
@@ -14,7 +17,7 @@ jobs:
   review:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out branch
+      - name: Check out review branch
         uses: actions/checkout@v4
         with:
           ref: stage-262-hugel-bingo-review
