@@ -1,0 +1,42 @@
+﻿الاختبار,النتيجة,التفاصيل
+بصمة المرجع الإنجليزي الرسمي,PASS,4a3d2cf741aa20a536b1e4369c560f84baf33dae
+بقاء ترميز UTF-8,PASS,فك الترميز وإعادة الحفظ بنجاح
+بقاء حالة BOM,PASS,False
+بقاء نوع نهايات الأسطر,PASS,'\n'
+بقاء عدد الأسطر,PASS,970
+عدم حذف محتوى الملف,PASS,39767
+تغير الملف لغويا,PASS,c9480eba0ae78abdc2ac5494aca581e2be41494343a340c4c313003d30f5159d -> 3a3734ad41b6c9c10824aa0fca87aa1de4c74e7ea964f309d0692cb9cd9852c1
+ثبات الأسماء الداخلية بعد ::,PASS,36
+ثبات Labels وEvents,PASS,92
+ثبات أسماء المتغيرات,PASS,635
+ثبات الأرقام البرمجية,PASS,1612
+ثبات مراجع الأحداث النصية,PASS,14
+ثبات أهداف duplicate,PASS,137
+ثبات أسماء الدوال,PASS,"['Func_Bingo', 'Func_BingoResult']"
+ثبات تسلسل الأوامر,PASS,840
+سلامة الأقواس المعقوفة,PASS,{}
+سلامة الأقواس الدائرية,PASS,()
+سلامة الأقواس المربعة,PASS,[]
+سلامة الاقتباسات في كل سطر,PASS,even quotes
+بقاء خريطة que_bingo,PASS,184
+بقاء تكلفة 1000 زيني,PASS,waitingroom fee
+بقاء عدد اللاعبين 5,PASS,5 players
+بقاء معرف المكافأة 7515,PASS,2
+بقاء مكافأة 50 ميدالية,PASS,50
+بقاء مكافأة ميدالية واحدة,PASS,1
+بقاء شرط السحب السادس عشر,PASS,16
+بقاء مقارنة Bingo الحساسة,PASS,Bingo
+بقاء عدد خلايا اللوحة 25,PASS,25
+بقاء شرط خمسة خطوط,PASS,> 4
+بقاء مؤثر الفوز,PASS,EF_SUI_EXPLOSION
+بقاء ملف الصوت,PASS,tming_success.wav
+بقاء أوامر warpwaitingpc,PASS,1
+بقاء أوامر areawarp,PASS,4
+بقاء أوامر donpcevent,PASS,13
+بقاء أوامر enablenpc,PASS,21
+بقاء أوامر disablenpc,PASS,157
+بقاء المؤقتات,PASS,71
+بقاء أوامر الانتقال,PASS,12
+بقاء Func_Bingo,PASS,Func_Bingo
+بقاء Func_BingoResult,PASS,Func_BingoResult
+اكتمال جميع الاستبدالات,PASS,105
