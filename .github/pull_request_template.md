@@ -35,6 +35,7 @@
 - [ ] الخرائط والإحداثيات والأسماء الداخلية محفوظة.
 - [ ] الترميز ونهايات الأسطر محفوظة.
 - [ ] نجح `python tools/validate_repository.py`.
+- [ ] نجح `python tools/validate_terminology_policy.py`.
 - [ ] لم تتم إضافة ZIP أو backup أو تقارير متراكمة.
 
 ## الملفات المعدلة
