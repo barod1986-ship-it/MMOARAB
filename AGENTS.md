@@ -8,11 +8,10 @@
 
 
 - دورة المراجعة: 2
-- آخر مرحلة مكتملة في الدورة الجديدة: 0
-- المرحلة التالية: 1
-- ملفات المرحلة 1:
-  - `rathena-master/npc/cities/izlude.txt`
-  - `rathena-master/npc/cities/prontera.txt`
+- آخر مرحلة مكتملة في الدورة الجديدة: 1
+- المرحلة التالية: 2
+- ملفات المرحلة 2:
+  - `rathena-master/npc/cities/geffen.txt`
 
 ## المراجع الإلزامية قبل كل مرحلة
 
