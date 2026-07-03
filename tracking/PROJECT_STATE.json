@@ -5,6 +5,10 @@
   "stable_branch": "main",
   "review_cycle": 2,
   "restart_from_beginning": true,
+  "stage_status": "in_progress",
+  "active_stage": 1,
+  "active_branch": "review-cycle-2-stage-001-prontera-izlude",
+  "stage_started_at": "2026-07-03",
   "last_completed_stage": 0,
   "next_stage": 1,
   "next_files": [
