@@ -71,9 +71,11 @@ Cookie,بسكويت,عنصر,23,تقارير_المراجعة_الحوارية/�
 Cool Event Corporation,شركة كول إيفنت,الاسم المتسق مع بقية الحزمة,12,تقارير_المراجعة_الحوارية/المرحلة_12/dialogue_stage12_glossary.csv,,approved,Merged from stage glossaries.
 Crab Shell,صدفة سرطان,العنصر 964,29,تقارير_المراجعة_الحوارية/المرحلة_29/dialogue_stage29_glossary.csv,,approved,Merged from stage glossaries.
 Crayu,كرايو,الشاعر صاحب اختبار الأغنية,27,تقارير_المراجعة_الحوارية/المرحلة_27/dialogue_stage27_glossary.csv,,approved,Merged from stage glossaries.
+Creamy,كريمي,وحش | الاسم المستخدم في حوار برونتيرا وملفات الخادم,1,rathena-master/npc/cities/prontera.txt,,approved,Confirmed in review cycle 2 stage 1.
 Crewman,بحار,اسم وظيفة ناقل برازيليس.,21,تقارير_المراجعة_الحوارية/المرحلة_21/dialogue_stage21_glossary.csv,,approved,Merged from stage glossaries.
 Crystal Fragment,شظية بلورة,عنصر,10,تقارير_المراجعة_الحوارية/المرحلة_10/dialogue_stage10_glossary.csv,,approved,Merged from stage glossaries.
 Csar Alexsay III,القيصر أليكساي الثالث,حاكم موسكوفيا,22,تقارير_المراجعة_الحوارية/المرحلة_22/dialogue_stage22_glossary.csv,,approved,Merged from stage glossaries.
+Cure,علاج,مهارة | الاسم المعتمد في ملفات المهارات وحوار كنيسة برونتيرا,1,rathena-master/npc/cities/prontera.txt,,approved,Confirmed in review cycle 2 stage 1.
 Cyfar,سايفار,عنصر,9,تقارير_المراجعة_الحوارية/المرحلة_09/dialogue_stage9_glossary.csv,,approved,Merged from stage glossaries.
 Dagger of Counter,خنجر الهجوم المضاد,سلاح,8,تقارير_المراجعة_الحوارية/المرحلة_08/dialogue_stage8_glossary.csv,,approved,Merged from stage glossaries.
 Dark Crystal Fragment,شظية بلورة مظلمة,عنصر,10,تقارير_المراجعة_الحوارية/المرحلة_10/dialogue_stage10_glossary.csv,,approved,Merged from stage glossaries.
@@ -97,6 +99,7 @@ Emveretarcon,إمفيريتاركون,عنصر,10,تقارير_المراجعة_
 Erious,إيريوس,صاحب مهمة إيصال الرسالة,27,تقارير_المراجعة_الحوارية/المرحلة_27/dialogue_stage27_glossary.csv,,approved,Merged from stage glossaries.
 Esuna,إيسونا,عضوة الجناح السري,34,تقارير_المراجعة_الحوارية/المرحلة_34/dialogue_stage34_glossary.csv,,approved,Merged from stage glossaries.
 Euslan,أوسلان,شخصية | إزالة صيغ إوسلان/إسلان/يوسلان,31,تقارير_المراجعة_الحوارية/المرحلة_31/dialogue_stage31_glossary.csv,,approved,Merged from stage glossaries.
+Fabre,فابر,وحش | الاسم المستخدم في حوار برونتيرا وملفات الخادم,1,rathena-master/npc/cities/prontera.txt,,approved,Confirmed in review cycle 2 stage 1.
 False Angel,ملاك زائف,وحش,8,تقارير_المراجعة_الحوارية/المرحلة_08/dialogue_stage8_glossary.csv,,approved,Merged from stage glossaries.
 Feather of Birds,ريشة طيور,متطلب تعلم لغة ووتان.,28,تقارير_المراجعة_الحوارية/المرحلة_28/dialogue_stage28_glossary.csv,,approved,Merged from stage glossaries.
 Feudal Lord Permit,تصريح السيد الإقطاعي,العنصر 7160,29,تقارير_المراجعة_الحوارية/المرحلة_29/dialogue_stage29_glossary.csv,,approved,Merged from stage glossaries.
@@ -118,6 +121,7 @@ Ghalstein,غالشتاين,الرجل العادي/عضو الجناح السر�
 Ghost Property,خاصية الشبح,قاموس الخصائص داخل الحزمة,6,تقارير_المراجعة_الحوارية/المرحلة_06/dialogue_stage6_glossary.csv,,approved,Merged from stage glossaries.
 Ghostring,غوسترينغ,mob_db.yml، المعرّف 1120,4,تقارير_المراجعة_الحوارية/المرحلة_04/dialogue_stage4_glossary.csv,,approved,Merged from stage glossaries.
 Giant Dumpling,الزلابية العملاقة,طبق محلي مذكور في الحوار,18,تقارير_المراجعة_الحوارية/المرحلة_18/dialogue_stage18_glossary.csv,,approved,Merged from stage glossaries.
+Giant Hornet,دبور عملاق,وحش | الصيغة المفردة المعتمدة في سياق برونتيرا,1,rathena-master/npc/cities/prontera.txt,الدبابير العملاقة,approved,Confirmed in review cycle 2 stage 1.
 Giearth / Guias,جي إيرث,mob_db.yml، المعرّف 1121؛ السياق يذكر روح الأرض والمجرفة,4,تقارير_المراجعة_الحوارية/المرحلة_04/dialogue_stage4_glossary.csv,,approved,Merged from stage glossaries.
 Goat,ماعز,وحش,8,تقارير_المراجعة_الحوارية/المرحلة_08/dialogue_stage8_glossary.csv,,approved,Merged from stage glossaries.
 Golem,غولم,وحش | توحيد اسم الوحش مع قاعدة المصطلحات,1,تقارير_المراجعة_الحوارية/المرحلة_01/dialogue_stage1_glossary.csv,,approved,Merged from stage glossaries.
@@ -129,6 +133,7 @@ Gungnir,غونغنير,System/LuaFiles514/itemInfo.lua، المعرّف 1413,3,�
 Gushaar,غوشار,جهة الاتصال قرب يونو,34,تقارير_المراجعة_الحوارية/المرحلة_34/dialogue_stage34_glossary.csv,,approved,Merged from stage glossaries.
 Hardrock Mammoth,ماموث هاردروك,اسم وحش,25,تقارير_المراجعة_الحوارية/المرحلة_25/dialogue_stage25_glossary.csv,,approved,Merged from stage glossaries.
 Hashokii,هاشوكي,المهرج,23,تقارير_المراجعة_الحوارية/المرحلة_23/dialogue_stage23_glossary.csv,,approved,Merged from stage glossaries.
+Heal,شفاء,مهارة | الاسم المعتمد في ملفات المهارات وحوار كنيسة برونتيرا,1,rathena-master/npc/cities/prontera.txt,,approved,Confirmed in review cycle 2 stage 1.
 Heart Island,جزيرة القلب,,24,تقارير_المراجعة_الحوارية/المرحلة_24/dialogue_stage24_glossary.csv,,approved,Merged from stage glossaries.
 Heart of Mermaid,قلب حورية البحر,العنصر 950,29,تقارير_المراجعة_الحوارية/المرحلة_29/dialogue_stage29_glossary.csv,,approved,Merged from stage glossaries.
 Heaven Peach,الخوخ السماوي,طبق محلي مذكور في الحوار,18,تقارير_المراجعة_الحوارية/المرحلة_18/dialogue_stage18_glossary.csv,,approved,Merged from stage glossaries.
@@ -180,6 +185,7 @@ Kunlun,كونلون,الاسم المستخدم داخل الحوارات الر
 Kunlun Dungeon,دهليز كونلون,اسم المنطقة في الحوار,18,تقارير_المراجعة_الحوارية/المرحلة_18/dialogue_stage18_glossary.csv,,approved,Merged from stage glossaries.
 Kuzkahina,كوزكاهينا,صاحب المتجر في نيفلهايم,27,تقارير_المراجعة_الحوارية/المرحلة_27/dialogue_stage27_glossary.csv,,approved,Merged from stage glossaries.
 Kwan,كوان,اسم شخصية,20,تقارير_المراجعة_الحوارية/المرحلة_20/dialogue_stage20_glossary.csv,,approved,Merged from stage glossaries.
+Kyrie Eleison,كيري إليسون,مهارة | الاسم المعتمد في ملفات المهارات وحوار كنيسة برونتيرا,1,rathena-master/npc/cities/prontera.txt,,approved,Confirmed in review cycle 2 stage 1.
 Laboratory Permit,تصريح دخول المختبر,وثيقة الدخول,12,تقارير_المراجعة_الحوارية/المرحلة_12/dialogue_stage12_glossary.csv,,approved,Merged from stage glossaries.
 Lalitha,لاليثا,اسم شخصية مؤنثة,20,تقارير_المراجعة_الحوارية/المرحلة_20/dialogue_stage20_glossary.csv,,approved,Merged from stage glossaries.
 Laphine,لافين,الشعب الجني في سبلينديد || اسم الشعب,25;26,تقارير_المراجعة_الحوارية/المرحلة_25/dialogue_stage25_glossary.csv;تقارير_المراجعة_الحوارية/المرحلة_26/dialogue_stage26_glossary.csv,,approved,Merged from stage glossaries.
@@ -254,6 +260,7 @@ Poem of Bragi,قصيدة براغي,اسم مهارة/أغنية,26,تقارير
 Poet Nell,الشاعر نيل,اسم الشخصية,26,تقارير_المراجعة_الحوارية/المرحلة_26/dialogue_stage26_glossary.csv,,approved,Merged from stage glossaries.
 Poisonous Powder,مسحوق سام,عنصر,10,تقارير_المراجعة_الحوارية/المرحلة_10/dialogue_stage10_glossary.csv,,approved,Merged from stage glossaries.
 Pope,البابا,لقب زعيمة المعبد؛ الشخصية أنثى في الحوار,13,تقارير_المراجعة_الحوارية/المرحلة_13/dialogue_stage13_glossary.csv,,approved,Merged from stage glossaries.
+Poporing,بوبورينغ,وحش | الاسم المستخدم في حوار برونتيرا وملفات الخادم,1,rathena-master/npc/cities/prontera.txt,,approved,Confirmed in review cycle 2 stage 1.
 Porcellio,بورسيليو,وحش,10,تقارير_المراجعة_الحوارية/المرحلة_10/dialogue_stage10_glossary.csv,,approved,Merged from stage glossaries.
 Poring,بورينغ,mob_db.yml، المعرّف 1002 || قاموس الوحوش,4;6,تقارير_المراجعة_الحوارية/المرحلة_04/dialogue_stage4_glossary.csv;تقارير_المراجعة_الحوارية/المرحلة_06/dialogue_stage6_glossary.csv,,approved,Merged from stage glossaries.
 Postell Schuwell,بوستيل شويل,شخصية | توحيد كتابة اسم العائلة,31,تقارير_المراجعة_الحوارية/المرحلة_31/dialogue_stage31_glossary.csv,,approved,Merged from stage glossaries.
@@ -266,8 +273,10 @@ Propose Girl,فتاة عاشقة,اسم عرض طبيعي ومختصر,17,تقا
 Psychic Advisor,مستشارة روحانية,جنس الشخصية,2,تقارير_المراجعة_الحوارية/المرحلة_02/dialogue_stage2_glossary.csv,,approved,Merged from stage glossaries.
 Publisher,الناشر,اسم عرض NPC,29,تقارير_المراجعة_الحوارية/المرحلة_29/dialogue_stage29_glossary.csv,,approved,Merged from stage glossaries.
 Puchuchartan,بوتشوتشرتان,شامان ووتان؛ صيغة مختصرة ضمن حد اسم العرض.,28,تقارير_المراجعة_الحوارية/المرحلة_28/dialogue_stage28_glossary.csv,,approved,Merged from stage glossaries.
+Pupa,شرنقة,وحش | الاسم الوصفي المعتمد في حوار برونتيرا,1,rathena-master/npc/cities/prontera.txt,,approved,Confirmed in review cycle 2 stage 1.
 Pure Enchanted Stone,حجر عنصري نقي,الحجر الذي تفككه الشامان.,28,تقارير_المراجعة_الحوارية/المرحلة_28/dialogue_stage28_glossary.csv,,approved,Merged from stage glossaries.
 Pyramid,الهرم / الأهرامات,سياق المدينة ومرجع iRO Wiki,4,تقارير_المراجعة_الحوارية/المرحلة_04/dialogue_stage4_glossary.csv,,approved,Merged from stage glossaries.
+Queen Bee,ملكة النحل,وحش | الاسم المستخدم في سياق برونتيرا,1,rathena-master/npc/cities/prontera.txt,,approved,Confirmed in review cycle 2 stage 1.
 Rachel,راشيل,اسم المدينة وعاصمة أرونافلتز,13,تقارير_المراجعة_الحوارية/المرحلة_13/dialogue_stage13_glossary.csv,,approved,Merged from stage glossaries.
 Random Warp,الانتقال العشوائي,سياق برج الساعة,6,تقارير_المراجعة_الحوارية/المرحلة_06/dialogue_stage6_glossary.csv,,approved,Merged from stage glossaries.
 Raw Fish,سمك نيئ,العنصر 544,29,تقارير_المراجعة_الحوارية/المرحلة_29/dialogue_stage29_glossary.csv,,approved,Merged from stage glossaries.
@@ -290,6 +299,7 @@ Rune-Midgarts Kingdom,مملكة رون-ميدغارتس,منطقة || المع�
 Rune-Midgartsian,شخص من رون-ميدغارت,صياغة سياقية بدلا من النسبة الثقيلة,15,تقارير_المراجعة_الحوارية/المرحلة_15/dialogue_stage15_glossary.csv,,approved,Merged from stage glossaries.
 Sa-mhing Tiger,نمر سا-مهينغ,الاسم المعتمد في مهمة أيوثايا,20,تقارير_المراجعة_الحوارية/المرحلة_20/dialogue_stage20_glossary.csv,,approved,Merged from stage glossaries.
 Sacred Mission,المهمة المقدسة,ترس,8,تقارير_المراجعة_الحوارية/المرحلة_08/dialogue_stage8_glossary.csv,,approved,Merged from stage glossaries.
+Sanctuary,ملاذ,مهارة | الاسم المعتمد في ملفات المهارات وحوار كنيسة برونتيرا,1,rathena-master/npc/cities/prontera.txt,,approved,Confirmed in review cycle 2 stage 1.
 Sandaruman Fortress,قلعة ساندارومان,موقع,7,تقارير_المراجعة_الحوارية/المرحلة_07/dialogue_stage7_glossary.csv,,approved,Merged from stage glossaries.
 Santa Claus,سانتا كلوز,الشخصية,23,تقارير_المراجعة_الحوارية/المرحلة_23/dialogue_stage23_glossary.csv,,approved,Merged from stage glossaries.
 Sapha,سافا,شعب العمالقة في مانوك || اسم الشعب المقابل,25;26,تقارير_المراجعة_الحوارية/المرحلة_25/dialogue_stage25_glossary.csv;تقارير_المراجعة_الحوارية/المرحلة_26/dialogue_stage26_glossary.csv,,approved,Merged from stage glossaries.
@@ -333,6 +343,7 @@ Thachentze / Lenient Aunt,ثاتشينتز / العمة ثاتشينتز,اسم 
 Thang,ثانغ,اسم شخصية,20,تقارير_المراجعة_الحوارية/المرحلة_20/dialogue_stage20_glossary.csv,,approved,Merged from stage glossaries.
 The Eternal Chaos,الفوضى الأبدية,اسم مهارة/أغنية,26,تقارير_المراجعة_الحوارية/المرحلة_26/dialogue_stage26_glossary.csv,,approved,Merged from stage glossaries.
 The Ring of Nibelungen,خاتم النيبلونغ,اسم مهارة/أسطورة,26,تقارير_المراجعة_الحوارية/المرحلة_26/dialogue_stage26_glossary.csv,,approved,Merged from stage glossaries.
+Thief Bug,حشرة اللص,وحش | الاسم المعتمد في حوار مجاري برونتيرا,1,rathena-master/npc/cities/prontera.txt,حشرات اللص,approved,Confirmed in review cycle 2 stage 1.
 Tokako,توكاكو,شخصية المهمة,29,تقارير_المراجعة_الحوارية/المرحلة_29/dialogue_stage29_glossary.csv,,approved,Merged from stage glossaries.
 Tom Yum Goong,توم يوم غونغ,طبق أيوثايا الشهير,20,تقارير_المراجعة_الحوارية/المرحلة_20/dialogue_stage20_glossary.csv,,approved,Merged from stage glossaries.
 Toukoujyo,توكوجيو,قصر البحيرة/الموقع,29,تقارير_المراجعة_الحوارية/المرحلة_29/dialogue_stage29_glossary.csv,,approved,Merged from stage glossaries.
@@ -360,6 +371,7 @@ VIP area,صالة كبار الزوار,مصطلح سياقي,7,تقارير_ا�
 Vitata / Bitata,فيتاتا,mob_db.yml، المعرّف 1176؛ تصحيح خطأ الاسم في النص الإنجليزي,4,تقارير_المراجعة_الحوارية/المرحلة_04/dialogue_stage4_glossary.csv,,approved,Merged from stage glossaries.
 Walter Moers,والتر مويرز,الاسم الظاهر المعتمد في النقل والملاحة,17,تقارير_المراجعة_الحوارية/المرحلة_17/dialogue_stage17_glossary.csv,,approved,Merged from stage glossaries.
 Ward,حارس,,14,تقارير_المراجعة_الحوارية/المرحلة_14/dialogue_stage14_glossary.csv,,approved,Merged from stage glossaries.
+Warp Portal,بوابة الانتقال,مهارة | الاسم المعتمد في ملفات المهارات وحوار كنيسة برونتيرا,1,rathena-master/npc/cities/prontera.txt,,approved,Confirmed in review cycle 2 stage 1.
 Well Baked Cookie,بسكويت مخبوز جيدا,عنصر,10,تقارير_المراجعة_الحوارية/المرحلة_10/dialogue_stage10_glossary.csv,,approved,Merged from stage glossaries.
 Well-side Maiden,فتاة البئر,اسم عرض مختصر ومتوافق مع الملاحة,17,تقارير_المراجعة_الحوارية/المرحلة_17/dialogue_stage17_glossary.csv,,approved,Merged from stage glossaries.
 Well-Tanned Leather,جلد مدبوغ جيدا,عنصر,9,تقارير_المراجعة_الحوارية/المرحلة_09/dialogue_stage9_glossary.csv,,approved,Merged from stage glossaries.
