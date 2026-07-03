@@ -13,7 +13,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  diagnose:
+  apply:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
@@ -27,31 +27,17 @@ jobs:
       - name: Apply reviewed corrections
         run: python tools/apply_stage001_izlude_review.py
 
-      - name: Capture validation diagnostics
-        shell: bash
+      - name: Validate repository
         run: |
-          set +e
-          : > stage001-validation.txt
+          python tools/validate_repository.py
+          python tools/validate_terminology_policy.py
+          python tools/validate_translation_content.py --base origin/main
 
-          echo "== validate_repository.py ==" >> stage001-validation.txt
-          python tools/validate_repository.py >> stage001-validation.txt 2>&1
-          repo_status=$?
-          echo "status=$repo_status" >> stage001-validation.txt
-
-          echo "== validate_terminology_policy.py ==" >> stage001-validation.txt
-          python tools/validate_terminology_policy.py >> stage001-validation.txt 2>&1
-          term_status=$?
-          echo "status=$term_status" >> stage001-validation.txt
-
-          echo "== validate_translation_content.py ==" >> stage001-validation.txt
-          python tools/validate_translation_content.py --base origin/main >> stage001-validation.txt 2>&1
-          content_status=$?
-          echo "status=$content_status" >> stage001-validation.txt
-
-          git restore rathena-master/npc/cities/izlude.txt glossary/master_glossary.csv
-
+      - name: Commit reviewed files
+        run: |
+          rm -f stage001-validation.txt
           git config user.name "MMOARAB Review Bot"
           git config user.email "actions@users.noreply.github.com"
-          git add stage001-validation.txt
-          git commit -m "chore: capture stage 001 validation diagnostics"
+          git add rathena-master/npc/cities/izlude.txt glossary/master_glossary.csv stage001-validation.txt
+          git commit -m "review: refine Izlude dialogue and glossary"
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
