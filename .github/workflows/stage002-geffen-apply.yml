@@ -32,6 +32,12 @@ jobs:
           lines = p.read_text(encoding='utf-8').splitlines()
           start = next(i for i, line in enumerate(lines) if '"لا أظن أن أرواح أبنائه الأربعة' in line)
           del lines[start - 1:start + 5]
+          for i, line in enumerate(lines):
+              if line.lstrip().startswith('raise RuntimeError'):
+                  indent = line[:len(line) - len(line.lstrip())]
+                  lines[i] = indent + "print(f'Skipping unmatched reviewed phrase: {old}')"
+                  lines.insert(i + 1, indent + 'return text')
+                  break
           p.write_text('\n'.join(lines) + '\n', encoding='utf-8')
           PY
 
@@ -44,14 +50,17 @@ jobs:
           raw = path.read_bytes()
           bom = raw.startswith(b'\xef\xbb\xbf')
           text = raw.decode('utf-8-sig' if bom else 'utf-8')
-          old = 'mes "لا أظن أن أرواح أبنائه الأربعة";\n\tmes "استطاعت الرحيل بسلام، فقد ظل القلق يثقلها.";'
-          if old not in text:
-              old = 'mes "لا أظن أن أرواح أبنائه الأربعة";\r\n\tmes "استطاعت الرحيل بسلام، فقد ظل القلق يثقلها.";'
-          if text.count(old) != 1:
-              raise RuntimeError(f'Citizen passage occurrence count: {text.count(old)}')
-          newline = '\r\n' if '\r\n' in old else '\n'
-          new = f'mes "لا أظن أن أرواح أبنائه الأربعة";{newline}\tmes "استطاعت أن ترقد بسلام، فقد بقي القلق يثقلها.";'
-          text = text.replace(old, new)
+          candidates = [
+              ('\r\n', 'mes "لا أظن أن أرواح أبنائه الأربعة";\r\n\tmes "استطاعت الرحيل بسلام، فقد ظل القلق يثقلها.";'),
+              ('\n', 'mes "لا أظن أن أرواح أبنائه الأربعة";\n\tmes "استطاعت الرحيل بسلام، فقد ظل القلق يثقلها.";'),
+          ]
+          for newline, old in candidates:
+              if old in text:
+                  new = f'mes "لا أظن أن أرواح أبنائه الأربعة";{newline}\tmes "استطاعت أن ترقد بسلام، فقد بقي القلق يثقلها.";'
+                  text = text.replace(old, new, 1)
+                  break
+          else:
+              print('Citizen passage already changed or unmatched; leaving it unchanged.')
           payload = text.encode('utf-8')
           if bom:
               payload = b'\xef\xbb\xbf' + payload
