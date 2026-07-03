@@ -1,0 +1,73 @@
+name: Apply stage 002 Geffen review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+    paths:
+      - .github/workflows/stage002-geffen-apply.yml
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  apply:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out review branch
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Repair temporary applicator source
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('tools/apply_stage002_geffen_review.py')
+          lines = p.read_text(encoding='utf-8').splitlines()
+          start = next(i for i, line in enumerate(lines) if '"لا أظن أن أرواح أبنائه الأربعة' in line)
+          del lines[start - 1:start + 5]
+          p.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          PY
+
+      - name: Apply reviewed corrections
+        run: |
+          python tools/apply_stage002_geffen_review.py
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('rathena-master/npc/cities/geffen.txt')
+          raw = path.read_bytes()
+          bom = raw.startswith(b'\xef\xbb\xbf')
+          text = raw.decode('utf-8-sig' if bom else 'utf-8')
+          old = 'mes "لا أظن أن أرواح أبنائه الأربعة";\n\tmes "استطاعت الرحيل بسلام، فقد ظل القلق يثقلها.";'
+          if old not in text:
+              old = 'mes "لا أظن أن أرواح أبنائه الأربعة";\r\n\tmes "استطاعت الرحيل بسلام، فقد ظل القلق يثقلها.";'
+          if text.count(old) != 1:
+              raise RuntimeError(f'Citizen passage occurrence count: {text.count(old)}')
+          newline = '\r\n' if '\r\n' in old else '\n'
+          new = f'mes "لا أظن أن أرواح أبنائه الأربعة";{newline}\tmes "استطاعت أن ترقد بسلام، فقد بقي القلق يثقلها.";'
+          text = text.replace(old, new)
+          payload = text.encode('utf-8')
+          if bom:
+              payload = b'\xef\xbb\xbf' + payload
+          path.write_bytes(payload)
+          PY
+
+      - name: Validate repository
+        run: |
+          python tools/validate_repository.py
+          python tools/validate_terminology_policy.py
+          python tools/validate_translation_content.py --base origin/main
+
+      - name: Commit reviewed files
+        run: |
+          git config user.name "MMOARAB Review Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add rathena-master/npc/cities/geffen.txt glossary/master_glossary.csv
+          git commit -m "review: refine Geffen dialogue and glossary"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
