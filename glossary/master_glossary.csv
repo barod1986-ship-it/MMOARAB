@@ -87,6 +87,7 @@ Dragon Fly,ذبابة التنين,mob_db.yml، المعرّف 1091,4,تقاري
 Drama Teacher,معلمة تمثيل,مراعاة جنس الشخصية وتقصير الاسم,17,تقارير_المراجعة_الحوارية/المرحلة_17/dialogue_stage17_glossary.csv,,approved,Merged from stage glossaries.
 Duffle,دافل,اسم الشخصية المؤنثة,23,تقارير_المراجعة_الحوارية/المرحلة_23/dialogue_stage23_glossary.csv,,approved,Merged from stage glossaries.
 Dust Pollutant,ملوث غباري,عنصر,10,تقارير_المراجعة_الحوارية/المرحلة_10/dialogue_stage10_glossary.csv,,approved,Merged from stage glossaries.
+Ear Muffs,واقيات أذن,عنصر | الاسم المستخدم في حوار مشروع إريك في غيفن,2,rathena-master/npc/cities/geffen.txt,,approved,Confirmed in review cycle 2 stage 2.
 Eik,إيك,اسم شخصية,20,تقارير_المراجعة_الحوارية/المرحلة_20/dialogue_stage20_glossary.csv,,approved,Merged from stage glossaries.
 Einbech,إينبيخ,مدينة التعدين الشقيقة || مدينة || مدينة | مثبتة في المرحلتين 9 و10,9;10;31,تقارير_المراجعة_الحوارية/المرحلة_09/dialogue_stage9_glossary.csv;تقارير_المراجعة_الحوارية/المرحلة_10/dialogue_stage10_glossary.csv;تقارير_المراجعة_الحوارية/المرحلة_31/dialogue_stage31_glossary.csv,,approved,Merged from stage glossaries.
 Einbroch,إينبروخ,المدينة الصناعية || مدينة,9;10,تقارير_المراجعة_الحوارية/المرحلة_09/dialogue_stage9_glossary.csv;تقارير_المراجعة_الحوارية/المرحلة_10/dialogue_stage10_glossary.csv,,approved,Merged from stage glossaries.
@@ -115,6 +116,8 @@ Gakkung Bow,قوس غاكونغ,itemInfo وملفات الكتب والتجار 
 Galtun,غالتون,طبقة المحاربين لدى سافا,25,تقارير_المراجعة_الحوارية/المرحلة_25/dialogue_stage25_glossary.csv,,approved,Merged from stage glossaries.
 Gate Soldier,حارس البوابة,اسم عرض NPC,29,تقارير_المراجعة_الحوارية/المرحلة_29/dialogue_stage29_glossary.csv,,approved,Merged from stage glossaries.
 Geffen,غيفن,المراحل السابقة وملفات الخرائط,3,تقارير_المراجعة_الحوارية/المرحلة_03/dialogue_stage3_glossary.csv,,approved,Merged from stage glossaries.
+Geffen Magic School,مدرسة غيفن للسحر,موقع | مدرسة المبتدئين في شمال غرب غيفن,2,rathena-master/npc/cities/geffen.txt,,approved,Confirmed in review cycle 2 stage 2.
+Geffen Tower,برج غيفن,موقع | مكان اختبار الساحر العظيم,2,rathena-master/npc/cities/geffen.txt,,approved,Confirmed in review cycle 2 stage 2.
 Gemstone,جوهرة / جواهر,itemInfo والسياق,2,تقارير_المراجعة_الحوارية/المرحلة_02/dialogue_stage2_glossary.csv,,approved,Merged from stage glossaries.
 Geographer,جيوغرافير,وحش,8,تقارير_المراجعة_الحوارية/المرحلة_08/dialogue_stage8_glossary.csv,,approved,Merged from stage glossaries.
 Ghalstein,غالشتاين,الرجل العادي/عضو الجناح السري,34,تقارير_المراجعة_الحوارية/المرحلة_34/dialogue_stage34_glossary.csv,,approved,Merged from stage glossaries.
@@ -137,6 +140,7 @@ Heal,شفاء,مهارة | الاسم المعتمد في ملفات المها�
 Heart Island,جزيرة القلب,,24,تقارير_المراجعة_الحوارية/المرحلة_24/dialogue_stage24_glossary.csv,,approved,Merged from stage glossaries.
 Heart of Mermaid,قلب حورية البحر,العنصر 950,29,تقارير_المراجعة_الحوارية/المرحلة_29/dialogue_stage29_glossary.csv,,approved,Merged from stage glossaries.
 Heaven Peach,الخوخ السماوي,طبق محلي مذكور في الحوار,18,تقارير_المراجعة_الحوارية/المرحلة_18/dialogue_stage18_glossary.csv,,approved,Merged from stage glossaries.
+Helmet of Orc Hero,خوذة بطل الأورك,عنصر | الاسم المعتمد في حوار ستايسي,2,rathena-master/npc/cities/geffen.txt,,approved,Confirmed in review cycle 2 stage 2.
 Hes O'Neil,هيس أونيل,سكرتيرة الرئيس,34,تقارير_المراجعة_الحوارية/المرحلة_34/dialogue_stage34_glossary.csv,,approved,Merged from stage glossaries.
 High Priestess Niren,الكاهنة المتقدمة نيرين,الصيغة المعتمدة داخل بقية الحزمة,13,تقارير_المراجعة_الحوارية/المرحلة_13/dialogue_stage13_glossary.csv,,approved,Merged from stage glossaries.
 High-Ranking Soldier,ضابط لافين,اسم عرض مختصر,26,تقارير_المراجعة_الحوارية/المرحلة_26/dialogue_stage26_glossary.csv,,approved,Merged from stage glossaries.
@@ -146,6 +150,7 @@ Honey,عسل,itemInfo,2,تقارير_المراجعة_الحوارية/المر�
 Honey Room,غرفة العسل,,24,تقارير_المراجعة_الحوارية/المرحلة_24/dialogue_stage24_glossary.csv,,approved,Merged from stage glossaries.
 Honeymoon Helper,مساعد العرسان,,24,تقارير_المراجعة_الحوارية/المرحلة_24/dialogue_stage24_glossary.csv,,approved,Merged from stage glossaries.
 Hong Miao,هونغ مياو,موظفة برج الإطلالة,19,تقارير_المراجعة_الحوارية/المرحلة_19/dialogue_stage19_glossary.csv,,approved,Merged from stage glossaries.
+Hood,قلنسوة,عنصر | الاسم المعتمد للعنصر 2501 في حوار غيفن,2,rathena-master/npc/cities/geffen.txt,,approved,Confirmed in review cycle 2 stage 2.
 Hornet,دبور,mob_db,2,تقارير_المراجعة_الحوارية/المرحلة_02/dialogue_stage2_glossary.csv,,approved,Merged from stage glossaries.
 Hugel,هويغل,مدينة || مدينة | مثبتة في المرحلة 11,11;31,تقارير_المراجعة_الحوارية/المرحلة_11/dialogue_stage11_glossary.csv;تقارير_المراجعة_الحوارية/المرحلة_31/dialogue_stage31_glossary.csv,,approved,Merged from stage glossaries.
 Hunter,صياد,قاموس الوظائف داخل الحزمة,5,تقارير_المراجعة_الحوارية/المرحلة_05/dialogue_stage5_glossary.csv,,approved,Merged from stage glossaries.
@@ -179,6 +184,7 @@ Kazien,كازيين,موظف ريكنبر,34,تقارير_المراجعة_ال�
 King Tristram III,الملك تريسترام الثالث,المراحل السابقة,5,تقارير_المراجعة_الحوارية/المرحلة_05/dialogue_stage5_glossary.csv,,approved,Merged from stage glossaries.
 Kirkena,كيركينا,اسم الساحرة وشخصية النقل إلى أومبالا,27,تقارير_المراجعة_الحوارية/المرحلة_27/dialogue_stage27_glossary.csv,,approved,Merged from stage glossaries.
 Klaatu / Verata / Nictu,كلااتو / فيراتا / نيكتو,مطابق لتسلسل مهمة الختم داخل الحزمة,16,تقارير_المراجعة_الحوارية/المرحلة_16/dialogue_stage16_glossary.csv,,approved,Merged from stage glossaries.
+Kobold,كوبولد,وحش | الاسم المستخدم في حوار عالم الوحوش,2,rathena-master/npc/cities/geffen.txt,,approved,Confirmed in review cycle 2 stage 2.
 Kouji,كوجي,شخصية المهمة,29,تقارير_المراجعة_الحوارية/المرحلة_29/dialogue_stage29_glossary.csv,,approved,Merged from stage glossaries.
 Ktullanux,كتولانوكس,الوحش الجليدي الحارس,13,تقارير_المراجعة_الحوارية/المرحلة_13/dialogue_stage13_glossary.csv,,approved,Merged from stage glossaries.
 Kunlun,كونلون,الاسم المستخدم داخل الحوارات الرسمية؛ اسم الخريطة غونريون,18,تقارير_المراجعة_الحوارية/المرحلة_18/dialogue_stage18_glossary.csv,,approved,Merged from stage glossaries.
@@ -207,6 +213,7 @@ Lyozien,ليوزين,شقيق كازيين,34,تقارير_المراجعة_ال
 Magnifier,عدسة مكبرة,itemInfo وسياق تقييم المعدات,6,تقارير_المراجعة_الحوارية/المرحلة_06/dialogue_stage6_glossary.csv,,approved,Merged from stage glossaries.
 Magnum Break,كسر ماغنوم,مهارة | الاسم المعتمد في ملفات المهارات وحوار إزلود,1,rathena-master/npc/cities/izlude.txt,,approved,Confirmed in review cycle 2 stage 1.
 Maiden Palace,قصر العذارى,منظمة نسائية للفنون القتالية,19,تقارير_المراجعة_الحوارية/المرحلة_19/dialogue_stage19_glossary.csv,,approved,Merged from stage glossaries.
+Main Gauche,ماين غوش,سلاح | الاسم المعتمد للعنصر 1207,2,rathena-master/npc/cities/geffen.txt,,approved,Confirmed in review cycle 2 stage 2.
 Manteau,عباءة,itemInfo,2,تقارير_المراجعة_الحوارية/المرحلة_02/dialogue_stage2_glossary.csv,,approved,Merged from stage glossaries.
 Manuk,مانوك,اسم مدينة التعدين,25,تقارير_المراجعة_الحوارية/المرحلة_25/dialogue_stage25_glossary.csv,,approved,Merged from stage glossaries.
 Manuk Coin,عملة مانوك,اسم عملة المنطقة,25,تقارير_المراجعة_الحوارية/المرحلة_25/dialogue_stage25_glossary.csv,,approved,Merged from stage glossaries.
@@ -222,6 +229,8 @@ Mineta,مينيتا,جزيرة الازدهار,8,تقارير_المراجعة_
 Miss Amatsu,ملكة جمال أماتسو,اسم المسابقة,17,تقارير_المراجعة_الحوارية/المرحلة_17/dialogue_stage17_glossary.csv,,approved,Merged from stage glossaries.
 Mjolnir Mountains,جبال ميولنير,ملفات الخرائط والملاحة,6,تقارير_المراجعة_الحوارية/المرحلة_06/dialogue_stage6_glossary.csv,,approved,Merged from stage glossaries.
 Monster Research Organization,منظمة أبحاث الوحوش,المرجع الإنجليزي وسياق الباحث,5,تقارير_المراجعة_الحوارية/المرحلة_05/dialogue_stage5_glossary.csv,,approved,Merged from stage glossaries.
+Monster Scholar,باحثة الوحوش,اسم عرض NPC | إسثيريس في غيفن,2,rathena-master/npc/cities/geffen.txt,,approved,Confirmed in review cycle 2 stage 2.
+Monsterology,علم الوحوش,مصطلح | مجال دراسة إسثيريس في غيفن,2,rathena-master/npc/cities/geffen.txt,,approved,Confirmed in review cycle 2 stage 2.
 Morocc,موروك,ملفات الخرائط والملاحة والمراحل السابقة,4,تقارير_المراجعة_الحوارية/المرحلة_04/dialogue_stage4_glossary.csv,,approved,Merged from stage glossaries.
 Moscovia,موسكوفيا,اسم المدينة,22,تقارير_المراجعة_الحوارية/المرحلة_22/dialogue_stage22_glossary.csv,,approved,Merged from stage glossaries.
 Moscovia P.R. Officer,مندوب موسكوفيا,اسم العرض المختصر والمتسق,22,تقارير_المراجعة_الحوارية/المرحلة_22/dialogue_stage22_glossary.csv,,approved,Merged from stage glossaries.
@@ -240,8 +249,10 @@ Oil Paper,ورق زيتي,متطلب تعلم لغة ووتان.,28,تقارير
 Old Nikki,نيكي العجوز,شخصية,11,تقارير_المراجعة_الحوارية/المرحلة_11/dialogue_stage11_glossary.csv,,approved,Merged from stage glossaries.
 Old Shrine Ruins,أطلال الضريح القديم,المنطقة الخطرة شرقي القرية,20,تقارير_المراجعة_الحوارية/المرحلة_20/dialogue_stage20_glossary.csv,,approved,Merged from stage glossaries.
 Old Stove,موقد قديم,وحش,10,تقارير_المراجعة_الحوارية/المرحلة_10/dialogue_stage10_glossary.csv,,approved,Merged from stage glossaries.
+Orc Helm,خوذة أورك,عنصر | الاسم المعتمد في حوار ستايسي,2,rathena-master/npc/cities/geffen.txt,,approved,Confirmed in review cycle 2 stage 2.
 Orc Lady,أورك ليدي,اسم الوحش المثبت في الحزمة,15,تقارير_المراجعة_الحوارية/المرحلة_15/dialogue_stage15_glossary.csv,,approved,Merged from stage glossaries.
 Orc Skeleton,هيكل أورك,المعتمد في قاعدة الوحوش,16,تقارير_المراجعة_الحوارية/المرحلة_16/dialogue_stage16_glossary.csv,,approved,Merged from stage glossaries.
+Orc Tribe,قبيلة الأورك,جماعة | الاسم المستخدم في حوار ستايسي,2,rathena-master/npc/cities/geffen.txt,,approved,Confirmed in review cycle 2 stage 2.
 Oridecon Hammer,مطرقة أوريديكون,عنصر,10,تقارير_المراجعة_الحوارية/المرحلة_10/dialogue_stage10_glossary.csv,,approved,Merged from stage glossaries.
 Party Supplies Shop,متجر مستلزمات الحفلات,متجر,11,تقارير_المراجعة_الحوارية/المرحلة_11/dialogue_stage11_glossary.csv,,approved,Merged from stage glossaries.
 Payon,بايون,ملفات الخرائط والملاحة || المراحل السابقة وملفات الملاحة || ملفات الملاحة والمراحل السابقة,3;4;5,تقارير_المراجعة_الحوارية/المرحلة_03/dialogue_stage3_glossary.csv;تقارير_المراجعة_الحوارية/المرحلة_04/dialogue_stage4_glossary.csv;تقارير_المراجعة_الحوارية/المرحلة_05/dialogue_stage5_glossary.csv,,approved,Merged from stage glossaries.
