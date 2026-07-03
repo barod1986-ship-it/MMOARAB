@@ -1,0 +1,13 @@
+== validate_repository.py ==
+VALIDATION PASS
+Glossary term/context pairs: 379
+status=0
+== validate_terminology_policy.py ==
+TERMINOLOGY POLICY PASS
+Fixed terms: 76
+Protected tokens: 16
+status=0
+== validate_translation_content.py ==
+TRANSLATION CONTENT FAILED
+ERROR: Protected token mismatch: rathena-master/npc/cities/izlude.txt: DEX expected>=2, found=1
+status=1
