@@ -1,20 +1,19 @@
 {
   "project": "MMOARAB Ragnarok Online Arabic Translation",
   "repository": "barod1986-ship-it/MMOARAB",
-  "visibility": "public",
+  "visibility": "private",
   "stable_branch": "main",
   "review_cycle": 2,
   "restart_from_beginning": true,
-  "last_completed_stage": 0,
-  "next_stage": 1,
+  "last_completed_stage": 1,
+  "next_stage": 2,
   "next_files": [
-    "rathena-master/npc/cities/izlude.txt",
-    "rathena-master/npc/cities/prontera.txt"
+    "rathena-master/npc/cities/geffen.txt"
   ],
-  "next_scope": "Prontera and Izlude full re-review",
-  "cycle_reviewed_npc_files": 0,
+  "next_scope": "Geffen full re-review",
+  "cycle_reviewed_npc_files": 2,
   "total_npc_files": 555,
-  "cycle_cumulative_changes": 0,
+  "cycle_cumulative_changes": 82,
   "glossary_update_required_every_stage": true,
   "fixed_terms_required": true,
   "protected_tokens_required": true,
