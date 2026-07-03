@@ -8,6 +8,7 @@ Fixed terms: 76
 Protected tokens: 16
 status=0
 == validate_translation_content.py ==
-TRANSLATION CONTENT FAILED
-ERROR: Protected token mismatch: rathena-master/npc/cities/izlude.txt: DEX expected>=2, found=1
-status=1
+TRANSLATION CONTENT PASS
+Files checked: 1
+Warnings: 0
+status=0
