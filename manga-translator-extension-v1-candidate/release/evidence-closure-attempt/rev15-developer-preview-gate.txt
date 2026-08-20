@@ -1,0 +1,6 @@
+Controlled release blocked (5):
+- package-lock.json is missing
+- engine/uv.lock is missing
+- controlled release manifest is not recorded
+- fresh unpacked Chrome 148 smoke evidence is missing or invalid
+- fresh unpacked current Stable Chrome 151 smoke evidence is missing or invalid

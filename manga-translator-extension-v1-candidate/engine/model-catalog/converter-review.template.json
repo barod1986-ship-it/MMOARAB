@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "replace-with-lama-big-or-aot-gan-places2",
+  "reviewRecordId": "replace-with-converter-review-id",
+  "reviewer": "replace-with-reviewer-identity",
+  "reviewedAtUtc": "2026-08-19T00:00:00Z",
+  "converterRevision": "replace-with-exact-converter-revision",
+  "converterSourceUrl": "https://replace-with-reviewed-converter-source.example/",
+  "converterSourceSha256": "sha256:replace-with-64-hex-digits",
+  "converterUseStatus": "pending",
+  "converterLicenseStatus": "pending",
+  "evidence": [
+    {
+      "kind": "converter-source-or-license",
+      "url": "https://replace-with-reviewed-primary-source.example/"
+    }
+  ]
+}

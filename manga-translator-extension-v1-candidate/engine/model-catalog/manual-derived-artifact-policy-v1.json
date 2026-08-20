@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "policyRevision": "rev10-manual-derived-artifact-policy-2026-08-19-v1",
+  "runtimeContract": "mte-onnx-inpaint-contract-v1",
+  "packagerRevision": "rev10-inpaint-onnx-packager-v1",
+  "artifacts": {
+    "lama-big": {
+      "candidateId": "lama-inpaint",
+      "expectedFilename": "mte-lama-big-onnx-v1.zip",
+      "upstreamProject": "advimman/lama",
+      "primaryDocumentation": "https://github.com/advimman/lama",
+      "sourceCheckpointReviewRequired": true,
+      "converterReviewRequired": true,
+      "modelFile": "model.onnx",
+      "imageInput": "image",
+      "maskInput": "mask",
+      "output": "output",
+      "tensorLayout": "NCHW",
+      "imageRange": "0..1-rgb",
+      "maskSemantics": "1=erase",
+      "padMultiple": 8,
+      "maxModelBytes": 2147483648,
+      "smokeShapes": [
+        [
+          1,
+          3,
+          64,
+          80
+        ],
+        [
+          1,
+          3,
+          96,
+          112
+        ]
+      ]
+    },
+    "aot-gan-places2": {
+      "candidateId": "aot-inpaint",
+      "expectedFilename": "mte-aot-gan-places2-onnx-v1.zip",
+      "upstreamProject": "researchmm/AOT-GAN-for-Inpainting",
+      "primaryDocumentation": "https://github.com/researchmm/AOT-GAN-for-Inpainting",
+      "sourceCheckpointReviewRequired": true,
+      "converterReviewRequired": true,
+      "modelFile": "model.onnx",
+      "imageInput": "image",
+      "maskInput": "mask",
+      "output": "output",
+      "tensorLayout": "NCHW",
+      "imageRange": "0..1-rgb",
+      "maskSemantics": "1=erase",
+      "padMultiple": 8,
+      "maxModelBytes": 2147483648,
+      "smokeShapes": [
+        [
+          1,
+          3,
+          64,
+          80
+        ],
+        [
+          1,
+          3,
+          96,
+          112
+        ]
+      ]
+    }
+  }
+}

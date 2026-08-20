@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "controlledManifestSha256": null,
+  "sourceHeadSha": null,
+  "records": [],
+  "recordSchema": {
+    "schemaVersion": 2,
+    "id": "unique string",
+    "artifactManifestSha256": "64 hex",
+    "sourceHeadSha": "40-hex qualified source commit",
+    "kind": "unpacked-extension|engine-artifact|store-installed-extension",
+    "platform": "windows-x86_64|macos-arm64|linux-x86_64|browser",
+    "artifact": "exact filename from controlled-release.json",
+    "artifactSha256": "exact SHA-256 from controlled-release.json",
+    "browserVersion": "required for browser records",
+    "testedAtUtc": "ISO-8601 UTC",
+    "cleanEnvironment": true,
+    "checks": {
+      "install": true,
+      "activate": true,
+      "translateFixture": true,
+      "restore": true
+    },
+    "profileId": "required for V1 engine-artifact records; default-v1",
+    "profileStateAtTest": "required for V1 engine-artifact records; ready",
+    "profileFingerprint": "required for V1 engine-artifact records; target-specific sha256:<64 hex>",
+    "privacyDescriptor": "required for V1 engine-artifact records; explicit transfer booleans",
+    "externalProviderNames": "required for V1 engine-artifact records and identical across targets",
+    "orchestrationSessionSha256": "required for browser records; native-smoke checkpoint for unpacked, evidence-promoted checkpoint for Store-installed",
+    "storeSubmissionHandoffSha256": "required for store-installed-extension; exact pre-Store handoff identity",
+    "storeCandidateSha256": "required for store-installed-extension; exact submitted candidate SHA-256",
+    "storeItemId": "required for store-installed-extension; Chrome Web Store item id",
+    "storeVersion": "required for store-installed-extension; installed Store version"
+  }
+}

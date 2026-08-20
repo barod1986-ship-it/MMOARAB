@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 3,
+  "registryRevision": "production-artifact-primary-sources-2026-08-19-v3",
+  "policy": "Primary-source acquisition registry only. Successful acquisition proves byte/source identity, not license approval or benchmark suitability. Automated archive-member extraction is exact-path, bounded and content-addressed. Review and intake remain separate fail-closed steps.",
+  "artifacts": {
+    "ppocrv6-small-det": {
+      "mode": "direct-https-file",
+      "primaryDocumentation": "https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_detection.html",
+      "retrievalUrl": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_det_infer.tar",
+      "allowedHostSuffixes": [
+        "paddle-model-ecology.bj.bcebos.com"
+      ],
+      "expectedFilename": "PP-OCRv6_small_det_infer.tar",
+      "upstreamRevision": "3.7.0/PP-OCRv6_small_det",
+      "maxBytes": 33554432
+    },
+    "ppocrv6-medium-det": {
+      "mode": "direct-https-file",
+      "primaryDocumentation": "https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_detection.html",
+      "retrievalUrl": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_det_infer.tar",
+      "allowedHostSuffixes": [
+        "paddle-model-ecology.bj.bcebos.com"
+      ],
+      "expectedFilename": "PP-OCRv6_medium_det_infer.tar",
+      "upstreamRevision": "3.7.0/PP-OCRv6_medium_det",
+      "maxBytes": 134217728
+    },
+    "ppocrv6-small-rec": {
+      "mode": "direct-https-file",
+      "primaryDocumentation": "https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html",
+      "retrievalUrl": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_rec_infer.tar",
+      "allowedHostSuffixes": [
+        "paddle-model-ecology.bj.bcebos.com"
+      ],
+      "expectedFilename": "PP-OCRv6_small_rec_infer.tar",
+      "upstreamRevision": "3.7.0/PP-OCRv6_small_rec",
+      "maxBytes": 67108864
+    },
+    "ppocrv6-medium-rec": {
+      "mode": "direct-https-file",
+      "primaryDocumentation": "https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html",
+      "retrievalUrl": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_rec_infer.tar",
+      "allowedHostSuffixes": [
+        "paddle-model-ecology.bj.bcebos.com"
+      ],
+      "expectedFilename": "PP-OCRv6_medium_rec_infer.tar",
+      "upstreamRevision": "3.7.0/PP-OCRv6_medium_rec",
+      "maxBytes": 167772160
+    },
+    "ppocrv5-korean-mobile-rec": {
+      "mode": "direct-https-file",
+      "primaryDocumentation": "https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html",
+      "retrievalUrl": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv5_mobile_rec_infer.tar",
+      "allowedHostSuffixes": [
+        "paddle-model-ecology.bj.bcebos.com"
+      ],
+      "expectedFilename": "korean_PP-OCRv5_mobile_rec_infer.tar",
+      "upstreamRevision": "korean_PP-OCRv5_mobile_rec",
+      "maxBytes": 67108864
+    },
+    "manga-ocr-base-0.1.16": {
+      "mode": "https-tree",
+      "primaryDocumentation": "https://huggingface.co/kha-white/manga-ocr-base",
+      "baseUrl": "https://huggingface.co/kha-white/manga-ocr-base/resolve/aa6573bd10b0d446cbf622e29c3e084914df9741/",
+      "allowedHostSuffixes": [
+        "huggingface.co",
+        "hf.co",
+        "xethub.hf.co"
+      ],
+      "expectedFilename": "manga-ocr-base",
+      "upstreamRevision": "0.1.16 / kha-white/manga-ocr-base@aa6573bd10b0d446cbf622e29c3e084914df9741",
+      "files": [
+        {
+          "path": "config.json",
+          "maxBytes": 262144
+        },
+        {
+          "path": "preprocessor_config.json",
+          "maxBytes": 65536
+        },
+        {
+          "path": "pytorch_model.bin",
+          "sha256": "sha256:c63e0bb5b3ff798c5991de18a8e0956c7ee6d1563aca6729029815eda6f5c2eb",
+          "maxBytes": 536870912
+        },
+        {
+          "path": "special_tokens_map.json",
+          "maxBytes": 65536
+        },
+        {
+          "path": "tokenizer_config.json",
+          "maxBytes": 65536
+        },
+        {
+          "path": "vocab.txt",
+          "maxBytes": 262144
+        }
+      ]
+    },
+    "lama-big": {
+      "mode": "manual-derived",
+      "primaryDocumentation": "https://github.com/advimman/lama",
+      "retrievalReference": "https://drive.google.com/drive/folders/1B2x7eQDgecTL0oh3LSIBDGj0fTxs6Ips?usp=sharing",
+      "expectedFilename": "mte-lama-big-onnx-v1.zip",
+      "upstreamRevision": "big-lama reviewed-source -> MTE ONNX wrapper candidate v1",
+      "note": "Official upstream currently points checkpoint acquisition to Google Drive and also documents a third-party Hugging Face convenience mirror. V1 must review the upstream checkpoint bytes and record source-checkpoint SHA-256 before local ONNX derivation; the mirror is not accepted as primary provenance by default."
+    },
+    "aot-gan-places2": {
+      "mode": "manual-derived",
+      "primaryDocumentation": "https://github.com/researchmm/AOT-GAN-for-Inpainting",
+      "retrievalReference": "https://drive.google.com/drive/folders/1bSOH-2nB3feFRyDEmiX81CEiWkghss3i?usp=sharing",
+      "expectedFilename": "mte-aot-gan-places2-onnx-v1.zip",
+      "upstreamRevision": "Places2 reviewed-source -> MTE ONNX wrapper candidate v1",
+      "note": "The official README links this Places2 folder. Exact checkpoint filenames, bytes and checkpoint terms must be reviewed before derivation and benchmark use."
+    },
+    "noto-sans-arabic-production-font": {
+      "mode": "https-zip-member",
+      "primaryDocumentation": "https://github.com/notofonts/arabic/releases/tag/NotoSansArabic-v2.013",
+      "retrievalUrl": "https://github.com/notofonts/arabic/releases/download/NotoSansArabic-v2.013/NotoSansArabic-v2.013.zip",
+      "allowedHostSuffixes": [
+        "github.com",
+        "githubusercontent.com"
+      ],
+      "expectedFilename": "NotoSansArabic[wdth,wght].ttf",
+      "upstreamRevision": "NotoSansArabic-v2.013",
+      "archiveMember": "NotoSansArabic/full/variable/NotoSansArabic[wdth,wght].ttf",
+      "maxArchiveBytes": 67108864,
+      "maxBytes": 4194304,
+      "note": "Exact upstream release asset and exact full-variable TTF member. The acquisition record binds both source ZIP bytes and extracted TTF bytes; OFL review remains a separate intake decision."
+    },
+    "comic-text-detector-model": {
+      "mode": "manual-reviewed",
+      "primaryDocumentation": "https://github.com/dmMaze/comic-text-detector",
+      "expectedFilename": "comic-text-detector-model.bin",
+      "upstreamRevision": "benchmark-candidate",
+      "note": "Research-only and excluded from active V1 candidate plan."
+    }
+  }
+}

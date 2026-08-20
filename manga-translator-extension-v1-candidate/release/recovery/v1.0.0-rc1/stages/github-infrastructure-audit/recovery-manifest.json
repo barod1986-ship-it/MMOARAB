@@ -1,0 +1,25 @@
+{
+  "artifactCount": 0,
+  "capturedAt": "2026-08-20T12:00:29Z",
+  "files": [
+    {
+      "path": "runs/101/run-snapshot.json",
+      "sha256": "d44a63ffbe40257c4e8f08708c84b3577dcc67d1286c755bc4e1d870868d9684",
+      "sizeBytes": 329
+    }
+  ],
+  "kind": "offline-test-stage",
+  "manifestSha256": "10f7bb7e3f8d2296bccf3a4b4457466fcb531424458487dc6aa2a12b64d7a187",
+  "releaseClass": "private-v1",
+  "releaseId": "v1.0.0-rc1",
+  "repository": "owner/repo",
+  "repositoryId": "123",
+  "revision": "rev33-first-real-run-recovery-v2",
+  "runIds": [
+    "101"
+  ],
+  "schemaVersion": 1,
+  "sourceHeadSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "stage": "github-infrastructure-audit",
+  "testOnly": true
+}

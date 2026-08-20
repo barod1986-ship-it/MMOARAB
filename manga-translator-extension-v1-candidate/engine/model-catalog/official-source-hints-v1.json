@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "researchedAtUtc": "2026-08-19T13:30:00Z",
+  "policy": "Discovery hints only. Never treated as trust or hash evidence; operators must supply local bytes and a reviewed receipt.",
+  "artifacts": {
+    "ppocrv6-medium-det": {
+      "primaryDocumentation": "https://paddlepaddle.github.io/PaddleOCR/v3.7.0/en/version3.x/module_usage/text_detection.html",
+      "observedOfficialRetrievalUrl": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_det_infer.tar"
+    },
+    "ppocrv6-small-det": {
+      "primaryDocumentation": "https://paddlepaddle.github.io/PaddleOCR/v3.7.0/en/version3.x/module_usage/text_detection.html",
+      "observedOfficialRetrievalUrl": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_det_infer.tar"
+    },
+    "ppocrv6-medium-rec": {
+      "primaryDocumentation": "https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html",
+      "observedOfficialRetrievalUrl": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_rec_infer.tar"
+    },
+    "ppocrv6-small-rec": {
+      "primaryDocumentation": "https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html",
+      "observedOfficialRetrievalUrl": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_rec_infer.tar"
+    },
+    "ppocrv5-korean-mobile-rec": {
+      "primaryDocumentation": "https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html",
+      "observedOfficialRetrievalUrl": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv5_mobile_rec_infer.tar"
+    },
+    "manga-ocr-base-0.1.16": {
+      "primaryDocumentation": "https://huggingface.co/kha-white/manga-ocr-base",
+      "observedOfficialRetrievalUrl": "https://huggingface.co/kha-white/manga-ocr-base"
+    },
+    "lama-big": {
+      "primaryDocumentation": "https://github.com/advimman/lama",
+      "observedOfficialRetrievalUrl": null,
+      "note": "Upstream README currently points checkpoint acquisition to a Google Drive folder; exact checkpoint bytes and derivative ONNX wrapper require separate review and hashes."
+    },
+    "aot-gan-places2": {
+      "primaryDocumentation": "https://github.com/researchmm/AOT-GAN-for-Inpainting",
+      "observedOfficialRetrievalUrl": null,
+      "note": "Upstream README links Places2 pretrained models; exact checkpoint bytes and derivative ONNX wrapper require separate review and hashes."
+    },
+    "comic-text-detector-model": {
+      "primaryDocumentation": "https://github.com/dmMaze/comic-text-detector",
+      "observedOfficialRetrievalUrl": null,
+      "note": "Remain blocked until pretrained-weight provenance and benchmark-use rights are reviewed."
+    },
+    "noto-sans-arabic-production-font": {
+      "primaryDocumentation": "https://github.com/google/fonts/tree/main/ofl/notosansarabic",
+      "observedOfficialRetrievalUrl": null
+    }
+  }
+}

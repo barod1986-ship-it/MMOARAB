@@ -1,0 +1,129 @@
+name: production-execution-readiness
+run-name: production-execution-readiness / intent=${{ inputs.run_intent_nonce }} / ${{ github.sha }} / ${{ github.actor }}
+on:
+  workflow_dispatch:
+    inputs:
+      run_intent_nonce:
+        description: Controller-generated immutable launch intent nonce
+        required: true
+        type: string
+      check_qualification_runner:
+        description: Probe the protected production qualification runner
+        required: true
+        default: true
+        type: boolean
+      check_release_smoke_runners:
+        description: Probe all three protected exact-artifact smoke runners
+        required: true
+        default: true
+        type: boolean
+permissions:
+  contents: read
+jobs:
+  static-contract:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.13.15'
+      - run: python scripts/probe_production_execution_environment.py --strict
+
+
+  github-infrastructure:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    needs: static-contract
+    environment: production-infrastructure-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.13.15'
+      - name: Audit GitHub-side runners, environments, variable names and secret names
+        env:
+          MTE_INFRA_AUDIT_TOKEN: ${{ secrets.MTE_INFRA_AUDIT_TOKEN }}
+        run: |
+          set -euo pipefail
+          python scripts/audit_github_production_infrastructure.py             --repository "$GITHUB_REPOSITORY"             --output "$RUNNER_TEMP/mte-github-infrastructure-readiness.json"             --strict
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        if: always()
+        with:
+          name: production-github-infrastructure-readiness-${{ github.run_id }}
+          path: ${{ runner.temp }}/mte-github-infrastructure-readiness.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  qualification-runner:
+    if: ${{ (inputs.check_qualification_runner) && (github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id)) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    needs: [static-contract, github-infrastructure]
+    environment: production-qualification
+    runs-on: [self-hosted, linux, x64, mte-production-qualification]
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6
+        with:
+          node-version: '24.19.0'
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.13.15'
+      - name: Materialize exact probe toolchain
+        run: |
+          npm install --global npm@12.0.2
+          python -m pip install --disable-pip-version-check uv==0.12.5
+      - name: Probe qualification runner
+        env:
+          MTE_QUALIFICATION_INPUT_ROOT: ${{ vars.MTE_QUALIFICATION_INPUT_ROOT }}
+        run: python scripts/probe_production_execution_environment.py --role qualification-linux-x86_64 --strict
+
+  smoke-linux:
+    if: ${{ (inputs.check_release_smoke_runners) && (github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id)) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    needs: [static-contract, github-infrastructure]
+    environment: release-smoke-linux
+    runs-on: [self-hosted, mte-release-linux-x86_64]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.13.15'
+      - env:
+          MTE_OPENAI_API_KEY: ${{ secrets.MTE_OPENAI_API_KEY }}
+          MTE_QUALIFIED_MODEL_ARTIFACTS_DIR: ${{ vars.MTE_QUALIFIED_MODEL_ARTIFACTS_DIR }}
+        run: python scripts/probe_production_execution_environment.py --role release-smoke-linux-x86_64 --strict
+
+  smoke-macos:
+    if: ${{ (inputs.check_release_smoke_runners) && (github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id)) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    needs: [static-contract, github-infrastructure]
+    environment: release-smoke-macos
+    runs-on: [self-hosted, mte-release-macos-arm64]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.13.15'
+      - env:
+          MTE_OPENAI_API_KEY: ${{ secrets.MTE_OPENAI_API_KEY }}
+          MTE_QUALIFIED_MODEL_ARTIFACTS_DIR: ${{ vars.MTE_QUALIFIED_MODEL_ARTIFACTS_DIR }}
+        run: python scripts/probe_production_execution_environment.py --role release-smoke-macos-arm64 --strict
+
+  smoke-windows:
+    if: ${{ (inputs.check_release_smoke_runners) && (github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id)) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    needs: [static-contract, github-infrastructure]
+    environment: release-smoke-windows
+    runs-on: [self-hosted, mte-release-windows-x86_64]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.13.15'
+      - shell: pwsh
+        env:
+          MTE_OPENAI_API_KEY: ${{ secrets.MTE_OPENAI_API_KEY }}
+          MTE_QUALIFIED_MODEL_ARTIFACTS_DIR: ${{ vars.MTE_QUALIFIED_MODEL_ARTIFACTS_DIR }}
+        run: python scripts/probe_production_execution_environment.py --role release-smoke-windows-x86_64 --strict

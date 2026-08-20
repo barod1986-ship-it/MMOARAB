@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "policyRevision": "rev10-production-corpus-v2",
+  "sourceRegistryRevision": "production-corpus-sources-2026-08-19-v1",
+  "sourceRegistrySha256": "sha256:SEALED_BY_seal_corpus_manifest.py",
+  "corpusId": "replace-with-reviewed-corpus-id",
+  "pages": [
+    {
+      "pageId": "example-page-001",
+      "language": "en",
+      "imagePath": "pages/example-page-001.png",
+      "imageSha256": "sha256:SEALED_FROM_FILE_BYTES",
+      "annotationPath": "annotations/example-page-001.json",
+      "annotationSha256": "sha256:SEALED_FROM_FILE_BYTES",
+      "features": ["black-and-white", "small-text", "sfx-near-artwork"],
+      "rights": {
+        "reviewed": true,
+        "benchmarkUseAuthorized": true,
+        "sourceId": "operator-owned-or-explicitly-permissioned",
+        "sourceRevision": "permission-record-revision-or-id",
+        "basis": "owned-or-explicit-permission-for-production-benchmark",
+        "source": "operator-controlled-source-description",
+        "redistributionAuthorized": false,
+        "notes": "Corpus bytes remain external unless redistribution is separately authorized.",
+        "reviewRecordId": "replace-with-stable-review-id",
+        "reviewRecordPath": "rights/reviews/replace-with-stable-review-id.json",
+        "reviewRecordSha256": "sha256:SEALED_FROM_FILE_BYTES",
+        "reviewedBy": "replace-with-reviewer-identity",
+        "reviewedAtUtc": "2026-08-19T00:00:00Z",
+        "evidenceRef": "replace-with-permission-or-ownership-reference"
+      },
+      "hasGroundTruthSfx": true
+    }
+  ]
+}

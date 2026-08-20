@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Manga Translator",
+  "version": "0.1.0",
+  "minimum_chrome_version": "148",
+  "permissions": ["activeTab", "scripting", "storage", "sidePanel", "alarms"],
+  "optional_host_permissions": ["https://*/*", "http://127.0.0.1/*"],
+  "action": { "default_title": "Open Manga Translator" },
+  "side_panel": { "default_path": "sidepanel.html" },
+  "message_serialization": "structured_clone"
+}

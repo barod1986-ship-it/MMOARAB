@@ -1,0 +1,24 @@
+name: ci-extension
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      matrix:
+        node: [22, 24]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Require committed npm lock
+        run: test -f package-lock.json
+      - run: npm ci
+      - run: npm run check
+      - run: npm run check:phase6-contracts && npm run check:phase7-contracts && npm run check:phase8-contracts
+      - run: npm run check:remote-transfer-consent
+      - run: npm run check:store-tools

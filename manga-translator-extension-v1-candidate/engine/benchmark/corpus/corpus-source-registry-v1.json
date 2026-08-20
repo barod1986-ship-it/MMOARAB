@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "registryRevision": "production-corpus-sources-2026-08-19-v1",
+  "policy": "V1 production qualification accepts only real-domain pages whose benchmark/commercial qualification rights are bound to a reviewed, content-addressed rights record. Public availability alone is not authorization. Synthetic/self-authored pages may supplement edge cases but cannot satisfy real-domain minimums.",
+  "sources": {
+    "operator-owned-or-explicitly-permissioned": {
+      "sourceKind": "operator-rights",
+      "sourceRevision": "per-review-record",
+      "languages": ["en", "ja", "ko", "zh-Hans", "zh-Hant"],
+      "v1Qualification": "allowed-with-page-evidence",
+      "commercialQualificationAllowed": true,
+      "realDomain": true,
+      "sourceWideEvidenceAllowed": false,
+      "redistributionDefault": false,
+      "termsUrl": null,
+      "note": "Use only when the operator owns the pages or has explicit permission covering benchmark/quality qualification. The rights review record must enumerate every covered pageId."
+    },
+    "manga109-s-v2026": {
+      "sourceKind": "licensed-dataset",
+      "sourceRevision": "Manga109-s-v2026",
+      "languages": ["ja"],
+      "v1Qualification": "allowed-with-access-terms-evidence",
+      "commercialQualificationAllowed": true,
+      "realDomain": true,
+      "sourceWideEvidenceAllowed": true,
+      "redistributionDefault": false,
+      "termsUrl": "https://manga109.github.io/manga109-project-website/en/index.html",
+      "note": "Use only after the operator has been granted access and has reviewed the current Manga109-s terms. Corpus bytes remain external and must not be redistributed by this project."
+    },
+    "open-mantra-cc-by-nc-4.0": {
+      "sourceKind": "public-dataset",
+      "sourceRevision": "open-mantra-main-license-cc-by-nc-4.0",
+      "languages": ["ja"],
+      "v1Qualification": "blocked-commercial-v1-without-separate-permission",
+      "commercialQualificationAllowed": false,
+      "realDomain": true,
+      "sourceWideEvidenceAllowed": false,
+      "redistributionDefault": false,
+      "termsUrl": "https://github.com/mantra-inc/open-mantra-dataset/blob/main/LICENSE.md",
+      "note": "The public repository license is CC BY-NC 4.0. Do not use it for this production/commercial V1 qualification unless a separate permission review creates a different operator-rights record."
+    },
+    "synthetic-self-authored": {
+      "sourceKind": "synthetic",
+      "sourceRevision": "self-authored-v1",
+      "languages": ["en", "ja", "ko", "zh-Hans", "zh-Hant"],
+      "v1Qualification": "supplemental-only",
+      "commercialQualificationAllowed": true,
+      "realDomain": false,
+      "sourceWideEvidenceAllowed": true,
+      "redistributionDefault": true,
+      "termsUrl": null,
+      "note": "Useful for renderer/security/edge-case checks only. It cannot satisfy real manga/manhwa/webtoon page minimums in the production corpus gate."
+    }
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "revision": "rev13-real-qualification-readiness-v2-sealed-input-bundle",
+  "generatedAtUtc": "2026-08-19T19:20:14.864445Z",
+  "classification": "diagnostic-only-not-release-evidence",
+  "repoRoot": "/mnt/data/rev13work/manga-translator-extension-v1-candidate",
+  "toolchain": {
+    "node": {
+      "present": true,
+      "value": "v22.16.0",
+      "command": [
+        "node",
+        "--version"
+      ],
+      "returnCode": 0,
+      "expected": "v24.19.0",
+      "matchesExpected": false
+    },
+    "npm": {
+      "present": true,
+      "value": "10.9.2",
+      "command": [
+        "npm",
+        "--version"
+      ],
+      "returnCode": 0,
+      "expected": "12.0.2",
+      "matchesExpected": false
+    },
+    "python": {
+      "present": true,
+      "value": "3.13.5",
+      "command": [
+        "python",
+        "-c",
+        "import sys; print('.'.join(map(str, sys.version_info[:3])))"
+      ],
+      "returnCode": 0,
+      "expected": "3.13.15",
+      "matchesExpected": false
+    },
+    "uv": {
+      "present": true,
+      "value": "0.10.0",
+      "command": [
+        "uv",
+        "--version"
+      ],
+      "returnCode": 0,
+      "expected": "0.12.5",
+      "matchesExpected": false
+    }
+  },
+  "network": [
+    {
+      "host": "registry.npmjs.org",
+      "port": 443,
+      "purpose": "npm-registry",
+      "dnsResolved": false,
+      "tcpReachable": false,
+      "error": "[Errno -3] Temporary failure in name resolution"
+    },
+    {
+      "host": "pypi.org",
+      "port": 443,
+      "purpose": "python-index",
+      "dnsResolved": false,
+      "tcpReachable": false,
+      "error": "[Errno -3] Temporary failure in name resolution"
+    },
+    {
+      "host": "paddle-model-ecology.bj.bcebos.com",
+      "port": 443,
+      "purpose": "paddle-artifacts",
+      "dnsResolved": false,
+      "tcpReachable": false,
+      "error": "[Errno -3] Temporary failure in name resolution"
+    },
+    {
+      "host": "huggingface.co",
+      "port": 443,
+      "purpose": "manga-ocr-artifact",
+      "dnsResolved": false,
+      "tcpReachable": false,
+      "error": "[Errno -3] Temporary failure in name resolution"
+    },
+    {
+      "host": "github.com",
+      "port": 443,
+      "purpose": "font/source-metadata",
+      "dnsResolved": false,
+      "tcpReachable": false,
+      "error": "[Errno -3] Temporary failure in name resolution"
+    }
+  ],
+  "repositoryEvidence": {
+    "packageLock": {
+      "path": "/mnt/data/rev13work/manga-translator-extension-v1-candidate/package-lock.json",
+      "exists": false,
+      "isFile": false,
+      "isDirectory": false,
+      "isSymlink": false,
+      "bytes": null
+    },
+    "uvLock": {
+      "path": "/mnt/data/rev13work/manga-translator-extension-v1-candidate/engine/uv.lock",
+      "exists": false,
+      "isFile": false,
+      "isDirectory": false,
+      "isSymlink": false,
+      "bytes": null
+    },
+    "sourceIntegrityManifest": {
+      "path": "/mnt/data/rev13work/manga-translator-extension-v1-candidate/SOURCE_SHA256SUMS.txt",
+      "exists": true,
+      "isFile": true,
+      "isDirectory": false,
+      "isSymlink": false,
+      "bytes": 35181
+    },
+    "productionFreeze": {
+      "path": "/mnt/data/rev13work/manga-translator-extension-v1-candidate/engine/mte_engine/benchmark/production-profile-freeze.json",
+      "exists": false,
+      "isFile": false,
+      "isDirectory": false,
+      "isSymlink": false,
+      "bytes": null
+    }
+  },
+  "operatorInputs": {
+    "configured": false,
+    "bundle": {
+      "configured": false
+    }
+  },
+  "readyForRealQualification": false,
+  "blockers": [
+    "toolchain:node",
+    "toolchain:npm",
+    "toolchain:python",
+    "toolchain:uv",
+    "network:npm-registry",
+    "network:python-index",
+    "network:paddle-artifacts",
+    "network:manga-ocr-artifact",
+    "network:font/source-metadata",
+    "operator-input-root"
+  ],
+  "safety": {
+    "createsProductionFreeze": false,
+    "downloadsModelArtifacts": false,
+    "modifiesOperatorInputs": false
+  }
+}

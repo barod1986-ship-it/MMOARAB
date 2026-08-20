@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "reviewRevision": "rev10-production-benchmark-review-v1",
+  "reportId": "fixture-review",
+  "runPlanSha256": "sha256:e50697924af8e6a8a387fe884ea811bc4af49c44134a1da1d0b0427a231f34ae",
+  "inpaintingCandidates": {
+    "inp-1": {
+      "pagesReviewed": 20,
+      "humanScore": 4.5,
+      "criticalFailures": 0
+    }
+  },
+  "translation": {
+    "pagesReviewed": 30,
+    "pagesByLanguage": {
+      "en": 20,
+      "ja": 3,
+      "ko": 3,
+      "zh-Hans": 2,
+      "zh-Hant": 2
+    },
+    "criticalFailures": 0,
+    "arabicNaturalnessMean": 4.5,
+    "adapterId": "external-ocr-text-only-v1",
+    "modelOrProviderRevision": "provider-v1",
+    "contextMode": "page-block-batch",
+    "privacyMode": "explicit-config-no-sfx"
+  },
+  "renderer": {
+    "arabicRendererGoldensRun": 24,
+    "arabicRendererGoldensFailed": 0,
+    "adapterRevision": "pillow-raqm-ar-v1",
+    "fontArtifactId": "font",
+    "goldenSuiteRevision": "gold-v1"
+  },
+  "reviewRecordSha256": "sha256:ac650c8cbbd890d40a2f7dc118b122da1e5a8b8f150542050ce564590f473216"
+}

@@ -1,0 +1,596 @@
+{
+  "appName": {
+    "message": "مترجم المانجا"
+  },
+  "appDescription": {
+    "message": "ترجمة محلية أولًا للمانجا والمنهوا باستخدام محرك مرافق."
+  },
+  "actionTitle": {
+    "message": "فتح مترجم المانجا"
+  },
+  "commandDescription": {
+    "message": "تفعيل مترجم المانجا"
+  },
+  "settings": {
+    "message": "الإعدادات"
+  },
+  "statusActivating": {
+    "message": "جارٍ التفعيل…"
+  },
+  "statusReady": {
+    "message": "جاهز"
+  },
+  "statusInactive": {
+    "message": "هذه الصفحة غير مفعّلة"
+  },
+  "statusUnsupported": {
+    "message": "لا يمكن ترجمة هذه الصفحة"
+  },
+  "statusError": {
+    "message": "التفعيل يحتاج إلى إجراء"
+  },
+  "page": {
+    "message": "الصفحة"
+  },
+  "from": {
+    "message": "من"
+  },
+  "to": {
+    "message": "إلى"
+  },
+  "profile": {
+    "message": "الملف"
+  },
+  "sfxPolicy": {
+    "message": "المؤثرات الصوتية تبقى دون تغيير"
+  },
+  "translatePage": {
+    "message": "ترجمة الصفحة الحالية"
+  },
+  "translateVisible": {
+    "message": "ترجمة"
+  },
+  "originals": {
+    "message": "الأصل"
+  },
+  "currentWork": {
+    "message": "العمل الحالي"
+  },
+  "attention": {
+    "message": "يتطلب الانتباه"
+  },
+  "noWork": {
+    "message": "لا توجد ترجمة قيد التشغيل"
+  },
+  "cancel": {
+    "message": "إلغاء"
+  },
+  "cancelling": {
+    "message": "جارٍ الإلغاء…"
+  },
+  "queued": {
+    "message": "في الانتظار"
+  },
+  "working": {
+    "message": "جارٍ العمل"
+  },
+  "done": {
+    "message": "تم"
+  },
+  "failed": {
+    "message": "فشل"
+  },
+  "fromCache": {
+    "message": "من الذاكرة المؤقتة"
+  },
+  "pending": {
+    "message": "معلّق"
+  },
+  "needsAttention": {
+    "message": "يحتاج إلى إجراء"
+  },
+  "skipped": {
+    "message": "متجاوز أو قديم"
+  },
+  "detectedImages": {
+    "message": "الصور المكتشفة"
+  },
+  "farDeferred": {
+    "message": "الصور البعيدة تؤجل حتى تقترب من منطقة العرض."
+  },
+  "engine": {
+    "message": "المحرك المحلي"
+  },
+  "engineReady": {
+    "message": "المحرك متصل والملف جاهز"
+  },
+  "engineConnectedBlocked": {
+    "message": "المحرك متصل، لكن الملف المحدد غير جاهز"
+  },
+  "enginePermissionMissing": {
+    "message": "الوصول إلى المحرك المحلي غير مفعّل"
+  },
+  "enginePairingRequired": {
+    "message": "يلزم الاقتران"
+  },
+  "engineOffline": {
+    "message": "لا يمكن الوصول إلى المحرك المحلي"
+  },
+  "openSetup": {
+    "message": "فتح إعداد المحرك"
+  },
+  "recheck": {
+    "message": "إعادة الفحص"
+  },
+  "privacyLocal": {
+    "message": "تُعالج الصور بواسطة المحرك المحلي على هذا الجهاز."
+  },
+  "privacyRemoteText": {
+    "message": "قد يغادر النص المستخرج الجهاز فقط إذا صرّح ملف المحرك المحدد بذلك."
+  },
+  "privacyNoTelemetry": {
+    "message": "لا يوجد قياس استخدام خارجي مفعّل افتراضيًا."
+  },
+  "profileGateBlocked": {
+    "message": "ملف الإنتاج غير جاهز. أكمل اختبار النماذج وتثبيت الأوزان قبل استخدام default-v1."
+  },
+  "permissionTitle": {
+    "message": "يلزم الوصول إلى مصدر الصورة"
+  },
+  "permissionBody": {
+    "message": "امنح هذا المصدر المحدد فقط، أو استخدم لقطة الجزء المرئي."
+  },
+  "grantExactOrigin": {
+    "message": "منح المصدر المحدد"
+  },
+  "useScreenshot": {
+    "message": "استخدام لقطة مرئية"
+  },
+  "errorEnginePermissionTitle": {
+    "message": "يلزم إذن المحرك المحلي"
+  },
+  "errorEnginePermissionBody": {
+    "message": "فعّل الوصول إلى 127.0.0.1 فقط من إعداد المحرك."
+  },
+  "errorEngineOfflineTitle": {
+    "message": "المحرك المحلي غير مشغّل"
+  },
+  "errorEngineOfflineBody": {
+    "message": "لم تُفقد بيانات الصفحة. شغّل المحرك المرافق ثم أعد الفحص."
+  },
+  "errorPairingTitle": {
+    "message": "يلزم اقتران المحرك"
+  },
+  "errorPairingBody": {
+    "message": "افتح إعداد المحرك واقرن هذه الإضافة بالمحرك المحلي."
+  },
+  "errorProfileTitle": {
+    "message": "ملف المعالجة غير جاهز"
+  },
+  "errorProfileBody": {
+    "message": "المحرك يبلّغ أن إعداد النماذج أو العتاد أو المزود أو العارض غير مكتمل."
+  },
+  "errorImagePermissionTitle": {
+    "message": "يلزم الوصول إلى الصورة"
+  },
+  "errorImagePermissionBody": {
+    "message": "هذه الصورة من مصدر HTTPS مختلف. امنح ذلك المصدر فقط أو استخدم الالتقاط المرئي."
+  },
+  "errorCaptureVisibleTitle": {
+    "message": "يجب أن تكون الصورة مرئية"
+  },
+  "errorCaptureVisibleBody": {
+    "message": "مرّر الصفحة حتى تظهر الصورة ثم أعد المحاولة."
+  },
+  "errorUnsupportedImageTitle": {
+    "message": "صورة غير مدعومة"
+  },
+  "errorUnsupportedImageBody": {
+    "message": "لا يمكن معالجة هذا التنسيق أو الاستجابة بأمان."
+  },
+  "errorStaleTitle": {
+    "message": "تغيرت الصفحة"
+  },
+  "errorStaleBody": {
+    "message": "تم تجاهل النتيجة القديمة لأن الصفحة أو الصورة تغيرت."
+  },
+  "errorInternalTitle": {
+    "message": "خطأ داخلي"
+  },
+  "errorInternalBody": {
+    "message": "توقفت العملية بأمان. انسخ التشخيصات إذا تكررت المشكلة."
+  },
+  "errorGenericTitle": {
+    "message": "الترجمة تحتاج إلى إجراء"
+  },
+  "errorGenericBody": {
+    "message": "راجع التفاصيل وأعد المحاولة بعد إزالة العائق."
+  },
+  "general": {
+    "message": "عام"
+  },
+  "translation": {
+    "message": "الترجمة"
+  },
+  "localEngine": {
+    "message": "المحرك المحلي"
+  },
+  "provider": {
+    "message": "المزود"
+  },
+  "appearance": {
+    "message": "المظهر"
+  },
+  "keyboardControls": {
+    "message": "لوحة المفاتيح والتحكم"
+  },
+  "storageCache": {
+    "message": "التخزين والذاكرة المؤقتة"
+  },
+  "diagnostics": {
+    "message": "التشخيصات"
+  },
+  "about": {
+    "message": "حول"
+  },
+  "uiLanguage": {
+    "message": "لغة الواجهة"
+  },
+  "browserDefault": {
+    "message": "لغة المتصفح"
+  },
+  "english": {
+    "message": "الإنجليزية"
+  },
+  "arabic": {
+    "message": "العربية"
+  },
+  "defaultSource": {
+    "message": "لغة المصدر الافتراضية"
+  },
+  "defaultTarget": {
+    "message": "لغة الهدف الافتراضية"
+  },
+  "defaultProfile": {
+    "message": "ملف المعالجة الافتراضي"
+  },
+  "compactControls": {
+    "message": "إظهار عناصر تحكم صغيرة داخل الصفحة"
+  },
+  "autoShowResult": {
+    "message": "إظهار النتيجة المترجمة تلقائيًا"
+  },
+  "theme": {
+    "message": "السمة"
+  },
+  "system": {
+    "message": "النظام"
+  },
+  "light": {
+    "message": "فاتح"
+  },
+  "dark": {
+    "message": "داكن"
+  },
+  "cacheTranslated": {
+    "message": "تخزين الصور المترجمة مؤقتًا"
+  },
+  "cacheMaximum": {
+    "message": "الحد الأقصى للذاكرة المؤقتة"
+  },
+  "cacheUsage": {
+    "message": "الاستخدام التقريبي للذاكرة المؤقتة"
+  },
+  "clearCache": {
+    "message": "مسح ذاكرة الترجمات المؤقتة"
+  },
+  "cacheCleared": {
+    "message": "تم مسح ذاكرة الترجمات المؤقتة"
+  },
+  "save": {
+    "message": "حفظ"
+  },
+  "saved": {
+    "message": "تم حفظ الإعدادات"
+  },
+  "engineHostPermission": {
+    "message": "إذن عنوان المحرك المحلي"
+  },
+  "allowLoopback": {
+    "message": "السماح بالوصول إلى المحرك المحلي"
+  },
+  "probe": {
+    "message": "فحص الاتصال"
+  },
+  "pairingToken": {
+    "message": "رمز الاقتران"
+  },
+  "show": {
+    "message": "إظهار"
+  },
+  "hide": {
+    "message": "إخفاء"
+  },
+  "pair": {
+    "message": "اقتران"
+  },
+  "disconnect": {
+    "message": "فصل"
+  },
+  "capabilities": {
+    "message": "الإمكانات"
+  },
+  "sourceLanguages": {
+    "message": "لغات المصدر"
+  },
+  "targetLanguages": {
+    "message": "لغات الهدف"
+  },
+  "hardware": {
+    "message": "العتاد"
+  },
+  "copyDiagnostics": {
+    "message": "نسخ التشخيصات"
+  },
+  "diagnosticsCopied": {
+    "message": "تم نسخ التشخيصات"
+  },
+  "diagnosticsPrivacy": {
+    "message": "التشخيصات لا تتضمن روابط الصفحات أو أسماء المانجا أو نص OCR أو الترجمات أو مفاتيح API أو رموز الاقتران أو مسارات الملفات."
+  },
+  "keyboardHelp": {
+    "message": "الاختصار المقترح هو Alt+Shift+M. يمكن تغييره من chrome://extensions/shortcuts."
+  },
+  "aboutText": {
+    "message": "إضافة Chrome 148+ لترجمة المانجا والمنهوا محليًا أولًا."
+  },
+  "productionGate": {
+    "message": "بوابة نماذج الإنتاج"
+  },
+  "productionGateBlocked": {
+    "message": "يبقى default-v1 محجوبًا حتى تثبيت نتائج الاختبار وهاشات النماذج."
+  },
+  "permissionGranted": {
+    "message": "تم منح الإذن"
+  },
+  "permissionDenied": {
+    "message": "لم يتم منح الإذن."
+  },
+  "pairingSuccess": {
+    "message": "تم اقتران المحرك بنجاح."
+  },
+  "pairingFailed": {
+    "message": "فشل الاقتران."
+  },
+  "probeReachable": {
+    "message": "يمكن الوصول إلى المحرك المحلي."
+  },
+  "probeFailed": {
+    "message": "فشل الفحص. قد يكون المحرك متوقفًا أو ما زال Local Network Access محجوبًا."
+  },
+  "lnaDenied": {
+    "message": "صلاحية Local Network Access مرفوضة لهذه الإضافة."
+  },
+  "notActivatedHelp": {
+    "message": "افتح صفحة مانجا ثم فعّل الإضافة من شريط الأدوات أو الاختصار."
+  },
+  "refreshing": {
+    "message": "جارٍ التحديث…"
+  },
+  "imageCount": {
+    "message": "$1 صورة"
+  },
+  "cacheUsageValue": {
+    "message": "$1 من $2 MiB"
+  },
+  "jobCount": {
+    "message": "$1 مهمة"
+  },
+  "itemCount": {
+    "message": "$1 عنصر"
+  },
+  "stageAcquiring": {
+    "message": "جارٍ التقاط الصورة"
+  },
+  "stageHashing": {
+    "message": "جارٍ تجهيز الصورة"
+  },
+  "stageWaitingWork": {
+    "message": "بانتظار المعالجة"
+  },
+  "stageProcessing": {
+    "message": "جارٍ المعالجة محليًا"
+  },
+  "stageDelivering": {
+    "message": "جارٍ تطبيق الصورة المترجمة"
+  },
+  "stageApplied": {
+    "message": "تمت الترجمة"
+  },
+  "stageFailed": {
+    "message": "فشل"
+  },
+  "stageCancelled": {
+    "message": "أُلغي"
+  },
+  "stageStale": {
+    "message": "تم التجاوز لأن الصفحة تغيرت"
+  },
+  "stageQueued": {
+    "message": "في الانتظار"
+  },
+  "openOptions": {
+    "message": "فتح الإعدادات"
+  },
+  "resultVisible": {
+    "message": "النتيجة ظاهرة"
+  },
+  "restoreOriginal": {
+    "message": "إظهار الأصل"
+  },
+  "stageResultReady": {
+    "message": "الترجمة جاهزة — الأصل ظاهر"
+  },
+  "autoLanguage": {
+    "message": "تلقائي"
+  },
+  "providerManaged": {
+    "message": "بيانات اعتماد المزود وسلوك الشبكة يديرهما ملف المحرك المحلي المحدد. لا تخزن الإضافة مفاتيح API الخاصة بالمزود."
+  },
+  "engineVersionLabel": {
+    "message": "إصدار المحرك"
+  },
+  "recommendedConcurrency": {
+    "message": "التوازي الموصى به"
+  },
+  "profileStateReady": {
+    "message": "جاهز"
+  },
+  "profileStateNeedsDownload": {
+    "message": "يلزم تثبيت النماذج أو تجميد ملف الإنتاج"
+  },
+  "profileStateUnavailableHardware": {
+    "message": "العتاد المطلوب غير متوفر"
+  },
+  "profileStateMisconfiguredProvider": {
+    "message": "إعداد المزود غير مكتمل"
+  },
+  "profileStateRendererMissing": {
+    "message": "عارض العربية أو الخط غير متوفر"
+  },
+  "candidateImage": {
+    "message": "صورة"
+  },
+  "candidateCanvas": {
+    "message": "Canvas"
+  },
+  "candidateViewportRegion": {
+    "message": "منطقة مرئية من الصفحة"
+  },
+  "visibilityVisible": {
+    "message": "مرئية"
+  },
+  "visibilityNear": {
+    "message": "قريبة من منطقة العرض"
+  },
+  "visibilityFar": {
+    "message": "مؤجلة"
+  },
+  "revisionLabel": {
+    "message": "مراجعة"
+  },
+  "privacyImageMayLeave": {
+    "message": "ملف المحرك المحدد يصرّح بأن بيانات الصورة قد تغادر هذا الجهاز."
+  },
+  "privacyTextMayLeave": {
+    "message": "ملف المحرك المحدد يصرّح بأن نص OCR المستخرج قد يغادر هذا الجهاز."
+  },
+  "privacyTextUnknown": {
+    "message": "ملف المحرك المحدد لا يصرّح ما إذا كان نص OCR المستخرج قد يغادر هذا الجهاز."
+  },
+  "privacyVisualMayLeave": {
+    "message": "ملف المحرك المحدد يصرّح بأن السياق البصري قد يغادر هذا الجهاز."
+  },
+  "candidateStateDetected": {
+    "message": "مكتشفة"
+  },
+  "candidateStateWaitingLoad": {
+    "message": "بانتظار التحميل"
+  },
+  "candidateStateReady": {
+    "message": "جاهزة"
+  },
+  "candidateStatePermission": {
+    "message": "تحتاج صلاحية"
+  },
+  "candidateStateAcquired": {
+    "message": "تم الحصول عليها"
+  },
+  "candidateStateTranslated": {
+    "message": "الترجمة جاهزة"
+  },
+  "candidateStateStale": {
+    "message": "قديمة"
+  },
+  "extensionVersionLabel": {
+    "message": "الإضافة $1"
+  },
+  "modelCatalog": {
+    "message": "تنزيلات النماذج"
+  },
+  "modelCatalogEmpty": {
+    "message": "لا توجد تنزيلات لنماذج الإنتاج منشورة بعد. يجب تجميد Gate D بنماذج موثقة قبل نشر هذا الكتالوج."
+  },
+  "installModel": {
+    "message": "تثبيت النموذج"
+  },
+  "modelInstallStarted": {
+    "message": "بدأ تنزيل النموذج."
+  },
+  "modelInstallCancelled": {
+    "message": "تم إلغاء تنزيل النموذج."
+  },
+  "modelStateReady": {
+    "message": "جاهز"
+  },
+  "modelStateDownloading": {
+    "message": "جارٍ التنزيل"
+  },
+  "modelStateMissing": {
+    "message": "غير مثبت"
+  },
+  "privacyDisclosurePending": {
+    "message": "يجب الموافقة على إفصاح الخصوصية قبل الوصول إلى محتوى الصفحة"
+  },
+  "privacyDisclosureTitle": {
+    "message": "قبل أن تقرأ الإضافة محتوى هذه الصفحة"
+  },
+  "privacyDisclosureBody": {
+    "message": "عند تفعيل الترجمة، تقرأ الإضافة صور القصص المصورة ونطاق الصفحة الحالية حتى تتمكن من اكتشاف الصور ومعالجتها وعرض النسخة المترجمة."
+  },
+  "privacyDisclosureData": {
+    "message": "قد تشمل البيانات التي تُعالج محليًا نطاق الصفحة الحالية، وبيانات الصور أو قصاصات لقطة الشاشة، ونص OCR، والنص المترجم، وبيانات النتيجة/الذاكرة المؤقتة."
+  },
+  "privacyDisclosureLocalOnly": {
+    "message": "هذه الموافقة تغطي المعالجة بين Chrome والمحرك المحلي على هذا الكمبيوتر فقط، ولا تسمح بإرسال الصور أو النصوص إلى مزود خارجي."
+  },
+  "privacyDisclosureRetention": {
+    "message": "يمكن مسح ذاكرة النتائج المؤقتة من الإعدادات. تُنظف ملفات وظائف المحرك المحلي المكتملة تلقائيًا خلال مدة أقصاها 24 ساعة."
+  },
+  "privacyDisclosureNoAds": {
+    "message": "لا تستخدم الإضافة هذه البيانات للإعلانات أو بناء الملفات الشخصية أو التحليلات غير المرتبطة بالوظيفة. القياس الخارجي معطل افتراضيًا."
+  },
+  "privacyConsentButton": {
+    "message": "أوافق — فعّل على هذه الصفحة"
+  },
+  "privacyDetailsButton": {
+    "message": "تفاصيل الخصوصية"
+  },
+  "profileStateRuntimeUnavailable": {
+    "message": "محول التشغيل الإنتاجي غير متوفر"
+  },
+  "remotePrivacyDisclosurePending": {
+    "message": "يلزم إذن منفصل لترجمة النص عبر مزود خارجي"
+  },
+  "remotePrivacyDisclosureTitle": {
+    "message": "قبل أن يغادر النص المستخرج هذا الجهاز"
+  },
+  "remotePrivacyDisclosureBody": {
+    "message": "يرسل الملف المحدد نص الحوار والسرد المستخرج إلى $1 عبر HTTPS لترجمته إلى العربية."
+  },
+  "remotePrivacyDisclosureData": {
+    "message": "لا يكون مؤهلًا للإرسال إلا نص OCR الذي صُنّف محليًا على أنه حوار أو سرد."
+  },
+  "remotePrivacyDisclosureLocalImages": {
+    "message": "تبقى صور القصص المصورة وبكسلات لقطات الشاشة والأقنعة والسياق البصري على هذا الجهاز."
+  },
+  "remotePrivacyDisclosureSfx": {
+    "message": "تُرشَّح المؤثرات الصوتية والنصوص غير المؤكدة محليًا ولا تُرسل إلى مزود الترجمة."
+  },
+  "remotePrivacyDisclosureBinding": {
+    "message": "ترتبط هذه الموافقة ببصمة الملف وقائمة المزودين ووصف الخصوصية وإصدار الإفصاح الحالي؛ وأي تغيير يتطلب موافقة جديدة."
+  },
+  "remotePrivacyConsentButton": {
+    "message": "أوافق — اسمح بترجمة النص"
+  }
+}

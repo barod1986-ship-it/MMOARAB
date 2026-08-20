@@ -1,0 +1,49 @@
+{
+  "artifactCount": 0,
+  "capturedAt": "2026-08-20T12:00:31Z",
+  "files": [
+    {
+      "path": "manual/checkpoint.json",
+      "sha256": "c58708d8e8b76d6fc16a8d7efd8e96161b74b0815aa877836eb37028b8d39fb6",
+      "sizeBytes": 1348
+    },
+    {
+      "path": "manual/evidence/benchmark-review--benchmark-review.json",
+      "sha256": "b4b4f9e6a9acd667c75de5b22d41982e11b9a4756447380d2e231490ff40f2b9",
+      "sizeBytes": 1052
+    },
+    {
+      "path": "manual/evidence/run-plan--ready-run-plan.json",
+      "sha256": "b2989e2f613760a29f1bd89596a74a0b1ea48a3a4721780b088a7f19578921f0",
+      "sizeBytes": 2828
+    }
+  ],
+  "kind": "manual-stage",
+  "manifestSha256": "50a4d97d64587cc16b7ef8666e1789a16b100c277246943a6878d46c61779790",
+  "manualEvidence": [
+    {
+      "archivePath": "manual/evidence/benchmark-review--benchmark-review.json",
+      "role": "benchmark-review",
+      "sha256": "b4b4f9e6a9acd667c75de5b22d41982e11b9a4756447380d2e231490ff40f2b9",
+      "sizeBytes": 1052,
+      "sourceFileName": "benchmark-review.json"
+    },
+    {
+      "archivePath": "manual/evidence/run-plan--ready-run-plan.json",
+      "role": "run-plan",
+      "sha256": "b2989e2f613760a29f1bd89596a74a0b1ea48a3a4721780b088a7f19578921f0",
+      "sizeBytes": 2828,
+      "sourceFileName": "ready-run-plan.json"
+    }
+  ],
+  "notice": "Operational disaster-recovery snapshot of already-reviewed manual checkpoint inputs; it does not replace semantic review.",
+  "releaseClass": "private-v1",
+  "releaseId": "v1.0.0-rc1",
+  "repository": "owner/repo",
+  "repositoryId": "123",
+  "revision": "rev33-first-real-run-recovery-v2",
+  "runIds": [],
+  "schemaVersion": 1,
+  "sourceHeadSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "stage": "benchmark-review"
+}

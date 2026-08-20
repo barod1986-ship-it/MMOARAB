@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "phase": "9-controlled-release",
+  "releaseClass": "developer-preview",
+  "publicReleaseChosen": false,
+  "releaseVersion": "0.10.0",
+  "audit": {
+    "date": "2026-08-20",
+    "chromeBaselineMajor": 148,
+    "currentStableMajorAtAudit": 151,
+    "currentStableSource": "Chrome for Developers: Chrome 151 stable; verified 2026-08-20"
+  },
+  "artifacts": {
+    "controlledManifest": null,
+    "extensionSha256": null,
+    "engineTargets": []
+  },
+  "smoke": {
+    "freshUnpackedChrome148Passed": false,
+    "freshUnpackedCurrentStablePassed": false,
+    "freshEngineArtifactPassedTargets": [],
+    "storeInstalledVersionPassed": false
+  },
+  "public": {
+    "storeApprovedOrStaged": false,
+    "productionEngineDownloadLinksVerified": false,
+    "supportChannelReady": false,
+    "rollbackRunbookReviewed": false,
+    "previousStoreArtifactArchived": false,
+    "previousEngineArtifactsArchived": false,
+    "rolloutPlan": "deferred-or-manual",
+    "initialDeployPercentage": null,
+    "partialRolloutEligible": false
+  },
+  "v1Blockers": {
+    "phase5bProductionFreezeReady": false,
+    "phase7NativeSupportReady": false,
+    "packageLockCommitted": false,
+    "uvLockCommitted": false,
+    "chrome148RealBrowserGate": false,
+    "currentStableRealBrowserGate": false,
+    "productionRuntimeAdaptersComplete": true,
+    "productionRoleSfxClassifierReady": false,
+    "productionInpainterRuntimeReady": false,
+    "remoteTextTransferConsentReady": true
+  }
+}

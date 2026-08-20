@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "revision": "phase7-unreleased-2026-08-19",
+  "targets": [
+    {
+      "id": "windows-x86_64",
+      "os": "windows",
+      "arch": "x86_64",
+      "status": "release-candidate",
+      "publicSupportClaimed": false,
+      "requiredGates": ["locked-dependencies", "authenticode", "artifact-attestation", "clean-vm-smoke"]
+    },
+    {
+      "id": "macos-arm64",
+      "os": "macos",
+      "arch": "arm64",
+      "status": "release-candidate",
+      "publicSupportClaimed": false,
+      "requiredGates": ["locked-dependencies", "developer-id", "hardened-runtime", "notarization", "stapling", "artifact-attestation", "clean-machine-smoke"]
+    },
+    {
+      "id": "linux-x86_64",
+      "os": "linux",
+      "arch": "x86_64",
+      "status": "developer-preview",
+      "publicSupportClaimed": false,
+      "requiredGates": ["locked-dependencies", "artifact-attestation", "clean-vm-smoke"]
+    }
+  ]
+}

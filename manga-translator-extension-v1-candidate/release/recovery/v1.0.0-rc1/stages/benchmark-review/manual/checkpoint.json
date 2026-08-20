@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "revision": "rev29-manual-boundary-checkpoint-v1",
+  "stage": "benchmark-review",
+  "releaseId": "v1.0.0-rc1",
+  "releaseClass": "private-v1",
+  "repository": "owner/repo",
+  "repositoryId": 123,
+  "sourceHeadSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "operator": {
+    "id": "12345",
+    "login": "release-operator"
+  },
+  "reviewedAtUtc": "2026-08-20T12:00:31Z",
+  "evidence": [
+    {
+      "role": "benchmark-review",
+      "fileName": "benchmark-review.json",
+      "sha256": "b4b4f9e6a9acd667c75de5b22d41982e11b9a4756447380d2e231490ff40f2b9",
+      "sizeBytes": 1052
+    },
+    {
+      "role": "run-plan",
+      "fileName": "ready-run-plan.json",
+      "sha256": "b2989e2f613760a29f1bd89596a74a0b1ea48a3a4721780b088a7f19578921f0",
+      "sizeBytes": 2828
+    }
+  ],
+  "semanticBinding": {
+    "kind": "benchmark-review",
+    "runPlanSha256": "sha256:e50697924af8e6a8a387fe884ea811bc4af49c44134a1da1d0b0427a231f34ae",
+    "reviewRecordSha256": "sha256:ac650c8cbbd890d40a2f7dc118b122da1e5a8b8f150542050ce564590f473216",
+    "reportId": "fixture-review"
+  },
+  "notice": "Operational manual-boundary checkpoint only. It binds reviewed evidence bytes and operator identity; it is not a substitute for release evidence.",
+  "checkpointSha256": "28a45e528718cd5957df46dceace9af9bc3da93a0e36ace8c914d699f1d1e77b"
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "planRevision": "rev10-production-candidate-plan-v1",
+  "candidates": [
+    {"candidateId": "comic-specialized-detector-run", "component": "detector", "family": "comic-specialized", "artifactIds": ["comic-text-detector-model"]},
+    {"candidateId": "ppocrv6-detector-run", "component": "detector", "family": "ppocrv6", "artifactIds": ["ppocrv6-medium-det"]},
+    {"candidateId": "ppocrv6-small-en", "component": "ocr-en", "family": "ppocrv6-small", "artifactIds": ["ppocrv6-small-rec"]},
+    {"candidateId": "ppocrv6-medium-en", "component": "ocr-en", "family": "ppocrv6-medium", "artifactIds": ["ppocrv6-medium-rec"]},
+    {"candidateId": "manga-ocr-ja", "component": "ocr-ja", "family": "manga-ocr", "artifactIds": ["manga-ocr-base-0.1.16"], "policyRole": "primary"},
+    {"candidateId": "ppocrv6-ja-fallback", "component": "ocr-ja", "family": "ppocrv6", "artifactIds": ["ppocrv6-medium-rec"], "policyRole": "fallback"},
+    {"candidateId": "ppocrv5-ko", "component": "ocr-ko", "family": "korean-ppocrv5", "artifactIds": ["ppocrv5-korean-mobile-rec"]},
+    {"candidateId": "ppocrv6-small-zh", "component": "ocr-zh", "family": "ppocrv6-small", "artifactIds": ["ppocrv6-small-rec"]},
+    {"candidateId": "ppocrv6-medium-zh", "component": "ocr-zh", "family": "ppocrv6-medium", "artifactIds": ["ppocrv6-medium-rec"]},
+    {"candidateId": "lama-inpaint", "component": "inpaint", "family": "lama", "artifactIds": ["lama-big"]},
+    {"candidateId": "aot-inpaint", "component": "inpaint", "family": "aot", "artifactIds": ["aot-gan-places2"]}
+  ],
+  "supportArtifactIds": ["noto-sans-arabic-production-font"]
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "baselineId": "rev10-post-phase9-corpus-rights-qualification-v1-2026-08-19",
+  "purpose": "Intentional post-Phase9 V1 runtime changes through production corpus rights qualification v1: schema-v2 corpus source registry binding, content-addressed page-scoped rights reviews, real-domain corpus minimums, noncommercial/synthetic source exclusion policy, plus prior primary-source ML acquisition and benchmark hardening; Phase 8 baseline remains immutable history.",
+  "parentPhase8Baseline": {
+    "src": {
+      "fileCount": 70,
+      "treeSha256": "380c33dc7622cea384ec25b603f9fec3486adb15c21a99b837ac27a94c0da9e5"
+    },
+    "engine/mte_engine": {
+      "fileCount": 36,
+      "treeSha256": "9b004cca9f85451a1779638dadffab0a4cea341424a75e8a2942fe9e47f0b2ba"
+    }
+  },
+  "v1CandidateRuntimeTrees": {
+    "src": {
+      "fileCount": 70,
+      "treeSha256": "0fb76cf0262dc93827ca5963912066e7bd8f9add52e12763702158387c21f29b"
+    },
+    "engine/mte_engine": {
+      "fileCount": 43,
+      "treeSha256": "fc099578b526d8b4af68cf849867cf50a64cfe26a94457905fd154dd32b83d91"
+    }
+  }
+}

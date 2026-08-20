@@ -1,0 +1,243 @@
+name: smoke-controlled-release-engine
+run-name: smoke-controlled-release-engine / intent=${{ inputs.run_intent_nonce }} / ${{ github.sha }} / ${{ github.actor }}
+on:
+  workflow_dispatch:
+    inputs:
+      run_intent_nonce:
+        description: Controller-generated immutable launch intent nonce
+        required: true
+        type: string
+      release_id:
+        description: Controlled release id already assembled by controlled-release.yml
+        required: true
+        type: string
+      controlled_release_run_id:
+        description: Successful assemble-controlled-release workflow run id for this exact commit
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+  attestations: write
+  artifact-metadata: write
+jobs:
+  verify-controlled-run:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    runs-on: ubuntu-latest
+    outputs:
+      source_sha: ${{ steps.provenance.outputs.source_sha }}
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - id: provenance
+        name: Verify exact controlled-release provenance
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ inputs.controlled_release_run_id }}
+        run: |
+          set -euo pipefail
+          head="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}" --jq .head_sha)"
+          conclusion="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}" --jq .conclusion)"
+          path="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}" --jq .path)"
+          test "$head" = "$GITHUB_SHA"
+          test "$conclusion" = "success"
+          case "$path" in *"controlled-release.yml"*) ;; *) echo "unexpected workflow: $path" >&2; exit 2;; esac
+          echo "source_sha=$head" >> "$GITHUB_OUTPUT"
+
+  smoke-linux-x86_64:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    needs: verify-controlled-run
+    runs-on: [self-hosted, mte-release-linux-x86_64]
+    environment: release-smoke-linux
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.13.15'
+      - name: Verify protected Linux smoke runner contract
+        env:
+          MTE_OPENAI_API_KEY: ${{ secrets.MTE_OPENAI_API_KEY }}
+          MTE_QUALIFIED_MODEL_ARTIFACTS_DIR: ${{ vars.MTE_QUALIFIED_MODEL_ARTIFACTS_DIR }}
+        run: python scripts/probe_production_execution_environment.py --role release-smoke-linux-x86_64 --strict
+      - name: Download exact controlled archive
+        uses: actions/download-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.controlled_release_run_id }}
+          name: controlled-release-${{ inputs.release_id }}
+          path: release/controlled/${{ inputs.release_id }}
+      - name: Smoke exact Linux Engine archive
+        shell: bash
+        env:
+          MTE_OPENAI_API_KEY: ${{ secrets.MTE_OPENAI_API_KEY }}
+          MODEL_ROOT: ${{ vars.MTE_QUALIFIED_MODEL_ARTIFACTS_DIR }}
+        run: |
+          set -euo pipefail
+          test -n "$MODEL_ROOT"
+          python engine/packaging/smoke_production_artifact.py \
+            --controlled-manifest "release/controlled/${{ inputs.release_id }}/controlled-release.json" \
+            --target linux-x86_64 \
+            --model-artifacts-dir "$MODEL_ROOT" \
+            --output release-smoke/linux-x86_64.json
+      - uses: actions/attest@7667f588f2f73a90cea6c7ac70e78266c4f76616 # v4
+        with:
+          subject-path: release-smoke/linux-x86_64.json
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          name: engine-smoke-linux-x86_64
+          path: release-smoke/linux-x86_64.json
+          if-no-files-found: error
+
+  smoke-macos-arm64:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    needs: verify-controlled-run
+    runs-on: [self-hosted, mte-release-macos-arm64]
+    environment: release-smoke-macos
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.13.15'
+      - name: Verify protected macOS smoke runner contract
+        env:
+          MTE_OPENAI_API_KEY: ${{ secrets.MTE_OPENAI_API_KEY }}
+          MTE_QUALIFIED_MODEL_ARTIFACTS_DIR: ${{ vars.MTE_QUALIFIED_MODEL_ARTIFACTS_DIR }}
+        run: python scripts/probe_production_execution_environment.py --role release-smoke-macos-arm64 --strict
+      - name: Download exact controlled archive
+        uses: actions/download-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.controlled_release_run_id }}
+          name: controlled-release-${{ inputs.release_id }}
+          path: release/controlled/${{ inputs.release_id }}
+      - name: Smoke exact macOS Engine archive
+        shell: bash
+        env:
+          MTE_OPENAI_API_KEY: ${{ secrets.MTE_OPENAI_API_KEY }}
+          MODEL_ROOT: ${{ vars.MTE_QUALIFIED_MODEL_ARTIFACTS_DIR }}
+        run: |
+          set -euo pipefail
+          test -n "$MODEL_ROOT"
+          python engine/packaging/smoke_production_artifact.py \
+            --controlled-manifest "release/controlled/${{ inputs.release_id }}/controlled-release.json" \
+            --target macos-arm64 \
+            --model-artifacts-dir "$MODEL_ROOT" \
+            --output release-smoke/macos-arm64.json
+      - uses: actions/attest@7667f588f2f73a90cea6c7ac70e78266c4f76616 # v4
+        with:
+          subject-path: release-smoke/macos-arm64.json
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          name: engine-smoke-macos-arm64
+          path: release-smoke/macos-arm64.json
+          if-no-files-found: error
+
+  smoke-windows-x86_64:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    needs: verify-controlled-run
+    runs-on: [self-hosted, mte-release-windows-x86_64]
+    environment: release-smoke-windows
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.13.15'
+      - name: Verify protected Windows smoke runner contract
+        shell: pwsh
+        env:
+          MTE_OPENAI_API_KEY: ${{ secrets.MTE_OPENAI_API_KEY }}
+          MTE_QUALIFIED_MODEL_ARTIFACTS_DIR: ${{ vars.MTE_QUALIFIED_MODEL_ARTIFACTS_DIR }}
+        run: python scripts/probe_production_execution_environment.py --role release-smoke-windows-x86_64 --strict
+      - name: Download exact controlled archive
+        uses: actions/download-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.controlled_release_run_id }}
+          name: controlled-release-${{ inputs.release_id }}
+          path: release/controlled/${{ inputs.release_id }}
+      - name: Smoke exact Windows Engine archive
+        shell: pwsh
+        env:
+          MTE_OPENAI_API_KEY: ${{ secrets.MTE_OPENAI_API_KEY }}
+          MODEL_ROOT: ${{ vars.MTE_QUALIFIED_MODEL_ARTIFACTS_DIR }}
+        run: |
+          if (-not $env:MODEL_ROOT) { throw 'MTE_QUALIFIED_MODEL_ARTIFACTS_DIR is not configured for the protected Windows smoke environment' }
+          python engine/packaging/smoke_production_artifact.py `
+            --controlled-manifest "release/controlled/${{ inputs.release_id }}/controlled-release.json" `
+            --target windows-x86_64 `
+            --model-artifacts-dir "$env:MODEL_ROOT" `
+            --output release-smoke/windows-x86_64.json
+      - uses: actions/attest@7667f588f2f73a90cea6c7ac70e78266c4f76616 # v4
+        with:
+          subject-path: release-smoke/windows-x86_64.json
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          name: engine-smoke-windows-x86_64
+          path: release-smoke/windows-x86_64.json
+          if-no-files-found: error
+
+  collect-engine-evidence:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    needs: [verify-controlled-run, smoke-linux-x86_64, smoke-macos-arm64, smoke-windows-x86_64]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.13.15'
+      - name: Download exact controlled archive
+        uses: actions/download-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.controlled_release_run_id }}
+          name: controlled-release-${{ inputs.release_id }}
+          path: release/controlled/${{ inputs.release_id }}
+      - name: Download controlled-assembly orchestration checkpoint
+        uses: actions/download-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.controlled_release_run_id }}
+          name: v1-orchestration-${{ inputs.release_id }}-controlled
+          path: release/orchestration
+      - uses: actions/download-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          name: engine-smoke-linux-x86_64
+          path: release-smoke
+      - uses: actions/download-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          name: engine-smoke-macos-arm64
+          path: release-smoke
+      - uses: actions/download-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          name: engine-smoke-windows-x86_64
+          path: release-smoke
+      - name: Derive cross-platform profile/privacy candidate
+        run: |
+          python scripts/materialize_release_profile_privacy.py \
+            --controlled-manifest "release/controlled/${{ inputs.release_id }}/controlled-release.json" \
+            --engine-observation release-smoke/linux-x86_64.json \
+            --engine-observation release-smoke/macos-arm64.json \
+            --engine-observation release-smoke/windows-x86_64.json \
+            --output release-smoke/profile-privacy-candidate.json
+      - name: Seal native-smoke orchestration checkpoint
+        run: |
+          python scripts/v1_evidence_orchestrator.py native \
+            --session release/orchestration/controlled-assembled.json \
+            --controlled-manifest "release/controlled/${{ inputs.release_id }}/controlled-release.json" \
+            --engine-smoke-run-id "$GITHUB_RUN_ID" \
+            --engine-observation release-smoke/linux-x86_64.json \
+            --engine-observation release-smoke/macos-arm64.json \
+            --engine-observation release-smoke/windows-x86_64.json \
+            --output release/orchestration/native-smoke-complete.json
+          python scripts/v1_evidence_orchestrator.py verify --session release/orchestration/native-smoke-complete.json
+      - uses: actions/attest@7667f588f2f73a90cea6c7ac70e78266c4f76616 # v4
+        with:
+          subject-path: release-smoke/*.json
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          name: engine-smoke-evidence-${{ inputs.release_id }}
+          path: |
+            release-smoke/*.json
+            release/orchestration/native-smoke-complete.json
+          if-no-files-found: error

@@ -1,0 +1,104 @@
+name: acquire-production-ml-artifact
+run-name: acquire-production-ml-artifact / intent=${{ inputs.run_intent_nonce }} / ${{ github.sha }} / ${{ github.actor }}
+on:
+  workflow_dispatch:
+    inputs:
+      run_intent_nonce:
+        description: Controller-generated immutable launch intent nonce
+        required: true
+        type: string
+      artifact_id:
+        description: Primary-source artifact to acquire
+        required: true
+        type: choice
+        options:
+          - ppocrv6-small-det
+          - ppocrv6-medium-det
+          - ppocrv6-small-rec
+          - ppocrv6-medium-rec
+          - ppocrv5-korean-mobile-rec
+          - manga-ocr-base-0.1.16
+          - noto-sans-arabic-production-font
+permissions:
+  contents: read
+jobs:
+  acquire-and-verify:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && contains(fromJSON(vars.MTE_PRODUCTION_OPERATOR_ID_ALLOWLIST_JSON), github.actor_id) && startsWith(inputs.run_intent_nonce, 'mte-') }}
+    environment: production-qualification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # v6.1.0
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6
+        with:
+          python-version: '3.13.15'
+      - name: Verify source identities before network access
+        run: |
+          set -euo pipefail
+          python engine/scripts/verify_acquisition_sources.py
+      - name: Acquire exact primary-source bytes
+        env:
+          ARTIFACT_ID: ${{ inputs.artifact_id }}
+        run: |
+          set -euo pipefail
+          mkdir -p release/ml-acquisition/artifacts release/ml-acquisition/records
+          python engine/scripts/acquire_official_artifact.py \
+            --catalog engine/model-catalog/model-candidates-v1.json \
+            --source-registry engine/model-catalog/acquisition-source-registry-v3.json \
+            --artifact-id "$ARTIFACT_ID" \
+            --output-dir release/ml-acquisition/artifacts \
+            --records-dir release/ml-acquisition/records \
+            --download
+      - name: Re-hash acquired bytes and acquisition record
+        env:
+          ARTIFACT_ID: ${{ inputs.artifact_id }}
+        run: |
+          set -euo pipefail
+          ARTIFACT_PATH="$(python - "$ARTIFACT_ID" <<'PY'
+          import json, sys
+          catalog=json.load(open('engine/model-catalog/model-candidates-v1.json', encoding='utf-8'))
+          item=next(v for v in catalog['artifacts'] if v['artifactId']==sys.argv[1])
+          print('release/ml-acquisition/artifacts/'+item['expectedFilename'])
+          PY
+          )"
+          python engine/scripts/verify_acquisition_record.py \
+            --catalog engine/model-catalog/model-candidates-v1.json \
+            --source-registry engine/model-catalog/acquisition-source-registry-v3.json \
+            --artifact-id "$ARTIFACT_ID" \
+            --artifact "$ARTIFACT_PATH" \
+            --record "release/ml-acquisition/records/$ARTIFACT_ID.acquisition.json" \
+            | tee release/ml-acquisition/verification.json
+      - name: Record workflow provenance without approving the artifact
+        env:
+          ARTIFACT_ID: ${{ inputs.artifact_id }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          artifact_id=os.environ['ARTIFACT_ID']
+          payload={
+            'schemaVersion': 1,
+            'artifactId': artifact_id,
+            'repository': os.environ.get('GITHUB_REPOSITORY'),
+            'workflow': os.environ.get('GITHUB_WORKFLOW'),
+            'runId': os.environ.get('GITHUB_RUN_ID'),
+            'runAttempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
+            'headSha': os.environ.get('GITHUB_SHA'),
+            'ref': os.environ.get('GITHUB_REF'),
+            'approvalGranted': False,
+            'bytesPersistedToHostedArtifact': False,
+            'note': 'Acquisition evidence only. License, redistribution and benchmark-use review remain separate fail-closed decisions.'
+          }
+          Path('release/ml-acquisition/workflow-provenance.json').write_text(json.dumps(payload, indent=2)+'\n', encoding='utf-8')
+          PY
+      - name: Remove acquired bytes before hosted artifact upload
+        run: |
+          set -euo pipefail
+          rm -rf release/ml-acquisition/artifacts
+          printf '%s\n' 'Model/font bytes are intentionally not persisted to GitHub Actions artifact storage before reviewed intake.' > release/ml-acquisition/BYTES_NOT_PERSISTED.txt
+      - uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        with:
+          name: ml-acquisition-evidence-${{ inputs.artifact_id }}-${{ github.sha }}
+          path: release/ml-acquisition
+          if-no-files-found: error
+          retention-days: 14

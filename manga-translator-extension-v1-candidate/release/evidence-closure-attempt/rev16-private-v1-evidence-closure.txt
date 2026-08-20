@@ -1,0 +1,19 @@
+
+> manga-translator-extension@0.10.0-v1candidate check:v1-evidence-closure
+> node scripts/verify-controlled-release-ready.mjs --target-class private-v1
+
+Controlled release blocked (14):
+- package-lock.json is missing
+- engine/uv.lock is missing
+- controlled release manifest is not recorded
+- frozen production profile fingerprint is missing or invalid
+- frozen production privacy descriptor is missing
+- fresh unpacked Chrome 148 smoke evidence is missing or invalid
+- fresh unpacked current Stable Chrome 151 smoke evidence is missing or invalid
+- V1 Engine smoke does not prove default-v1 was ready and translated successfully
+- V1 Engine smoke profile fingerprint does not match the frozen privacy/profile descriptor
+- production ML Gate D freeze is missing or invalid
+- production role/SFX classifier qualification evidence is missing or invalid
+- production inpainting winner qualification evidence is missing or invalid
+- V1 native Engine artifact support evidence cannot be validated without a controlled manifest
+- V1 release metadata cannot be validated without a controlled manifest

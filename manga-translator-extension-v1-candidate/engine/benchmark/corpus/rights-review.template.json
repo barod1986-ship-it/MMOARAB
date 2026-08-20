@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "reviewRecordId": "replace-with-stable-review-id",
+  "sourceId": "operator-owned-or-explicitly-permissioned",
+  "sourceRevision": "per-review-record",
+  "reviewer": "replace-with-reviewer-identity",
+  "reviewedAtUtc": "2026-08-19T00:00:00Z",
+  "benchmarkUseAuthorized": true,
+  "commercialV1QualificationAuthorized": true,
+  "redistributionAuthorized": false,
+  "coverageMode": "page-list",
+  "pageIds": ["example-page-001"],
+  "evidence": [
+    {
+      "kind": "permission-or-ownership-record",
+      "ref": "replace-with-internal-record-or-public-terms-reference",
+      "url": null
+    }
+  ],
+  "notes": "This record authorizes benchmark/qualification use only for the listed pages."
+}

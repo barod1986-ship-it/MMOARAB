@@ -1,0 +1,25 @@
+{
+  "artifactCount": 0,
+  "capturedAt": "2026-08-20T12:00:34Z",
+  "files": [
+    {
+      "path": "runs/104/run-snapshot.json",
+      "sha256": "62ad1b2dba439916ad38f30c4564ea00a3c2988306501f3e68925af5d4772822",
+      "sizeBytes": 331
+    }
+  ],
+  "kind": "offline-test-stage",
+  "manifestSha256": "2db2f09e20c7f2b8f238038b54dd3c93020b10584a73fee3c729e1cfded53098",
+  "releaseClass": "private-v1",
+  "releaseId": "v1.0.0-rc1",
+  "repository": "owner/repo",
+  "repositoryId": "123",
+  "revision": "rev33-first-real-run-recovery-v2",
+  "runIds": [
+    "104"
+  ],
+  "schemaVersion": 1,
+  "sourceHeadSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "stage": "qualification-evidence-pr-created",
+  "testOnly": true
+}

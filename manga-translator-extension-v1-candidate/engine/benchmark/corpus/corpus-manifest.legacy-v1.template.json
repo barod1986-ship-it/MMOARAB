@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "policyRevision": "rev10-production-corpus-v1",
+  "corpusId": "replace-with-reviewed-corpus-id",
+  "pages": [
+    {
+      "pageId": "example-page-001",
+      "language": "en",
+      "imagePath": "pages/example-page-001.png",
+      "imageSha256": "sha256:REPLACE_WITH_64_HEX_DIGITS",
+      "annotationPath": "annotations/example-page-001.json",
+      "annotationSha256": "sha256:REPLACE_WITH_64_HEX_DIGITS",
+      "features": [
+        "black-and-white",
+        "small-text",
+        "sfx-near-artwork"
+      ],
+      "rights": {
+        "reviewed": true,
+        "benchmarkUseAuthorized": true,
+        "basis": "replace-with-license/permission/internal-rights-basis",
+        "source": "replace-with-source-or-permission-record",
+        "redistributionAuthorized": false,
+        "notes": "Corpus files remain external unless redistribution is explicitly authorized.",
+        "reviewRecordId": "replace-with-rights-review-record-id",
+        "reviewedBy": "replace-with-reviewer-identity",
+        "reviewedAtUtc": "2026-08-19T00:00:00Z",
+        "evidenceRef": "replace-with-license-permission-or-internal-review-reference"
+      },
+      "hasGroundTruthSfx": true
+    }
+  ]
+}
